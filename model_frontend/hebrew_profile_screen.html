@@ -1,0 +1,605 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap');
+
+  .profile-root {
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 0 0 3rem;
+  }
+
+  .profile-header {
+    padding: 1.5rem 1rem 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .profile-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #EEEDFE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: #534AB7;
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .avatar-edit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--color-text-primary);
+    margin: 0 0 3px;
+    line-height: 1.15;
+  }
+
+  .profile-email {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .level-badge {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .level-ring {
+    width: 48px;
+    height: 48px;
+    position: relative;
+  }
+
+  .level-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .level-label {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.04em;
+  }
+
+  .trophy-row {
+    display: flex;
+    gap: 6px;
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .trophy-row::-webkit-scrollbar { display: none; }
+
+  .trophy-tile {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    width: 76px;
+  }
+
+  .trophy-tile.earned {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .trophy-tile.locked { opacity: 0.4; }
+
+  .trophy-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trophy-name {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .trophy-name.earned-name { color: var(--color-text-primary); font-weight: 500; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    padding: 0 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .settings-group {
+    margin: 0 1rem 1.25rem;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-xl, 16px);
+    overflow: hidden;
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    padding: 13px 16px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .settings-row:last-child { border-bottom: none; }
+
+  .settings-row-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .settings-row-icon svg { width: 15px; height: 15px; }
+
+  .settings-row-text { flex: 1; min-width: 0; }
+
+  .settings-row-label {
+    font-size: 14px;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+  }
+
+  .settings-row-sub {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-top: 1px;
+  }
+
+  .settings-row-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .settings-value {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .chevron {
+    color: var(--color-text-tertiary);
+  }
+
+  .toggle {
+    width: 36px;
+    height: 20px;
+    border-radius: 99px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    border: none;
+    flex-shrink: 0;
+  }
+
+  .toggle.on { background: var(--color-text-primary); }
+  .toggle.off { background: var(--color-border-secondary); }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 3px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    transition: left 0.2s;
+  }
+
+  .toggle.on .toggle-thumb { left: 19px; }
+  .toggle.off .toggle-thumb { left: 3px; }
+
+  .divider {
+    height: 0.5px;
+    background: var(--color-border-tertiary);
+    margin: 0 1rem 1.25rem;
+  }
+
+  .danger-row {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .danger-btn {
+    width: 100%;
+    height: 44px;
+    border-radius: var(--border-radius-lg);
+    background: transparent;
+    border: 0.5px solid #F09595;
+    color: #A32D2D;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .signout-row {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .signout-btn {
+    width: 100%;
+    height: 44px;
+    border-radius: var(--border-radius-lg);
+    background: transparent;
+    border: 0.5px solid var(--color-border-secondary);
+    color: var(--color-text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .version-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 1rem;
+  }
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1rem 1rem 0.5rem;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    margin-top: 0.5rem;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: var(--color-text-tertiary);
+    font-size: 10px;
+  }
+
+  .nav-item.active { color: var(--color-text-primary); }
+  .nav-item svg { width: 20px; height: 20px; }
+</style>
+
+<div class="profile-root">
+
+  <div class="profile-header">
+    <div class="profile-avatar">
+      M
+      <div class="avatar-edit">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="var(--color-text-secondary)" stroke-width="1.3">
+          <path d="M7 1.5l1.5 1.5L3 8.5H1.5V7L7 1.5z" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div>
+      <div class="profile-name">Michael</div>
+      <div class="profile-email">michael@betmate.io</div>
+    </div>
+    <div class="level-badge">
+      <div class="level-ring">
+        <svg width="48" height="48" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="19" fill="none" stroke-width="4" stroke="#D3D1C7"/>
+          <circle cx="24" cy="24" r="19" fill="none" stroke-width="4" stroke="#534AB7"
+            stroke-dasharray="119.4" stroke-dashoffset="35.8"
+            stroke-linecap="round" transform="rotate(-90 24 24)"/>
+        </svg>
+        <div class="level-inner">B2</div>
+      </div>
+      <div class="level-label">level</div>
+    </div>
+  </div>
+
+  <div class="trophy-row">
+    <div class="trophy-tile earned">
+      <div class="trophy-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3C12 3 16 8 16 12C16 14.2 14.2 16 12 16C9.8 16 8 14.2 8 12C8 10 9 8.5 9 8.5C9 8.5 8 11 10 12C10 9.5 11 6 12 3Z" fill="#EF9F27"/>
+          <path d="M12 16C12 16 16 13.5 17.5 18C18.5 21 16 22 12 22C8 22 5.5 21 7 18C8.5 13.5 12 16 12 16Z" fill="#BA7517"/>
+        </svg>
+      </div>
+      <div class="trophy-name earned-name">first drill</div>
+    </div>
+    <div class="trophy-tile earned">
+      <div class="trophy-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="14" width="4" height="7" rx="1" fill="#639922"/>
+          <rect x="10" y="10" width="4" height="11" rx="1" fill="#639922"/>
+          <rect x="16" y="6" width="4" height="15" rx="1" fill="#639922"/>
+        </svg>
+      </div>
+      <div class="trophy-name earned-name">7-day run</div>
+    </div>
+    <div class="trophy-tile earned">
+      <div class="trophy-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="8" stroke="#534AB7" stroke-width="2"/>
+          <path d="M8 12l3 3 5-5" stroke="#534AB7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="trophy-name earned-name">100 items</div>
+    </div>
+    <div class="trophy-tile locked">
+      <div class="trophy-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="6" y="10" width="12" height="11" rx="2" stroke="var(--color-text-tertiary)" stroke-width="1.8"/>
+          <path d="M8 10V8a4 4 0 0 1 8 0v2" stroke="var(--color-text-tertiary)" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="trophy-name">30-day run</div>
+    </div>
+    <div class="trophy-tile locked">
+      <div class="trophy-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <polygon points="12,3 15,9 21,9 16,14 18,20 12,16 6,20 8,14 3,9 9,9" stroke="var(--color-text-tertiary)" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="trophy-name">perfect week</div>
+    </div>
+    <div class="trophy-tile locked">
+      <div class="trophy-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 4C12 4 19 8 19 14C19 17.3 15.9 20 12 20C8.1 20 5 17.3 5 14C5 8 12 4 12 4Z" stroke="var(--color-text-tertiary)" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="trophy-name">500 items</div>
+    </div>
+  </div>
+
+  <div class="section-label">drill preferences</div>
+
+  <div class="settings-group">
+    <div class="settings-row">
+      <div class="settings-row-icon" style="background:#EEEDFE;">
+        <svg viewBox="0 0 15 15" fill="none" stroke="#534AB7" stroke-width="1.4">
+          <path d="M7.5 2v11M2 7.5h11" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-row-text">
+        <div class="settings-row-label">show transliteration</div>
+        <div class="settings-row-sub">reveal hint on demand</div>
+      </div>
+      <button class="toggle on" onclick="toggleSetting(this)" id="tog-trans">
+        <div class="toggle-thumb"></div>
+      </button>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-icon" style="background:#FAEEDA;">
+        <svg viewBox="0 0 15 15" fill="none" stroke="#854F0B" stroke-width="1.4">
+          <circle cx="7.5" cy="7.5" r="5.5"/>
+          <path d="M7.5 5v3l2 1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-row-text">
+        <div class="settings-row-label">retry on flawed</div>
+        <div class="settings-row-sub">stay on item until correct</div>
+      </div>
+      <button class="toggle off" onclick="toggleSetting(this)" id="tog-retry">
+        <div class="toggle-thumb"></div>
+      </button>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-icon" style="background:#E1F5EE;">
+        <svg viewBox="0 0 15 15" fill="none" stroke="#0F6E56" stroke-width="1.4">
+          <path d="M2 10.5C2 8 4 6 6.5 6C8 6 9.5 5 9.5 3.5" stroke-linecap="round"/>
+          <circle cx="11" cy="3" r="1.5" fill="#0F6E56"/>
+          <path d="M5.5 10.5C5.5 9 7 8 8.5 8C10 8 11.5 7 11.5 5.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-row-text">
+        <div class="settings-row-label">voice speed</div>
+        <div class="settings-row-sub">TTS playback rate</div>
+      </div>
+      <div class="settings-row-right">
+        <span class="settings-value" id="speed-val">1.0×</span>
+        <svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M5 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-icon" style="background:#E6F1FB;">
+        <svg viewBox="0 0 15 15" fill="none" stroke="#185FA5" stroke-width="1.4">
+          <path d="M2 7.5a5.5 5.5 0 1 0 11 0 5.5 5.5 0 0 0-11 0zM7.5 5v5M5 7.5h5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-row-text">
+        <div class="settings-row-label">session length</div>
+        <div class="settings-row-sub">items per drill</div>
+      </div>
+      <div class="settings-row-right">
+        <span class="settings-value" id="len-val">10</span>
+        <svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M5 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">notifications</div>
+
+  <div class="settings-group">
+    <div class="settings-row">
+      <div class="settings-row-icon" style="background:#FCEBEB;">
+        <svg viewBox="0 0 15 15" fill="none" stroke="#A32D2D" stroke-width="1.4">
+          <path d="M7.5 2a4.5 4.5 0 0 1 4.5 4.5c0 2.5 1 3.5 1 3.5H2s1-1 1-3.5A4.5 4.5 0 0 1 7.5 2z"/>
+          <path d="M6 12.5a1.5 1.5 0 0 0 3 0" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-row-text">
+        <div class="settings-row-label">daily reminder</div>
+        <div class="settings-row-sub">keep your streak alive</div>
+      </div>
+      <button class="toggle on" onclick="toggleSetting(this)" id="tog-notif">
+        <div class="toggle-thumb"></div>
+      </button>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-icon" style="background:#F1EFE8;">
+        <svg viewBox="0 0 15 15" fill="none" stroke="#5F5E5A" stroke-width="1.4">
+          <circle cx="7.5" cy="7.5" r="5.5"/>
+          <path d="M7.5 5v3l1.5 1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-row-text">
+        <div class="settings-row-label">reminder time</div>
+        <div class="settings-row-sub">when to ping you</div>
+      </div>
+      <div class="settings-row-right">
+        <span class="settings-value">9:00 am</span>
+        <svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M5 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">account</div>
+
+  <div class="settings-group">
+    <div class="settings-row">
+      <div class="settings-row-icon" style="background:#E6F1FB;">
+        <svg viewBox="0 0 15 15" fill="none" stroke="#185FA5" stroke-width="1.4">
+          <circle cx="7.5" cy="5.5" r="2.5"/>
+          <path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-row-text">
+        <div class="settings-row-label">edit profile</div>
+        <div class="settings-row-sub">name, email, password</div>
+      </div>
+      <svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M5 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-icon" style="background:#E1F5EE;">
+        <svg viewBox="0 0 15 15" fill="none" stroke="#0F6E56" stroke-width="1.4">
+          <rect x="3" y="3" width="9" height="9" rx="1.5"/>
+          <path d="M6 6h3M6 9h2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="settings-row-text">
+        <div class="settings-row-label">export my data</div>
+        <div class="settings-row-sub">sessions, attempts, progress</div>
+      </div>
+      <svg class="chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M5 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="signout-row">
+    <button class="signout-btn">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M9 2h3v10H9M6 10l4-3-4-3M1 7h8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      sign out
+    </button>
+  </div>
+
+  <div class="danger-row">
+    <button class="danger-btn">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#A32D2D" stroke-width="1.4">
+        <path d="M2 4h10M5 4V2.5h4V4M5.5 6.5v4M8.5 6.5v4M3 4l.7 7.5h6.6L11 4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      delete account
+    </button>
+  </div>
+
+  <div class="version-note">hebrew drill · v1.0.0</div>
+
+  <div class="nav-bar">
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 9.5L10 3l7 6.5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" stroke-linejoin="round"/>
+      </svg>
+      home
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="14" height="14" rx="3"/>
+        <path d="M7 10h6M10 7v6" stroke-linecap="round"/>
+      </svg>
+      library
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="10" r="7"/>
+        <path d="M10 10l0-4" stroke-linecap="round"/>
+        <path d="M10 10l3 3" stroke-linecap="round"/>
+      </svg>
+      progress
+    </div>
+    <div class="nav-item active">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="7" r="3"/>
+        <path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke-linecap="round"/>
+      </svg>
+      profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleSetting(btn) {
+  btn.classList.toggle('on');
+  btn.classList.toggle('off');
+}
+</script>

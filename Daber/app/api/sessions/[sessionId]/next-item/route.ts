@@ -1,0 +1,82 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';
+import { generateNextFromLexicon } from '@/lib/drill/generators';
+
+export async function GET(req: Request, { params }: { params: { sessionId: string } }) {
+  const { sessionId } = params;
+  try {
+    // Session cap (applies to all sessions; tune via env)
+    const cap = Number.parseInt(process.env.SESSION_DUE_CAP || '', 10) || 20;
+    const attemptsCount = await prisma.attempt.count({ where: { session_id: sessionId } });
+    if (cap > 0 && attemptsCount >= cap) {
+      return NextResponse.json({ done: true, index: attemptsCount, total: cap });
+    }
+    const url = new URL(req.url);
+    const useRandom = url.searchParams.get('random') === '1' || url.searchParams.get('random') === 'true';
+    const useLex = url.searchParams.get('mode') === 'lex';
+    const focusWeak = url.searchParams.get('focus') === 'weak';
+    const dueParam = url.searchParams.get('due'); // 'feature' | 'item'
+    const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { lesson: { select: { type: true } } } });
+    if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+
+    const attempted = await prisma.attempt.findMany({
+      where: { session_id: sessionId },
+      select: { lesson_item_id: true }
+    });
+    const attemptedIds = new Set(attempted.map(a => a.lesson_item_id));
+
+    const subsetRaw = (session as any).subset_item_ids as unknown;
+    const subset = Array.isArray(subsetRaw) ? (subsetRaw as unknown[]).map(String) : [];
+
+    if ((useLex || dueParam === 'feature' || dueParam === 'blend') && session.lesson?.type === 'vocab') {
+      const gen = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak });
+      if (gen) return NextResponse.json({ done: false, item: gen });
+      // fall through to regular selection when no generated item is available
+    }
+    if (dueParam === 'item' || dueParam === 'blend') {
+      // Pick an authored item from this lesson that is due in ItemStat
+      const now = new Date();
+      const dueItems = await prisma.itemStat.findMany({ where: { next_due: { lte: now } } });
+      const dueSet = new Set(dueItems.map(d => d.lesson_item_id));
+      const remaining = await prisma.lessonItem.findMany({ where: { lesson_id: session.lesson_id, id: { in: Array.from(dueSet) }, NOT: { id: { in: Array.from(attemptedIds) } } }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+      const pick = useRandom ? (remaining.length ? remaining[Math.floor(Math.random() * remaining.length)] : null) : (remaining[0] || null);
+      if (pick) {
+        const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
+        const index = attemptedIds.size + 1;
+        return NextResponse.json({ done: false, item: pick, index, total });
+      }
+      // continue to normal selection if none due
+    }
+    if (subset.length) {
+      const remainingIds = subset.filter(id => !attemptedIds.has(id));
+      const total = subset.length;
+      const pickId = useRandom ? remainingIds[Math.floor(Math.random() * remainingIds.length)] : remainingIds[0];
+      if (!pickId) return NextResponse.json({ done: true, index: attemptedIds.size, total });
+      const item = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+      if (!item) return NextResponse.json({ done: true, index: attemptedIds.size, total });
+      const index = attemptedIds.size + 1;
+      return NextResponse.json({ done: false, item, index, total });
+    } else {
+      let nextItem = null as null | { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features?: Record<string, string> | null };
+      if (useRandom) {
+        const remain = await prisma.lessonItem.findMany({
+          where: { lesson_id: session.lesson_id, NOT: { id: { in: Array.from(attemptedIds) } } },
+          select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true }
+        });
+        if (remain.length) nextItem = remain[Math.floor(Math.random() * remain.length)] as any;
+      } else {
+        nextItem = await prisma.lessonItem.findFirst({
+          where: { lesson_id: session.lesson_id, NOT: { id: { in: Array.from(attemptedIds) } } },
+          orderBy: { id: 'asc' },
+          select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true }
+        });
+      }
+      const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
+      if (!nextItem) return NextResponse.json({ done: true, index: attemptedIds.size, total });
+      const index = attemptedIds.size + 1;
+      return NextResponse.json({ done: false, item: nextItem, index, total });
+    }
+  } catch (e: any) {
+    return NextResponse.json({ error: e?.message || 'Failed to get next item' }, { status: 500 });
+  }
+}

@@ -1,0 +1,719 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap');
+
+  .prog-root {
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 0 0 3rem;
+  }
+
+  .prog-header {
+    padding: 1.5rem 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .prog-title {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 22px;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .range-pills {
+    display: flex;
+    gap: 4px;
+  }
+
+  .range-pill {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    border: 0.5px solid var(--color-border-secondary);
+    background: transparent;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    font-family: 'DM Mono', var(--font-mono), monospace;
+    transition: all 0.15s;
+  }
+
+  .range-pill.active {
+    background: var(--color-text-primary);
+    color: var(--color-background-primary);
+    border-color: var(--color-text-primary);
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 8px;
+    padding: 0 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .kpi-tile {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 12px 8px;
+    text-align: center;
+  }
+
+  .kpi-num {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.03em;
+  }
+
+  .chart-section {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .chart-title {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 12px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+  }
+
+  .legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 100px;
+    margin-bottom: 6px;
+  }
+
+  .bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .bar-stack {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: stretch;
+  }
+
+  .bar-seg-c { background: #639922; border-radius: 0; }
+  .bar-seg-f { background: #EF9F27; border-radius: 0; }
+  .bar-seg-i { background: #E24B4A; border-radius: 0; }
+
+  .bar-stack > .bar-seg-c:last-child,
+  .bar-stack > .bar-seg-f:last-child,
+  .bar-stack > .bar-seg-i:last-child {
+    border-radius: 3px 3px 0 0;
+  }
+
+  .bar-stack > *:first-child {
+    border-radius: 3px 3px 0 0;
+  }
+
+  .bar-label {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    margin-top: 5px;
+    font-family: 'DM Mono', var(--font-mono), monospace;
+  }
+
+  .accuracy-chart {
+    position: relative;
+    height: 80px;
+    margin-bottom: 6px;
+  }
+
+  .acc-svg {
+    width: 100%;
+    height: 80px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    padding: 0 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .mastery-list {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .mastery-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mastery-name {
+    font-size: 13px;
+    color: var(--color-text-primary);
+    width: 140px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mastery-track {
+    flex: 1;
+    height: 6px;
+    background: var(--color-border-tertiary);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .mastery-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.5s ease;
+  }
+
+  .mastery-pct {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-variant-numeric: tabular-nums;
+    width: 32px;
+    text-align: right;
+    flex-shrink: 0;
+    font-family: 'DM Mono', var(--font-mono), monospace;
+  }
+
+  .hard-items-card {
+    margin: 0 1rem 1.5rem;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-xl, 16px);
+    overflow: hidden;
+  }
+
+  .hard-item-row {
+    display: flex;
+    align-items: center;
+    padding: 11px 14px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    gap: 10px;
+  }
+
+  .hard-item-row:last-child { border-bottom: none; }
+
+  .hard-rank {
+    font-family: 'DM Mono', var(--font-mono), monospace;
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    width: 16px;
+    flex-shrink: 0;
+  }
+
+  .hard-hebrew {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 17px;
+    direction: rtl;
+    color: var(--color-text-primary);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hard-eng {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    flex: 1;
+    min-width: 0;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hard-attempts {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    font-family: 'DM Mono', var(--font-mono), monospace;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .grade-donut-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 1rem 0.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .donut-wrap {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+
+  .donut-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .donut-pct {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1;
+  }
+
+  .donut-sub {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    margin-top: 2px;
+  }
+
+  .grade-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .grade-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .grade-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .grade-name {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    flex: 1;
+  }
+
+  .grade-count {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+    font-family: 'DM Mono', var(--font-mono), monospace;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: var(--color-border-tertiary);
+    margin: 0 1rem 1.25rem;
+  }
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1rem 1rem 0.5rem;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    margin-top: 0.5rem;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: var(--color-text-tertiary);
+    font-size: 10px;
+  }
+
+  .nav-item.active { color: var(--color-text-primary); }
+  .nav-item svg { width: 20px; height: 20px; }
+</style>
+
+<div class="prog-root">
+
+  <div class="prog-header">
+    <h1 class="prog-title">progress</h1>
+    <div class="range-pills">
+      <button class="range-pill" onclick="setRange(this,'7d')">7d</button>
+      <button class="range-pill active" onclick="setRange(this,'30d')">30d</button>
+      <button class="range-pill" onclick="setRange(this,'all')">all</button>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-tile">
+      <div class="kpi-num" id="kpi-sessions">14</div>
+      <div class="kpi-label">sessions</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-num" id="kpi-items">138</div>
+      <div class="kpi-label">items drilled</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-num" id="kpi-accuracy">81<span style="font-size:11px;font-weight:400;color:var(--color-text-tertiary)">%</span></div>
+      <div class="kpi-label">accuracy</div>
+    </div>
+    <div class="kpi-tile">
+      <div class="kpi-num" id="kpi-streak">4</div>
+      <div class="kpi-label">day streak</div>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <div class="chart-header">
+      <span class="chart-title">items per session</span>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#639922"></div>correct</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#EF9F27"></div>close</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#E24B4A"></div>missed</div>
+      </div>
+    </div>
+    <div class="bar-chart" id="bar-chart"></div>
+    <div style="display:flex; gap:6px; padding: 0;" id="bar-labels"></div>
+  </div>
+
+  <div class="chart-section">
+    <div class="chart-header">
+      <span class="chart-title">accuracy trend</span>
+    </div>
+    <div class="accuracy-chart">
+      <svg class="acc-svg" id="acc-svg" viewBox="0 0 400 80" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="grade-donut-row">
+    <div class="donut-wrap">
+      <svg width="90" height="90" viewBox="0 0 90 90">
+        <circle cx="45" cy="45" r="34" fill="none" stroke-width="10" stroke="#F1EFE8"/>
+        <circle cx="45" cy="45" r="34" fill="none" stroke-width="10" stroke="#639922"
+          stroke-dasharray="213.6" stroke-dashoffset="40.6" stroke-linecap="butt"
+          transform="rotate(-90 45 45)"/>
+        <circle cx="45" cy="45" r="34" fill="none" stroke-width="10" stroke="#EF9F27"
+          stroke-dasharray="213.6" stroke-dashoffset="170.9" stroke-linecap="butt"
+          transform="rotate(-90 45 45)" stroke-dashoffset="170.9"
+          style="stroke-dashoffset: calc(213.6 - 35.7); transform-origin: center; transform: rotate(calc(-90deg + 159.7deg))"/>
+        <circle cx="45" cy="45" r="34" fill="none" stroke-width="10" stroke="#E24B4A"
+          stroke-dasharray="213.6" stroke-dashoffset="192.2" stroke-linecap="butt"
+          style="transform-origin: center; transform: rotate(calc(-90deg + 159.7deg + 37.2deg))"/>
+      </svg>
+      <div class="donut-inner">
+        <span class="donut-pct">81%</span>
+        <span class="donut-sub">correct</span>
+      </div>
+    </div>
+    <div class="grade-breakdown">
+      <div class="grade-line">
+        <div class="grade-dot" style="background:#639922"></div>
+        <span class="grade-name">correct</span>
+        <span class="grade-count">112</span>
+      </div>
+      <div class="grade-line">
+        <div class="grade-dot" style="background:#EF9F27"></div>
+        <span class="grade-name">close</span>
+        <span class="grade-count">18</span>
+      </div>
+      <div class="grade-line">
+        <div class="grade-dot" style="background:#E24B4A"></div>
+        <span class="grade-name">missed</span>
+        <span class="grade-count">8</span>
+      </div>
+      <div class="grade-line" style="border-top:0.5px solid var(--color-border-tertiary); padding-top:6px; margin-top:2px;">
+        <div class="grade-dot" style="background:var(--color-border-secondary)"></div>
+        <span class="grade-name">total</span>
+        <span class="grade-count">138</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">pack mastery</div>
+
+  <div class="mastery-list">
+    <div class="mastery-row">
+      <span class="mastery-name">Greetings</span>
+      <div class="mastery-track"><div class="mastery-fill" style="width:100%;background:#639922;"></div></div>
+      <span class="mastery-pct" style="color:#3B6D11;">100%</span>
+    </div>
+    <div class="mastery-row">
+      <span class="mastery-name">Present Tense 01</span>
+      <div class="mastery-track"><div class="mastery-fill" style="width:70%;background:#639922;"></div></div>
+      <span class="mastery-pct">70%</span>
+    </div>
+    <div class="mastery-row">
+      <span class="mastery-name">Present Tense 02</span>
+      <div class="mastery-track"><div class="mastery-fill" style="width:0%;background:#639922;"></div></div>
+      <span class="mastery-pct">—</span>
+    </div>
+    <div class="mastery-row">
+      <span class="mastery-name">Past Tense 01</span>
+      <div class="mastery-track"><div class="mastery-fill" style="width:0%;background:#639922;"></div></div>
+      <span class="mastery-pct">—</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">hardest items</div>
+
+  <div class="hard-items-card">
+    <div class="hard-item-row">
+      <span class="hard-rank">1</span>
+      <div class="hard-hebrew">הם לומדים</div>
+      <div class="hard-eng">they are studying</div>
+      <div class="hard-attempts">5 misses</div>
+    </div>
+    <div class="hard-item-row">
+      <span class="hard-rank">2</span>
+      <div class="hard-hebrew">היא משתפרת</div>
+      <div class="hard-eng">she is improving</div>
+      <div class="hard-attempts">4 misses</div>
+    </div>
+    <div class="hard-item-row">
+      <span class="hard-rank">3</span>
+      <div class="hard-hebrew">אני כותבת</div>
+      <div class="hard-eng">I am writing (f)</div>
+      <div class="hard-attempts">3 misses</div>
+    </div>
+    <div class="hard-item-row">
+      <span class="hard-rank">4</span>
+      <div class="hard-hebrew">אנחנו לומדים</div>
+      <div class="hard-eng">we are studying</div>
+      <div class="hard-attempts">2 misses</div>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 9.5L10 3l7 6.5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" stroke-linejoin="round"/>
+      </svg>
+      home
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="14" height="14" rx="3"/>
+        <path d="M7 10h6M10 7v6" stroke-linecap="round"/>
+      </svg>
+      library
+    </div>
+    <div class="nav-item active">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="10" r="7"/>
+        <path d="M10 10l0-4" stroke-linecap="round"/>
+        <path d="M10 10l3 3" stroke-linecap="round"/>
+      </svg>
+      progress
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="7" r="3"/>
+        <path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke-linecap="round"/>
+      </svg>
+      profile
+    </div>
+  </div>
+
+</div>
+
+<script>
+const data = {
+  '7d': {
+    sessions: 5, items: 47, accuracy: 83, streak: 4,
+    bars: [
+      {c:8,f:1,i:1,l:'M'},{c:7,f:2,i:1,l:'T'},{c:9,f:0,i:1,l:'W'},
+      {c:6,f:2,i:2,l:'T'},{c:7,f:1,i:2,l:'F'},{c:5,f:3,i:0,l:'S'},{c:9,f:1,i:0,l:'S'}
+    ],
+    acc: [74,78,80,77,83,85,83]
+  },
+  '30d': {
+    sessions: 14, items: 138, accuracy: 81, streak: 4,
+    bars: [
+      {c:6,f:2,i:2,l:'W1'},{c:8,f:1,i:1,l:'W2'},{c:9,f:2,i:1,l:'W3'},{c:7,f:1,i:0,l:'W4'}
+    ],
+    acc: [62,70,74,81]
+  },
+  'all': {
+    sessions: 22, items: 210, accuracy: 79, streak: 4,
+    bars: [
+      {c:18,f:5,i:7,l:'Mar'},{c:22,f:6,i:4,l:'Apr'},{c:28,f:7,i:3,l:'May'},
+      {c:30,f:5,i:2,l:'Jun'},{c:35,f:5,i:3,l:'now'}
+    ],
+    acc: [62,67,72,76,79]
+  }
+};
+
+let currentRange = '30d';
+
+function setRange(el, range) {
+  document.querySelectorAll('.range-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentRange = range;
+  renderAll();
+}
+
+function renderAll() {
+  const d = data[currentRange];
+  document.getElementById('kpi-sessions').textContent = d.sessions;
+  document.getElementById('kpi-items').textContent = d.items;
+  document.getElementById('kpi-accuracy').innerHTML = d.accuracy + '<span style="font-size:11px;font-weight:400;color:var(--color-text-tertiary)">%</span>';
+  document.getElementById('kpi-streak').textContent = d.streak;
+  renderBars(d.bars);
+  renderAcc(d.acc);
+}
+
+function renderBars(bars) {
+  const maxTotal = Math.max(...bars.map(b => b.c + b.f + b.i));
+  const chartH = 100;
+  const chart = document.getElementById('bar-chart');
+  const labels = document.getElementById('bar-labels');
+
+  chart.innerHTML = '';
+  labels.innerHTML = '';
+  labels.style.display = 'flex';
+  labels.style.gap = '6px';
+
+  bars.forEach(b => {
+    const total = b.c + b.f + b.i;
+    const scale = chartH / maxTotal;
+
+    const group = document.createElement('div');
+    group.className = 'bar-group';
+    group.style.flex = '1';
+    group.style.display = 'flex';
+    group.style.flexDirection = 'column';
+    group.style.alignItems = 'stretch';
+    group.style.justifyContent = 'flex-end';
+    group.style.height = chartH + 'px';
+
+    const stack = document.createElement('div');
+    stack.style.display = 'flex';
+    stack.style.flexDirection = 'column';
+    stack.style.gap = '1px';
+    stack.style.width = '100%';
+
+    if (b.i > 0) {
+      const seg = document.createElement('div');
+      seg.style.height = Math.round(b.i * scale) + 'px';
+      seg.style.background = '#E24B4A';
+      seg.style.borderRadius = '3px 3px 0 0';
+      seg.style.width = '100%';
+      stack.appendChild(seg);
+    }
+    if (b.f > 0) {
+      const seg = document.createElement('div');
+      seg.style.height = Math.round(b.f * scale) + 'px';
+      seg.style.background = '#EF9F27';
+      seg.style.width = '100%';
+      if (b.i === 0) seg.style.borderRadius = '3px 3px 0 0';
+      stack.appendChild(seg);
+    }
+    if (b.c > 0) {
+      const seg = document.createElement('div');
+      seg.style.height = Math.round(b.c * scale) + 'px';
+      seg.style.background = '#639922';
+      seg.style.width = '100%';
+      if (b.i === 0 && b.f === 0) seg.style.borderRadius = '3px 3px 0 0';
+      stack.appendChild(seg);
+    }
+
+    group.appendChild(stack);
+    chart.appendChild(group);
+
+    const lbl = document.createElement('div');
+    lbl.style.flex = '1';
+    lbl.style.textAlign = 'center';
+    lbl.style.fontSize = '10px';
+    lbl.style.color = 'var(--color-text-tertiary)';
+    lbl.style.fontFamily = "'DM Mono', monospace";
+    lbl.style.marginTop = '5px';
+    lbl.textContent = b.l;
+    labels.appendChild(lbl);
+  });
+}
+
+function renderAcc(acc) {
+  const svg = document.getElementById('acc-svg');
+  const w = 400, h = 80, pad = 16;
+  const minV = Math.max(0, Math.min(...acc) - 10);
+  const maxV = Math.min(100, Math.max(...acc) + 5);
+  const xs = acc.map((_, i) => pad + i * (w - 2*pad) / (acc.length - 1));
+  const ys = acc.map(v => h - pad - (v - minV) / (maxV - minV) * (h - 2*pad));
+
+  let pathD = xs.map((x, i) => (i === 0 ? 'M' : 'L') + Math.round(x) + ' ' + Math.round(ys[i])).join(' ');
+  let areaD = pathD + ` L${Math.round(xs[xs.length-1])} ${h} L${Math.round(xs[0])} ${h} Z`;
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="accGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#639922" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="#639922" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="${areaD}" fill="url(#accGrad)"/>
+    <path d="${pathD}" fill="none" stroke="#639922" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${xs.map((x, i) => `<circle cx="${Math.round(x)}" cy="${Math.round(ys[i])}" r="3" fill="#639922"/>`).join('')}
+    ${xs.map((x, i) => `<text x="${Math.round(x)}" y="${Math.round(ys[i]) - 8}" text-anchor="middle" font-size="10" fill="#3B6D11" font-family="DM Mono, monospace">${acc[i]}%</text>`).join('')}
+    <line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  `;
+}
+
+renderAll();
+</script>

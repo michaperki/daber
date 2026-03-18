@@ -1,0 +1,27 @@
+# Hebrew Drills (Daber)
+
+Single Next.js app for a spoken Hebrew drill loop. The canonical app and API live under `Daber/`.
+
+## Getting Started
+- Install deps: `npm install`
+- Database: set `DATABASE_URL` and `OPENAI_API_KEY` in `Daber/.env`
+- Push schema: `npm run db:push`
+- Seed lessons: `npm run seed` (also imports your `Mike_Hebrew_Vocab.md` as "My Vocab 01")
+- Dev server: `npm run dev` and open http://localhost:3000
+
+## Commands
+- Dev: `npm run dev`
+- Build/Start: `npm run build` / `npm run start`
+- Prisma: `npm run prisma:generate` / `npm run db:push` / `npm run seed`
+- Evaluator sanity: `npm run test:evaluator`
+
+## Structure
+- `Daber/app/*` — pages, components, API routes
+- `Daber/lib/*` — DB, evaluator, client hooks, contracts
+- `Daber/prisma/*` — Prisma schema + seed
+- `Daber/data/*` — lesson JSON
+
+## Notes
+- STT `/api/stt` uses OpenAI Whisper; TTS `/api/tts` uses `gpt-4o-mini-tts`.
+- Subset review sessions are supported from `/retry` (select items and start).
+- The session UI always shows the English prompt and strips "How do I say…".

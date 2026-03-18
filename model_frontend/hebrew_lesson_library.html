@@ -1,0 +1,518 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap');
+
+  .lib-root {
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .lib-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+  }
+
+  .lib-title {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 22px;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .lib-settings-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 0.5px solid var(--color-border-secondary);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .filter-row::-webkit-scrollbar { display: none; }
+
+  .filter-pill {
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 99px;
+    border: 0.5px solid var(--color-border-secondary);
+    background: transparent;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .filter-pill.active {
+    background: var(--color-text-primary);
+    color: var(--color-background-primary);
+    border-color: var(--color-text-primary);
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.75rem;
+  }
+
+  .pack-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-xl, 16px);
+    padding: 1.25rem 1.25rem 1rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    position: relative;
+  }
+
+  .pack-card:hover {
+    border-color: var(--color-border-secondary);
+  }
+
+  .pack-card.active-pack {
+    border: 2px solid var(--color-border-primary);
+  }
+
+  .pack-card.locked {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .pack-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .pack-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .pack-icon.green { background: #EAF3DE; }
+  .pack-icon.amber { background: #FAEEDA; }
+  .pack-icon.blue  { background: #E6F1FB; }
+  .pack-icon.purple { background: #EEEDFE; }
+
+  .pack-icon svg { width: 18px; height: 18px; }
+
+  .pack-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pack-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0 0 3px;
+    line-height: 1.2;
+  }
+
+  .pack-desc {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  .pack-status-badge {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 99px;
+    flex-shrink: 0;
+    font-weight: 500;
+    align-self: flex-start;
+  }
+
+  .badge-new    { background: #E6F1FB; color: #185FA5; }
+  .badge-in-progress { background: #FAEEDA; color: #854F0B; }
+  .badge-done   { background: #EAF3DE; color: #3B6D11; }
+  .badge-locked { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+
+  .pack-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .pack-chips {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .pack-chip {
+    font-family: 'DM Mono', var(--font-mono), monospace;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+  }
+
+  .pack-progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .pack-progress-track {
+    width: 72px;
+    height: 4px;
+    background: var(--color-border-tertiary);
+    border-radius: 99px;
+  }
+
+  .pack-progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: #639922;
+  }
+
+  .pack-progress-pct {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-variant-numeric: tabular-nums;
+    min-width: 28px;
+    text-align: right;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .btn-start {
+    flex: 1;
+    height: 40px;
+    border-radius: var(--border-radius-lg);
+    background: var(--color-text-primary);
+    color: var(--color-background-primary);
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .btn-resume {
+    flex: 1;
+    height: 40px;
+    border-radius: var(--border-radius-lg);
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    cursor: pointer;
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .btn-retry {
+    height: 40px;
+    width: 40px;
+    border-radius: var(--border-radius-lg);
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: var(--color-border-tertiary);
+    margin: 1.5rem 0;
+  }
+
+  .coming-soon-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 1rem 0 0.5rem;
+  }
+
+  .coming-soon-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-border-secondary);
+  }
+
+  .coming-soon-text {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+  }
+</style>
+
+<div class="lib-root">
+
+  <div class="lib-topbar">
+    <h1 class="lib-title">lesson packs</h1>
+    <button class="lib-settings-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="2.5"/>
+        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-pill active" onclick="setFilter(this,'all')">all</button>
+    <button class="filter-pill" onclick="setFilter(this,'beginner')">beginner</button>
+    <button class="filter-pill" onclick="setFilter(this,'intermediate')">intermediate</button>
+    <button class="filter-pill" onclick="setFilter(this,'verbs')">verbs</button>
+    <button class="filter-pill" onclick="setFilter(this,'pronouns')">pronouns</button>
+    <button class="filter-pill" onclick="setFilter(this,'done')">completed</button>
+  </div>
+
+  <div class="section-eyebrow">in progress</div>
+
+  <div class="pack-card active-pack">
+    <div class="pack-top">
+      <div class="pack-icon amber">
+        <svg viewBox="0 0 18 18" fill="none" stroke="#854F0B" stroke-width="1.5">
+          <path d="M9 2v14M2 9h14" stroke-linecap="round"/>
+          <circle cx="9" cy="9" r="3"/>
+        </svg>
+      </div>
+      <div class="pack-meta">
+        <p class="pack-name">Present Tense Basics 01</p>
+        <p class="pack-desc">Common verbs, singular pronouns, m/f forms</p>
+      </div>
+      <span class="pack-status-badge badge-in-progress">in progress</span>
+    </div>
+    <div class="pack-footer">
+      <div class="pack-chips">
+        <span class="pack-chip">present</span>
+        <span class="pack-chip">singular</span>
+        <span class="pack-chip">10 items</span>
+      </div>
+      <div class="pack-progress-wrap">
+        <div class="pack-progress-track">
+          <div class="pack-progress-fill" style="width:70%"></div>
+        </div>
+        <span class="pack-progress-pct">70%</span>
+      </div>
+    </div>
+    <div class="cta-row">
+      <button class="btn-start">
+        continue
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="btn-retry">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M2 3v4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-eyebrow">up next</div>
+
+  <div class="pack-card">
+    <div class="pack-top">
+      <div class="pack-icon green">
+        <svg viewBox="0 0 18 18" fill="none" stroke="#3B6D11" stroke-width="1.5">
+          <rect x="2" y="4" width="14" height="11" rx="2"/>
+          <path d="M5 4V3a2 2 0 0 1 4 0v1M9 4V3a2 2 0 0 1 4 0v1" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="pack-meta">
+        <p class="pack-name">Present Tense Basics 02</p>
+        <p class="pack-desc">Plural forms, you singular and plural</p>
+      </div>
+      <span class="pack-status-badge badge-new">new</span>
+    </div>
+    <div class="pack-footer">
+      <div class="pack-chips">
+        <span class="pack-chip">present</span>
+        <span class="pack-chip">plural</span>
+        <span class="pack-chip">12 items</span>
+      </div>
+      <div class="pack-progress-wrap">
+        <div class="pack-progress-track">
+          <div class="pack-progress-fill" style="width:0%"></div>
+        </div>
+        <span class="pack-progress-pct">—</span>
+      </div>
+    </div>
+    <div class="cta-row">
+      <button class="btn-start">
+        start
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="pack-card">
+    <div class="pack-top">
+      <div class="pack-icon blue">
+        <svg viewBox="0 0 18 18" fill="none" stroke="#185FA5" stroke-width="1.5">
+          <path d="M3 5h12M3 9h8M3 13h5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="pack-meta">
+        <p class="pack-name">Past Tense Basics 01</p>
+        <p class="pack-desc">Past tense pa'al, common verbs</p>
+      </div>
+      <span class="pack-status-badge badge-new">new</span>
+    </div>
+    <div class="pack-footer">
+      <div class="pack-chips">
+        <span class="pack-chip">past</span>
+        <span class="pack-chip">pa'al</span>
+        <span class="pack-chip">10 items</span>
+      </div>
+      <div class="pack-progress-wrap">
+        <div class="pack-progress-track">
+          <div class="pack-progress-fill" style="width:0%"></div>
+        </div>
+        <span class="pack-progress-pct">—</span>
+      </div>
+    </div>
+    <div class="cta-row">
+      <button class="btn-start">
+        start
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-eyebrow">completed</div>
+
+  <div class="pack-card">
+    <div class="pack-top">
+      <div class="pack-icon green">
+        <svg viewBox="0 0 18 18" fill="none" stroke="#3B6D11" stroke-width="1.5">
+          <path d="M3 9l4 4 8-8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="pack-meta">
+        <p class="pack-name">Greetings & Introductions</p>
+        <p class="pack-desc">Shalom, ma shlomcha, ani… core phrases</p>
+      </div>
+      <span class="pack-status-badge badge-done">done</span>
+    </div>
+    <div class="pack-footer">
+      <div class="pack-chips">
+        <span class="pack-chip">phrases</span>
+        <span class="pack-chip">beginner</span>
+        <span class="pack-chip">8 items</span>
+      </div>
+      <div class="pack-progress-wrap">
+        <div class="pack-progress-track">
+          <div class="pack-progress-fill" style="width:100%"></div>
+        </div>
+        <span class="pack-progress-pct" style="color:#3B6D11;">100%</span>
+      </div>
+    </div>
+    <div class="cta-row">
+      <button class="btn-resume">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M2 3v4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        drill again
+      </button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-eyebrow">coming soon</div>
+
+  <div class="pack-card locked">
+    <div class="pack-top">
+      <div class="pack-icon" style="background:var(--color-background-secondary);">
+        <svg viewBox="0 0 18 18" fill="none" stroke="var(--color-text-tertiary)" stroke-width="1.5">
+          <rect x="4" y="8" width="10" height="8" rx="2"/>
+          <path d="M6 8V6a3 3 0 0 1 6 0v2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="pack-meta">
+        <p class="pack-name">Future Tense Basics 01</p>
+        <p class="pack-desc">Yihiye, elech — future conjugations</p>
+      </div>
+      <span class="pack-status-badge badge-locked">soon</span>
+    </div>
+    <div class="pack-footer">
+      <div class="pack-chips">
+        <span class="pack-chip">future</span>
+        <span class="pack-chip">intermediate</span>
+        <span class="pack-chip">12 items</span>
+      </div>
+      <div class="pack-progress-wrap">
+        <div class="pack-progress-track">
+          <div class="pack-progress-fill" style="width:0%"></div>
+        </div>
+        <span class="pack-progress-pct">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="coming-soon-row">
+    <div class="coming-soon-dot"></div>
+    <span class="coming-soon-text">more packs added regularly</span>
+    <div class="coming-soon-dot"></div>
+  </div>
+
+</div>
+
+<script>
+function setFilter(el, val) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>

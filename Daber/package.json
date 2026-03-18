@@ -1,0 +1,15 @@
+{
+  "name": "daber",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "node ../node_modules/next/dist/bin/next dev",
+    "build": "node ../node_modules/next/dist/bin/next build",
+    "start": "node ../node_modules/next/dist/bin/next start",
+    "lint": "node ../node_modules/next/dist/bin/next lint",
+    "prisma:generate": "node ../node_modules/prisma/build/index.js generate",
+    "prisma:migrate": "node ../node_modules/prisma/build/index.js migrate dev",
+    "db:push": "node ../node_modules/prisma/build/index.js db push",
+    "seed": "node ../node_modules/ts-node/dist/bin.js -P prisma/tsconfig.seed.json --transpile-only prisma/seed.ts"
+  }
+}

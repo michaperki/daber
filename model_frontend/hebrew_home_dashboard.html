@@ -1,0 +1,536 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap');
+
+  .home-root {
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 0 0 3rem;
+  }
+
+  .home-header {
+    padding: 1.5rem 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .home-greeting {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 24px;
+    color: var(--color-text-primary);
+    margin: 0 0 3px;
+    line-height: 1.15;
+  }
+
+  .home-date {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+  }
+
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #EEEDFE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #534AB7;
+    flex-shrink: 0;
+  }
+
+  .today-card {
+    margin: 0 1rem 1rem;
+    background: var(--color-text-primary);
+    border-radius: 18px;
+    padding: 1.4rem 1.4rem 1.25rem;
+    color: var(--color-background-primary);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .today-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .today-pack-name {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 20px;
+    margin: 0 0 4px;
+    line-height: 1.2;
+  }
+
+  .today-pack-meta {
+    font-size: 12px;
+    opacity: 0.55;
+    margin-bottom: 1.25rem;
+  }
+
+  .today-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.1rem;
+  }
+
+  .today-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 99px;
+  }
+
+  .today-fill {
+    height: 100%;
+    background: rgba(255,255,255,0.85);
+    border-radius: 99px;
+    width: 70%;
+  }
+
+  .today-pct {
+    font-size: 12px;
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .today-btn {
+    width: 100%;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.13);
+    border: 0.5px solid rgba(255,255,255,0.22);
+    color: white;
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .today-deco {
+    position: absolute;
+    right: -18px;
+    top: -22px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 18px solid rgba(255,255,255,0.05);
+  }
+
+  .today-deco2 {
+    position: absolute;
+    right: 28px;
+    bottom: -30px;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 12px solid rgba(255,255,255,0.04);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+
+  .section-link {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    padding: 0;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 8px;
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-tile {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 14px 12px;
+    text-align: center;
+  }
+
+  .stat-icon-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+
+  .stat-num {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .stat-caption {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+  }
+
+  .streak-bar {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+    justify-content: center;
+    height: 28px;
+    margin-bottom: 4px;
+  }
+
+  .streak-col {
+    width: 10px;
+    border-radius: 3px;
+    background: var(--color-border-tertiary);
+  }
+
+  .streak-col.done { background: #639922; }
+  .streak-col.today { background: var(--color-text-primary); }
+
+  .week-grid {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .week-row {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0,1fr));
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .week-day {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: var(--color-background-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .week-day.has-session { background: #C0DD97; color: #27500A; }
+  .week-day.today-cell { background: var(--color-text-primary); color: var(--color-background-primary); }
+  .week-day.perfect { background: #3B6D11; color: #EAF3DE; }
+
+  .week-labels {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0,1fr));
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .week-lbl {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  .missed-card {
+    margin: 0 1rem;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-xl, 16px);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .missed-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 14px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    gap: 12px;
+  }
+
+  .missed-row:last-child { border-bottom: none; }
+
+  .missed-hebrew-sm {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 17px;
+    direction: rtl;
+    color: var(--color-text-primary);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .missed-eng {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    flex: 1;
+    min-width: 0;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .missed-pip {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .pip-flawed  { background: #EF9F27; }
+  .pip-incorrect { background: #E24B4A; }
+
+  .quick-start-row {
+    display: flex;
+    gap: 8px;
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .qs-btn {
+    flex: 1;
+    height: 48px;
+    border-radius: var(--border-radius-lg);
+    border: 0.5px solid var(--color-border-secondary);
+    background: transparent;
+    cursor: pointer;
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .qs-btn svg { width: 15px; height: 15px; color: var(--color-text-secondary); }
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1rem 1rem 0.5rem;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    margin-top: 1rem;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: var(--color-text-tertiary);
+    font-size: 10px;
+  }
+
+  .nav-item.active { color: var(--color-text-primary); }
+
+  .nav-item svg { width: 20px; height: 20px; }
+
+  .divider { height: 0.5px; background: var(--color-border-tertiary); margin: 0 1rem 1.25rem; }
+</style>
+
+<div class="home-root">
+
+  <div class="home-header">
+    <div>
+      <h1 class="home-greeting">בוקר טוב, Michael</h1>
+      <div class="home-date">Saturday · March 14</div>
+    </div>
+    <div class="avatar">M</div>
+  </div>
+
+  <div class="today-card">
+    <div class="today-deco"></div>
+    <div class="today-deco2"></div>
+    <div class="today-eyebrow">continue where you left off</div>
+    <div class="today-pack-name">Present Tense Basics 01</div>
+    <div class="today-pack-meta">10 items · beginner · verbs</div>
+    <div class="today-progress-row">
+      <div class="today-track"><div class="today-fill"></div></div>
+      <span class="today-pct">7 of 10 done</span>
+    </div>
+    <button class="today-btn">
+      continue drill
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="section-header" style="margin-top:0.25rem;">
+    <span class="section-label">this week</span>
+    <span class="section-label" style="font-size:10px; letter-spacing:0;">4-day streak</span>
+  </div>
+
+  <div class="week-grid">
+    <div class="week-labels">
+      <div class="week-lbl">S</div>
+      <div class="week-lbl">M</div>
+      <div class="week-lbl">T</div>
+      <div class="week-lbl">W</div>
+      <div class="week-lbl">T</div>
+      <div class="week-lbl">F</div>
+      <div class="week-lbl">S</div>
+    </div>
+    <div class="week-row">
+      <div class="week-day">8</div>
+      <div class="week-day has-session">9</div>
+      <div class="week-day has-session">10</div>
+      <div class="week-day perfect">11</div>
+      <div class="week-day has-session">12</div>
+      <div class="week-day has-session">13</div>
+      <div class="week-day today-cell">14</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-tile">
+      <div class="streak-bar">
+        <div class="streak-col done" style="height:40%"></div>
+        <div class="streak-col done" style="height:65%"></div>
+        <div class="streak-col done" style="height:55%"></div>
+        <div class="streak-col done" style="height:90%"></div>
+        <div class="streak-col done" style="height:70%"></div>
+        <div class="streak-col today" style="height:50%"></div>
+      </div>
+      <div class="stat-num">47</div>
+      <div class="stat-caption">items drilled</div>
+    </div>
+    <div class="stat-tile">
+      <div style="height:28px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M11 3C11 3 15.5 8.5 15.5 12.5C15.5 15 13.5 17 11 17C8.5 17 6.5 15 6.5 12.5C6.5 10 8 8 8 8C8 8 7 11 9.5 12.5C9.5 9 10 6 11 3Z" fill="#EF9F27"/>
+          <path d="M11 17C11 17 15.5 14.5 17 19C18 21.5 15 24 11 24C7 24 4 22 5 19C6.5 14.5 11 17 11 17Z" fill="#BA7517"/>
+        </svg>
+      </div>
+      <div class="stat-num">4</div>
+      <div class="stat-caption">day streak</div>
+    </div>
+    <div class="stat-tile">
+      <div style="height:28px; display:flex; align-items:center; justify-content:center; margin-bottom:6px;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8" stroke="var(--color-border-secondary)" stroke-width="2"/>
+          <path d="M10 10l0-5" stroke="#639922" stroke-width="2" stroke-linecap="round"/>
+          <path d="M10 10l3.5 3.5" stroke="#639922" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="stat-num">83<span style="font-size:13px; font-weight:400; color:var(--color-text-tertiary);">%</span></div>
+      <div class="stat-caption">accuracy</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-header">
+    <span class="section-label">review these</span>
+    <button class="section-link">drill all →</button>
+  </div>
+
+  <div class="missed-card">
+    <div class="missed-row">
+      <div class="missed-pip pip-incorrect"></div>
+      <div class="missed-hebrew-sm">הם לומדים</div>
+      <div class="missed-eng">they are studying</div>
+    </div>
+    <div class="missed-row">
+      <div class="missed-pip pip-flawed"></div>
+      <div class="missed-hebrew-sm">היא משתפרת</div>
+      <div class="missed-eng">she is improving</div>
+    </div>
+    <div class="missed-row">
+      <div class="missed-pip pip-flawed"></div>
+      <div class="missed-hebrew-sm">אני כותבת</div>
+      <div class="missed-eng">I am writing (f)</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-label">quick start</span>
+  </div>
+
+  <div class="quick-start-row">
+    <button class="qs-btn">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M7.5 2v11M2 7.5h11" stroke-linecap="round"/>
+      </svg>
+      new pack
+    </button>
+    <button class="qs-btn">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M2 7a5 5 0 1 0 5-5" stroke-linecap="round"/>
+        <path d="M2 3.5v3.5h3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      retry missed
+    </button>
+    <button class="qs-btn">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4">
+        <rect x="2" y="2" width="11" height="11" rx="2"/>
+        <path d="M5 7.5h5M7.5 5v5" stroke-linecap="round"/>
+      </svg>
+      browse all
+    </button>
+  </div>
+
+  <div class="nav-bar">
+    <div class="nav-item active">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 9.5L10 3l7 6.5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" stroke-linejoin="round"/>
+      </svg>
+      home
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="14" height="14" rx="3"/>
+        <path d="M7 10h6M10 7v6" stroke-linecap="round"/>
+      </svg>
+      library
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="10" r="7"/>
+        <path d="M10 10l0-4" stroke-linecap="round"/>
+        <path d="M10 10l3 3" stroke-linecap="round"/>
+      </svg>
+      progress
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="10" cy="7" r="3"/>
+        <path d="M4 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke-linecap="round"/>
+      </svg>
+      profile
+    </div>
+  </div>
+
+</div>

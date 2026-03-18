@@ -1,0 +1,403 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap');
+
+  .sum-root {
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  .result-header {
+    text-align: center;
+    padding: 1.5rem 0 1.75rem;
+  }
+
+  .score-ring-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .score-ring {
+    position: relative;
+    width: 96px;
+    height: 96px;
+  }
+
+  .score-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .score-ring-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-number {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--color-text-primary);
+  }
+
+  .score-denom {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-top: 2px;
+  }
+
+  .result-title {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 22px;
+    color: var(--color-text-primary);
+    margin: 0 0 6px;
+  }
+
+  .result-subtitle {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .stat-value {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .stat-value.correct { color: #3B6D11; }
+  .stat-value.flawed  { color: #854F0B; }
+  .stat-value.incorrect { color: #A32D2D; }
+
+  .bar-row {
+    display: flex;
+    height: 6px;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    gap: 2px;
+  }
+
+  .bar-seg {
+    border-radius: 99px;
+    transition: width 0.6s ease;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .missed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .missed-item {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .missed-left {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .missed-prompt {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .missed-hebrew {
+    font-family: 'DM Serif Display', var(--font-serif), serif;
+    font-size: 18px;
+    direction: rtl;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+  }
+
+  .missed-trans {
+    font-family: 'DM Mono', var(--font-mono), monospace;
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-top: 2px;
+  }
+
+  .missed-badge {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 99px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .missed-badge.flawed {
+    background: #FAEEDA;
+    color: #854F0B;
+  }
+
+  .missed-badge.incorrect {
+    background: #FCEBEB;
+    color: #A32D2D;
+  }
+
+  .streak-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .streak-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .streak-flame {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .streak-text {}
+
+  .streak-num {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    line-height: 1.1;
+  }
+
+  .streak-sub {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+
+  .streak-dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .streak-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .action-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    height: 52px;
+    border-radius: var(--border-radius-lg);
+    background: var(--color-text-primary);
+    color: var(--color-background-primary);
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-secondary {
+    width: 100%;
+    height: 48px;
+    border-radius: var(--border-radius-lg);
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    cursor: pointer;
+    font-family: 'DM Sans', var(--font-sans), sans-serif;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .divider {
+    height: 0.5px;
+    background: var(--color-border-tertiary);
+    margin: 1.25rem 0;
+  }
+</style>
+
+<div class="sum-root">
+
+  <div class="result-header">
+    <div class="score-ring-wrap">
+      <div class="score-ring">
+        <svg width="96" height="96" viewBox="0 0 96 96">
+          <circle cx="48" cy="48" r="40" fill="none" stroke-width="6" stroke="#D3D1C7"/>
+          <circle cx="48" cy="48" r="40" fill="none" stroke-width="6" stroke="#3B6D11"
+            stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round"/>
+        </svg>
+        <div class="score-ring-inner">
+          <span class="score-number">7</span>
+          <span class="score-denom">of 10</span>
+        </div>
+      </div>
+    </div>
+    <h1 class="result-title">Good session</h1>
+    <p class="result-subtitle">Present Tense Basics 01 &middot; 3 min 42 sec</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">correct</div>
+      <div class="stat-value correct">7</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">close</div>
+      <div class="stat-value flawed">2</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">missed</div>
+      <div class="stat-value incorrect">1</div>
+    </div>
+  </div>
+
+  <div class="bar-row">
+    <div class="bar-seg" style="width:70%; background:#639922;"></div>
+    <div class="bar-seg" style="width:20%; background:#EF9F27;"></div>
+    <div class="bar-seg" style="width:10%; background:#E24B4A;"></div>
+  </div>
+
+  <div class="streak-card">
+    <div class="streak-left">
+      <div class="streak-flame">
+        <svg width="20" height="24" viewBox="0 0 20 24" fill="none">
+          <path d="M10 2C10 2 14 7 14 11C14 13.2 12.2 15 10 15C7.8 15 6 13.2 6 11C6 9 7 7.5 7 7.5C7 7.5 6 10 8 11C8 8 9 5 10 2Z" fill="#EF9F27"/>
+          <path d="M10 15C10 15 14 13 15 17C16 20 13 22 10 22C7 22 4 20 5 17C6 13 10 15 10 15Z" fill="#BA7517"/>
+        </svg>
+      </div>
+      <div class="streak-text">
+        <div class="streak-num">4-day streak</div>
+        <div class="streak-sub">keep it going</div>
+      </div>
+    </div>
+    <div class="streak-dots">
+      <div class="streak-dot" style="background:#D3D1C7;"></div>
+      <div class="streak-dot" style="background:#D3D1C7;"></div>
+      <div class="streak-dot" style="background:#D3D1C7;"></div>
+      <div class="streak-dot" style="background:#EF9F27;"></div>
+      <div class="streak-dot" style="background:#EF9F27;"></div>
+      <div class="streak-dot" style="background:#EF9F27;"></div>
+      <div class="streak-dot" style="background:#EF9F27;"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">review these</div>
+
+  <div class="missed-list">
+
+    <div class="missed-item">
+      <div class="missed-left">
+        <div class="missed-prompt">she is improving</div>
+        <div class="missed-hebrew">היא משתפרת</div>
+        <div class="missed-trans">hi mishtaperet</div>
+      </div>
+      <span class="missed-badge flawed">close</span>
+    </div>
+
+    <div class="missed-item">
+      <div class="missed-left">
+        <div class="missed-prompt">i am writing (f)</div>
+        <div class="missed-hebrew">אני כותבת</div>
+        <div class="missed-trans">ani kotevet</div>
+      </div>
+      <span class="missed-badge flawed">close</span>
+    </div>
+
+    <div class="missed-item">
+      <div class="missed-left">
+        <div class="missed-prompt">they are studying</div>
+        <div class="missed-hebrew">הם לומדים</div>
+        <div class="missed-trans">hem lomdim</div>
+      </div>
+      <span class="missed-badge incorrect">missed</span>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="action-col">
+    <button class="btn-primary">
+      retry missed items
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M2 7a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M2 3v4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button class="btn-secondary">
+      next lesson pack
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button class="btn-secondary" style="color: var(--color-text-secondary); border-color: var(--color-border-tertiary);">
+      back to home
+    </button>
+  </div>
+
+</div>

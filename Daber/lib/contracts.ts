@@ -1,0 +1,74 @@
+import { z } from 'zod';
+
+export const zReason = z.object({ code: z.string(), message: z.string() });
+export type Reason = z.infer<typeof zReason>;
+
+export const zGrade = z.enum(['correct', 'flawed', 'incorrect']);
+export type Grade = z.infer<typeof zGrade>;
+
+export const zLessonItem = z.object({
+  id: z.string(),
+  english_prompt: z.string(),
+  target_hebrew: z.string(),
+  transliteration: z.string().nullish(),
+  features: z.record(z.string(), z.string().nullable()).nullish()
+});
+export type LessonItem = z.infer<typeof zLessonItem>;
+
+export const zCreateSessionRequest = z.object({
+  lessonId: z.string(),
+  userId: z.string().optional(),
+  subset: z.array(z.string()).optional()
+});
+export type CreateSessionRequest = z.infer<typeof zCreateSessionRequest>;
+
+export const zCreateSessionResponse = z.object({
+  session: z.object({ id: z.string(), lesson_id: z.string(), started_at: z.any() })
+});
+export type CreateSessionResponse = z.infer<typeof zCreateSessionResponse>;
+
+export const zNextItemResponse = z.object({
+  done: z.boolean(),
+  item: zLessonItem.optional(),
+  index: z.number().optional(),
+  total: z.number().optional()
+});
+export type NextItemResponse = z.infer<typeof zNextItemResponse>;
+
+export const zAttemptResponse = z.object({
+  grade: zGrade,
+  reason: z.array(zReason).optional(),
+  correct_hebrew: z.string()
+});
+export type AttemptResponse = z.infer<typeof zAttemptResponse>;
+
+// Requests (server validation)
+export const zAttemptRequest = z.object({
+  sessionId: z.string(),
+  lessonItemId: z.string(),
+  rawTranscript: z.string().optional()
+});
+export type AttemptRequest = z.infer<typeof zAttemptRequest>;
+
+export const zOverrideRequest = z.object({
+  sessionId: z.string(),
+  lessonItemId: z.string()
+});
+export type OverrideRequest = z.infer<typeof zOverrideRequest>;
+
+export const zSummaryResponse = z.object({
+  sessionId: z.string(),
+  lessonId: z.string(),
+  counts: z.object({ correct: z.number(), flawed: z.number(), incorrect: z.number() }),
+  total: z.number()
+});
+export type SummaryResponse = z.infer<typeof zSummaryResponse>;
+
+export const zSTTResponse = z.object({ transcript: z.string(), confidence: z.number() });
+export type STTResponse = z.infer<typeof zSTTResponse>;
+
+export const zSTTTextRequest = z.object({ text: z.string() });
+export type STTTextRequest = z.infer<typeof zSTTTextRequest>;
+
+export const zTTSRequest = z.object({ text: z.string(), voice: z.string().optional() });
+export type TTSRequest = z.infer<typeof zTTSRequest>;

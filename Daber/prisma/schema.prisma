@@ -1,0 +1,133 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lesson {
+  id          String       @id
+  title       String
+  language    String
+  level       String
+  type        String
+  description String?
+  items       LessonItem[]
+  sessions    Session[]
+}
+
+model LessonItem {
+  id                  String   @id
+  lesson_id           String
+  lesson              Lesson   @relation(fields: [lesson_id], references: [id])
+  english_prompt      String
+  target_hebrew       String
+  transliteration     String?
+  accepted_variants   Json
+  near_miss_patterns  Json
+  tags                String[]
+  difficulty          Int
+  attempts            Attempt[]
+  // Optional link to a structured lexeme entry
+  lexeme_id           String?
+  lexeme              Lexeme?  @relation(fields: [lexeme_id], references: [id])
+  features            Json?
+}
+
+model Session {
+  id             String    @id @default(cuid())
+  user_id        String?
+  lesson_id      String
+  lesson         Lesson    @relation(fields: [lesson_id], references: [id])
+  started_at     DateTime  @default(now())
+  ended_at       DateTime?
+  correct_count  Int       @default(0)
+  flawed_count   Int       @default(0)
+  incorrect_count Int      @default(0)
+  subset_item_ids Json?
+  attempts       Attempt[]
+}
+
+model Attempt {
+  id                    String    @id @default(cuid())
+  session_id            String
+  session               Session   @relation(fields: [session_id], references: [id])
+  lesson_item_id        String
+  lesson_item           LessonItem @relation(fields: [lesson_item_id], references: [id])
+  raw_transcript        String?
+  normalized_transcript String?
+  grade                 String
+  reason                Json?
+  correct_hebrew        String
+  created_at            DateTime  @default(now())
+  features              Json?
+  @@index([session_id], map: "idx_attempt_session")
+  @@index([lesson_item_id], map: "idx_attempt_item")
+}
+
+model ItemStat {
+  lesson_item_id String   @id
+  correct_streak Int      @default(0)
+  easiness      Float     @default(2.5)
+  interval_days Int       @default(0)
+  last_attempt  DateTime?
+  next_due      DateTime?
+  correct_count Int       @default(0)
+  flawed_count  Int       @default(0)
+  incorrect_count Int     @default(0)
+}
+
+model FeatureStat {
+  id              String   @id @default(cuid())
+  pos             String?
+  tense           String?
+  person          String?
+  number          String?
+  gender          String?
+  correct_streak  Int      @default(0)
+  easiness        Float    @default(2.5)
+  interval_days   Int      @default(0)
+  last_attempt    DateTime?
+  next_due        DateTime?
+  correct_count   Int      @default(0)
+  flawed_count    Int      @default(0)
+  incorrect_count Int      @default(0)
+}
+
+model Event {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  type       String
+  session_id String?
+  user_id    String?
+  lesson_id  String?
+  payload    Json?
+}
+
+// Structured lexicon (optional, for richer drill generation and tracking)
+model Lexeme {
+  id          String        @id
+  lemma       String
+  language    String
+  pos         String
+  features    Json?
+  inflections Inflection[]
+  lessonItems LessonItem[]
+}
+
+model Inflection {
+  id              String  @id @default(cuid())
+  lexeme_id       String
+  lexeme          Lexeme  @relation(fields: [lexeme_id], references: [id])
+  form            String
+  transliteration String?
+  tense           String?
+  aspect          String?
+  person          String?
+  number          String?
+  gender          String?
+  features        Json?
+}

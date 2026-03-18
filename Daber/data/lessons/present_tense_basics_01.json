@@ -1,0 +1,137 @@
+{
+  "id": "present_tense_basics_01",
+  "title": "Present Tense Basics 01",
+  "language": "he",
+  "level": "beginner",
+  "type": "speaking_drill",
+  "description": "Short present-tense production drills using common verbs and pronouns.",
+  "items": [
+    {
+      "id": "ptb01_001",
+      "english_prompt": "How do I say: I am improving?",
+      "target_hebrew": "אני משתפר",
+      "transliteration": "ani mishtaper",
+      "accepted_variants": ["אני משתפר", "ani mishtaper"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["אני משתפרת", "ani mishtaperet"] }
+      ],
+      "tags": ["present", "1st_person", "singular", "masculine", "improve"],
+      "difficulty": 1
+    },
+    {
+      "id": "ptb01_002",
+      "english_prompt": "How do I say: I am improving? (female speaker)",
+      "target_hebrew": "אני משתפרת",
+      "transliteration": "ani mishtaperet",
+      "accepted_variants": ["אני משתפרת", "ani mishtaperet"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["אני משתפר", "ani mishtaper"] }
+      ],
+      "tags": ["present", "1st_person", "singular", "feminine", "improve"],
+      "difficulty": 1
+    },
+    {
+      "id": "ptb01_003",
+      "english_prompt": "How do I say: he is improving?",
+      "target_hebrew": "הוא משתפר",
+      "transliteration": "hu mishtaper",
+      "accepted_variants": ["הוא משתפר", "hu mishtaper"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["היא משתפרת", "hi mishtaperet"] },
+        { "type": "missing_pronoun", "examples": ["משתפר", "mishtaper"] }
+      ],
+      "tags": ["present", "3rd_person", "singular", "masculine", "improve"],
+      "difficulty": 1
+    },
+    {
+      "id": "ptb01_004",
+      "english_prompt": "How do I say: she is improving?",
+      "target_hebrew": "היא משתפרת",
+      "transliteration": "hi mishtaperet",
+      "accepted_variants": ["היא משתפרת", "hi mishtaperet"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["הוא משתפר", "hu mishtaper"] },
+        { "type": "missing_pronoun", "examples": ["משתפרת", "mishtaperet"] }
+      ],
+      "tags": ["present", "3rd_person", "singular", "feminine", "improve"],
+      "difficulty": 1
+    },
+    {
+      "id": "ptb01_005",
+      "english_prompt": "How do I say: I am writing?",
+      "target_hebrew": "אני כותב",
+      "transliteration": "ani kotev",
+      "accepted_variants": ["אני כותב", "ani kotev"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["אני כותבת", "ani kotevet"] }
+      ],
+      "tags": ["present", "1st_person", "singular", "masculine", "write"],
+      "difficulty": 1
+    },
+    {
+      "id": "ptb01_006",
+      "english_prompt": "How do I say: I am writing? (female speaker)",
+      "target_hebrew": "אני כותבת",
+      "transliteration": "ani kotevet",
+      "accepted_variants": ["אני כותבת", "ani kotevet"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["אני כותב", "ani kotev"] }
+      ],
+      "tags": ["present", "1st_person", "singular", "feminine", "write"],
+      "difficulty": 1
+    },
+    {
+      "id": "ptb01_007",
+      "english_prompt": "How do I say: he is writing?",
+      "target_hebrew": "הוא כותב",
+      "transliteration": "hu kotev",
+      "accepted_variants": ["הוא כותב", "hu kotev"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["היא כותבת", "hi kotevet"] },
+        { "type": "missing_pronoun", "examples": ["כותב", "kotev"] }
+      ],
+      "tags": ["present", "3rd_person", "singular", "masculine", "write"],
+      "difficulty": 1
+    },
+    {
+      "id": "ptb01_008",
+      "english_prompt": "How do I say: she is writing?",
+      "target_hebrew": "היא כותבת",
+      "transliteration": "hi kotevet",
+      "accepted_variants": ["היא כותבת", "hi kotevet"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["הוא כותב", "hu kotev"] },
+        { "type": "missing_pronoun", "examples": ["כותבת", "kotevet"] }
+      ],
+      "tags": ["present", "3rd_person", "singular", "feminine", "write"],
+      "difficulty": 1
+    },
+    {
+      "id": "ptb01_009",
+      "english_prompt": "How do I say: we are studying?",
+      "target_hebrew": "אנחנו לומדים",
+      "transliteration": "anachnu lomdim",
+      "accepted_variants": ["אנחנו לומדים", "anachnu lomdim"],
+      "near_miss_patterns": [
+        { "type": "wrong_number", "examples": ["אני לומד", "ani lomed"] },
+        { "type": "wrong_gender_number", "examples": ["אנחנו לומדות", "anachnu lomdot"] }
+      ],
+      "tags": ["present", "1st_person", "plural", "study"],
+      "difficulty": 2
+    },
+    {
+      "id": "ptb01_010",
+      "english_prompt": "How do I say: they are studying?",
+      "target_hebrew": "הם לומדים",
+      "transliteration": "hem lomdim",
+      "accepted_variants": ["הם לומדים", "hem lomdim"],
+      "near_miss_patterns": [
+        { "type": "wrong_gender", "examples": ["הן לומדות", "hen lomdot"] },
+        { "type": "wrong_number", "examples": ["הוא לומד", "hu lomed"] }
+      ],
+      "tags": ["present", "3rd_person", "plural", "masculine", "study"],
+      "difficulty": 2
+    }
+  ]
+}
+

@@ -1,0 +1,36 @@
+{
+  "name": "hebrew-drills",
+  "private": true,
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "npm --prefix Daber run dev",
+    "build": "npm --prefix Daber run build",
+    "start": "npm --prefix Daber run start",
+    "lint": "npm --prefix Daber run lint",
+    "prisma:generate": "npm --prefix Daber run prisma:generate",
+    "prisma:migrate": "npm --prefix Daber run prisma:migrate",
+    "db:push": "npm --prefix Daber run db:push",
+    "seed": "npm --prefix Daber run seed",
+    "test:evaluator": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/test_evaluator.ts",
+    "validate:lexicon": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/validate_lexicon.ts"
+  },
+  "dependencies": {
+    "next": "14.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "zod": "3.22.4",
+    "@prisma/client": "5.9.1",
+    "openai": "4.52.7"
+  },
+  "devDependencies": {
+    "typescript": "5.3.3",
+    "@types/node": "20.11.0",
+    "@types/react": "18.2.47",
+    "@types/react-dom": "18.2.18",
+    "prisma": "5.9.1",
+    "ts-node": "10.9.2",
+    "eslint": "8.56.0",
+    "eslint-config-next": "14.1.0"
+  }
+}

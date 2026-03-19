@@ -89,15 +89,15 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
       return { ...state, phase: 'reviewing', transcript: action.transcript };
 
     case 'EDIT_TRANSCRIPT':
-      if (state.phase !== 'reviewing') return state;
+      if (state.phase !== 'reviewing' && state.phase !== 'prompting') return state;
       return { ...state, transcript: action.transcript };
 
     case 'CLEAR_TRANSCRIPT':
-      if (state.phase !== 'reviewing') return state;
+      if (state.phase !== 'reviewing' && state.phase !== 'prompting') return state;
       return { ...state, transcript: '' };
 
     case 'SUBMIT':
-      if (state.phase !== 'reviewing' && state.phase !== 'listening') return state;
+      if (state.phase !== 'reviewing' && state.phase !== 'listening' && state.phase !== 'prompting') return state;
       return { ...state, phase: 'evaluating' };
 
     case 'FEEDBACK_RECEIVED':

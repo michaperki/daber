@@ -206,7 +206,7 @@ export default function DaberSessionPage() {
   const cleanedPrompt = stripHowDoISay(item.english_prompt);
 
   const emojiCue = deriveEmojiCue(cleanedPrompt, item?.id);
-  const showReviewUI = settings.reviewBeforeSubmit && phase === 'reviewing';
+  const showReviewUI = settings.reviewBeforeSubmit && (phase === 'reviewing' || phase === 'prompting');
   const showFeedback = feedback && (phase === 'feedback' || phase === 'evaluating');
   const micDisabled = audio.ttsPlaying || phase === 'evaluating' || phase === 'advancing';
 

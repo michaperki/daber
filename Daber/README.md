@@ -16,3 +16,5 @@ Next
 - Build the home/dashboard and library screens to match `model_frontend/*`.
 - Migrate shared libs into `Daber/lib` (optional) once stable.
 - Consider central settings context (transliteration, stay-on-flawed) and typed API wrappers.
+
+Docs: see project root `SOUL.md`, `memory/MEMORY.md`, `Dev Journal.md`, and `ROADMAP.md`.

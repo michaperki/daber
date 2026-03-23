@@ -1,4 +1,4 @@
-# Daber Roadmap — High‑Impact Improvements
+# Roadmap — High‑Impact Improvements (Daber)
 
 Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator quality, and UX. Aligned with stable API contracts in `Daber/lib/contracts.ts` and minimal dependencies.
 

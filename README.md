@@ -2,6 +2,13 @@
 
 Single Next.js app for a spoken Hebrew drill loop. The canonical app and API live under `Daber/`.
 
+## Docs
+- Root charter: `SOUL.md`
+- Project state: `memory/MEMORY.md`
+- Journal: `Dev Journal.md`
+- Roadmap: `ROADMAP.md` (moved from `Daber/ROADMAP.md`)
+- AI setup: `AI_SETUP.md`
+
 ## Getting Started
 - Install deps: `npm install`
 - Database: set `DATABASE_URL` and `OPENAI_API_KEY` in `Daber/.env`
@@ -20,6 +27,7 @@ Single Next.js app for a spoken Hebrew drill loop. The canonical app and API liv
 - `Daber/lib/*` — DB, evaluator, client hooks, contracts
 - `Daber/prisma/*` — Prisma schema + seed
 - `Daber/data/*` — lesson JSON
+- `archive/` — context dumps and older docs (write‑once)
 
 ## Notes
 - STT `/api/stt` uses OpenAI Whisper; TTS `/api/tts` uses `gpt-4o-mini-tts`.

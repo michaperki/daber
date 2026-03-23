@@ -9,6 +9,7 @@ Principles
 - Prefer small, focused components with explicit props over implicit state.
 - Avoid adding dependencies unless necessary; if needed, update `package.json` but gate installs to user approval.
 - Single app only. No V1/V2 split. All UI lives under `Daber/app/*` and consumes the existing API.
+-- Docs live at the repo root: read `SOUL.md`, `memory/MEMORY.md`, `Dev Journal.md`, and `ROADMAP.md`.
 
 Code Style
 - TypeScript strictness; explicit prop types; no `any`.
@@ -26,3 +27,6 @@ Folders
 Testing
 - Run `npm run test:evaluator` for evaluator sanity checks (no network).
 - Keep pages mountable without STT/TTS; use typed API wrappers and guard network errors gracefully.
+
+Notes
+- Avoid suggesting or setting up CI. Validation is local and artifact‑driven.

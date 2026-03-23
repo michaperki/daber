@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import StartOrContinueButton from './StartOrContinueButton';
 import StartDueButton from './StartDueButton';
 import StartWeakSpotsButton from './StartWeakSpotsButton';

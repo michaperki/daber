@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import LibraryClient from './LibraryClient';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 type LessonCard = {
   id: string;

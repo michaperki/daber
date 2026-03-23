@@ -1,6 +1,8 @@
 import React from 'react';
 import { prisma } from '@/lib/db';
 import RetryClient from './RetryClient';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function RetryPage() {
   const recent = await prisma.attempt.findMany({

@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import SettingsCard from './SettingsCard';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getProfileData() {
   const sums = await prisma.session.aggregate({ _sum: { correct_count: true, flawed_count: true, incorrect_count: true } });

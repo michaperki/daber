@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/db';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import ProgressClient from './ProgressClient';
 
 type DayBucket = { label: string; c: number; f: number; i: number };

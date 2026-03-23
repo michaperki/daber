@@ -1,6 +1,8 @@
 import React from 'react';
 import StartOrContinueButton from '@/app/StartOrContinueButton';
 import { prisma } from '@/lib/db';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 type Card = { en: string; he: string; hint?: string };
 

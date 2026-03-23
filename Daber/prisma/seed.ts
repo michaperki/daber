@@ -148,8 +148,8 @@ async function main() {
         const lexId = `lex_${Buffer.from(lx.lemma).toString('base64url').slice(0, 20)}`;
         await prisma.lexeme.upsert({
           where: { id: lexId },
-          update: { lemma: lx.lemma, language: 'he', pos: lx.pos, features: lx.features ?? null },
-          create: { id: lexId, lemma: lx.lemma, language: 'he', pos: lx.pos, features: lx.features ?? null }
+          update: { lemma: lx.lemma, language: 'he', pos: lx.pos, features: (lx.features as any) ?? undefined },
+          create: { id: lexId, lemma: lx.lemma, language: 'he', pos: lx.pos, features: (lx.features as any) ?? undefined }
         });
         const existing = await prisma.inflection.findMany({ where: { lexeme_id: lexId }, select: { form: true, tense: true, person: true, number: true, gender: true, features: true } });
         const seen = new Set(existing.map(e => {
@@ -170,7 +170,7 @@ async function main() {
               number: inf.number ?? null,
               gender: inf.gender ?? null,
               binyan: inf.binyan ?? null,
-              features: inf.voice ? { voice: inf.voice } as any : null
+              features: inf.voice ? ({ voice: inf.voice } as any) : undefined
             }
           }).catch(() => {});
         }
@@ -245,7 +245,9 @@ async function main() {
     try {
       const importDir = path.join(process.cwd(), 'data', 'imports');
       if (fs.existsSync(importDir)) {
-        const files = fs.readdirSync(importDir).filter(f => f.endsWith('.json'));
+        const filesAll = fs.readdirSync(importDir).filter(f => f.endsWith('.json'));
+        const ccPrefix = process.env.SEED_CC_PREFIX?.trim();
+        const files = ccPrefix ? filesAll.filter(f => f.includes(ccPrefix)) : filesAll;
         for (const f of files) {
           const p = path.join(importDir, f);
           const raw = fs.readFileSync(p, 'utf8');
@@ -280,7 +282,7 @@ async function main() {
                 near_miss_patterns: item.near_miss_patterns || [],
                 tags: item.tags || [],
                 difficulty: item.difficulty ?? 1,
-                features: (item as any).features || null,
+                features: ((item as any).features ?? undefined) as any,
               },
               create: {
                 id: item.id,
@@ -292,7 +294,7 @@ async function main() {
                 near_miss_patterns: item.near_miss_patterns || [],
                 tags: item.tags || [],
                 difficulty: item.difficulty ?? 1,
-                features: (item as any).features || null,
+                features: ((item as any).features ?? undefined) as any,
               }
             });
           }

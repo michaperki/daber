@@ -53,7 +53,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
     }
     const { text, voice } = parsed.data;
-    const v = voice || 'alloy';
+    const v: 'alloy' | 'echo' | 'fable' | 'onyx' | 'nova' | 'shimmer' =
+      voice === 'echo' || voice === 'fable' || voice === 'onyx' || voice === 'nova' || voice === 'shimmer' ? voice : 'alloy';
     const key = `v:${v};t:${text}`;
     let buf = cacheGet(key);
     if (!buf) {

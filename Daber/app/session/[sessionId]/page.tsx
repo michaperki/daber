@@ -56,7 +56,8 @@ export default function DaberSessionPage() {
 
   /* ── Fetch next item ───────────────────────────────────── */
   const [pacingOffer, setPacingOffer] = React.useState<'end' | 'extend' | null>(null);
-  const isListeningMode = settings.drillDirection === 'he_to_en';
+  const [forcedDirection, setForcedDirection] = React.useState<'en_to_he' | 'he_to_en' | null>(null);
+  const isListeningMode = (forcedDirection || settings.drillDirection) === 'he_to_en';
   const [englishInput, setEnglishInput] = React.useState('');
 
   const fetchNextRaw = React.useCallback(async (): Promise<NextItemResponse> => {
@@ -81,6 +82,8 @@ export default function DaberSessionPage() {
       return;
     }
     if (!data.item) return;
+    const mode: 'en_to_he' | 'he_to_en' = data.phase === 'recognition' ? 'he_to_en' : 'en_to_he';
+    setForcedDirection(mode);
     dispatch({
       type: 'ITEM_LOADED',
       item: data.item,
@@ -91,7 +94,7 @@ export default function DaberSessionPage() {
     // Speak prompt once per item (guard dev double-invoke)
     if (lastPromptIdRef.current !== data.item.id) {
       lastPromptIdRef.current = data.item.id;
-      if (isListeningMode) {
+      if (mode === 'he_to_en') {
         // In he→en mode, play the Hebrew audio as the prompt
         setEnglishInput('');
         await playTTS(data.item.target_hebrew);

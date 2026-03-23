@@ -31,7 +31,7 @@ async function getIssues(): Promise<Issue[]> {
     const form = stripHebPronoun(it.target_hebrew || '');
     const infl = await prisma.inflection.findMany({ where: { lexeme_id: lexemeId } });
     const normItem = normalizeFormForMatch(it.target_hebrew || '');
-    const match = infl.find(f => normalizeFormForMatch(f.form) === normItem) || null;
+    const match = infl.find((f: { form: string }) => normalizeFormForMatch(f.form) === normItem) || null;
     if (!match) {
       issues.push({ lessonItemId: it.id, english: it.english_prompt, target: it.target_hebrew, reason: 'missing_inflection_form', details: `No Inflection with form='${form}'` });
       continue;

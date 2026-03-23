@@ -6,6 +6,9 @@ export type Reason = z.infer<typeof zReason>;
 export const zGrade = z.enum(['correct', 'flawed', 'incorrect']);
 export type Grade = z.infer<typeof zGrade>;
 
+export const zDrillPhase = z.enum(['intro', 'recognition', 'guided', 'free_recall']);
+export type DrillPhase = z.infer<typeof zDrillPhase>;
+
 export const zLessonItem = z.object({
   id: z.string(),
   english_prompt: z.string(),
@@ -33,7 +36,8 @@ export const zNextItemResponse = z.object({
   index: z.number().optional(),
   total: z.number().optional(),
   offerEnd: z.boolean().optional(),
-  offerExtend: z.boolean().optional()
+  offerExtend: z.boolean().optional(),
+  phase: zDrillPhase.optional()
 });
 export type NextItemResponse = z.infer<typeof zNextItemResponse>;
 

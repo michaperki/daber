@@ -20,11 +20,13 @@ Last updated: 2026-03-23
 `/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/admin/lexicon/validate`.
 
 ## Current Focus
-- Immediate: commit the large batch of uncommitted work (conjugation page, fuzzy evaluator, he→en direction, CC imports, sentence generation, minimal pairs, scraper).
+- Immediate: PWA installability (manifest + icons) and phase-aware session routing (recognition vs free recall).
 - Next: library filter pills (UI exists, no logic), progress heatmap for feature mastery, session length cap.
 - Backlog: user auth, confidence guardrails from STT, browser TTS fallback verification, CC import pipeline docs.
 
 ## Recent Changes (2026-03-23)
+- PWA baseline: added `public/manifest.webmanifest` and head links; lightweight SVG icon.
+- Phase-aware next-item: API now returns optional `phase` (recognition/free_recall) based on ItemStat; client session page routes UI accordingly.
 - Organizational cleanup: updated MEMORY.md, Dev Journal, and Claude Code auto-memory to reflect actual project state.
 - Wired `generateNounItem` into the strategies array (was dead code).
 - Moved `CONVO.md` into `scraper/`.

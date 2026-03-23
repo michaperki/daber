@@ -50,10 +50,24 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const subsetRaw = (session as any).subset_item_ids as unknown;
     const subset = Array.isArray(subsetRaw) ? (subsetRaw as unknown[]).map(String) : [];
 
+    async function computePhaseFor(itemId: string): Promise<'recognition' | 'free_recall'> {
+      try {
+        const stat = await prisma.itemStat.findUnique({ where: { lesson_item_id: itemId } });
+        const streak = stat?.correct_streak || 0;
+        if (!stat || streak === 0) return 'recognition';
+        return 'free_recall';
+      } catch {
+        return 'free_recall';
+      }
+    }
+
     if ((useLex || dueParam === 'feature' || dueParam === 'blend') && session.lesson?.type === 'vocab') {
       try {
         const gen = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak });
-        if (gen) return NextResponse.json({ done: false, item: gen, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined });
+        if (gen) {
+          const phase = await computePhaseFor(gen.id);
+          return NextResponse.json({ done: false, item: gen, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
+        }
       } catch {
         // fall through to regular selection when generator fails
       }
@@ -69,7 +83,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       if (pick) {
         const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
         const index = attemptedIds.size + 1;
-        return NextResponse.json({ done: false, item: pick, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined });
+        const phase = await computePhaseFor(pick.id);
+        return NextResponse.json({ done: false, item: pick, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
       }
       // continue to normal selection if none due
     }
@@ -81,7 +96,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const item = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
       if (!item) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
-      return NextResponse.json({ done: false, item, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined });
+      const phase = await computePhaseFor(item.id);
+      return NextResponse.json({ done: false, item, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
     } else {
       let nextItem = null as null | { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features?: Record<string, string> | null };
       if (useRandom) {
@@ -100,7 +116,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
       if (!nextItem) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
-      return NextResponse.json({ done: false, item: nextItem, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined });
+      const phase = await computePhaseFor(nextItem.id);
+      return NextResponse.json({ done: false, item: nextItem, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
     }
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || 'Failed to get next item' }, { status: 500 });

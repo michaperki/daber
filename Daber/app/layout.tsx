@@ -19,6 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap"
           rel="stylesheet"
         />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#0b1020" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
       </head>
       <body>
         <SettingsProvider>

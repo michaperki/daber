@@ -2,6 +2,21 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
+## 2026-03-23 — Product direction and pedagogy brainstorm
+- Added "Target User" section to SOUL.md — the most important section. Build for Mike, not hypothetical users.
+- Added "Current Product State" to SOUL.md capturing what works (drill flow, timing) and what doesn't (not deployed, no word introduction phase, mechanical generation, poor TTS Hebrew).
+- Added "Pedagogy Model — Word Lifecycle" to SOUL.md: Introduction → Recognition → Guided Production → Free Recall. Currently only phase 4 exists.
+- Added "Sentence Generation Vision" to SOUL.md: constraint-based generation mixing known + target words before reaching for ML.
+- Added verb-specific pedagogy guidance: infinitive first, then conjugations gradually, interleaved with familiar words.
+- Reordered ROADMAP.md priorities: deploy to mobile is #1, word lifecycle is #2, verb intro flow is #3.
+- Updated MEMORY.md with product state snapshot and pedagogy model reference.
+- Key insight: SRS should drive *drill type and phase*, not just *review timing*.
+
+## 2026-03-23 — PWA baseline + phase-aware session
+- PWA: Added `Daber/public/manifest.webmanifest`, linked in `app/layout.tsx` with theme color and icon for installability.
+- Session phases: Introduced optional `phase` in `NextItemResponse` (contracts) and compute in `next-item` route from `ItemStat` (streak 0 → recognition, else free recall).
+- Client: `session/[sessionId]/page.tsx` now respects `phase` to select he→en (recognition) vs en→he (free recall) per item.
+
 ## 2026-03-23 — Organizational cleanup
 - Updated `memory/MEMORY.md` to reflect actual project state (was stale — still said "establish root docs").
 - Backfilled this journal with entries for 03-15 and 03-17 shipped work.

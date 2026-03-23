@@ -35,7 +35,7 @@ export async function GET(req: Request) {
       const form = stripHebPronoun(it.target_hebrew || '');
       const infls = await prisma.inflection.findMany({ where: { lexeme_id: lexemeId }, select: { form: true, tense: true, person: true, number: true, gender: true } });
       const normItem = normalizeFormForMatch(it.target_hebrew || '');
-      const match = infls.find(f => normalizeFormForMatch(f.form) === normItem) || null;
+      const match = infls.find((f: { form: string; tense?: string | null; person?: string | null; number?: string | null; gender?: string | null }) => normalizeFormForMatch(f.form) === normItem) || null;
       const f = (it.features as any) || {};
       const diffs: string[] = [];
       if (match) {

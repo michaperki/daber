@@ -15,7 +15,12 @@
     "test:evaluator": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/test_evaluator.ts",
     "validate:lexicon": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/validate_lexicon.ts",
     "scrape:cc": "node scraper/cc_scraper.js",
-    "import:cc": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/import_citizen_cafe.ts"
+    "import:cc": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/import_citizen_cafe.ts",
+    "heroku-postbuild": "npm run prisma:generate",
+    "import:vocab-folder": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/import_vocab_folder.ts --vocab-dir vocab"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "next": "14.1.0",

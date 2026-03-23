@@ -1,6 +1,7 @@
 import { Grade, Reason, LessonItemLike } from '../types';
 import { normalizeTranscript } from './normalize';
 import { deterministicEvaluate } from './deterministic';
+import { fuzzyHebrewMatch } from './fuzzyHebrew';
 
 export type Evaluation = {
   grade: Grade;
@@ -16,8 +17,18 @@ export function evaluateAttempt(item: LessonItemLike, rawTranscript: string | nu
   if (det) return { grade: det.grade, reasons: det.reasons, normalized };
 
   // Step 3: simple near-miss heuristic: tiny edit distance → flawed, low confidence
-  if (normalized && levenshtein(normalized, normalizeTranscript(item.target_hebrew)) <= 1) {
+  const normalizedTarget = normalizeTranscript(item.target_hebrew);
+  if (normalized && levenshtein(normalized, normalizedTarget) <= 1) {
     return { grade: 'flawed', reasons: [{ code: 'probable_match_low_confidence', message: 'Close, but say it again like this.' }], normalized };
+  }
+
+  // Step 3.5: fuzzy Hebrew matching for confusable letter pairs (כ/ח, ט/ת, ס/ש, א/ע, ק/כ, ו/ב)
+  if (normalized) {
+    const fuzzy = fuzzyHebrewMatch(normalized, normalizedTarget);
+    if (fuzzy.match) {
+      const pairHint = fuzzy.pairs.join(', ');
+      return { grade: 'flawed', reasons: [{ code: 'confusable_letters', message: `Watch the similar letters: ${pairHint}` }], normalized };
+    }
   }
 
   // Step 4: constrained model fallback skipped in prototype; default incorrect

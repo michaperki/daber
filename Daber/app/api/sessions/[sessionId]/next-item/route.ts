@@ -6,16 +6,38 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
   const { sessionId } = params;
   try {
     // Session cap (applies to all sessions; tune via env)
-    const cap = Number.parseInt(process.env.SESSION_DUE_CAP || '', 10) || 20;
+    const baseCap = Number.parseInt(process.env.SESSION_DUE_CAP || '', 10) || 20;
+    const hardMax = 25;
     const attemptsCount = await prisma.attempt.count({ where: { session_id: sessionId } });
-    if (cap > 0 && attemptsCount >= cap) {
-      return NextResponse.json({ done: true, index: attemptsCount, total: cap });
-    }
     const url = new URL(req.url);
+    const pacing = url.searchParams.get('pacing'); // 'adaptive' | null
     const useRandom = url.searchParams.get('random') === '1' || url.searchParams.get('random') === 'true';
     const useLex = url.searchParams.get('mode') === 'lex';
     const focusWeak = url.searchParams.get('focus') === 'weak';
     const dueParam = url.searchParams.get('due'); // 'feature' | 'item'
+
+    // Adaptive pacing logic
+    let offerEnd = false;
+    let offerExtend = false;
+    const cap = pacing === 'adaptive' ? hardMax : baseCap;
+    if (cap > 0 && attemptsCount >= cap) {
+      return NextResponse.json({ done: true, index: attemptsCount, total: cap });
+    }
+    if (pacing === 'adaptive' && attemptsCount >= 3) {
+      const recent = await prisma.attempt.findMany({
+        where: { session_id: sessionId },
+        orderBy: { created_at: 'desc' },
+        take: 3,
+        select: { grade: true }
+      });
+      const allIncorrect = recent.every(a => a.grade === 'incorrect');
+      const allCorrect = recent.every(a => a.grade === 'correct');
+      if (allIncorrect) offerEnd = true;
+      if (attemptsCount >= baseCap && allCorrect) offerExtend = true;
+    }
+    if (!pacing && baseCap > 0 && attemptsCount >= baseCap) {
+      return NextResponse.json({ done: true, index: attemptsCount, total: baseCap });
+    }
     const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { lesson: { select: { type: true } } } });
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
 
@@ -29,8 +51,12 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const subset = Array.isArray(subsetRaw) ? (subsetRaw as unknown[]).map(String) : [];
 
     if ((useLex || dueParam === 'feature' || dueParam === 'blend') && session.lesson?.type === 'vocab') {
-      const gen = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak });
-      if (gen) return NextResponse.json({ done: false, item: gen });
+      try {
+        const gen = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak });
+        if (gen) return NextResponse.json({ done: false, item: gen, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined });
+      } catch {
+        // fall through to regular selection when generator fails
+      }
       // fall through to regular selection when no generated item is available
     }
     if (dueParam === 'item' || dueParam === 'blend') {
@@ -43,7 +69,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       if (pick) {
         const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
         const index = attemptedIds.size + 1;
-        return NextResponse.json({ done: false, item: pick, index, total });
+        return NextResponse.json({ done: false, item: pick, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined });
       }
       // continue to normal selection if none due
     }
@@ -55,7 +81,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const item = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
       if (!item) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
-      return NextResponse.json({ done: false, item, index, total });
+      return NextResponse.json({ done: false, item, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined });
     } else {
       let nextItem = null as null | { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features?: Record<string, string> | null };
       if (useRandom) {
@@ -74,7 +100,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
       if (!nextItem) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
-      return NextResponse.json({ done: false, item: nextItem, index, total });
+      return NextResponse.json({ done: false, item: nextItem, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined });
     }
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || 'Failed to get next item' }, { status: 500 });

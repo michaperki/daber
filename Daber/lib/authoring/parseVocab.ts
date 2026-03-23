@@ -12,6 +12,7 @@ export type InflectionSeed = {
   number?: string | null;
   gender?: string | null;
   voice?: string | null;
+  binyan?: string | null;
 };
 
 export type LexemeSeed = {
@@ -108,6 +109,26 @@ function parsePastLine(line: string): InflectionSeed[] {
   return out;
 }
 
+export function detectBinyan(infinitive: string): string {
+  const inf = infinitive.trim();
+  if (/^להת/.test(inf)) return "hitpa'el";
+  if (/^לה/.test(inf)) return "hif'il";
+  if (/^להי/.test(inf)) return "huf'al";
+  if (/^לנ/.test(inf) || /^להי/.test(inf)) return "nif'al";
+  // Pi'el often has dagesh in middle root letter, hard to detect from text alone
+  // Default to pa'al for standard ל + root patterns
+  return "pa'al";
+}
+
+function inferNounGender(hebrewForm: string): string {
+  // Common feminine endings: ה, ת, ית, ות
+  if (/[הת]$/.test(hebrewForm) && !/^[אהוי]/.test(hebrewForm)) return 'f';
+  if (/ית$/.test(hebrewForm)) return 'f';
+  if (/ות$/.test(hebrewForm)) return 'f';
+  // Default to masculine
+  return 'm';
+}
+
 export function parseEnhancedVocabMarkdown(md: string): { cards: VocabCard[]; lexemes: LexemeSeed[] } {
   const cards = parseVocabMarkdown(md);
   const lines = md.split(/\r?\n/).map(s => s.trim()).filter(s => s.length > 0);
@@ -116,6 +137,13 @@ export function parseEnhancedVocabMarkdown(md: string): { cards: VocabCard[]; le
 
   const flush = () => {
     if (current && current.lemma && current.inflections.length) {
+      // Attach binyan to verb inflections
+      if (current.pos === 'verb') {
+        const binyan = detectBinyan(current.lemma);
+        for (const inf of current.inflections) {
+          if (!inf.binyan) inf.binyan = binyan;
+        }
+      }
       const key = current.lemma;
       const exists = lexemes.find(l => l.lemma === key);
       if (exists) {
@@ -155,7 +183,18 @@ export function parseEnhancedVocabMarkdown(md: string): { cards: VocabCard[]; le
         }
         if (hebrewForms.length >= 1) {
           flush();
-          current = { lemma: hebrewForms[0], pos: 'noun', features: null, inflections: hebrewForms.map(f => ({ form: f })) };
+          const lemma = hebrewForms[0];
+          const gender = inferNounGender(lemma);
+          const inflections: InflectionSeed[] = [];
+          // First form is singular
+          inflections.push({ form: lemma, number: 'sg', gender });
+          // If there are additional forms, treat as plural
+          for (let fi = 1; fi < hebrewForms.length; fi++) {
+            const plForm = hebrewForms[fi];
+            const plGender = /ות$/.test(plForm) ? 'f' : /ים$/.test(plForm) ? 'm' : gender;
+            inflections.push({ form: plForm, number: 'pl', gender: plGender });
+          }
+          current = { lemma, pos: 'noun', features: { gender }, inflections };
           flush();
           continue;
         }

@@ -27,23 +27,24 @@ export async function apiCreateSession(lessonId: string, userId?: string, subset
   return json(res, zCreateSessionResponse);
 }
 
-export async function apiNextItem(sessionId: string, opts?: { random?: boolean; mode?: 'lex'|'db'; focus?: 'weak'; due?: 'feature'|'item'|'blend' }) {
+export async function apiNextItem(sessionId: string, opts?: { random?: boolean; mode?: 'lex'|'db'; focus?: 'weak'; due?: 'feature'|'item'|'blend'; pacing?: 'fixed'|'adaptive' }) {
   const params = new URLSearchParams();
   if (opts?.random) params.set('random', '1');
   if (opts?.mode === 'lex') params.set('mode', 'lex');
   if (opts?.focus === 'weak') params.set('focus', 'weak');
   if (opts?.due) params.set('due', opts.due);
+  if (opts?.pacing === 'adaptive') params.set('pacing', 'adaptive');
   const q = params.toString();
   const res = await fetch(`/api/sessions/${sessionId}/next-item${q ? `?${q}` : ''}`);
   if (!res.ok) throw new Error('Failed to fetch next item');
   return json(res, zNextItemResponse);
 }
 
-export async function apiAttempt(sessionId: string, lessonItemId: string, rawTranscript: string) {
+export async function apiAttempt(sessionId: string, lessonItemId: string, rawTranscript: string, direction?: 'en_to_he' | 'he_to_en') {
   const res = await fetch('/api/attempts', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId, lessonItemId, rawTranscript })
+    body: JSON.stringify({ sessionId, lessonItemId, rawTranscript, direction: direction || undefined })
   });
   if (!res.ok) throw new Error('Failed to submit attempt');
   return json(res, zAttemptResponse);

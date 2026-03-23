@@ -55,15 +55,23 @@ export default function DaberSessionPage() {
   }, []);
 
   /* ── Fetch next item ───────────────────────────────────── */
+  const [pacingOffer, setPacingOffer] = React.useState<'end' | 'extend' | null>(null);
+  const isListeningMode = settings.drillDirection === 'he_to_en';
+  const [englishInput, setEnglishInput] = React.useState('');
+
   const fetchNextRaw = React.useCallback(async (): Promise<NextItemResponse> => {
     try {
       const due = settings.dueMode === 'feature' ? 'feature' : (settings.dueMode === 'item' ? 'item' : (settings.dueMode === 'blend' ? 'blend' : undefined));
-      return await apiNextItem(sessionId, { random: settings.randomOrder, mode: (useLex || settings.dueMode === 'feature' || settings.dueMode === 'blend') ? 'lex' : undefined, focus: (useLex && settings.targetWeakness) ? 'weak' : undefined, due });
+      const data = await apiNextItem(sessionId, { random: settings.randomOrder, mode: (useLex || settings.dueMode === 'feature' || settings.dueMode === 'blend') ? 'lex' : undefined, focus: (useLex && settings.targetWeakness) ? 'weak' : undefined, due, pacing: settings.sessionPacing });
+      if (data.offerEnd) setPacingOffer('end');
+      else if (data.offerExtend) setPacingOffer('extend');
+      else setPacingOffer(null);
+      return data;
     } catch {
       toast.error('Failed to fetch next item');
       return { done: true } as NextItemResponse;
     }
-  }, [sessionId, settings.randomOrder, useLex, settings.targetWeakness, settings.dueMode]);
+  }, [sessionId, settings.randomOrder, useLex, settings.targetWeakness, settings.dueMode, settings.sessionPacing]);
 
   const loadItem = React.useCallback(async () => {
     const data = await fetchNextRaw();
@@ -80,10 +88,14 @@ export default function DaberSessionPage() {
       total: data.total ?? 0,
       showHint: settings.showTransliteration || false,
     });
-    // Speak the English prompt once per item (guard dev double-invoke)
+    // Speak prompt once per item (guard dev double-invoke)
     if (lastPromptIdRef.current !== data.item.id) {
       lastPromptIdRef.current = data.item.id;
-      if (settings.speakPrompt) {
+      if (isListeningMode) {
+        // In he→en mode, play the Hebrew audio as the prompt
+        setEnglishInput('');
+        await playTTS(data.item.target_hebrew);
+      } else if (settings.speakPrompt) {
         await playTTS(stripHowDoISay(data.item.english_prompt));
       }
     }
@@ -128,7 +140,7 @@ export default function DaberSessionPage() {
     if (!item) return;
     dispatch({ type: 'SUBMIT' });
     try {
-      const data: AttemptResponse = await apiAttempt(sessionId, item.id, raw);
+      const data: AttemptResponse = await apiAttempt(sessionId, item.id, raw, isListeningMode ? 'he_to_en' : undefined);
       dispatch({ type: 'FEEDBACK_RECEIVED', feedback: data });
       // Play correction without blocking UI
       if (data.correct_hebrew) {
@@ -214,43 +226,112 @@ export default function DaberSessionPage() {
     <div className="drill-root">
       <PromptHeader index={progress.index} total={progress.total} onExit={() => router.push('/')} />
 
-      <PromptCard
-        prompt={cleanedPrompt}
-        emojiHint={emojiCue}
-        transliteration={item.transliteration}
-        hintVisible={hintVisible}
-        onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
-        features={item.features || null}
-      />
-
-      <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={status.waveActive} level={audio.micLevel} />
-
-      <MicControls
-        canReplayPrompt={settings.speakPrompt}
-        onReplayPrompt={() => playTTS(cleanedPrompt)}
-        listening={audio.micListening}
-        onStart={startVoice}
-        onStop={stopVoice}
-        onSkip={skip}
-        disabled={micDisabled}
-      />
-
-      {showReviewUI ? (
+      {isListeningMode ? (
         <>
-          <TranscriptEditor value={transcript} onChange={(v) => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: v })} />
-          <HebrewKeyboard onInsert={(ch) => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript + ch })} onBackspace={() => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript.slice(0, -1) })} />
-          <div className="cta-row" style={{ marginTop: 8 }}>
-            <button className="btn-start" onClick={() => submitAnswer(transcript)} disabled={!transcript.trim()}>submit</button>
-            <button className="btn-resume" onClick={startVoice}>record again</button>
-            <button className="qs-btn" onClick={() => dispatch({ type: 'CLEAR_TRANSCRIPT' })}>clear</button>
+          <PromptCard
+            prompt="Listen and translate to English"
+            transliteration={showFeedback ? item.transliteration : null}
+            hintVisible={hintVisible}
+            onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
+            features={item.features || null}
+          />
+
+          <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={false} level={0} />
+
+          <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+            <button className="btn-resume" style={{ flex: 'unset', padding: '0 16px', height: 40 }} onClick={() => item && playTTS(item.target_hebrew)}>
+              hear again
+            </button>
+          </div>
+
+          <div className="editor-wrap" style={{ marginBottom: 12 }}>
+            <input
+              type="text"
+              className="editor-textarea"
+              style={{ height: 40, resize: 'none' }}
+              placeholder="Type English translation..."
+              value={englishInput}
+              onChange={(e) => setEnglishInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && englishInput.trim()) submitAnswer(englishInput); }}
+              disabled={phase === 'feedback' || phase === 'evaluating'}
+            />
+          </div>
+
+          <div className="cta-row" style={{ marginBottom: 12 }}>
+            <button className="btn-start" onClick={() => submitAnswer(englishInput)} disabled={!englishInput.trim() || phase === 'feedback' || phase === 'evaluating'}>submit</button>
+            <button className="qs-btn" onClick={skip}>skip</button>
           </div>
         </>
       ) : (
-        <TranscriptPreview value={transcript} />
+        <>
+          <PromptCard
+            prompt={cleanedPrompt}
+            emojiHint={emojiCue}
+            transliteration={item.transliteration}
+            hintVisible={hintVisible}
+            onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
+            features={item.features || null}
+          />
+
+          <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={status.waveActive} level={audio.micLevel} />
+
+          <MicControls
+            canReplayPrompt={settings.speakPrompt}
+            onReplayPrompt={() => playTTS(cleanedPrompt)}
+            listening={audio.micListening}
+            onStart={startVoice}
+            onStop={stopVoice}
+            onSkip={skip}
+            disabled={micDisabled}
+          />
+
+          {showReviewUI ? (
+            <>
+              <TranscriptEditor value={transcript} onChange={(v) => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: v })} />
+              <HebrewKeyboard onInsert={(ch) => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript + ch })} onBackspace={() => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript.slice(0, -1) })} />
+              <div className="cta-row" style={{ marginTop: 8 }}>
+                <button className="btn-start" onClick={() => submitAnswer(transcript)} disabled={!transcript.trim()}>submit</button>
+                <button className="btn-resume" onClick={startVoice}>record again</button>
+                <button className="qs-btn" onClick={() => dispatch({ type: 'CLEAR_TRANSCRIPT' })}>clear</button>
+              </div>
+            </>
+          ) : (
+            <TranscriptPreview value={transcript} />
+          )}
+        </>
+      )}
+
+      {pacingOffer && (
+        <div style={{ padding: '12px 16px', marginBottom: 12, borderRadius: 12, background: 'var(--color-background-secondary)', border: '0.5px solid var(--color-border-tertiary)', textAlign: 'center' }}>
+          <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 8 }}>
+            {pacingOffer === 'end' ? 'Struggling? Want to end the session?' : "You're doing great! 5 more?"}
+          </div>
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+            {pacingOffer === 'end' ? (
+              <>
+                <button className="btn-start" style={{ flex: 'unset', padding: '0 20px', height: 36 }} onClick={() => { router.push(`/session/${sessionId}/summary`); }}>end session</button>
+                <button className="btn-resume" style={{ flex: 'unset', padding: '0 20px', height: 36 }} onClick={() => setPacingOffer(null)}>keep going</button>
+              </>
+            ) : (
+              <>
+                <button className="btn-start" style={{ flex: 'unset', padding: '0 20px', height: 36 }} onClick={() => setPacingOffer(null)}>5 more!</button>
+                <button className="btn-resume" style={{ flex: 'unset', padding: '0 20px', height: 36 }} onClick={() => { router.push(`/session/${sessionId}/summary`); }}>end session</button>
+              </>
+            )}
+          </div>
+        </div>
       )}
 
       {showFeedback && feedback ? (
-        <FeedbackPanel grade={feedback.grade} reason={feedback.reason} correctHebrew={feedback.correct_hebrew} transliteration={item.transliteration} features={item.features || null} userTranscript={transcript} />
+        <>
+          <FeedbackPanel grade={feedback.grade} reason={feedback.reason} correctHebrew={feedback.correct_hebrew} transliteration={item.transliteration} features={item.features || null} userTranscript={isListeningMode ? undefined : transcript} />
+          {isListeningMode && (
+            <div style={{ marginBottom: 12, padding: '8px 16px', background: 'var(--color-background-secondary)', borderRadius: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>
+              <span style={{ color: 'var(--color-text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>english: </span>
+              {stripHowDoISay(item.english_prompt)}
+            </div>
+          )}
+        </>
       ) : null}
 
       {showFeedback && feedback ? (
@@ -312,6 +393,15 @@ function parseEmojiFromGeneratedId(id: string): string | '' {
     const parts = id.split('_');
     const number = parts[3] || 'na';
     const gender = parts[4] || 'na';
+    if (number === 'pl') return gender === 'f' ? '👩👩' : '👨👩';
+    if (gender === 'm') return '👨';
+    if (gender === 'f') return '👩';
+    return '';
+  }
+  if (id.startsWith('gen_vpa_') || id.startsWith('gen_vfu_')) {
+    const parts = id.split('_');
+    const number = parts[4] || 'na';
+    const gender = parts[5] || 'na';
     if (number === 'pl') return gender === 'f' ? '👩👩' : '👨👩';
     if (gender === 'm') return '👨';
     if (gender === 'f') return '👩';

@@ -31,7 +31,9 @@ export const zNextItemResponse = z.object({
   done: z.boolean(),
   item: zLessonItem.optional(),
   index: z.number().optional(),
-  total: z.number().optional()
+  total: z.number().optional(),
+  offerEnd: z.boolean().optional(),
+  offerExtend: z.boolean().optional()
 });
 export type NextItemResponse = z.infer<typeof zNextItemResponse>;
 
@@ -46,7 +48,8 @@ export type AttemptResponse = z.infer<typeof zAttemptResponse>;
 export const zAttemptRequest = z.object({
   sessionId: z.string(),
   lessonItemId: z.string(),
-  rawTranscript: z.string().optional()
+  rawTranscript: z.string().optional(),
+  direction: z.enum(['en_to_he', 'he_to_en']).optional()
 });
 export type AttemptRequest = z.infer<typeof zAttemptRequest>;
 

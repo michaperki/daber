@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { evaluateAttempt } from '@/lib/evaluator';
+import { evaluateEnglishAnswer } from '@/lib/evaluator/englishEvaluator';
 import { logEvent } from '@/lib/log';
 import { zAttemptRequest } from '@/lib/contracts';
 
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
     if (!parsed.success) {
       return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
     }
-    const { sessionId, lessonItemId, rawTranscript } = parsed.data;
+    const { sessionId, lessonItemId, rawTranscript, direction } = parsed.data;
 
     const [session, item] = await Promise.all([
       prisma.session.findUnique({ where: { id: sessionId } }),
@@ -21,6 +22,43 @@ export async function POST(req: Request) {
     if (!item) return NextResponse.json({ error: 'Lesson item not found' }, { status: 404 });
 
     const t0 = Date.now();
+
+    // Hebrew→English listening mode: evaluate English answer against English prompt
+    if (direction === 'he_to_en') {
+      const engEval = evaluateEnglishAnswer(rawTranscript || '', item.english_prompt);
+      const features = (item as any).features || null;
+      const response = NextResponse.json({
+        grade: engEval.grade,
+        reason: engEval.reasons,
+        correct_hebrew: item.target_hebrew
+      });
+      // Fire-and-forget DB writes (same as below but simplified)
+      const grade = engEval.grade;
+      const dbWrites = async () => {
+        const updates: any = {};
+        if (grade === 'correct') updates.correct_count = { increment: 1 };
+        if (grade === 'flawed') updates.flawed_count = { increment: 1 };
+        if (grade === 'incorrect') updates.incorrect_count = { increment: 1 };
+        await Promise.all([
+          prisma.attempt.create({
+            data: {
+              session_id: sessionId,
+              lesson_item_id: lessonItemId,
+              raw_transcript: rawTranscript || null,
+              normalized_transcript: rawTranscript || null,
+              grade,
+              reason: engEval.reasons,
+              correct_hebrew: item.target_hebrew,
+              features
+            }
+          }),
+          prisma.session.update({ where: { id: sessionId }, data: updates }),
+        ]);
+      };
+      dbWrites().catch(() => {});
+      return response;
+    }
+
     let evaluation = evaluateAttempt(
       {
         id: item.id,

@@ -129,5 +129,6 @@ model Inflection {
   person          String?
   number          String?
   gender          String?
+  binyan          String?
   features        Json?
 }

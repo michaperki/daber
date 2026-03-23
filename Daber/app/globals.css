@@ -144,9 +144,13 @@ body {
 .editor-wrap { padding: 0 1rem; }
 .editor-textarea { width: 100%; border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-secondary); padding: 10px 12px; font-family: var(--font-mono); font-size: 13px; color: var(--color-text-primary); background: var(--color-background-primary); resize: vertical; }
 .hebrew-kb { padding: 8px 1rem 0; }
-.kb-grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
-.kb-key { height: 34px; border-radius: 8px; border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); font-family: var(--font-sans); font-size: 14px; cursor: pointer; }
-.kb-key.wide { grid-column: span 2; }
+.kb-row { display: flex; gap: 4px; justify-content: center; margin-bottom: 4px; }
+.kb-key { height: 34px; min-width: 30px; flex: 1; max-width: 40px; border-radius: 8px; border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); font-family: var(--font-sans); font-size: 14px; cursor: pointer; padding: 0; }
+.kb-key.space { flex: 3; max-width: 120px; }
+.kb-key.backspace { flex: 2; max-width: 80px; }
+
+/* Gender cue emoji */
+.gender-cue { font-size: 26px; line-height: 1; margin-left: 8px; vertical-align: middle; }
 
 /* Vocab chips */
 .vocab-chip { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 99px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); }
@@ -277,7 +281,16 @@ body {
 .hard-eng { font-size: 11px; color: var(--color-text-secondary); flex: 1; min-width: 0; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hard-attempts { font-size: 10px; color: var(--color-text-tertiary); font-family: var(--font-mono); text-align: right; }
 
+/* Conjugation tables */
+.conj-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.conj-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-tertiary); padding: 4px 8px; text-align: center; font-weight: 400; }
+.conj-cell { padding: 4px 8px; text-align: center; font-family: var(--font-serif); font-size: 14px; direction: rtl; border-radius: 4px; }
+.conj-cell-green { background: #EAF3DE; color: #3B6D11; }
+.conj-cell-yellow { background: #FAEEDA; color: #854F0B; }
+.conj-cell-red { background: #FCEBEB; color: #A32D2D; }
+.conj-cell-gray { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
+
 /* Footer nav */
-.footer-nav { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 10px 12px; border-top: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+.footer-nav { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; padding: 10px 12px; border-top: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); }
 .footer-link { display: flex; align-items: center; justify-content: center; height: 36px; border-radius: 10px; border: 0.5px solid var(--color-border-secondary); color: var(--color-text-secondary); text-decoration: none; font-size: 12px; }
 .footer-link:hover { border-color: var(--color-text-primary); color: var(--color-text-primary); }

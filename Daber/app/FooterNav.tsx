@@ -12,6 +12,7 @@ export default function FooterNav() {
       <Link href="/" className={cls('/')}>home</Link>
       <Link href="/library" className={cls('/library')}>library</Link>
       <Link href="/progress" className={cls('/progress')}>progress</Link>
+      <Link href="/conjugations" className={cls('/conjugations')}>tables</Link>
       <Link href="/retry" className={cls('/retry')}>retry</Link>
       <Link href="/vocab" className={cls('/vocab')}>vocab</Link>
       <Link href="/profile" className={cls('/profile')}>profile</Link>

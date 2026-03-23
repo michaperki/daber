@@ -5,6 +5,7 @@ function featureChips(features?: Record<string, string> | null): string[] {
   if (!features) return [];
   const chips: string[] = [];
   if (features.pos) chips.push(features.pos);
+  if (features.binyan) chips.push(features.binyan);
   if (features.tense) chips.push(features.tense);
   const p = features.person || '';
   const n = features.number || '';
@@ -25,7 +26,7 @@ export function PromptCard({ eyebrow, prompt, transliteration, hintVisible, onTo
       <div className="prompt-eyebrow">{eyebrow || ''}</div>
       <div className="prompt-text">
         {prompt}
-        {emojiHint ? <span style={{ marginLeft: 8 }} className="vocab-chip">{emojiHint}</span> : null}
+        {emojiHint ? <span className="gender-cue">{emojiHint}</span> : null}
       </div>
       {featureChips(features).length ? (
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', margin: '6px 0 2px' }}>

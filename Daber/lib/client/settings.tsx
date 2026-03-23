@@ -15,6 +15,8 @@ export type Settings = {
   browserTTSFallback: boolean;
   uiSoundEffects: boolean;
   dueMode: 'off' | 'feature' | 'item' | 'blend';
+  sessionPacing: 'fixed' | 'adaptive';
+  drillDirection: 'en_to_he' | 'he_to_en';
   micDeviceId: string;
   micSensitivity: number;
   micSilenceMs: number;
@@ -31,6 +33,8 @@ export type Settings = {
   setBrowserTTSFallback: (v: boolean) => void;
   setUiSoundEffects: (v: boolean) => void;
   setDueMode: (v: 'off'|'feature'|'item'|'blend') => void;
+  setSessionPacing: (v: 'fixed'|'adaptive') => void;
+  setDrillDirection: (v: 'en_to_he'|'he_to_en') => void;
   setMicDeviceId: (v: string) => void;
   setMicSensitivity: (v: number) => void;
   setMicSilenceMs: (v: number) => void;
@@ -52,6 +56,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [browserTTSFallback, setBrowserTTSFallback] = React.useState(false);
   const [uiSoundEffects, setUiSoundEffects] = React.useState(true);
   const [dueMode, setDueMode] = React.useState<'off'|'feature'|'item'|'blend'>('off');
+  const [sessionPacing, setSessionPacing] = React.useState<'fixed'|'adaptive'>('fixed');
+  const [drillDirection, setDrillDirection] = React.useState<'en_to_he'|'he_to_en'>('en_to_he');
   const [micDeviceId, setMicDeviceId] = React.useState<string>('');
   const [micSensitivity, setMicSensitivity] = React.useState<number>(0.035);
   const [micSilenceMs, setMicSilenceMs] = React.useState<number>(900);
@@ -74,6 +80,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         if (typeof obj.browserTTSFallback === 'boolean') setBrowserTTSFallback(obj.browserTTSFallback);
         if (typeof obj.uiSoundEffects === 'boolean') setUiSoundEffects(obj.uiSoundEffects);
         if (obj.dueMode === 'feature' || obj.dueMode === 'item' || obj.dueMode === 'off' || obj.dueMode === 'blend') setDueMode(obj.dueMode);
+        if ((obj as any).sessionPacing === 'fixed' || (obj as any).sessionPacing === 'adaptive') setSessionPacing((obj as any).sessionPacing);
+        if ((obj as any).drillDirection === 'en_to_he' || (obj as any).drillDirection === 'he_to_en') setDrillDirection((obj as any).drillDirection);
         if (typeof obj.micDeviceId === 'string') setMicDeviceId(obj.micDeviceId);
         if (typeof obj.micSensitivity === 'number') setMicSensitivity(obj.micSensitivity);
         if (typeof obj.micSilenceMs === 'number') setMicSilenceMs(obj.micSilenceMs);
@@ -83,13 +91,13 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     try {
-      localStorage.setItem('daber.settings', JSON.stringify({ showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, micDeviceId, micSensitivity, micSilenceMs }));
+      localStorage.setItem('daber.settings', JSON.stringify({ showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, sessionPacing, drillDirection, micDeviceId, micSensitivity, micSilenceMs }));
     } catch {}
-  }, [showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, micDeviceId, micSensitivity, micSilenceMs]);
+  }, [showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, sessionPacing, drillDirection, micDeviceId, micSensitivity, micSilenceMs]);
 
   const value: Settings = React.useMemo(
-    () => ({ showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, micDeviceId, micSensitivity, micSilenceMs, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setRandomOrder, setUseLexiconDrills, setReviewBeforeSubmit, setTargetWeakness, setAutoResumeListening, setTtsRate, setBrowserTTSFallback, setUiSoundEffects, setDueMode, setMicDeviceId, setMicSensitivity, setMicSilenceMs }),
-    [showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, micDeviceId, micSensitivity, micSilenceMs]
+    () => ({ showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, sessionPacing, drillDirection, micDeviceId, micSensitivity, micSilenceMs, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setRandomOrder, setUseLexiconDrills, setReviewBeforeSubmit, setTargetWeakness, setAutoResumeListening, setTtsRate, setBrowserTTSFallback, setUiSoundEffects, setDueMode, setSessionPacing, setDrillDirection, setMicDeviceId, setMicSensitivity, setMicSilenceMs }),
+    [showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, sessionPacing, drillDirection, micDeviceId, micSensitivity, micSilenceMs]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

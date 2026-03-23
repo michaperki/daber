@@ -17,6 +17,7 @@ type LessonSeed = {
 
 async function main() {
   const SEED_LEXEMES = process.env.SEED_LEXEMES === '1';
+  const SEED_CC = process.env.SEED_CC === '1';
   const file = path.join(process.cwd(), 'data', 'lessons', 'present_tense_basics_01.json');
   const raw = fs.readFileSync(file, 'utf8');
   const data: LessonSeed = JSON.parse(raw);
@@ -168,6 +169,7 @@ async function main() {
               person: inf.person ?? null,
               number: inf.number ?? null,
               gender: inf.gender ?? null,
+              binyan: inf.binyan ?? null,
               features: inf.voice ? { voice: inf.voice } as any : null
             }
           }).catch(() => {});
@@ -184,6 +186,124 @@ async function main() {
     }
   } else {
     console.log('No Mike_Hebrew_Vocab.md found or no cards parsed.');
+  }
+
+  // Seed minimal pairs lesson
+  try {
+    const mpFile = path.join(process.cwd(), 'data', 'minimal-pairs.json');
+    if (fs.existsSync(mpFile)) {
+      const mpRaw = JSON.parse(fs.readFileSync(mpFile, 'utf8'));
+      const mpLessonId = mpRaw.id || 'minimal_pairs_01';
+      await prisma.lesson.upsert({
+        where: { id: mpLessonId },
+        update: { title: mpRaw.title, language: mpRaw.language, level: mpRaw.level, type: mpRaw.type, description: mpRaw.description },
+        create: { id: mpLessonId, title: mpRaw.title, language: mpRaw.language, level: mpRaw.level, type: mpRaw.type, description: mpRaw.description }
+      });
+      let mpIdx = 0;
+      for (const pair of mpRaw.pairs || []) {
+        // Create two items per pair: one for each word
+        for (const side of ['a', 'b'] as const) {
+          const word = pair[`word_${side}`];
+          const meaning = pair[`meaning_${side}`];
+          const partner = pair[side === 'a' ? 'word_b' : 'word_a'];
+          const itemId = `mp_${mpIdx++}_${side}`;
+          await prisma.lessonItem.upsert({
+            where: { id: itemId },
+            update: {
+              lesson_id: mpLessonId,
+              english_prompt: meaning,
+              target_hebrew: word,
+              transliteration: null,
+              accepted_variants: [],
+              near_miss_patterns: [partner],
+              tags: ['minimal_pair', pair.confusable],
+              difficulty: 2,
+              features: { type: 'minimal_pair', confusable: pair.confusable } as any
+            },
+            create: {
+              id: itemId,
+              lesson_id: mpLessonId,
+              english_prompt: meaning,
+              target_hebrew: word,
+              transliteration: null,
+              accepted_variants: [],
+              near_miss_patterns: [partner],
+              tags: ['minimal_pair', pair.confusable],
+              difficulty: 2,
+              features: { type: 'minimal_pair', confusable: pair.confusable } as any
+            }
+          });
+        }
+      }
+      console.log(`Seeded ${mpRaw.pairs?.length || 0} minimal pairs into lesson '${mpLessonId}'.`);
+    }
+  } catch (e) {
+    console.log('Minimal pairs seeding skipped:', (e as Error).message);
+  }
+
+  if (SEED_CC) {
+    try {
+      const importDir = path.join(process.cwd(), 'data', 'imports');
+      if (fs.existsSync(importDir)) {
+        const files = fs.readdirSync(importDir).filter(f => f.endsWith('.json'));
+        for (const f of files) {
+          const p = path.join(importDir, f);
+          const raw = fs.readFileSync(p, 'utf8');
+          const data = JSON.parse(raw) as LessonSeed;
+          await prisma.lesson.upsert({
+            where: { id: data.id },
+            update: {
+              title: data.title,
+              language: data.language,
+              level: data.level,
+              type: data.type,
+              description: data.description,
+            },
+            create: {
+              id: data.id,
+              title: data.title,
+              language: data.language,
+              level: data.level,
+              type: data.type,
+              description: data.description,
+            }
+          });
+          for (const item of data.items) {
+            await prisma.lessonItem.upsert({
+              where: { id: item.id },
+              update: {
+                lesson_id: data.id,
+                english_prompt: item.english_prompt,
+                target_hebrew: item.target_hebrew,
+                transliteration: item.transliteration || null,
+                accepted_variants: item.accepted_variants || [],
+                near_miss_patterns: item.near_miss_patterns || [],
+                tags: item.tags || [],
+                difficulty: item.difficulty ?? 1,
+                features: (item as any).features || null,
+              },
+              create: {
+                id: item.id,
+                lesson_id: data.id,
+                english_prompt: item.english_prompt,
+                target_hebrew: item.target_hebrew,
+                transliteration: item.transliteration || null,
+                accepted_variants: item.accepted_variants || [],
+                near_miss_patterns: item.near_miss_patterns || [],
+                tags: item.tags || [],
+                difficulty: item.difficulty ?? 1,
+                features: (item as any).features || null,
+              }
+            });
+          }
+          console.log(`Seeded import '${data.id}' from ${f} (${data.items.length} items).`);
+        }
+      } else {
+        console.log('No imports directory found; skipping SEED_CC.');
+      }
+    } catch (e) {
+      console.log('SEED_CC failed:', (e as Error).message);
+    }
   }
 }
 

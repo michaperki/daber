@@ -153,12 +153,12 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
     }
   }
 
-  // Try adjectives first, then verbs present
   const strategies: Array<() => Promise<LessonItemShape | null>> = [
     async () => generateAdjectiveItem(genLessonId, attemptedIds, desired),
     async () => generateVerbPresentItem(genLessonId, attemptedIds, desired),
     async () => generateVerbPastItem(genLessonId, attemptedIds, desired),
-    async () => generateVerbFutureItem(genLessonId, attemptedIds, desired)
+    async () => generateVerbFutureItem(genLessonId, attemptedIds, desired),
+    async () => generateNounItem(genLessonId, attemptedIds, desired)
   ];
 
   for (let i = 0; i < 6; i++) {
@@ -205,12 +205,12 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
 }
 
 async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'verb' }, select: { id: true, lemma: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'verb' }, select: { id: true, lemma: true, features: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
     if (!chosen) break;
-    const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'present' }, select: { form: true, person: true, number: true, gender: true } });
+    const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'present' }, select: { form: true, person: true, number: true, gender: true, binyan: true } });
     if (!infls.length) continue;
     let pool = infls;
     if (desired?.number || desired?.gender || desired?.person) {
@@ -232,8 +232,8 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
     if (attemptedIds.has(idBase)) continue;
     const item = await prisma.lessonItem.upsert({
       where: { id: idBase },
-      update: { lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','present'], difficulty: 1, features: { pos: 'verb', tense: 'present', person: inf.person || null, number: inf.number || null, gender: inf.gender || null } as any },
-      create: { id: idBase, lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','present'], difficulty: 1, features: { pos: 'verb', tense: 'present', person: inf.person || null, number: inf.number || null, gender: inf.gender || null } as any }
+      update: { lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','present'], difficulty: 1, features: { pos: 'verb', tense: 'present', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any },
+      create: { id: idBase, lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','present'], difficulty: 1, features: { pos: 'verb', tense: 'present', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any }
     });
     return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
   }
@@ -246,7 +246,7 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
     if (!chosen) break;
-    const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'past' }, select: { form: true, person: true, number: true, gender: true } });
+    const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'past' }, select: { form: true, person: true, number: true, gender: true, binyan: true } });
     if (!infls.length) continue;
     let pool = infls;
     if (desired?.number || desired?.gender || desired?.person) {
@@ -268,8 +268,69 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
     if (attemptedIds.has(idBase)) continue;
     const item = await prisma.lessonItem.upsert({
       where: { id: idBase },
-      update: { lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','past'], difficulty: 1, features: { pos: 'verb', tense: 'past', person: inf.person || null, number: inf.number || null, gender: inf.gender || null } as any },
-      create: { id: idBase, lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','past'], difficulty: 1, features: { pos: 'verb', tense: 'past', person: inf.person || null, number: inf.number || null, gender: inf.gender || null } as any }
+      update: { lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','past'], difficulty: 1, features: { pos: 'verb', tense: 'past', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any },
+      create: { id: idBase, lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','past'], difficulty: 1, features: { pos: 'verb', tense: 'past', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any }
+    });
+    return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+  }
+  return null;
+}
+
+async function generateNounItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null): Promise<LessonItemShape | null> {
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'noun' }, select: { id: true, lemma: true, features: true } });
+  if (!lex.length) return null;
+  for (let tries = 0; tries < 10; tries++) {
+    const chosen = pick(lex);
+    if (!chosen) break;
+    const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id }, select: { form: true, number: true, gender: true } });
+    if (!infls.length) continue;
+
+    const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
+    const en = englishFromCard(card?.english_prompt || '');
+    if (!en.base) continue;
+
+    // Separate inflections into singular and plural buckets.
+    // Treat null number as singular (most vocab entries are listed in singular).
+    const sgPool = infls.filter(i => i.number === 'sg' || !i.number);
+    const plPool = infls.filter(i => i.number === 'pl');
+
+    // Decide drill type: only offer plural if a plural inflection actually exists
+    const canDoPlural = plPool.length > 0;
+    const doDef = !canDoPlural || Math.random() < 0.5;
+
+    let englishPrompt: string;
+    let targetHebrew: string;
+    let usedInf: typeof infls[0];
+    let drillType: 'def' | 'pl';
+
+    if (doDef && sgPool.length > 0) {
+      // Definite article drill: "the knife" → "הסכין"
+      usedInf = pick(sgPool)!;
+      englishPrompt = `How do I say: the ${en.base}${en.paren ? ' ' + en.paren : ''}?`;
+      targetHebrew = `ה${usedInf.form}`;
+      drillType = 'def';
+    } else if (canDoPlural) {
+      // Plural drill — only when we have a real plural form
+      usedInf = pick(plPool)!;
+      englishPrompt = `How do I say: ${en.base}s${en.paren ? ' ' + en.paren : ''} (plural)?`;
+      targetHebrew = usedInf.form;
+      drillType = 'pl';
+    } else {
+      // Fallback: definite article with whatever we have
+      usedInf = pick(infls)!;
+      englishPrompt = `How do I say: the ${en.base}${en.paren ? ' ' + en.paren : ''}?`;
+      targetHebrew = `ה${usedInf.form}`;
+      drillType = 'def';
+    }
+
+    const numLabel = usedInf.number || 'sg';
+    const genLabel = usedInf.gender || 'na';
+    const idBase = `gen_noun_${chosen.id}_${numLabel}_${genLabel}_${drillType}_${hashShort(englishPrompt)}`;
+    if (attemptedIds.has(idBase)) continue;
+    const item = await prisma.lessonItem.upsert({
+      where: { id: idBase },
+      update: { lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: targetHebrew, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','noun'], difficulty: 1, features: { pos: 'noun', number: numLabel, gender: genLabel } as any },
+      create: { id: idBase, lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: targetHebrew, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','noun'], difficulty: 1, features: { pos: 'noun', number: numLabel, gender: genLabel } as any }
     });
     return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
   }
@@ -282,7 +343,7 @@ async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
     if (!chosen) break;
-    const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'future' }, select: { form: true, person: true, number: true, gender: true } });
+    const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'future' }, select: { form: true, person: true, number: true, gender: true, binyan: true } });
     if (!infls.length) continue;
     let pool = infls;
     if (desired?.number || desired?.gender || desired?.person) {
@@ -304,8 +365,8 @@ async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string
     if (attemptedIds.has(idBase)) continue;
     const item = await prisma.lessonItem.upsert({
       where: { id: idBase },
-      update: { lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','future'], difficulty: 1, features: { pos: 'verb', tense: 'future', person: inf.person || null, number: inf.number || null, gender: inf.gender || null } as any },
-      create: { id: idBase, lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','future'], difficulty: 1, features: { pos: 'verb', tense: 'future', person: inf.person || null, number: inf.number || null, gender: inf.gender || null } as any }
+      update: { lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','future'], difficulty: 1, features: { pos: 'verb', tense: 'future', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any },
+      create: { id: idBase, lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','future'], difficulty: 1, features: { pos: 'verb', tense: 'future', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any }
     });
     return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
   }

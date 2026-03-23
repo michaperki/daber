@@ -13,6 +13,7 @@ function featureChips(features?: Record<string, string> | null): string[] {
   if (!features) return [];
   const chips: string[] = [];
   if (features.pos) chips.push(features.pos);
+  if (features.binyan) chips.push(features.binyan);
   if (features.tense) chips.push(features.tense);
   const p = features.person || '';
   const n = features.number || '';

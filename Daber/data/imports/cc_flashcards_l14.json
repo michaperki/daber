@@ -1,0 +1,332 @@
+{
+  "id": "cc_flashcards_l14",
+  "title": "CC Flashcards — Lesson 14",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78517",
+      "english_prompt": "I overslept",
+      "target_hebrew": "התעוררתי מאוחר",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14"
+      }
+    },
+    {
+      "id": "cc_fc_78519",
+      "english_prompt": "Hole",
+      "target_hebrew": "חור (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14"
+      }
+    },
+    {
+      "id": "cc_fc_78520",
+      "english_prompt": "Wake up🧔‍♂️, wake up!",
+      "target_hebrew": "תתעורר, תתעורר!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78558",
+      "english_prompt": "I was late because the bus was late",
+      "target_hebrew": "איחרתי כי האוטובוס איחר",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14"
+      }
+    },
+    {
+      "id": "cc_fc_78612",
+      "english_prompt": "Bread crumbs",
+      "target_hebrew": "פירורי לחם",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14"
+      }
+    },
+    {
+      "id": "cc_fc_78613",
+      "english_prompt": "Hold on🧔‍♂️ a little longer!",
+      "target_hebrew": "תחזיק עוד קצת!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78514",
+      "english_prompt": "I🧔‍♂️ don't like to be late",
+      "target_hebrew": "אני לא אוהב לאחר",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78521",
+      "english_prompt": "Get ready 👩‍🦰for the test",
+      "target_hebrew": "תתכונני למבחן",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78562",
+      "english_prompt": "Crumbs",
+      "target_hebrew": "פירורים (ר, ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14"
+      }
+    },
+    {
+      "id": "cc_fc_78567",
+      "english_prompt": "When did you👩‍🦰 wake up this morning?",
+      "target_hebrew": "מתי התעוררת הבוקר?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78569",
+      "english_prompt": "Against, versus",
+      "target_hebrew": "מול",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14"
+      }
+    },
+    {
+      "id": "cc_fc_78571",
+      "english_prompt": "Did you🧔‍♂️ prepare for the interview?",
+      "target_hebrew": "התכוננת לראיון?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78574",
+      "english_prompt": "Are your 👩‍🦰ears pierced?",
+      "target_hebrew": "יש לך חורים באוזניים?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78575",
+      "english_prompt": "I'm👩‍🦰 5 minutes late",
+      "target_hebrew": "אני מאחרת בחמש דקות",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78587",
+      "english_prompt": "Sorry I'm late",
+      "target_hebrew": "סליחה על האיחור",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14"
+      }
+    },
+    {
+      "id": "cc_fc_78584",
+      "english_prompt": "They're 👩‍🦰🧔‍♂️stuck in traffic",
+      "target_hebrew": "הם תקועים בפקקים",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l14"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "14",
+        "gender": "f",
+        "emoji": "👩🦰🧔♂"
+      }
+    }
+  ]
+}

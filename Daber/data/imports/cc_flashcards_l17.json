@@ -1,0 +1,377 @@
+{
+  "id": "cc_flashcards_l17",
+  "title": "CC Flashcards — Lesson 17",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78530",
+      "english_prompt": "I lost concentration",
+      "target_hebrew": "איבדתי ריכוז",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78534",
+      "english_prompt": "Drunk",
+      "target_hebrew": "שיכור (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78543",
+      "english_prompt": "Straw",
+      "target_hebrew": "קש (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78547",
+      "english_prompt": "Desire, a crave",
+      "target_hebrew": "חשק (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78550",
+      "english_prompt": "Depression",
+      "target_hebrew": "דיכאון (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78551",
+      "english_prompt": "I got stuck at work",
+      "target_hebrew": "נתקעתי בעבודה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78556",
+      "english_prompt": "Do you 👩‍🦰have a spare/extra pen?",
+      "target_hebrew": "יש לך עט מיותר? ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78559",
+      "english_prompt": "Straight, right away",
+      "target_hebrew": "ישר (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78524",
+      "english_prompt": "The one studying at the university",
+      "target_hebrew": "זה שלומד באוניברסיטה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78535",
+      "english_prompt": "Let's 🧔‍♂️bet that it'll rain tomorrow",
+      "target_hebrew": "בוא נתערב שמחר ירד גשם ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78542",
+      "english_prompt": "Why is he depressed?",
+      "target_hebrew": "למה הוא בדיכאון? ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78563",
+      "english_prompt": "Embarrassed",
+      "target_hebrew": "נבוך (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78581",
+      "english_prompt": "Within a second",
+      "target_hebrew": "תוך שניה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78583",
+      "english_prompt": "Spare, unnecessary",
+      "target_hebrew": "מיותר (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78586",
+      "english_prompt": "I'm depressed, I'm very upset",
+      "target_hebrew": "אני בדיכאון",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78591",
+      "english_prompt": "Try 🧔‍♂️to concentrate!",
+      "target_hebrew": "תנסה להתרכז!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78609",
+      "english_prompt": "In love with",
+      "target_hebrew": "מאוהב ב…",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78588",
+      "english_prompt": "Ponytail",
+      "target_hebrew": "קוקו (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    },
+    {
+      "id": "cc_fc_78566",
+      "english_prompt": "The one with the ponytail",
+      "target_hebrew": "זה עם הקוקו",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l17"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "17"
+      }
+    }
+  ]
+}

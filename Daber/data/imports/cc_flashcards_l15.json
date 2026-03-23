@@ -1,0 +1,292 @@
+{
+  "id": "cc_flashcards_l15",
+  "title": "CC Flashcards — Lesson 15",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78516",
+      "english_prompt": "What are you  👩‍🦰 suggesting?",
+      "target_hebrew": "מה את מציעה?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78523",
+      "english_prompt": "I have no energy for that/I'm not dealing with this",
+      "target_hebrew": "טוב, אין לי כוח לזה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15"
+      }
+    },
+    {
+      "id": "cc_fc_78533",
+      "english_prompt": "I suggest 🧔‍♂️that we order pizza",
+      "target_hebrew": "אני מציע שנזמין פיצה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78544",
+      "english_prompt": "They  👩‍🦰🧔‍♂️trust each other",
+      "target_hebrew": "הם סומכים אחד על השני.",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15",
+        "gender": "f",
+        "emoji": "👩🦰🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78622",
+      "english_prompt": "This jacket looks good on you 🧔‍♂️",
+      "target_hebrew": "יפֶה לך הז'קט",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78540",
+      "english_prompt": "These glasses look good on you 👩‍🦰",
+      "target_hebrew": "יפים לך המשקפיים",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78611",
+      "english_prompt": "He offers him coffee",
+      "target_hebrew": "הוא מציע לו קפה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15"
+      }
+    },
+    {
+      "id": "cc_fc_78614",
+      "english_prompt": "End of story",
+      "target_hebrew": "נסגר הסיפור",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15"
+      }
+    },
+    {
+      "id": "cc_fc_78572",
+      "english_prompt": "They  👩‍🦰🧔‍♂️yelling at each other",
+      "target_hebrew": "הם צועקים אחד על השני",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15",
+        "gender": "f",
+        "emoji": "👩🦰🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78576",
+      "english_prompt": "Did you 🧔‍♂️ get lost?",
+      "target_hebrew": "הלכת לאיבוד? ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78598",
+      "english_prompt": "Brown",
+      "target_hebrew": "חוּם (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15"
+      }
+    },
+    {
+      "id": "cc_fc_78602",
+      "english_prompt": "Idiot",
+      "target_hebrew": "מטומטם (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15"
+      }
+    },
+    {
+      "id": "cc_fc_78607",
+      "english_prompt": "This shirt looks good on you 👩‍🦰",
+      "target_hebrew": "יפָה לך החולצה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78589",
+      "english_prompt": "Stain, spot",
+      "target_hebrew": "כתם (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l15"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "15"
+      }
+    }
+  ]
+}

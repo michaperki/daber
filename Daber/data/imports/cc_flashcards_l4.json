@@ -1,0 +1,390 @@
+{
+  "id": "cc_flashcards_l4",
+  "title": "CC Flashcards — Lesson 4",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78319",
+      "english_prompt": "Hat",
+      "target_hebrew": "כובע (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78295",
+      "english_prompt": "When do the stores open?",
+      "target_hebrew": "מתי החנויות נפתחות?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78298",
+      "english_prompt": "The bank closes everyday at five",
+      "target_hebrew": "הבנק נסגר כל יום בחמש",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78299",
+      "english_prompt": "I wonder why",
+      "target_hebrew": "מעניין למה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78326",
+      "english_prompt": "What a coincidence! Me too!",
+      "target_hebrew": "איזה קטע! גם אני!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78327",
+      "english_prompt": "Oh no, the cake is burning",
+      "target_hebrew": "אוי לא, העוגה נשרפת!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78398",
+      "english_prompt": "Really?? What's up with her? What's her deal?",
+      "target_hebrew": "באמת?? מה הקטע שלה?!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78300",
+      "english_prompt": "Segment, section",
+      "target_hebrew": "קטע (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78314",
+      "english_prompt": "What's up with him? What's his deal?",
+      "target_hebrew": "מה הקטע שלו?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78321",
+      "english_prompt": "Oh no, the rice is burning",
+      "target_hebrew": "אוי לא, האורז נשרף!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78322",
+      "english_prompt": "Weird, but in a good way",
+      "target_hebrew": "מוזר, אבל בקטע טוב",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78329",
+      "english_prompt": "I'm meeting Beyonce",
+      "target_hebrew": "אני נפגשת עם ביונסה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78333",
+      "english_prompt": "Really?! Wow! What a story! How interesting! How amazing! ",
+      "target_hebrew": "באמת?! איזה קטע!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78335",
+      "english_prompt": "The door is not opening, the door doesn't open",
+      "target_hebrew": "הדלת לא נפתחת!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78341",
+      "english_prompt": "I wonder where he is",
+      "target_hebrew": "מעניין איפה הוא",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78357",
+      "english_prompt": "I wonder what happened",
+      "target_hebrew": "מעניין מה קרה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78374",
+      "english_prompt": "In a bad way",
+      "target_hebrew": "בקטע רע / בקטע לא טוב",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78377",
+      "english_prompt": "Smell \r\nSmells",
+      "target_hebrew": "ריח (ז)\nריחות",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78342",
+      "english_prompt": "When does the gym open?",
+      "target_hebrew": "מתי החדר כושר נפתח?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    },
+    {
+      "id": "cc_fc_78366",
+      "english_prompt": "In a good way",
+      "target_hebrew": "בקטע טוב",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l4"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "4"
+      }
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+{
+  "id": "cc_flashcards_l7",
+  "title": "CC Flashcards — Lesson 7",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78402",
+      "english_prompt": "Tomorrow at 5! Are we set (on the time)?? ",
+      "target_hebrew": "מחר בחמש! קבענו??",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78400",
+      "english_prompt": "I'll do my best",
+      "target_hebrew": "אני אשתדל",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78403",
+      "english_prompt": "Have you👩‍🦰 scheduled an appointment with the dentist?",
+      "target_hebrew": "קבעת תור לרופא שיניים? ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78404",
+      "english_prompt": "Try your🧔‍♂️ best to arrive on time",
+      "target_hebrew": "תשתדל להגיע בזמן ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78406",
+      "english_prompt": "Abroad",
+      "target_hebrew": "חו\"ל (ז) ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78407",
+      "english_prompt": "They will go (by vehicle) to Eilat on Saturday",
+      "target_hebrew": "הם יסעו לאילת בשבת",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78409",
+      "english_prompt": "\"Listen 👩‍🦰to what happened to me!\"",
+      "target_hebrew": "תשמעי מה קרה לי!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78410",
+      "english_prompt": "Where will you 🧔‍♂️ go (by vehicle) on the weekend? ",
+      "target_hebrew": "לאן תסע בסופ\"ש?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78411",
+      "english_prompt": "Fluency",
+      "target_hebrew": "שטף (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78414",
+      "english_prompt": "Will the store be open tomorrow?",
+      "target_hebrew": "החנות תהיה פתוחה מחר?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78416",
+      "english_prompt": "The supermarket was closed",
+      "target_hebrew": "הסופר היה סגור",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78421",
+      "english_prompt": "Available",
+      "target_hebrew": "פנוי (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78405",
+      "english_prompt": "Let's schedule a meeting",
+      "target_hebrew": "בוא נקבע פגישה ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78408",
+      "english_prompt": "Did he set up a meeting with Beyonce",
+      "target_hebrew": "הוא קבע פגישה עם ביונסה?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78412",
+      "english_prompt": "The bank is closed today",
+      "target_hebrew": "הבנק סגור היום",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78413",
+      "english_prompt": "Is the bar open now?",
+      "target_hebrew": "הבר פתוח עכשיו? ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78415",
+      "english_prompt": "The market closed an hour ago",
+      "target_hebrew": "השוק נסגר לפני שעה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_574645",
+      "english_prompt": "to try your best, to try hard, to make an effort",
+      "target_hebrew": "להשתדל",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78417",
+      "english_prompt": "Be careful, the glass is broken!",
+      "target_hebrew": "תיזהר, הכוס שבורה!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    },
+    {
+      "id": "cc_fc_78418",
+      "english_prompt": "A broken heart",
+      "target_hebrew": "לב שבור",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l7"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "7"
+      }
+    }
+  ]
+}

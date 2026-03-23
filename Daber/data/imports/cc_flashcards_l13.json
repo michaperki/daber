@@ -1,0 +1,395 @@
+{
+  "id": "cc_flashcards_l13",
+  "title": "CC Flashcards — Lesson 13",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78538",
+      "english_prompt": "I wanted you🧔‍♂️to help me",
+      "target_hebrew": "רציתי שתעזור לי",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78473",
+      "english_prompt": "Don't forget👩‍🦰!",
+      "target_hebrew": "אל תשכחי !",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78474",
+      "english_prompt": "Don't laugh🧔‍♂️!",
+      "target_hebrew": "אל תצחק!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78478",
+      "english_prompt": "I 🧔‍♂️don't want you👩‍🦰 to worry",
+      "target_hebrew": "אני לא רוצה שתדאגי",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "f",
+        "emoji": "🧔♂👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78580",
+      "english_prompt": "Don't be mad 👩‍🦰🧔‍♂️at me",
+      "target_hebrew": "אל תכעסו עליי",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "f",
+        "emoji": "👩🦰🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78472",
+      "english_prompt": "Don't worry🧔‍♂️",
+      "target_hebrew": "אל תדאג",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78554",
+      "english_prompt": "Why are you🧔‍♂️ yelling at me?!",
+      "target_hebrew": "למה אתה צועק עליי?!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78590",
+      "english_prompt": "Shhh.... Don't shout👩‍🦰!",
+      "target_hebrew": "ששש… אל תצעקי!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78599",
+      "english_prompt": "Are you🧔‍♂️ afraid of the dark?",
+      "target_hebrew": "אתה מפחד מהחושך?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_574652",
+      "english_prompt": "to yell, to scream, to shout",
+      "target_hebrew": "לצעוק על",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13"
+      }
+    },
+    {
+      "id": "cc_fc_78518",
+      "english_prompt": "Sign",
+      "target_hebrew": "שֶלֶט (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13"
+      }
+    },
+    {
+      "id": "cc_fc_78527",
+      "english_prompt": "What does the sign on the door say?",
+      "target_hebrew": "מה כתוב בשלט על הדלת?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13"
+      }
+    },
+    {
+      "id": "cc_fc_78513",
+      "english_prompt": "Stuck",
+      "target_hebrew": " תקוע (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13"
+      }
+    },
+    {
+      "id": "cc_fc_78545",
+      "english_prompt": "I'm👩‍🦰stuck at work",
+      "target_hebrew": "אני תקועה בעבודה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78512",
+      "english_prompt": "Hold🧔‍♂️ my bag",
+      "target_hebrew": "תחזיק את התיק שלי",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78536",
+      "english_prompt": "Mug, cup",
+      "target_hebrew": "ספל (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13"
+      }
+    },
+    {
+      "id": "cc_fc_78577",
+      "english_prompt": "Carafe",
+      "target_hebrew": "קנקן (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13"
+      }
+    },
+    {
+      "id": "cc_fc_78537",
+      "english_prompt": "Raise👩‍🦰🧔‍♂️ your hands!",
+      "target_hebrew": "תרימו את הידיים! ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13",
+        "gender": "f",
+        "emoji": "👩🦰🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78541",
+      "english_prompt": "Tail",
+      "target_hebrew": "זנב (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l13"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "13"
+      }
+    }
+  ]
+}

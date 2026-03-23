@@ -1,0 +1,151 @@
+{
+  "id": "cc_flashcards_l0",
+  "title": "CC Flashcards — Lesson 0",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78332",
+      "english_prompt": "If you 🧔‍♂️ would have called me, I👩‍🦰would have helped you🧔‍♂️",
+      "target_hebrew": "אם היית מתקשר אליי, הייתי עוזרת לך ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l0"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "0",
+        "gender": "f",
+        "emoji": "🧔♂👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78340",
+      "english_prompt": "If I 🧔‍♂️ knew him, I 🧔‍♂️ would talk to him",
+      "target_hebrew": "אם הייתי מכיר אותו, הייתי מדבר איתו",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l0"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "0",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78369",
+      "english_prompt": "If I 👩‍🦰 hadn’t been working, I 👩‍🦰 would have gone to the beach",
+      "target_hebrew": "אם לא הייתי עובדת, הייתי הולכת לים",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l0"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "0",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78383",
+      "english_prompt": "He asked him \"what happened?\"",
+      "target_hebrew": "הוא שאל אותו \"מה קרה?\"",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l0"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "0"
+      }
+    },
+    {
+      "id": "cc_fc_78388",
+      "english_prompt": "If you🧔‍♂️ had a plane ticket, where would you fly?",
+      "target_hebrew": "אם היה לך כרטיס טיסה, לאן היית טס?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l0"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "0",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78387",
+      "english_prompt": "If I had enough time, I would have helped him",
+      "target_hebrew": "אם היה לי מספיק זמן, הייתי עוזר לו",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l0"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "0"
+      }
+    },
+    {
+      "id": "cc_fc_78382",
+      "english_prompt": "He rides a bicycle, unless it rains",
+      "target_hebrew": "הוא נוסע באופניים, אלא אם יורד גשם",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l0"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "0"
+      }
+    }
+  ]
+}

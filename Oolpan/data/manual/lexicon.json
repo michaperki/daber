@@ -1,0 +1,184 @@
+{
+  "lexemes": [
+    {
+      "lemma": "אני",
+      "language": "he",
+      "transliteration": "ani",
+      "pos": "pronoun",
+      "root": null,
+      "binyan": null,
+      "gender": null,
+      "number": "singular",
+      "register": null,
+      "notes": "First person singular pronoun",
+      "senses": ["I (1st person singular)"] ,
+      "forms": [
+        {"written_form": "אני", "niqqud_form": null, "transliteration": "ani", "tense": null, "person": "1", "gender": null, "number": "singular", "state": null, "is_common": true, "metadata": null}
+      ]
+    },
+    {
+      "lemma": "עדיין",
+      "language": "he",
+      "transliteration": "adayin",
+      "pos": "adverb",
+      "root": null,
+      "binyan": null,
+      "gender": null,
+      "number": null,
+      "register": null,
+      "notes": "",
+      "senses": ["still (yet)"] ,
+      "forms": [
+        {"written_form": "עדיין", "niqqud_form": null, "transliteration": "adayin", "tense": null, "person": null, "gender": null, "number": null, "state": null, "is_common": true, "metadata": null}
+      ]
+    },
+    {
+      "lemma": "להתלבט",
+      "language": "he",
+      "transliteration": "lehitlabet",
+      "pos": "verb",
+      "root": "ל-ב-ט",
+      "binyan": "hitpael",
+      "gender": null,
+      "number": null,
+      "register": null,
+      "notes": "to deliberate; to be undecided",
+      "senses": ["to deliberate; to be uncertain"],
+      "forms": [
+        {"written_form": "מתלבט", "niqqud_form": null, "transliteration": "mitlabet", "tense": "present", "person": null, "gender": "masculine", "number": "singular", "state": null, "is_common": true, "metadata": {"participle": true}}
+      ]
+    },
+    {
+      "lemma": "אתמול",
+      "language": "he",
+      "transliteration": "etmol",
+      "pos": "adverb",
+      "root": null,
+      "binyan": null,
+      "gender": null,
+      "number": null,
+      "register": null,
+      "notes": "",
+      "senses": ["yesterday"],
+      "forms": [
+        {"written_form": "אתמול", "niqqud_form": null, "transliteration": "etmol", "tense": null, "person": null, "gender": null, "number": null, "state": null, "is_common": true, "metadata": null}
+      ]
+    },
+    {
+      "lemma": "בנק",
+      "language": "he",
+      "transliteration": "bank",
+      "pos": "noun",
+      "root": null,
+      "binyan": null,
+      "gender": "masculine",
+      "number": "singular",
+      "register": null,
+      "notes": "loanword",
+      "senses": ["bank (financial institution)"],
+      "forms": [
+        {"written_form": "בנק", "niqqud_form": null, "transliteration": "bank", "tense": null, "person": null, "gender": "masculine", "number": "singular", "state": null, "is_common": true, "metadata": null},
+        {"written_form": "הבנק", "niqqud_form": null, "transliteration": "habank", "tense": null, "person": null, "gender": "masculine", "number": "singular", "state": "definite", "is_common": true, "metadata": {"article": true}}
+      ]
+    },
+    {
+      "lemma": "להיסגר",
+      "language": "he",
+      "transliteration": "lehissager",
+      "pos": "verb",
+      "root": "ס-ג-ר",
+      "binyan": "nifal",
+      "gender": null,
+      "number": null,
+      "register": null,
+      "notes": "to be closed (intransitive, passive)",
+      "senses": ["to be closed"],
+      "forms": [
+        {"written_form": "נסגר", "niqqud_form": null, "transliteration": "nisgar", "tense": "past", "person": "3", "gender": "masculine", "number": "singular", "state": null, "is_common": true, "metadata": null}
+      ]
+    },
+    {
+      "lemma": "חמש",
+      "language": "he",
+      "transliteration": "chamesh",
+      "pos": "numeral",
+      "root": null,
+      "binyan": null,
+      "gender": null,
+      "number": null,
+      "register": null,
+      "notes": "number five",
+      "senses": ["five"],
+      "forms": [
+        {"written_form": "חמש", "niqqud_form": null, "transliteration": "chamesh", "tense": null, "person": null, "gender": null, "number": null, "state": null, "is_common": true, "metadata": null},
+        {"written_form": "בחמש", "niqqud_form": null, "transliteration": "bechamesh", "tense": null, "person": null, "gender": null, "number": null, "state": "prep-b", "is_common": true, "metadata": {"preposition": "ב"}}
+      ]
+    },
+    {
+      "lemma": "אוי",
+      "language": "he",
+      "transliteration": "oy",
+      "pos": "interjection",
+      "root": null,
+      "binyan": null,
+      "gender": null,
+      "number": null,
+      "register": null,
+      "notes": "exclamation",
+      "senses": ["oh!"],
+      "forms": [
+        {"written_form": "אוי", "niqqud_form": null, "transliteration": "oy", "tense": null, "person": null, "gender": null, "number": null, "state": null, "is_common": true, "metadata": null}
+      ]
+    },
+    {
+      "lemma": "לא",
+      "language": "he",
+      "transliteration": "lo",
+      "pos": "particle",
+      "root": null,
+      "binyan": null,
+      "gender": null,
+      "number": null,
+      "register": null,
+      "notes": "negation",
+      "senses": ["no; not"],
+      "forms": [
+        {"written_form": "לא", "niqqud_form": null, "transliteration": "lo", "tense": null, "person": null, "gender": null, "number": null, "state": null, "is_common": true, "metadata": null}
+      ]
+    },
+    {
+      "lemma": "חלון",
+      "language": "he",
+      "transliteration": "chalon",
+      "pos": "noun",
+      "root": null,
+      "binyan": null,
+      "gender": "masculine",
+      "number": "singular",
+      "register": null,
+      "notes": "",
+      "senses": ["window"],
+      "forms": [
+        {"written_form": "חלון", "niqqud_form": null, "transliteration": "chalon", "tense": null, "person": null, "gender": "masculine", "number": "singular", "state": null, "is_common": true, "metadata": null},
+        {"written_form": "החלון", "niqqud_form": null, "transliteration": "hachalon", "tense": null, "person": null, "gender": "masculine", "number": "singular", "state": "definite", "is_common": true, "metadata": {"article": true}}
+      ]
+    },
+    {
+      "lemma": "להישבר",
+      "language": "he",
+      "transliteration": "lehishaver",
+      "pos": "verb",
+      "root": "ש-ב-ר",
+      "binyan": "nifal",
+      "gender": null,
+      "number": null,
+      "register": null,
+      "notes": "to break (intransitive, passive)",
+      "senses": ["to break (become broken)"],
+      "forms": [
+        {"written_form": "נשבר", "niqqud_form": null, "transliteration": "nishbar", "tense": "past", "person": "3", "gender": "masculine", "number": "singular", "state": null, "is_common": true, "metadata": null}
+      ]
+    }
+  ]
+}
+

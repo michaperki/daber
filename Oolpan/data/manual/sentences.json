@@ -1,0 +1,40 @@
+{
+  "sentences": [
+    {
+      "external_id": "F78281",
+      "hebrew_text": "אני עדיין מתלבט",
+      "english_text": "I'm still deciding",
+      "source": "flashcards",
+      "tokens": [
+        {"surface_text": "אני", "form_written": "אני"},
+        {"surface_text": "עדיין", "form_written": "עדיין"},
+        {"surface_text": "מתלבט", "form_written": "מתלבט"}
+      ]
+    },
+    {
+      "external_id": "F78283",
+      "hebrew_text": "אתמול הבנק נסגר בחמש",
+      "english_text": "Yesterday, the bank closed at 5",
+      "source": "flashcards",
+      "tokens": [
+        {"surface_text": "אתמול", "form_written": "אתמול"},
+        {"surface_text": "הבנק", "form_written": "הבנק"},
+        {"surface_text": "נסגר", "form_written": "נסגר"},
+        {"surface_text": "בחמש", "form_written": "בחמש"}
+      ]
+    },
+    {
+      "external_id": "F78309",
+      "hebrew_text": "אוי לא, החלון נשבר",
+      "english_text": "Oh no, the window got broken",
+      "source": "flashcards",
+      "tokens": [
+        {"surface_text": "אוי", "form_written": "אוי"},
+        {"surface_text": "לא", "form_written": "לא"},
+        {"surface_text": "החלון", "form_written": "החלון"},
+        {"surface_text": "נשבר", "form_written": "נשבר"}
+      ]
+    }
+  ]
+}
+

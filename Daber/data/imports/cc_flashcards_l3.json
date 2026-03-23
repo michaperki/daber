@@ -1,0 +1,602 @@
+{
+  "id": "cc_flashcards_l3",
+  "title": "CC Flashcards — Lesson 3",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78320",
+      "english_prompt": "Document",
+      "target_hebrew": "מסמך (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78285",
+      "english_prompt": "Did you 👩‍🦰 call me?  (not by phone)",
+      "target_hebrew": "קראת לי?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78286",
+      "english_prompt": "\"There is some salt missing/lacking\"",
+      "target_hebrew": "חסר קצת מלח",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78297",
+      "english_prompt": "Wheel",
+      "target_hebrew": "גלגל (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78301",
+      "english_prompt": "He reads a lot ",
+      "target_hebrew": "הוא קורא הרבה ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78305",
+      "english_prompt": "Silverware, cutlery",
+      "target_hebrew": "סכו\"ם (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78311",
+      "english_prompt": "I called you🧔‍♂️!",
+      "target_hebrew": "קראתי לך! ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78315",
+      "english_prompt": "How many books did you 👩‍🦰 read?",
+      "target_hebrew": "כמה ספרים קראת?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78323",
+      "english_prompt": "Confidence/security",
+      "target_hebrew": "ביטחון (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78324",
+      "english_prompt": "She is missing one cup/glass",
+      "target_hebrew": "חסרה לה כוס אחת",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78328",
+      "english_prompt": "Call 🧔‍♂️ him (not by phone!)",
+      "target_hebrew": "תקרא לו",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78380",
+      "english_prompt": "He lacks confidence (literally: \"he misses confidence\")",
+      "target_hebrew": "חסר לו ביטחון",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78287",
+      "english_prompt": "A piece or a part",
+      "target_hebrew": "חלק (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78292",
+      "english_prompt": "Do you 🧔‍♂️ like to read?",
+      "target_hebrew": "אתה אוהב לקרוא?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78296",
+      "english_prompt": "Are you 🧔 missing anything/something, do you miss anything/something",
+      "target_hebrew": "חסר לך משהו? ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "m",
+        "emoji": "🧔"
+      }
+    },
+    {
+      "id": "cc_fc_78303",
+      "english_prompt": "Did you find your 🧔‍♂️ phone?",
+      "target_hebrew": "מצאת את הטלפון שלך?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78386",
+      "english_prompt": "We will find a way",
+      "target_hebrew": "אנחנו נמצא דרך",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78393",
+      "english_prompt": "You🧔‍♂️will find him",
+      "target_hebrew": "אתה תמצא אותו",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78351",
+      "english_prompt": "Missing, lacking",
+      "target_hebrew": "חסר",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78356",
+      "english_prompt": "I'm missing details",
+      "target_hebrew": "חסרים לי פרטים",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78358",
+      "english_prompt": "Call me when you 👩‍🦰 are ready",
+      "target_hebrew": "תקראי לי כשאת מוכנה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78360",
+      "english_prompt": "Just in case, to be on the safe side",
+      "target_hebrew": "ליתר ביטחון",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78362",
+      "english_prompt": "She is missing one piece",
+      "target_hebrew": "חסר לה חלק אחד",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78373",
+      "english_prompt": "Umbrella",
+      "target_hebrew": "מטריה (נ)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78334",
+      "english_prompt": "I 🧔‍♂️ can’t find my phone",
+      "target_hebrew": "אני לא מוצא את הטלפון שלי",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78349",
+      "english_prompt": "Not necessarily",
+      "target_hebrew": "לא בהכרח",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78363",
+      "english_prompt": "I don't miss anything, I'm not missing anything",
+      "target_hebrew": "לא חסר לי כלום",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_78378",
+      "english_prompt": "You 👩‍🦰 are lacking vocabulary",
+      "target_hebrew": "חסרות לך מילים",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_574644",
+      "english_prompt": "to call (someone, not on the phone)",
+      "target_hebrew": "לקרוא ל... (מישהו)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    },
+    {
+      "id": "cc_fc_574643",
+      "english_prompt": "to read",
+      "target_hebrew": "לקרוא את",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l3"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "3"
+      }
+    }
+  ]
+}

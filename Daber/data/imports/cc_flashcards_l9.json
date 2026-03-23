@@ -1,0 +1,459 @@
+{
+  "id": "cc_flashcards_l9",
+  "title": "CC Flashcards — Lesson 9",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78432",
+      "english_prompt": "It happened after we talked",
+      "target_hebrew": "זה קרה אחרי שדיברנו",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78430",
+      "english_prompt": "Where were you 🧔‍♂️ before the movie?",
+      "target_hebrew": "איפה היית לפני הסרט?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78429",
+      "english_prompt": "Where did you 👩‍🦰 go after the party?",
+      "target_hebrew": "לאן הלכת אחרי המסיבה?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78428",
+      "english_prompt": "He will be happy to come with you 👩‍🦰",
+      "target_hebrew": "הוא ישמח לבוא איתך",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78436",
+      "english_prompt": "Don't forget!",
+      "target_hebrew": "אל תשכח!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78427",
+      "english_prompt": "I would be happy to! I would love to!",
+      "target_hebrew": "אני אשמח",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78426",
+      "english_prompt": "She will go (by vehicle) to Berlin",
+      "target_hebrew": "היא תסע לברלין",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78425",
+      "english_prompt": "I'll send the document tomorrow ",
+      "target_hebrew": "אני אשלח את המסמך מחר",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78424",
+      "english_prompt": "Did you 🧔‍♂️ send her the email?",
+      "target_hebrew": "שלחת לה את האימייל?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78423",
+      "english_prompt": "She sends him a WhatsApp",
+      "target_hebrew": "היא שולחת לו ווצאפ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78422",
+      "english_prompt": "He did it to spite her",
+      "target_hebrew": "הוא עשה לה דווקא",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78419",
+      "english_prompt": "\"Actually not\"",
+      "target_hebrew": "דווקא לא",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78420",
+      "english_prompt": "Why specifically green!? (Of all colors)",
+      "target_hebrew": "למה דווקא ירוק?!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78431",
+      "english_prompt": "Open 👩‍🦰 the window please ",
+      "target_hebrew": "תפתחי את החלון ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78433",
+      "english_prompt": "Since",
+      "target_hebrew": "מאז",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78434",
+      "english_prompt": "Despite, although, even though",
+      "target_hebrew": "למרות",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78435",
+      "english_prompt": "By / Until",
+      "target_hebrew": "עד ",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78437",
+      "english_prompt": "Until what time are you at the office= by what time are you at the office?",
+      "target_hebrew": "עד מתי את במשרד?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78439",
+      "english_prompt": "I arrived although the bus was late",
+      "target_hebrew": "הגעתי למרות שהאוטובוס איחר",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78440",
+      "english_prompt": "He's been sick since Thursday",
+      "target_hebrew": "הוא חולה מאז יום חמישי",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78438",
+      "english_prompt": "It was fun, despite the rain",
+      "target_hebrew": "היה כיף, למרות הגשם",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    },
+    {
+      "id": "cc_fc_78441",
+      "english_prompt": "I've  👩‍🦰  been thinking about you 🧔‍♂️ ever since we met",
+      "target_hebrew": "אני חושבת עליך מאז שנפגשנו",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9",
+        "gender": "f",
+        "emoji": "👩🦰🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78444",
+      "english_prompt": "I'll be home by 5 = I'll be home until 5",
+      "target_hebrew": "אני אהיה בבית עד חמש",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l9"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "9"
+      }
+    }
+  ]
+}

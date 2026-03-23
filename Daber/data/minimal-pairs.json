@@ -1,0 +1,25 @@
+{
+  "id": "minimal_pairs_01",
+  "title": "Minimal Pairs",
+  "language": "hebrew",
+  "level": "beginner",
+  "type": "minimal_pairs",
+  "description": "Practice confusable Hebrew sounds",
+  "pairs": [
+    { "word_a": "כלב", "meaning_a": "dog", "word_b": "חלב", "meaning_b": "milk", "confusable": "כ/ח" },
+    { "word_a": "כוס", "meaning_a": "cup", "word_b": "חוס", "meaning_b": "to take pity", "confusable": "כ/ח" },
+    { "word_a": "סוס", "meaning_a": "horse", "word_b": "שוש", "meaning_b": "rose (literary)", "confusable": "ס/ש" },
+    { "word_a": "סער", "meaning_a": "storm", "word_b": "שער", "meaning_b": "gate/hair", "confusable": "ס/ש" },
+    { "word_a": "טיל", "meaning_a": "missile", "word_b": "תיל", "meaning_b": "wire", "confusable": "ט/ת" },
+    { "word_a": "טס", "meaning_a": "flew", "word_b": "תס", "meaning_b": "will fly (f)", "confusable": "ט/ת" },
+    { "word_a": "אור", "meaning_a": "light", "word_b": "עור", "meaning_b": "skin/leather", "confusable": "א/ע" },
+    { "word_a": "אין", "meaning_a": "there is not", "word_b": "עין", "meaning_b": "eye", "confusable": "א/ע" },
+    { "word_a": "קר", "meaning_a": "cold", "word_b": "כר", "meaning_b": "pillow", "confusable": "ק/כ" },
+    { "word_a": "קם", "meaning_a": "got up", "word_b": "כם", "meaning_b": "your (pl)", "confusable": "ק/כ" },
+    { "word_a": "בית", "meaning_a": "house", "word_b": "וית", "meaning_b": "(non-word)", "confusable": "ב/ו" },
+    { "word_a": "בוא", "meaning_a": "come", "word_b": "וואו", "meaning_b": "wow", "confusable": "ב/ו" },
+    { "word_a": "סבא", "meaning_a": "grandfather", "word_b": "שבא", "meaning_b": "came (literary)", "confusable": "ס/ש" },
+    { "word_a": "כיס", "meaning_a": "pocket", "word_b": "חיס", "meaning_b": "to spare", "confusable": "כ/ח" },
+    { "word_a": "אף", "meaning_a": "nose/even", "word_b": "עף", "meaning_b": "flew", "confusable": "א/ע" }
+  ]
+}

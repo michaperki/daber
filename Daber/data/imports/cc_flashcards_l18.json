@@ -1,0 +1,330 @@
+{
+  "id": "cc_flashcards_l18",
+  "title": "CC Flashcards — Lesson 18",
+  "language": "he",
+  "level": "green",
+  "type": "vocab",
+  "description": "Flashcards scraped from Citizen Cafe; emojis preserved.",
+  "items": [
+    {
+      "id": "cc_fc_78529",
+      "english_prompt": "They're👩‍🦰🧔‍♂️ still deciding ",
+      "target_hebrew": "הם עדיין מתלבטים",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18",
+        "gender": "f",
+        "emoji": "👩🦰🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78528",
+      "english_prompt": "You👩‍🦰 better get ready for the test",
+      "target_hebrew": "כדאי לך להתכונן למבחן",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78532",
+      "english_prompt": "Should one go to the beach in December?",
+      "target_hebrew": "כדאי ללכת לים בדצמבר?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18"
+      }
+    },
+    {
+      "id": "cc_fc_78552",
+      "english_prompt": "Should I take an umbrella?",
+      "target_hebrew": "כדאי לי לקחת מטריה?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18"
+      }
+    },
+    {
+      "id": "cc_fc_78555",
+      "english_prompt": "What should I do?",
+      "target_hebrew": "מה כדאי לי לעשות?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18"
+      }
+    },
+    {
+      "id": "cc_fc_78531",
+      "english_prompt": "This restaurant is really bad",
+      "target_hebrew": "המסעדה הזאת ממש גרועה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18"
+      }
+    },
+    {
+      "id": "cc_fc_78553",
+      "english_prompt": "What's the worst movie you've🧔‍♂️ seen?",
+      "target_hebrew": "מה הסרט הכי גרוע שראית?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78568",
+      "english_prompt": "He's a perfectionist, in a good way",
+      "target_hebrew": "הוא פרפקציוניסט, בקטע טוב",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18"
+      }
+    },
+    {
+      "id": "cc_fc_78585",
+      "english_prompt": "Where is the one🧔‍♂️ who plays the guitar?",
+      "target_hebrew": "איפה זה שמנגן על גיטרה?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78600",
+      "english_prompt": "A day off",
+      "target_hebrew": "יום חופש (ז)",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18"
+      }
+    },
+    {
+      "id": "cc_fc_78604",
+      "english_prompt": "Try (your hardest)🧔‍♂️ to concentrate!",
+      "target_hebrew": "תשתדל להתרכז!",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78561",
+      "english_prompt": "Where is the one🧔‍♂️ who speaks on the phone?",
+      "target_hebrew": "איפה זה שמדבר בטלפון?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18",
+        "gender": "m",
+        "emoji": "🧔♂"
+      }
+    },
+    {
+      "id": "cc_fc_78573",
+      "english_prompt": "Should I go to the beach today?",
+      "target_hebrew": "כדאי לי ללכת לים היום?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18"
+      }
+    },
+    {
+      "id": "cc_fc_78579",
+      "english_prompt": "Where is the one 👩‍🦰with the black hat?",
+      "target_hebrew": "איפה זאת עם הכובע השחור?",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    },
+    {
+      "id": "cc_fc_78592",
+      "english_prompt": "He feels sorry for himself",
+      "target_hebrew": "הוא מרחם על עצמו",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18"
+      }
+    },
+    {
+      "id": "cc_fc_78610",
+      "english_prompt": "Let's👩‍🦰 bet on a beer",
+      "target_hebrew": "בואי נתערב על בירה",
+      "transliteration": null,
+      "accepted_variants": [],
+      "near_miss_patterns": [],
+      "tags": [
+        "vocab",
+        "cc",
+        "l18"
+      ],
+      "difficulty": 1,
+      "features": {
+        "source": "citizencafe",
+        "kind": "flashcard",
+        "lesson": "18",
+        "gender": "f",
+        "emoji": "👩🦰"
+      }
+    }
+  ]
+}

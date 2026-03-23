@@ -25,11 +25,11 @@ export async function logEvent(evt: LogEvent) {
         session_id: evt.session_id ?? null,
         user_id: evt.user_id ?? null,
         lesson_id: evt.lesson_id ?? null,
-        payload: evt.payload ?? null
+        // For Prisma JSON input, prefer undefined over null
+        payload: (evt.payload === null || typeof evt.payload === 'undefined') ? undefined : (evt.payload as any)
       }
     });
   } catch (e) {
     // ignore DB log failures
   }
 }
-

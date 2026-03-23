@@ -1,8 +1,19 @@
 # Roadmap — High‑Impact Improvements (Daber)
 
-Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator quality, and UX. Aligned with stable API contracts in `Daber/lib/contracts.ts` and minimal dependencies.
+Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator quality, and UX. Aligned with stable API contracts in `Daber/lib/contracts.ts` and minimal dependencies. **Every priority is evaluated against one question: does this make Mike's daily practice better?**
 
-## Priorities at a Glance
+## Priorities at a Glance (ordered by impact)
+1. ~~**Deploy to mobile**~~ — **SHIPPED** (Heroku, 2026-03-23).
+2. **Fix existing bugs** — Stabilize what exists now that real mobile use will surface issues.
+   - Done: library filters wired, vocab page no runtime FS, settings button links to Profile.
+   - Remaining: mobile keyboard UX polish.
+3. **Word lifecycle phases** — Introduce words gently (exposure → recognition → guided production → free recall) instead of throwing new vocab straight into hard recall. See SOUL.md “Pedagogy Model.”
+4. **Verb introduction flow** — Infinitive first, then conjugations one at a time, interleaved with familiar words.
+5. **Smarter sentence generation** — Constraint-based: mix known words with target words for natural, varied sentences. See SOUL.md “Sentence Generation Vision.”
+6. **SRS drives drill type** — Use ItemStat/FeatureStat to determine which *phase* a word is in, not just *when* to review.
+7. **TTS Hebrew quality** — Hard problem. Investigate alternatives when time allows.
+
+## Previous Priorities (many shipped)
 - Feature‑aware feedback chips on Prompt/Feedback.
 - Evaluator normalization coverage + tests.
 - Auto‑resume listening + TTS rate control.

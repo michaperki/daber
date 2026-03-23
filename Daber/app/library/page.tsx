@@ -1,6 +1,7 @@
 import React from 'react';
+import Link from 'next/link';
 import { prisma } from '@/lib/db';
-import StartOrContinueButton from '@/app/StartOrContinueButton';
+import LibraryClient from './LibraryClient';
 
 type LessonCard = {
   id: string;
@@ -55,27 +56,17 @@ export default async function LibraryPage() {
     <div className="lib-root">
       <div className="lib-topbar">
         <h1 className="lib-title">lesson packs</h1>
-        <button className="lib-settings-btn" title="settings">
+        <Link href="/profile" className="lib-settings-btn" title="settings" aria-label="settings">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <circle cx="8" cy="8" r="2.5"/>
-            <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" strokeLinecap="round"/>
+            <path d="M2 4h12M2 8h12M2 12h12" strokeLinecap="round"/>
+            <circle cx="6" cy="4" r="1.6" fill="currentColor" stroke="none"/>
+            <circle cx="10" cy="8" r="1.6" fill="currentColor" stroke="none"/>
+            <circle cx="8" cy="12" r="1.6" fill="currentColor" stroke="none"/>
           </svg>
-        </button>
+        </Link>
       </div>
 
-      <div className="filter-row">
-        <span className="filter-pill active">all</span>
-        <span className="filter-pill">beginner</span>
-        <span className="filter-pill">intermediate</span>
-        <span className="filter-pill">verbs</span>
-        <span className="filter-pill">pronouns</span>
-        <span className="filter-pill">completed</span>
-      </div>
-
-      <div className="section-eyebrow">available</div>
-      {lessons.map((l) => (
-        <LessonPackCard key={l.id} lesson={l} />
-      ))}
+      <LibraryClient lessons={ lessons } />
 
       <div className="divider" />
       <div className="section-eyebrow">coming soon</div>
@@ -93,47 +84,6 @@ export default async function LibraryPage() {
           </div>
           <span className="pack-status-badge badge-locked">locked</span>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function LessonPackCard({ lesson }: { lesson: LessonCard }) {
-  return (
-    <div className="pack-card">
-      <div className="pack-top">
-        <div className="pack-icon amber">
-          <svg viewBox="0 0 18 18" fill="none" stroke="#854F0B" strokeWidth="1.5">
-            <path d="M9 2v14M2 9h14" strokeLinecap="round"/>
-            <circle cx="9" cy="9" r="3"/>
-          </svg>
-        </div>
-        <div className="pack-meta">
-          <p className="pack-name">{lesson.title}</p>
-          <p className="pack-desc">{lesson.description || lesson.type}</p>
-        </div>
-        <span className={`pack-status-badge ${lesson.progressPct===0? 'badge-new' : (lesson.progressPct<100? 'badge-in-progress' : 'badge-complete')}`}>
-          {lesson.progressPct===0? 'new' : (lesson.progressPct<100? 'in progress' : 'done')}
-        </span>
-      </div>
-      <div className="pack-footer">
-        <div className="pack-chips">
-          <span className="pack-chip">{lesson.level}</span>
-          <span className="pack-chip">{lesson.type.replace('_', ' ')}</span>
-          <span className="pack-chip">{lesson.itemCount} items</span>
-        </div>
-        <div className="pack-progress-wrap">
-          <div className="pack-progress-track">
-            <div className="pack-progress-fill" style={{ width: `${lesson.progressPct}%` }} />
-          </div>
-          <span className="pack-progress-pct">{lesson.progressPct ? `${lesson.progressPct}%` : '—'}</span>
-        </div>
-      </div>
-      <div className="cta-row">
-        <div className="pack-chips">
-          <span className="pack-chip">accuracy {lesson.accuracyPct ? `${lesson.accuracyPct}%` : '—'}</span>
-        </div>
-        <StartOrContinueButton sessionId={null} lessonId={lesson.id} label="start" />
       </div>
     </div>
   );

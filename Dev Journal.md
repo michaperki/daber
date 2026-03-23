@@ -2,6 +2,11 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
+## 2026-03-23 — Deployed to Heroku
+- App is live and accessible on mobile. The #1 blocker is resolved.
+- Priorities reordered: bug fixes and stabilization move up now that real mobile use will surface issues.
+- Next focus: fix known bugs (library filters, vocab page path, mobile UX), then word lifecycle phases.
+
 ## 2026-03-23 — Product direction and pedagogy brainstorm
 - Added "Target User" section to SOUL.md — the most important section. Build for Mike, not hypothetical users.
 - Added "Current Product State" to SOUL.md capturing what works (drill flow, timing) and what doesn't (not deployed, no word introduction phase, mechanical generation, poor TTS Hebrew).
@@ -62,3 +67,7 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - Added root docs: `SOUL.md`, `memory/MEMORY.md`, `AI_SETUP.md`, and this journal.
 - Moved `Daber/ROADMAP.md` to root as `ROADMAP.md` and updated references.
 - Archived `CONTEXT_DUMPS/` under `archive/CONTEXT_DUMPS/`.
+## 2026-03-23 — Library filters, settings link, vocab page
+- Library: wired settings gear to `/profile`; filters are now functional (all, beginner, intermediate, verbs, pronouns, completed) with client-side state.
+- Vocab: removed hardcoded FS read of `../Mike_Hebrew_Vocab.md`; page now relies on DB lesson (`user_vocab_01`) and shows a gentle empty state.
+- Session (recognition mode): improved mobile typing UX (input attributes) and auto-focus after Hebrew TTS.

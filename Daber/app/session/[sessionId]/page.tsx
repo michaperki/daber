@@ -59,6 +59,7 @@ export default function DaberSessionPage() {
   const [forcedDirection, setForcedDirection] = React.useState<'en_to_he' | 'he_to_en' | null>(null);
   const isListeningMode = (forcedDirection || settings.drillDirection) === 'he_to_en';
   const [englishInput, setEnglishInput] = React.useState('');
+  const englishInputRef = React.useRef<HTMLInputElement | null>(null);
 
   const fetchNextRaw = React.useCallback(async (): Promise<NextItemResponse> => {
     try {
@@ -98,6 +99,7 @@ export default function DaberSessionPage() {
         // In he→en mode, play the Hebrew audio as the prompt
         setEnglishInput('');
         await playTTS(data.item.target_hebrew);
+        try { englishInputRef.current?.focus(); } catch {}
       } else if (settings.speakPrompt) {
         await playTTS(stripHowDoISay(data.item.english_prompt));
       }
@@ -257,6 +259,11 @@ export default function DaberSessionPage() {
               onChange={(e) => setEnglishInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && englishInput.trim()) submitAnswer(englishInput); }}
               disabled={phase === 'feedback' || phase === 'evaluating'}
+              ref={englishInputRef}
+              autoCorrect="off"
+              autoCapitalize="sentences"
+              inputMode="text"
+              enterKeyHint="send"
             />
           </div>
 

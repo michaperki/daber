@@ -30,6 +30,9 @@ Last updated: 2026-03-23
 - Organizational cleanup: updated MEMORY.md, Dev Journal, and Claude Code auto-memory to reflect actual project state.
 - Wired `generateNounItem` into the strategies array (was dead code).
 - Moved `CONVO.md` into `scraper/`.
+- Library page: made filters functional (client-side) and linked settings gear to `/profile`.
+- Vocab page: removed runtime FS read of `Mike_Hebrew_Vocab.md`; relies on DB-seeded vocab lesson.
+- Recognition UX: auto-focus input after Hebrew TTS; mobile input attributes tuned.
 
 ## Pointers & Artifacts
 - Contracts: `Daber/lib/contracts.ts`

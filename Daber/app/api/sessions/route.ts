@@ -18,8 +18,9 @@ export async function POST(req: Request) {
     const lesson = await prisma.lesson.findUnique({ where: { id: lessonId } });
     if (!lesson) return NextResponse.json({ error: 'Lesson not found' }, { status: 404 });
 
+    const subsetData = (subset && subset.length ? (subset as any) : undefined);
     const session = await prisma.session.create({
-      data: { lesson_id: lessonId, user_id: userId ?? null, subset_item_ids: subset && subset.length ? subset : null },
+      data: { lesson_id: lessonId, user_id: userId ?? null, subset_item_ids: subsetData },
       select: { id: true, lesson_id: true, started_at: true }
     });
     logEvent({ type: 'session_started', session_id: session.id, lesson_id: lessonId, user_id: userId ?? undefined });

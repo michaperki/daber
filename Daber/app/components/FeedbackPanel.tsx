@@ -9,12 +9,12 @@ function featureChipFromPrompt(correctHebrew: string): string | null {
   return null;
 }
 
-function featureChips(features?: Record<string, string> | null): string[] {
+function featureChips(features?: Record<string, string | null> | null): string[] {
   if (!features) return [];
   const chips: string[] = [];
-  if (features.pos) chips.push(features.pos);
-  if (features.binyan) chips.push(features.binyan);
-  if (features.tense) chips.push(features.tense);
+  if (features.pos) chips.push(String(features.pos));
+  if (features.binyan) chips.push(String(features.binyan));
+  if (features.tense) chips.push(String(features.tense));
   const p = features.person || '';
   const n = features.number || '';
   const g = features.gender || '';

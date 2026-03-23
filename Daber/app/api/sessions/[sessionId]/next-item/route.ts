@@ -99,7 +99,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const phase = await computePhaseFor(item.id);
       return NextResponse.json({ done: false, item, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
     } else {
-      let nextItem = null as null | { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features?: Record<string, string> | null };
+      let nextItem: any = null;
       if (useRandom) {
         const remain = await prisma.lessonItem.findMany({
           where: { lesson_id: session.lesson_id, NOT: { id: { in: Array.from(attemptedIds) } } },

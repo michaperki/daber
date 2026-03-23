@@ -236,8 +236,7 @@ export default function DaberSessionPage() {
       {showIntro ? (
         <div className="prompt-card" style={{ marginBottom: 12 }}>
           <div className="prompt-eyebrow">new word</div>
-          <div className="prompt-text">Listen and look — no pressure to answer</div>
-          <div className="correct-hebrew" style={{ marginTop: 6 }}>{item.target_hebrew}</div>
+          <div className="intro-hero-hebrew">{item.target_hebrew}</div>
           {item.transliteration ? (
             <div className="correct-transliteration" style={{ marginTop: 2 }}>{item.transliteration}</div>
           ) : null}
@@ -245,10 +244,11 @@ export default function DaberSessionPage() {
             <span style={{ color: 'var(--color-text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>english: </span>
             {stripHowDoISay(item.english_prompt)}
           </div>
+          <div className="intro-hint">Listen and look — no pressure to answer</div>
           <div className="cta-row" style={{ marginTop: 10 }}>
-            <button className="btn-start" onClick={() => playTTS(item.target_hebrew)}>hear</button>
+            <button className="btn-resume" onClick={() => playTTS(item.target_hebrew)}>hear</button>
             <button
-              className="btn-resume"
+              className="btn-start"
               onClick={async () => {
                 try {
                   await apiMarkSeen(sessionId, item.id);

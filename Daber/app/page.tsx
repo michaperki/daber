@@ -10,6 +10,10 @@ function formatDate(d: Date) {
   return new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(d);
 }
 
+function localDateKey(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 async function getDashboardData() {
   const inProgress = await prisma.session.findFirst({
     where: { ended_at: null },
@@ -33,13 +37,13 @@ async function getDashboardData() {
 
   const since = new Date(); since.setDate(since.getDate() - 6);
   const recentSessions = await prisma.session.findMany({ where: { started_at: { gte: since } }, select: { started_at: true } });
-  const daySet = new Set(recentSessions.map(s => new Date(s.started_at).toISOString().slice(0,10)));
+  const daySet = new Set(recentSessions.map(s => localDateKey(new Date(s.started_at))));
   // streak: count back from today
   let streak = 0; {
     const today = new Date();
     for (let i = 0; i < 30; i++) {
       const d = new Date(today); d.setDate(today.getDate() - i);
-      const key = d.toISOString().slice(0,10);
+      const key = localDateKey(d);
       if (daySet.has(key)) streak++; else break;
     }
   }
@@ -66,7 +70,7 @@ export default async function DaberHome() {
   const pct = totalItems ? Math.round((attemptsDone / totalItems) * 100) : 0;
   const weekDays = Array.from({ length: 7 }).map((_, idx) => {
     const d = new Date(now); d.setDate(now.getDate() - (6 - idx));
-    const key = d.toISOString().slice(0,10);
+    const key = localDateKey(d);
     return { d, key, has: daySet.has(key), isToday: idx === 6 };
   });
   return (
@@ -175,7 +179,7 @@ export default async function DaberHome() {
         {fallbackLesson?.id ? (
           <>
             <StartWeakSpotsButton lessonId={fallbackLesson.id} label="drill weak spots" />
-            <StartDueButton lessonId={fallbackLesson.id} type="feature" label="review due (features)" />
+            <StartDueButton lessonId={fallbackLesson.id} type="feature" label="review due" />
             <GenerateSentencesButton />
           </>
         ) : null}

@@ -32,18 +32,18 @@ export default async function ProfilePage() {
       <div className="section-header">
         <span className="section-label">quick links</span>
       </div>
-      <div className="quick-start-row">
-        <Link href="/library" className="qs-btn" style={{ textDecoration: 'none' }}>
-          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M7.5 2v11M2 7.5h11" strokeLinecap="round"/></svg>
-          library
-        </Link>
-        <Link href="/progress" className="qs-btn" style={{ textDecoration: 'none' }}>
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.4"><circle cx="10" cy="10" r="8"/><path d="M10 10l0-5" strokeLinecap="round"/><path d="M10 10l3.5 3.5" strokeLinecap="round"/></svg>
-          progress
+      <div className="quick-start-row" style={{ flexWrap: 'wrap' }}>
+        <Link href="/conjugations" className="qs-btn" style={{ textDecoration: 'none' }}>
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="2" y="2" width="11" height="11" rx="1.5"/><path d="M2 5.5h11M5.5 2v11" strokeLinecap="round"/></svg>
+          tables
         </Link>
         <Link href="/retry" className="qs-btn" style={{ textDecoration: 'none' }}>
           <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M2 7a5 5 0 1 0 5-5" strokeLinecap="round"/><path d="M2 3.5v3.5h3.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           retry
+        </Link>
+        <Link href="/vocab" className="qs-btn" style={{ textDecoration: 'none' }}>
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M3 2.5h9M3 7.5h9M3 12.5h6" strokeLinecap="round"/></svg>
+          vocab
         </Link>
       </div>
       <SettingsCard />

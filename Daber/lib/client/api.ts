@@ -5,7 +5,8 @@ import {
   zNextItemResponse,
   zAttemptResponse,
   zSummaryResponse,
-  zSTTResponse
+  zSTTResponse,
+  zOkResponse
 } from '@/lib/contracts';
 
 async function json<T>(res: Response, schema: z.ZodType<T>): Promise<T> {
@@ -92,4 +93,14 @@ export async function apiOverrideAttempt(sessionId: string, lessonItemId: string
   });
   if (!res.ok) throw new Error('Failed to override attempt');
   return json(res, zAttemptResponse);
+}
+
+export async function apiMarkSeen(sessionId: string, lessonItemId: string) {
+  const res = await fetch(`/api/sessions/${sessionId}/seen`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ lessonItemId })
+  });
+  if (!res.ok) throw new Error('Failed to record intro seen');
+  return json(res, zOkResponse);
 }

@@ -79,3 +79,10 @@ export type STTTextRequest = z.infer<typeof zSTTTextRequest>;
 
 export const zTTSRequest = z.object({ text: z.string(), voice: z.string().optional() });
 export type TTSRequest = z.infer<typeof zTTSRequest>;
+
+// Misc utility contracts
+export const zOkResponse = z.object({ ok: z.literal(true) });
+export type OkResponse = z.infer<typeof zOkResponse>;
+
+export const zMarkSeenRequest = z.object({ lessonItemId: z.string() });
+export type MarkSeenRequest = z.infer<typeof zMarkSeenRequest>;

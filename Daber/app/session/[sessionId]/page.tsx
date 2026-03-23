@@ -2,7 +2,7 @@
 import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAudioCoordinator } from '@/lib/client/audio/useAudioCoordinator';
-import { apiNextItem, apiAttempt, apiSTTFromBlob, apiOverrideAttempt } from '@/lib/client/api';
+import { apiNextItem, apiAttempt, apiSTTFromBlob, apiOverrideAttempt, apiMarkSeen } from '@/lib/client/api';
 import type { NextItemResponse, AttemptResponse } from '@/lib/contracts';
 import { PromptHeader } from '@/app/components/PromptHeader';
 import { PromptCard } from '@/app/components/PromptCard';
@@ -57,6 +57,7 @@ export default function DaberSessionPage() {
   /* ── Fetch next item ───────────────────────────────────── */
   const [pacingOffer, setPacingOffer] = React.useState<'end' | 'extend' | null>(null);
   const [forcedDirection, setForcedDirection] = React.useState<'en_to_he' | 'he_to_en' | null>(null);
+  const [showIntro, setShowIntro] = React.useState<boolean>(false);
   const isListeningMode = (forcedDirection || settings.drillDirection) === 'he_to_en';
   const [englishInput, setEnglishInput] = React.useState('');
   const englishInputRef = React.useRef<HTMLInputElement | null>(null);
@@ -83,7 +84,8 @@ export default function DaberSessionPage() {
       return;
     }
     if (!data.item) return;
-    const mode: 'en_to_he' | 'he_to_en' = data.phase === 'recognition' ? 'he_to_en' : 'en_to_he';
+    const mode: 'en_to_he' | 'he_to_en' = (data.phase === 'recognition' || data.phase === 'intro') ? 'he_to_en' : 'en_to_he';
+    setShowIntro(data.phase === 'intro');
     setForcedDirection(mode);
     dispatch({
       type: 'ITEM_LOADED',
@@ -231,7 +233,36 @@ export default function DaberSessionPage() {
     <div className="drill-root">
       <PromptHeader index={progress.index} total={progress.total} onExit={() => router.push('/')} />
 
-      {isListeningMode ? (
+      {showIntro ? (
+        <div className="prompt-card" style={{ marginBottom: 12 }}>
+          <div className="prompt-eyebrow">new word</div>
+          <div className="prompt-text">Listen and look — no pressure to answer</div>
+          <div className="correct-hebrew" style={{ marginTop: 6 }}>{item.target_hebrew}</div>
+          {item.transliteration ? (
+            <div className="correct-transliteration" style={{ marginTop: 2 }}>{item.transliteration}</div>
+          ) : null}
+          <div style={{ marginTop: 8, padding: '8px 16px', background: 'var(--color-background-secondary)', borderRadius: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>
+            <span style={{ color: 'var(--color-text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>english: </span>
+            {stripHowDoISay(item.english_prompt)}
+          </div>
+          <div className="cta-row" style={{ marginTop: 10 }}>
+            <button className="btn-start" onClick={() => playTTS(item.target_hebrew)}>hear</button>
+            <button
+              className="btn-resume"
+              onClick={async () => {
+                try {
+                  await apiMarkSeen(sessionId, item.id);
+                } catch { /* non-fatal */ }
+                setShowIntro(false);
+              }}
+            >
+              start practice
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {!showIntro && (isListeningMode ? (
         <>
           <PromptCard
             prompt="Listen and translate to English"
@@ -309,7 +340,7 @@ export default function DaberSessionPage() {
             <TranscriptPreview value={transcript} />
           )}
         </>
-      )}
+      ))}
 
       {pacingOffer && (
         <div style={{ padding: '12px 16px', marginBottom: 12, borderRadius: 12, background: 'var(--color-background-secondary)', border: '0.5px solid var(--color-border-tertiary)', textAlign: 'center' }}>

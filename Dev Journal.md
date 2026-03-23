@@ -71,3 +71,9 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - Library: wired settings gear to `/profile`; filters are now functional (all, beginner, intermediate, verbs, pronouns, completed) with client-side state.
 - Vocab: removed hardcoded FS read of `../Mike_Hebrew_Vocab.md`; page now relies on DB lesson (`user_vocab_01`) and shows a gentle empty state.
 - Session (recognition mode): improved mobile typing UX (input attributes) and auto-focus after Hebrew TTS.
+
+## 2026-03-23 — Intro phase (exposure) added
+- Server: next-item now returns `phase: 'intro'` for items with no `ItemStat` yet (truly new).
+- Client: session page renders an Intro card for new items with Hebrew + transliteration and a quick "hear" button; continue leads into recognition (he→en) for the same item.
+- Contracts unchanged (uses existing `zDrillPhase`), evaluator/tests unaffected.
+ - Seen event: Added `/api/sessions/[id]/seen` and client `apiMarkSeen()`; tapping "start practice" marks the item as seen by upserting `ItemStat` (streak 0) so it won’t re-enter Intro next time.

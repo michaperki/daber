@@ -19,6 +19,14 @@ export async function POST(req: Request, { params }: { params: { sessionId: stri
     const now = new Date();
     await prisma.$transaction(async (tx) => {
       const existing = await tx.itemStat.findUnique({ where: { lesson_item_id: lessonItemId } });
+      // Mark the family as introduced if applicable
+      try {
+        const li = await tx.lessonItem.findUnique({ where: { id: lessonItemId }, select: { family_id: true, lexeme_id: true } });
+        const familyId = li?.family_id || (li?.lexeme_id ? `lex:${li.lexeme_id}` : null);
+        if (familyId) {
+          await tx.familyStat.upsert({ where: { family_id: familyId }, update: {}, create: { family_id: familyId } });
+        }
+      } catch {}
       if (existing) {
         await tx.itemStat.update({ where: { lesson_item_id: lessonItemId }, data: { last_attempt: now, next_due: now } });
       } else {
@@ -44,4 +52,3 @@ export async function POST(req: Request, { params }: { params: { sessionId: stri
     return NextResponse.json({ error: e?.message || 'Failed to mark seen' }, { status: 500 });
   }
 }
-

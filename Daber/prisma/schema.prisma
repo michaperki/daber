@@ -36,6 +36,10 @@ model LessonItem {
   lexeme              Lexeme?  @relation(fields: [lexeme_id], references: [id])
   features            Json?
   generatedDrills     GeneratedDrill[]
+  // Word family grouping (lexeme-like) for intro logic
+  family_id           String?
+  // Mark a preferred base form within a family (e.g., infinitive for verbs)
+  family_base         Boolean  @default(false)
 }
 
 model Session {
@@ -165,4 +169,10 @@ model GeneratedDrill {
 
   @@index([batch_id], map: "idx_gen_drill_batch")
   @@index([target_lexeme_id], map: "idx_gen_drill_lexeme")
+}
+
+// Family-level introduction state (global; per-user not needed yet)
+model FamilyStat {
+  family_id     String   @id
+  introduced_at DateTime @default(now())
 }

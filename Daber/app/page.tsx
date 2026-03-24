@@ -174,10 +174,6 @@ export default async function DaberHome() {
           <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M2 7a5 5 0 1 0 5-5" strokeLinecap="round"/><path d="M2 3.5v3.5h3.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           retry missed
         </Link>
-        <Link href="/library" className="qs-btn" style={{ textDecoration: 'none' }}>
-          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="2" y="2" width="11" height="11" rx="2"/><path d="M5 7.5h5M7.5 5v5" strokeLinecap="round"/></svg>
-          browse all
-        </Link>
         {fallbackLesson?.id ? (
           <>
             <StartWeakSpotsButton lessonId={fallbackLesson.id} label="drill weak spots" />

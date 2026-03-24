@@ -226,8 +226,8 @@ body {
 .missed-pip { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .pip-flawed { background: #EF9F27; }
 .pip-incorrect { background: #E24B4A; }
-.quick-start-row { display: flex; gap: 8px; padding: 0 1rem; margin-bottom: 1.5rem; }
-.qs-btn { flex: 1; height: 48px; border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-secondary); background: transparent; cursor: pointer; font-family: var(--font-sans); font-size: 13px; color: var(--color-text-primary); display: flex; align-items: center; justify-content: center; gap: 8px; }
+.quick-start-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 1rem; margin-bottom: 1.5rem; }
+.qs-btn { height: 44px; border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-secondary); background: transparent; cursor: pointer; font-family: var(--font-sans); font-size: 12px; color: var(--color-text-primary); display: flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; text-decoration: none; }
 .qs-btn svg { display: block; width: 14px; height: 14px; }
 
 /* CTA buttons (start/resume) */

@@ -38,7 +38,8 @@ export default function DaberSessionPage() {
 
   function stripHowDoISay(text: string): string {
     const re = /^\s*how\s+do\s+i\s+say[:\s-]*/i;
-    return text.replace(re, '').trim();
+    if (!re.test(text)) return text;
+    return text.replace(re, '').replace(/\?+\s*$/, '').trim();
   }
 
   const playTTS = async (text: string): Promise<void> => {

@@ -6,7 +6,6 @@ export const revalidate = 0;
 import StartOrContinueButton from './StartOrContinueButton';
 import StartDueButton from './StartDueButton';
 import StartWeakSpotsButton from './StartWeakSpotsButton';
-import GenerateSentencesButton from './GenerateSentencesButton';
 import StartDynamicDrillButton from './StartDynamicDrillButton';
 
 function formatDate(d: Date) {
@@ -184,7 +183,6 @@ export default async function DaberHome() {
             <StartWeakSpotsButton lessonId={fallbackLesson.id} label="drill weak spots" />
             <StartDueButton lessonId={fallbackLesson.id} type="feature" label="review due" />
             <StartDynamicDrillButton lessonId={fallbackLesson.id} />
-            <GenerateSentencesButton />
           </>
         ) : null}
       </div>

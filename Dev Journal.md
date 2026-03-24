@@ -155,3 +155,13 @@ Note: SOUL.md unchanged (requires approval).
 - Robust en_to_he handling: detect swapped `english`/`hebrew` and correct; final guard drops any item where `english` isn’t Latin or `hebrew` isn’t Hebrew.
 - Dev inspection: `/api/generate-drills` returns raw JSON and parsed items only when `NODE_ENV !== 'production'`.
 - Session toast flag: replaced function property hack with a `useRef` to fix prod type check.
+
+## 2026-03-24 — Guided production phase (UI + logic) and review
+
+- Phase logic: `next-item` now returns `guided` when `ItemStat.correct_streak === 1` (no row → intro, 0 → recognition, 1 → guided, ≥2 → free recall).
+- Session UI: Added guided production mode to `session/[sessionId]/page.tsx`.
+  - English → Hebrew typing with on‑screen Hebrew keyboard.
+  - Keeps voice for free recall and typed English for recognition.
+  - Submits with `direction='en_to_he'` and passes the `phase` for logging.
+- Attempts logging: `/api/attempts` accepts optional `phase` and logs it in `attempt_graded` events.
+- Review surface: `/admin/attempts` lists recent attempts from DB (time, grade, English prompt, user answer, correct Hebrew) to quickly inspect guided outcomes.

@@ -61,12 +61,13 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const subsetRaw = (session as any).subset_item_ids as unknown;
     const subset = Array.isArray(subsetRaw) ? (subsetRaw as unknown[]).map(String) : [];
 
-    async function computePhaseFor(itemId: string): Promise<'intro' | 'recognition' | 'free_recall'> {
+    async function computePhaseFor(itemId: string): Promise<'intro' | 'recognition' | 'guided' | 'free_recall'> {
       try {
         const stat = await prisma.itemStat.findUnique({ where: { lesson_item_id: itemId } });
         if (stat) {
           const streak = stat.correct_streak || 0;
           if (streak === 0) return 'recognition';
+          if (streak === 1) return 'guided';
           return 'free_recall';
         }
         // No per-item stat: check word family

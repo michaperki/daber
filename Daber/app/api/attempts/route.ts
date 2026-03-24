@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     if (!parsed.success) {
       return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
     }
-    const { sessionId, lessonItemId, rawTranscript, direction } = parsed.data;
+    const { sessionId, lessonItemId, rawTranscript, direction, phase } = parsed.data;
 
     const [session, item] = await Promise.all([
       prisma.session.findUnique({ where: { id: sessionId } }),
@@ -56,6 +56,9 @@ export async function POST(req: Request) {
         ]);
       };
       dbWrites().catch(() => {});
+      try {
+        logEvent({ type: 'attempt_graded', session_id: sessionId, lesson_id: session.lesson_id, payload: { lesson_item_id: lessonItemId, grade: engEval.grade, reasons: engEval.reasons, direction: 'he_to_en', phase: phase || null, eval_ms: Date.now() - t0 } });
+      } catch {}
       return response;
     }
 
@@ -148,7 +151,9 @@ export async function POST(req: Request) {
         lesson_item_id: lessonItemId,
         grade: evaluation.grade,
         reasons: evaluation.reasons,
-        eval_ms: Date.now() - t0
+        eval_ms: Date.now() - t0,
+        direction: 'en_to_he',
+        phase: phase || null
       }
     });
 

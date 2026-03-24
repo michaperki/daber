@@ -73,7 +73,8 @@ export const zAttemptRequest = z.object({
   sessionId: z.string(),
   lessonItemId: z.string(),
   rawTranscript: z.string().optional(),
-  direction: z.enum(['en_to_he', 'he_to_en']).optional()
+  direction: z.enum(['en_to_he', 'he_to_en']).optional(),
+  phase: zDrillPhase.optional()
 });
 export type AttemptRequest = z.infer<typeof zAttemptRequest>;
 

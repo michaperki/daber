@@ -41,11 +41,11 @@ export async function apiNextItem(sessionId: string, opts?: { random?: boolean; 
   return json(res, zNextItemResponse);
 }
 
-export async function apiAttempt(sessionId: string, lessonItemId: string, rawTranscript: string, direction?: 'en_to_he' | 'he_to_en') {
+export async function apiAttempt(sessionId: string, lessonItemId: string, rawTranscript: string, direction?: 'en_to_he' | 'he_to_en', phase?: 'intro' | 'recognition' | 'guided' | 'free_recall') {
   const res = await fetch('/api/attempts', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId, lessonItemId, rawTranscript, direction: direction || undefined })
+    body: JSON.stringify({ sessionId, lessonItemId, rawTranscript, direction: direction || undefined, phase: phase || undefined })
   });
   if (!res.ok) throw new Error('Failed to submit attempt');
   return json(res, zAttemptResponse);

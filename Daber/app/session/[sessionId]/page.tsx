@@ -33,6 +33,8 @@ export default function DaberSessionPage() {
   const { state, dispatch } = useSessionMachine();
   const { phase, item, progress, transcript, feedback, hintVisible } = state;
 
+  const [drillPhase, setDrillPhase] = React.useState<'intro' | 'recognition' | 'guided' | 'free_recall' | null>(null);
+
   const lastPromptIdRef = React.useRef<string | null>(null);
   const newContentToastShownRef = React.useRef<boolean>(false);
 
@@ -61,9 +63,13 @@ export default function DaberSessionPage() {
   const [pacingOffer, setPacingOffer] = React.useState<'end' | 'extend' | null>(null);
   const [forcedDirection, setForcedDirection] = React.useState<'en_to_he' | 'he_to_en' | null>(null);
   const [showIntro, setShowIntro] = React.useState<boolean>(false);
-  const isListeningMode = (forcedDirection || settings.drillDirection) === 'he_to_en';
+  const isRecognition = drillPhase === 'recognition';
+  const isGuided = drillPhase === 'guided';
+  const isFreeRecallVoice = drillPhase === 'free_recall';
   const [englishInput, setEnglishInput] = React.useState('');
   const englishInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [hebrewInput, setHebrewInput] = React.useState('');
+  const hebrewInputRef = React.useRef<HTMLInputElement | null>(null);
 
   const fetchNextRaw = React.useCallback(async (): Promise<NextItemResponse> => {
     try {
@@ -93,6 +99,7 @@ export default function DaberSessionPage() {
     if (!data.item) return;
     const mode: 'en_to_he' | 'he_to_en' = (data.phase === 'recognition' || data.phase === 'intro') ? 'he_to_en' : 'en_to_he';
     setShowIntro(data.phase === 'intro');
+    setDrillPhase((data.phase as any) || null);
     setForcedDirection(mode);
     dispatch({
       type: 'ITEM_LOADED',
@@ -104,9 +111,14 @@ export default function DaberSessionPage() {
     // Prepare prompt state once per item (no auto TTS)
     if (lastPromptIdRef.current !== data.item.id) {
       lastPromptIdRef.current = data.item.id;
-      if (mode === 'he_to_en') {
+      setEnglishInput('');
+      setHebrewInput('');
+      if (data.phase === 'recognition') {
         setEnglishInput('');
         try { englishInputRef.current?.focus(); } catch {}
+      } else if (data.phase === 'guided') {
+        setHebrewInput('');
+        try { hebrewInputRef.current?.focus(); } catch {}
       }
     }
     // Prefetch TTS for correction and prompt
@@ -150,7 +162,7 @@ export default function DaberSessionPage() {
     if (!item) return;
     dispatch({ type: 'SUBMIT' });
     try {
-      const data: AttemptResponse = await apiAttempt(sessionId, item.id, raw, isListeningMode ? 'he_to_en' : undefined);
+      const data: AttemptResponse = await apiAttempt(sessionId, item.id, raw, isRecognition ? 'he_to_en' : (isGuided ? 'en_to_he' : undefined), drillPhase || undefined as any);
       dispatch({ type: 'FEEDBACK_RECEIVED', feedback: data });
       // No auto TTS on feedback; play simple SFX only
       try { (data.grade === 'correct') ? audio.sfxGradeCorrect() : audio.sfxGradeIncorrect(); } catch {}
@@ -282,7 +294,7 @@ export default function DaberSessionPage() {
         </div>
       ) : null}
 
-      {!showIntro && (isListeningMode ? (
+      {!showIntro && (isRecognition ? (
         <>
           <PromptCard
             prompt="Listen and translate to English"
@@ -317,6 +329,41 @@ export default function DaberSessionPage() {
 
           <div className="cta-row" style={{ marginBottom: 12 }}>
             <button className="btn-start" onClick={() => submitAnswer(englishInput)} disabled={!englishInput.trim() || phase === 'feedback' || phase === 'evaluating'}>submit</button>
+            <button className="qs-btn" onClick={skip}>skip</button>
+          </div>
+        </>
+      ) : isGuided ? (
+        <>
+          <PromptCard
+            prompt={cleanedPrompt}
+            transliteration={item.transliteration}
+            hintVisible={hintVisible}
+            onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
+            features={item.features || null}
+          />
+
+          <div className="editor-wrap" style={{ marginBottom: 8 }}>
+            <input
+              type="text"
+              className="editor-textarea"
+              style={{ height: 44, resize: 'none' }}
+              placeholder="Type Hebrew..."
+              value={hebrewInput}
+              onChange={(e) => setHebrewInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && hebrewInput.trim()) submitAnswer(hebrewInput); }}
+              disabled={phase === 'feedback' || phase === 'evaluating'}
+              ref={hebrewInputRef}
+              autoCorrect="off"
+              autoCapitalize="off"
+              inputMode="text"
+              enterKeyHint="send"
+              dir="rtl"
+            />
+          </div>
+          <HebrewKeyboard onInsert={(txt) => setHebrewInput((v) => v + txt)} onBackspace={() => setHebrewInput((v) => v.slice(0, -1))} />
+
+          <div className="cta-row" style={{ marginTop: 8, marginBottom: 12 }}>
+            <button className="btn-start" onClick={() => submitAnswer(hebrewInput)} disabled={!hebrewInput.trim() || phase === 'feedback' || phase === 'evaluating'}>submit</button>
             <button className="qs-btn" onClick={skip}>skip</button>
           </div>
         </>
@@ -382,13 +429,13 @@ export default function DaberSessionPage() {
 
       {showFeedback && feedback ? (
         <>
-          <FeedbackPanel grade={feedback.grade} reason={feedback.reason} correctHebrew={feedback.correct_hebrew} transliteration={item.transliteration} features={item.features || null} userTranscript={isListeningMode ? undefined : transcript} />
-          {!isListeningMode && (
+          <FeedbackPanel grade={feedback.grade} reason={feedback.reason} correctHebrew={feedback.correct_hebrew} transliteration={item.transliteration} features={item.features || null} userTranscript={isGuided ? hebrewInput : (isRecognition ? undefined : transcript)} />
+          {(!isRecognition) && (
             <div className="audio-row" style={{ justifyContent: 'center' }}>
               <AudioPlayButton playing={audio.ttsPlaying} onPlay={() => playTTS(feedback.correct_hebrew)} />
             </div>
           )}
-          {isListeningMode && (
+          {isRecognition && (
             <div style={{ marginBottom: 12, padding: '8px 16px', background: 'var(--color-background-secondary)', borderRadius: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>
               <span style={{ color: 'var(--color-text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>english: </span>
               {stripHowDoISay(item.english_prompt)}

@@ -334,6 +334,7 @@ async function persistLLMItems(batchId: string, items: Array<z.infer<typeof zLLM
       continue;
     }
     const id = `gen_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+    const targetLexemeId = byLemmaClean.get(cleanLemma(i.target_word))?.id || null;
     const li = await prisma.lessonItem.create({
       data: {
         id,
@@ -345,10 +346,11 @@ async function persistLLMItems(batchId: string, items: Array<z.infer<typeof zLLM
         near_miss_patterns: [],
         tags: ['generated'],
         difficulty,
+        family_id: targetLexemeId ? (`lex:${targetLexemeId}`) : null,
         features: { pos: 'sentence', source: 'llm' } as any,
       }
     });
-    await upsertGeneratedDrillLink(li.id, byLemmaClean.get(cleanLemma(i.target_word))?.id || null, batchId, i.drill_type, difficulty, i.grammar_focus || null);
+    await upsertGeneratedDrillLink(li.id, targetLexemeId, batchId, i.drill_type, difficulty, i.grammar_focus || null);
     itemIds.push(li.id);
   }
 

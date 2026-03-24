@@ -334,7 +334,9 @@ async function persistLLMItems(batchId: string, items: Array<z.infer<typeof zLLM
       continue;
     }
     const id = `gen_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-    const targetLexemeId = byLemmaClean.get(cleanLemma(i.target_word))?.id || null;
+    const cleanedTargetLemma = cleanLemma(i.target_word);
+    const targetLexemeId = byLemmaClean.get(cleanedTargetLemma)?.id || null;
+    const isBareBase = heb.trim() === cleanedTargetLemma.trim();
     const li = await prisma.lessonItem.create({
       data: {
         id,
@@ -347,6 +349,7 @@ async function persistLLMItems(batchId: string, items: Array<z.infer<typeof zLLM
         tags: ['generated'],
         difficulty,
         family_id: targetLexemeId ? (`lex:${targetLexemeId}`) : null,
+        family_base: !!(targetLexemeId && isBareBase),
         features: { pos: 'sentence', source: 'llm' } as any,
       }
     });

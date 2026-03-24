@@ -82,23 +82,31 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     }
 
     async function maybeSwapToFamilyBase(
-      item: { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null },
+      item: { id: string },
       allowedLessonIds: string[]
     ): Promise<{ id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null }> {
       try {
         // If item would be intro and belongs to a family that wasn't introduced, prefer a base form within that family
         const li = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { family_id: true, lexeme_id: true } });
         const familyId = li?.family_id || (li?.lexeme_id ? `lex:${li.lexeme_id}` : null);
-        if (!familyId) return item;
-        const famIntro = await prisma.familyStat.findUnique({ where: { family_id: familyId } });
-        if (famIntro) return item; // family already introduced
-        const base = await prisma.lessonItem.findFirst({
-          where: { family_id: familyId, lesson_id: { in: allowedLessonIds }, family_base: true },
-          select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true },
-        });
-        return (base as any) || item;
+        if (familyId) {
+          const famIntro = await prisma.familyStat.findUnique({ where: { family_id: familyId } });
+          if (!famIntro) {
+            const base = await prisma.lessonItem.findFirst({
+              where: { family_id: familyId, lesson_id: { in: allowedLessonIds }, family_base: true },
+              select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true },
+            });
+            if (base) return { ...base, features: (base.features as any) || null } as any;
+          }
+        }
+        const orig = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+        if (orig) return { ...orig, features: (orig.features as any) || null } as any;
+        // Fallback minimal shape
+        return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
       } catch {
-        return item;
+        const orig = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } }).catch(() => null);
+        if (orig) return { ...orig, features: (orig.features as any) || null } as any;
+        return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
       }
     }
 

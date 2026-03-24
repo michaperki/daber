@@ -6,10 +6,15 @@
     "noEmit": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "Daber/*"
+      ]
+    }
   },
   "include": [
     "./**/*.ts"
   ]
 }
-

@@ -17,7 +17,7 @@ export type InflectionSeed = {
 
 export type LexemeSeed = {
   lemma: string;
-  pos: 'verb' | 'adjective' | 'noun' | 'phrase' | 'unknown';
+  pos: 'verb' | 'adjective' | 'noun' | 'phrase' | 'unknown' | 'untagged';
   features?: Record<string, string> | null;
   inflections: InflectionSeed[];
 };
@@ -194,7 +194,7 @@ export function parseEnhancedVocabMarkdown(md: string): { cards: VocabCard[]; le
             const plGender = /ות$/.test(plForm) ? 'f' : /ים$/.test(plForm) ? 'm' : gender;
             inflections.push({ form: plForm, number: 'pl', gender: plGender });
           }
-          current = { lemma, pos: 'noun', features: { gender }, inflections };
+          current = { lemma, pos: 'untagged', features: { gender }, inflections };
           flush();
           continue;
         }

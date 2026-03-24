@@ -19,7 +19,20 @@
       "Bash(SEED_CC=1 npx ts-node:*)",
       "Bash(DATABASE_URL=\"postgres://ua6ms4rrk5feh7:pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9@c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1hpgsj66s2lvv\" SEED_CC=1 npx ts-node:*)",
       "Bash(DATABASE_URL=\"postgres://ua6ms4rrk5feh7:pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9@c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1hpgsj66s2lvv\" npx ts-node:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(npx prisma db execute:*)",
+      "Bash(PGPASSWORD='Annette1!' psql:*)",
+      "Bash(PGPASSWORD='pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9' psql:*)",
+      "Bash(PGPASSWORD='pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9' psql -h c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com -U ua6ms4rrk5feh7 -d d1hpgsj66s2lvv -c \"SELECT pos, COUNT\\(*\\) as cnt FROM \"\"Lexeme\"\" WHERE lemma LIKE ''%% %%'' GROUP BY pos ORDER BY cnt DESC;\")",
+      "Bash(PGPASSWORD='pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9' psql -h c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com -U ua6ms4rrk5feh7 -d d1hpgsj66s2lvv -c \"SELECT pos, COUNT\\(*\\) as total, COUNT\\(*\\) FILTER \\(WHERE lemma LIKE ''%% %%''\\) as multi_word FROM \"\"Lexeme\"\" GROUP BY pos ORDER BY total DESC;\")",
+      "Bash(PGPASSWORD='pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9' psql -h c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com -U ua6ms4rrk5feh7 -d d1hpgsj66s2lvv -c \":*)",
+      "Bash(npx tsx:*)",
+      "Bash(pg_isready:*)",
+      "Bash(psql:*)",
+      "Bash(git log:*)",
+      "Bash(PGPASSWORD=pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9 psql:*)",
+      "Bash(1 -c \"DELETE FROM \"\"Lesson\"\" WHERE id = ''sentences_gen'';\")",
+      "Bash(DATABASE_URL=\"postgresql://ua6ms4rrk5feh7:pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9@c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1hpgsj66s2lvv\" npx tsx scripts/clean_gender_markers.ts)"
     ]
   }
 }

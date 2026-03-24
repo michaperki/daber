@@ -278,23 +278,31 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
 
 async function generateNounItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'noun' }, select: { id: true, lemma: true, features: true } });
-  if (!lex.length) return null;
+  const usableLex = lex.filter(l => {
+    const isMultiWord = l.lemma.includes(' ');
+    if (!isMultiWord) return true;
+    const feat = l.features as Record<string, string> | null;
+    return feat?.definite_form != null;
+  });
+  if (!usableLex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
-    const chosen = pick(lex);
+    const chosen = pick(usableLex);
     if (!chosen) break;
+    const feat = chosen.features as Record<string, string> | null;
+    const isCompound = chosen.lemma.includes(' ');
     const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id }, select: { form: true, number: true, gender: true } });
     if (!infls.length) continue;
+
+    const validInfls = isCompound ? infls : infls.filter(i => !i.form.includes(' '));
+    if (!validInfls.length) continue;
 
     const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
     const en = englishFromCard(card?.english_prompt || '');
     if (!en.base) continue;
 
-    // Separate inflections into singular and plural buckets.
-    // Treat null number as singular (most vocab entries are listed in singular).
-    const sgPool = infls.filter(i => i.number === 'sg' || !i.number);
-    const plPool = infls.filter(i => i.number === 'pl');
+    const sgPool = validInfls.filter(i => i.number === 'sg' || !i.number);
+    const plPool = validInfls.filter(i => i.number === 'pl');
 
-    // Decide drill type: only offer plural if a plural inflection actually exists
     const canDoPlural = plPool.length > 0;
     const doDef = !canDoPlural || Math.random() < 0.5;
 
@@ -304,22 +312,19 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
     let drillType: 'def' | 'pl';
 
     if (doDef && sgPool.length > 0) {
-      // Definite article drill: "the knife" → "הסכין"
       usedInf = pick(sgPool)!;
       englishPrompt = `How do I say: the ${en.base}${en.paren ? ' ' + en.paren : ''}?`;
-      targetHebrew = `ה${usedInf.form}`;
+      targetHebrew = isCompound && feat?.definite_form ? feat.definite_form : `ה${usedInf.form}`;
       drillType = 'def';
     } else if (canDoPlural) {
-      // Plural drill — only when we have a real plural form
       usedInf = pick(plPool)!;
       englishPrompt = `How do I say: ${en.base}s${en.paren ? ' ' + en.paren : ''} (plural)?`;
       targetHebrew = usedInf.form;
       drillType = 'pl';
     } else {
-      // Fallback: definite article with whatever we have
-      usedInf = pick(infls)!;
+      usedInf = pick(validInfls)!;
       englishPrompt = `How do I say: the ${en.base}${en.paren ? ' ' + en.paren : ''}?`;
-      targetHebrew = `ה${usedInf.form}`;
+      targetHebrew = isCompound && feat?.definite_form ? feat.definite_form : `ה${usedInf.form}`;
       drillType = 'def';
     }
 

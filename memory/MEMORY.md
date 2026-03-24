@@ -2,7 +2,7 @@
 
 Role: Live project state, architecture snapshot, and current focus. Update this file at the end of each work session.
 
-Last updated: 2026-03-23
+Last updated: 2026-03-24
 
 ---
 
@@ -11,7 +11,16 @@ Last updated: 2026-03-23
 - Data: Prisma (SQLite/Postgres via `DATABASE_URL`). Dual SRS: `ItemStat` (per-item SM-2) + `FeatureStat` (per grammatical feature).
 - Voice I/O: STT (`/api/stt`, Whisper), TTS (`/api/tts`, gpt-4o-mini-tts) with in-process rate limiting + LRU cache.
 - Evaluator: 4-layer pipeline — deterministic → Levenshtein-1 → fuzzy Hebrew confusables → English evaluator (he→en). Code in `Daber/lib/evaluator/*`; tests via `scripts/test_evaluator.ts`.
-- Drill generation: lexicon-driven generators for verbs (present/past/future), adjectives, nouns. Code in `Daber/lib/drill/generators.ts`.
+- Drill generation:
+  - Legacy: lexicon-driven generators for verbs (present/past/future), adjectives, nouns `Daber/lib/drill/generators.ts` (kept as fallback).
+  - New (v1): async LLM-powered content pipeline with validation `Daber/lib/generation/pipeline.ts` and API `Daber/app/api/generate-drills/route.ts`.
+    - DB tables: `GeneratedBatch`, `GeneratedDrill` (created via `prisma db push`).
+    - Generation: selects 3–4 target lexemes + 8–10 known words; prompts for 3–4 items/target; Hebrew always without nikkud.
+    - Validation: second LLM pass fixes grammar (conjugation, agreement); drops if unfixable.
+    - Post-processing: enforce at least one `en_to_he` per target (flip one `he_to_en` if needed); drop malformed pairs (requires Latin in `english`, Hebrew in `hebrew`).
+    - Background trigger: `/api/sessions` starts a batch if undrilled generated queue < `GEN_QUEUE_THRESHOLD` (default 20) and no pending batch.
+    - Session signal: `/api/sessions/[id]/next-item` includes `newContentReady` when a batch landed after `session.started_at`; client shows a toast (no polling).
+    - Mixing: cross‑vocab sessions include lessons of type `vocab_generated`.
 - Drill directions: `en_to_he` (voice) and `he_to_en` (typed). Controlled by `drillDirection` setting.
 - Session state machine: `Daber/lib/client/state/sessionMachine.ts` — pure reducer.
 - Client settings: 15+ settings persisted to localStorage via `Daber/lib/client/settings.tsx`.
@@ -20,8 +29,9 @@ Last updated: 2026-03-23
 `/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/admin/lexicon/validate`.
 
 ## Current Focus
-- Immediate: word lifecycle — Intro exposure step now live; next add a simple Guided step (scaffolded fill‑in / strong hints) before free recall.
-- Next: expand feature‑aware grading rules and tests; progress heatmap for feature mastery; minor mobile keyboard polish.
+- Validate LLM drill quality in real usage; iterate on prompt/validator as needed.
+- Keep legacy generators as fallback until generated pool builds up.
+- Next: guided production phase; feature‑aware grading; minor mobile keyboard polish.
 - Backlog: user auth, STT confidence guardrails, CC import pipeline docs.
 
 ## Recent Changes (2026-03-23)
@@ -36,12 +46,23 @@ Last updated: 2026-03-23
 
 ## Pointers & Artifacts
 - Contracts: `Daber/lib/contracts.ts`
+- Generation: `Daber/lib/generation/pipeline.ts`, `Daber/app/api/generate-drills/route.ts`
 - Voice I/O: `Daber/app/api/{stt,tts}/route.ts`
 - Evaluator: `Daber/lib/evaluator/*`; tests: `scripts/test_evaluator.ts`
 - Generators: `Daber/lib/drill/generators.ts`
 - Seed data: `Daber/prisma/seed.ts`; lessons: `Daber/data/lessons/*`
 - CC imports: `Daber/data/imports/*`; scraper: `scraper/cc_scraper.js`; importer: `scripts/import_citizen_cafe.ts`
 - Oolpan schema ref: `Oolpan/README.md` (design artifact, not running code)
+
+## Ops / Dev Notes
+- Env:
+  - `DATABASE_URL` to Heroku Postgres; `OPENAI_API_KEY` for generation.
+  - `GEN_QUEUE_THRESHOLD` (default 20) controls background batch trigger on session start.
+- Local testing (no server):
+  - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/run_generation_once.ts` (prints raw JSON and persisted rows)
+  - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/call_generate_drills.ts` (invokes API handler; in non‑prod prints raw/items)
+  - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/print_recent_generated.ts`
+
 
 ## Maintenance Notes
 - At session start: skim `SOUL.md` and this file.

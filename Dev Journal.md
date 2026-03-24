@@ -122,3 +122,12 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - Session trigger: `/api/sessions` now fires a background generation job when the undrilled generated queue is below threshold (ENV `GEN_QUEUE_THRESHOLD`, default 20) and no batch is pending.
 - UX: `/api/sessions/[id]/next-item` includes `newContentReady` if generated items landed since `session.started_at`; session page shows a toast (no polling).
 - Picker: Cross‑vocab sessions now include lessons of type `vocab_generated` in selection.
+
+## 2026-03-24 — LLM drill pipeline v1 follow‑ups
+
+- Validator pass: second LLM call checks grammar (conjugation, agreement, word form) and auto‑corrects or drops items.
+- Unpointed Hebrew: prompt mandates no nikkud; nikkud stripped on save to avoid mixed styles.
+- Direction mix enforcement: for each target, ensure at least one `en_to_he` by flipping one `he_to_en` when missing.
+- Robust en_to_he handling: detect swapped `english`/`hebrew` and correct; final guard drops any item where `english` isn’t Latin or `hebrew` isn’t Hebrew.
+- Dev inspection: `/api/generate-drills` returns raw JSON and parsed items only when `NODE_ENV !== 'production'`.
+- Session toast flag: replaced function property hack with a `useRef` to fix prod type check.

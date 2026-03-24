@@ -48,6 +48,12 @@ Last updated: 2026-03-24
   - `scripts/tag_cc_families.ts` — LLM tagger (dry‑run JSON only).
   - `scripts/apply_cc_family_links.ts` — applies links to DB (confidence thresholded).
 
+- Drill UX:
+  - Removed automatic TTS playback on item load and feedback; manual replay via play buttons.
+  - Mic no longer blocked by TTS; recording cancels any playing TTS so retries are immediate.
+  - Guarded against overlapping audio: play buttons disable during playback; `useTTS` ignores concurrent calls.
+  - Files: `Daber/app/session/[sessionId]/page.tsx`, `Daber/app/components/AudioPlayButton.tsx`, `Daber/lib/client/audio/useTTS.ts`, `Daber/app/vocab/VocabClient.tsx`.
+
 ## Recent Changes (2026-03-23)
 - PWA baseline: added `public/manifest.webmanifest` and head links; lightweight SVG icon.
 - Phase-aware next-item: API now returns `phase` (intro/recognition/free_recall) based on ItemStat; client renders an Intro card for new items, then routes into recognition.

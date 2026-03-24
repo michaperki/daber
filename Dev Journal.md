@@ -2,6 +2,15 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
+## 2026-03-24 — Drill UX: TTS autoplay removed
+
+- Removed automatic TTS playback on item load and after feedback. Prompts and corrections can be played manually via the play button. (session page)
+- Mic is no longer blocked during TTS; starting to record cancels any playing TTS to allow immediate retries.
+- Prevented double/overlapping playback: play buttons disable while audio is playing; `useTTS` ignores overlapping calls.
+- Files: `Daber/app/session/[sessionId]/page.tsx`, `Daber/app/components/AudioPlayButton.tsx`, `Daber/lib/client/audio/useTTS.ts`, `Daber/app/vocab/VocabClient.tsx`.
+- Commits: d146527 (remove autoplay), a9a76c2 (block double-plays).
+- SOUL: added change policy note (“edits require Mike’s approval”).
+
 ## 2026-03-24 — Bulk vocab import + mastery seeding
 
 - Imported ~2,400 vocab items from 7 color-coded Citizen Cafe class levels (blue, light_blue, lime, orange, pink, red, yellow) into Heroku DB.

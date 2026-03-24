@@ -34,6 +34,7 @@ export default function DaberSessionPage() {
   const { phase, item, progress, transcript, feedback, hintVisible } = state;
 
   const lastPromptIdRef = React.useRef<string | null>(null);
+  const newContentToastShownRef = React.useRef<boolean>(false);
 
   function stripHowDoISay(text: string): string {
     const re = /^\s*how\s+do\s+i\s+say[:\s-]*/i;
@@ -70,10 +71,9 @@ export default function DaberSessionPage() {
       if (data.offerEnd) setPacingOffer('end');
       else if (data.offerExtend) setPacingOffer('extend');
       else setPacingOffer(null);
-      // Surface mid-session content arrival once
-      if (data.newContentReady && !fetchNextRaw._toastShown) {
+      if (data.newContentReady && !newContentToastShownRef.current) {
         try { toast.success('New sentences ready'); } catch {}
-        (fetchNextRaw as any)._toastShown = true;
+        newContentToastShownRef.current = true;
       }
       return data;
     } catch {

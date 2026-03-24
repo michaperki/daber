@@ -5,7 +5,7 @@ import { useMicRecorder } from '@/lib/client/audio/useMicRecorder';
 import type { MicDevice } from '@/lib/client/audio/useMicRecorder';
 
 export default function SettingsCard() {
-  const { showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, useLexiconDrills, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, micDeviceId, micSensitivity, micSilenceMs, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setRandomOrder, setUseLexiconDrills, setReviewBeforeSubmit, setTargetWeakness, setAutoResumeListening, setTtsRate, setBrowserTTSFallback, setUiSoundEffects, setDueMode, setMicDeviceId, setMicSensitivity, setMicSilenceMs } = useSettings();
+  const { showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, micDeviceId, micSensitivity, micSilenceMs, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setRandomOrder, setReviewBeforeSubmit, setTargetWeakness, setAutoResumeListening, setTtsRate, setBrowserTTSFallback, setUiSoundEffects, setDueMode, setMicDeviceId, setMicSensitivity, setMicSilenceMs } = useSettings();
 
   const [micDevices, setMicDevices] = React.useState<MicDevice[]>([]);
   const [testing, setTesting] = React.useState(false);
@@ -91,10 +91,6 @@ export default function SettingsCard() {
         <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           <input type="checkbox" checked={randomOrder} onChange={e => setRandomOrder(e.target.checked)} />
           randomize item order
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-          <input type="checkbox" checked={useLexiconDrills} onChange={e => setUseLexiconDrills(e.target.checked)} />
-          use dynamic drills (lexicon)
         </label>
         <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           <input type="checkbox" checked={targetWeakness} onChange={e => setTargetWeakness(e.target.checked)} />

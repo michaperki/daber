@@ -12,6 +12,7 @@ import { TranscriptPreview } from '@/app/components/TranscriptPreview';
 import { TranscriptEditor } from '@/app/components/TranscriptEditor';
 import { HebrewKeyboard } from '@/app/components/HebrewKeyboard';
 import { FeedbackPanel } from '@/app/components/FeedbackPanel';
+import { AudioPlayButton } from '@/app/components/AudioPlayButton';
 import { useSettings } from '@/lib/client/settings';
 import { useToast } from '@/lib/client/toast';
 import { useSessionMachine } from '@/lib/client/state/sessionMachine';
@@ -236,17 +237,21 @@ export default function DaberSessionPage() {
       {showIntro ? (
         <div className="prompt-card" style={{ marginBottom: 12 }}>
           <div className="prompt-eyebrow">new word</div>
-          <div className="intro-hero-hebrew">{item.target_hebrew}</div>
-          {item.transliteration ? (
-            <div className="correct-transliteration" style={{ marginTop: 2 }}>{item.transliteration}</div>
-          ) : null}
+          <div className="audio-row" style={{ padding: 0, justifyContent: 'center' }}>
+            <AudioPlayButton playing={audio.ttsPlaying} onPlay={() => playTTS(item.target_hebrew)} />
+            <div>
+              <div className="intro-hero-hebrew">{item.target_hebrew}</div>
+              {item.transliteration ? (
+                <div className="correct-transliteration" style={{ marginTop: 2 }}>{item.transliteration}</div>
+              ) : null}
+            </div>
+          </div>
           <div style={{ marginTop: 8, padding: '8px 16px', background: 'var(--color-background-secondary)', borderRadius: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>
             <span style={{ color: 'var(--color-text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>english: </span>
             {stripHowDoISay(item.english_prompt)}
           </div>
           <div className="intro-hint">Listen and look — no pressure to answer</div>
           <div className="cta-row" style={{ marginTop: 10 }}>
-            <button className="btn-resume" onClick={() => playTTS(item.target_hebrew)}>hear</button>
             <button
               className="btn-start"
               onClick={async () => {
@@ -272,12 +277,9 @@ export default function DaberSessionPage() {
             features={item.features || null}
           />
 
-          <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={false} level={0} />
-
-          <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-            <button className="btn-resume" style={{ flex: 'unset', padding: '0 16px', height: 40 }} onClick={() => item && playTTS(item.target_hebrew)}>
-              hear again
-            </button>
+          <div className="audio-row">
+            <AudioPlayButton playing={audio.ttsPlaying} onPlay={() => item && playTTS(item.target_hebrew)} />
+            <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={audio.ttsPlaying} level={audio.ttsPlaying ? 0.6 : 0} />
           </div>
 
           <div className="editor-wrap" style={{ marginBottom: 12 }}>

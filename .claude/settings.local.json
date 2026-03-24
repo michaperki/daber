@@ -5,7 +5,21 @@
       "Bash(wc:*)",
       "Bash(git add:*)",
       "Bash(git rm:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(git diff:*)",
+      "Bash(npx next build:*)",
+      "Bash(ls:*)",
+      "Bash(done)",
+      "Bash(file:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(python3:*)",
+      "Bash(SEED_CC=1 npx prisma db seed:*)",
+      "Bash(SEED_CC=1 npx ts-node:*)",
+      "Bash(DATABASE_URL=\"postgres://ua6ms4rrk5feh7:pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9@c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1hpgsj66s2lvv\" SEED_CC=1 npx ts-node:*)",
+      "Bash(DATABASE_URL=\"postgres://ua6ms4rrk5feh7:pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9@c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1hpgsj66s2lvv\" npx ts-node:*)",
+      "Bash(cat:*)"
     ]
   }
 }

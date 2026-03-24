@@ -2,6 +2,14 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
+## 2026-03-24 — Bulk vocab import + mastery seeding
+
+- Imported ~2,400 vocab items from 7 color-coded Citizen Cafe class levels (blue, light_blue, lime, orange, pink, red, yellow) into Heroku DB.
+- Fixed `import_vocab_folder.ts` to group by level+lesson (was mixing all levels under a single "green" prefix).
+- Created `seed_mastery.ts` to bulk-seed `ItemStat` records via raw SQL. Known levels get `correct_streak: 2` (free recall), green gets `correct_streak: 0` (recognition). First version was per-item upserts over the internet (~10 min); rewrote to 2 batch SQL queries (~2 seconds).
+- Condensed home page quick-start: removed redundant "browse all" button, switched from flex row to 3-col CSS grid. Fixes horizontal scroll on mobile.
+- Key decision: pre-seed mastery from class history rather than making Mike re-learn 2,400 known words. Wrong answers naturally demote words back to recognition via existing SM-2 streak reset.
+
 ## 2026-03-23 — Deployed to Heroku
 - App is live and accessible on mobile. The #1 blocker is resolved.
 - Priorities reordered: bug fixes and stabilization move up now that real mobile use will surface issues.
@@ -77,3 +85,9 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - Client: session page renders an Intro card for new items with Hebrew + transliteration and a quick "hear" button; continue leads into recognition (he→en) for the same item.
 - Contracts unchanged (uses existing `zDrillPhase`), evaluator/tests unaffected.
  - Seen event: Added `/api/sessions/[id]/seen` and client `apiMarkSeen()`; tapping "start practice" marks the item as seen by upserting `ItemStat` (streak 0) so it won’t re-enter Intro next time.
+2026-03-24 — Cross-lesson vocab sessions
+
+- Home “start drill” now creates a session with lesson_id `vocab_all` (virtual lesson), enabling drills to pull across all lessons of type `vocab`.
+- Updated next-item selection to respect cross-lesson sessions: due-item and default selection now query across all vocab lessons instead of a single lesson when `lesson_id === 'vocab_all'`.
+- Session creation API upserts the `vocab_all` lesson on demand.
+- Lesson-specific sessions from the library remain unchanged.

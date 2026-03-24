@@ -7,6 +7,7 @@ import StartOrContinueButton from './StartOrContinueButton';
 import StartDueButton from './StartDueButton';
 import StartWeakSpotsButton from './StartWeakSpotsButton';
 import GenerateSentencesButton from './GenerateSentencesButton';
+import StartDynamicDrillButton from './StartDynamicDrillButton';
 
 function formatDate(d: Date) {
   return new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(d);
@@ -28,7 +29,11 @@ async function getDashboardData() {
   });
   let totalItems = 0;
   if (lastSession) {
-    totalItems = await prisma.lessonItem.count({ where: { lesson_id: lastSession.lesson_id } });
+    if (lastSession.lesson_id === 'vocab_all') {
+      totalItems = await prisma.lessonItem.count({ where: { lesson_id: { in: (await prisma.lesson.findMany({ where: { type: 'vocab' }, select: { id: true } })).map(l => l.id) } } });
+    } else {
+      totalItems = await prisma.lessonItem.count({ where: { lesson_id: lastSession.lesson_id } });
+    }
   }
   const sums = await prisma.session.aggregate({ _sum: { correct_count: true, flawed_count: true, incorrect_count: true } });
   const sumCorrect = sums._sum.correct_count || 0;
@@ -95,7 +100,7 @@ export default async function DaberHome() {
           <div className="today-track"><div className="today-fill" style={{ width: `${pct}%` }} /></div>
           <span className="today-pct">{attemptsDone} of {totalItems} done</span>
         </div>
-        <StartOrContinueButton sessionId={null} lessonId={fallbackLesson?.id || lastSession?.lesson_id || 'present_tense_basics_01'} label={fallbackLesson ? 'start vocab drill' : (inProgress ? 'continue drill' : 'start drill')} />
+        <StartOrContinueButton sessionId={null} lessonId={'vocab_all'} label={fallbackLesson ? 'start vocab drill' : (inProgress ? 'continue drill' : 'start drill')} />
       </div>
 
       <div className="section-header" style={{ marginTop: '0.25rem' }}>
@@ -178,6 +183,7 @@ export default async function DaberHome() {
           <>
             <StartWeakSpotsButton lessonId={fallbackLesson.id} label="drill weak spots" />
             <StartDueButton lessonId={fallbackLesson.id} type="feature" label="review due" />
+            <StartDynamicDrillButton lessonId={fallbackLesson.id} />
             <GenerateSentencesButton />
           </>
         ) : null}

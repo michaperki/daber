@@ -1,0 +1,3512 @@
+[
+    {
+        "id": 76871,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Accent",
+        "hebrew_text": "מבטא (ז)",
+        "subject": "No Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48955-aWR80bHPnLcR5wr1Q1bRcTF4rrV5HU.mp3"
+    },
+    {
+        "id": 77062,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Twenty thousand",
+        "hebrew_text": "עשרים אלף",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48596-qWPrqELoBkQRnAsHZUafoGaIm1ABh9.mp3"
+    },
+    {
+        "id": 76859,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "He will clean the refrigerator",
+        "hebrew_text": "הוא ינקה את המקרר",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45480-laNLjrHHxdiIe0zbzrNzHStsTl7rAI.mp3"
+    },
+    {
+        "id": 76860,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Should I close the door?",
+        "hebrew_text": "לסגור את הדלת?",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43959-D4hCzu5J7zrf8wLUFxDW1NrQxyhDu2.mp3"
+    },
+    {
+        "id": 76862,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "I have no choice, I don't have a choice",
+        "hebrew_text": "אין לי ברירה",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45483-ZgYjWYALQAuCYwwiI4bCbNzkTTfXUJ.mp3"
+    },
+    {
+        "id": 76863,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Why are you 👩‍🦰turning off the music?",
+        "hebrew_text": "למה את מכבה את המוזיקה?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43685-q7NOWdQED4ASzO8ErcsrQseWe6EAP0.mp3"
+    },
+    {
+        "id": 76864,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Speak!👩‍🦰",
+        "hebrew_text": "תדברי!",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43681-e3L7yflIftwCoGDvFLDElmJ20e1icB.mp3"
+    },
+    {
+        "id": 76866,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "We have the same friends",
+        "hebrew_text": "יש לנו אותם חברים",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43678-4N8qAc0FIsGvJtZ7XrnNw6XkqVGVW9.mp3"
+    },
+    {
+        "id": 76867,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "I have the same problem",
+        "hebrew_text": "יש לי אותה בעיה",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48954-xAVeSGe47KO4bDi187VW6RhGiwrm89.mp3"
+    },
+    {
+        "id": 76868,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "She has an Israeli accent",
+        "hebrew_text": "יש לה מבטא ישראלי",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43677-NYvvDpEdnEcXKgTacwFforuZRr3sIe.mp3"
+    },
+    {
+        "id": 76870,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "He needs a change",
+        "hebrew_text": "הוא צריך שינוי",
+        "subject": "In Context",
+        "segment": "3 אופציונלי",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47538-gkPXebFJjeguYLRAHpCjwN8dRBo5eu.mp3"
+    },
+    {
+        "id": 76874,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "What are you🧔‍♂️trying to do?",
+        "hebrew_text": "מה אתה מנסה לעשות?",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48956-NL74cJtqW0uSCdDvdqQ4WbEqnN2qYK.mp3"
+    },
+    {
+        "id": 76875,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "disadvantage \r\nDisadvantages",
+        "hebrew_text": "חסרון (ז)\nחסרונות",
+        "subject": "No Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/59160-2CbMA7XsvDIQ7iMYVJJhpGfTfBhGGE.mp3"
+    },
+    {
+        "id": 76876,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "I'll try!",
+        "hebrew_text": "אני אנסה!",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43675-1PHPtjA3DgIe6mDed1FLX3yYbETWAz.mp3"
+    },
+    {
+        "id": 76878,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "I 👩‍🦰can try",
+        "hebrew_text": "אני יכולה לנסות",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43676-RvZX1EId2AVEBZpMmHFQ6caHvqSWgn.mp3"
+    },
+    {
+        "id": 76879,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "He switched off the light",
+        "hebrew_text": "הוא כיבה את האור",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46856-43SAeMJfpVVAB3LBCUUj3mXk6Goqvt.mp3"
+    },
+    {
+        "id": 76881,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "Who cleaned the window?",
+        "hebrew_text": "מי ניקה את החלון?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46852-huLV7SS3y2WNly6LK70FSI7XoXg5QI.mp3"
+    },
+    {
+        "id": 76882,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "Advantages and disadvantages, pros and cons",
+        "hebrew_text": "יתרונות וחסרונות",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47540-LegHPcRsDX313MCRuEamqcAFxK7pnN.mp3"
+    },
+    {
+        "id": 76884,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "She will turn off the light",
+        "hebrew_text": "היא תכבה את האור",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43682-jXfyEaMoULadCJyLA3k8V26SXFMjPB.mp3"
+    },
+    {
+        "id": 76886,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Wait!! 👩‍🦰🧔‍♂️",
+        "hebrew_text": "חכו!!",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43680-WliQVfwbgQdyHOqOvhIo4XDLo4KaVZ.mp3"
+    },
+    {
+        "id": 76888,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "He's blowing out the candle",
+        "hebrew_text": "הוא מכבה את הנר",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48935-M8JVNAIX9bTMfwyorD2Px25PxYAS15.mp3"
+    },
+    {
+        "id": 76889,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Turn🧔‍♂️off the light!",
+        "hebrew_text": "תכבה את האור!",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48950-VztCFxRbSL24BVcsZqDMqdoPUtFKac.mp3"
+    },
+    {
+        "id": 76890,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Fire",
+        "hebrew_text": "אש (נ)",
+        "subject": "No Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48937-FelWrehuUwDAUlHM3VEtu8JQA8emaY.mp3"
+    },
+    {
+        "id": 76892,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "Look👩‍🦰🧔‍♂️ at me!",
+        "hebrew_text": "תראו אותי!",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47542-0TVPheNy7jBnZSZ4LyC19kBVBpdnfy.mp3"
+    },
+    {
+        "id": 76894,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "Not seriously/ Nothing too important/ For no special reason, just because",
+        "hebrew_text": "סתם",
+        "subject": "No Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46870-lEkMwkdxp1HI90w08xdFqtbKFZ4rH9.mp3"
+    },
+    {
+        "id": 76895,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Wait 👩‍🦰for me a second!",
+        "hebrew_text": "חכי לי שניה!",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48951-zdcapMhxj8DUjRRx5VkXi2fTo3q4jA.mp3"
+    },
+    {
+        "id": 76896,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "The Beatles changed the world",
+        "hebrew_text": "הביטלס שינו את העולם",
+        "subject": "In Context",
+        "segment": "17",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46872-nQ6rNtaozZ7X8ss4L8sghKteQlwEjK.mp3"
+    },
+    {
+        "id": 76898,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Call🧔‍♂️ me!",
+        "hebrew_text": "תתקשר אליי!",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48948-0FOtEPjuMr51eFMucv4mndhA1961qB.mp3"
+    },
+    {
+        "id": 76899,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "She cleaned the house",
+        "hebrew_text": "היא ניקתה את הבית",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46857-eLYieVPzl5FXrVRhyHnAP3Q6PWEIvK.mp3"
+    },
+    {
+        "id": 76900,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "Everyone waited for you🧔‍♂️",
+        "hebrew_text": "כולם חיכו לך ",
+        "subject": "In Context",
+        "segment": "15",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46871-bwsl3x1gtluhUI9E7ZgPnfi1WSHP6x.mp3"
+    },
+    {
+        "id": 76902,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "It was a bummer!",
+        "hebrew_text": "זה היה מבאס!",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45677-cJUYOayTbtjHILqeM1dN3aqIePjT50.mp3"
+    },
+    {
+        "id": 76903,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "We waited near the restaurant",
+        "hebrew_text": "חיכינו ליד המסעדה",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47551-GiBpkCH7gTXWp354WXXRgrFm6KIWNE.mp3"
+    },
+    {
+        "id": 76905,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "I waited and waited and waited",
+        "hebrew_text": "חיכיתי וחיכיתי וחיכיתי",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45672-gt2nOfOnxDWpQWtKmtdMTmZiPLSrH2.mp3"
+    },
+    {
+        "id": 76906,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "They were only trying to help ",
+        "hebrew_text": "הם רק ניסו לעזור ",
+        "subject": "In Context",
+        "segment": "15",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47543-1DN35sMdZblIiZpXIP4QeQVnpZLqPZ.mp3"
+    },
+    {
+        "id": 76908,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "He needed a change",
+        "hebrew_text": "הוא היה צריך שינוי",
+        "subject": "In Context",
+        "segment": "2 אופציונלי",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47544-l96kUY8N7vwKCP1cZ4TxErQTgvQPzM.mp3"
+    },
+    {
+        "id": 76959,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "He misses his friends",
+        "hebrew_text": "הוא מתגעגע לחברים שלו",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48498-HRYu7AKcCQIYvsKUC3KLrUNKe48QEZ.mp3"
+    },
+    {
+        "id": 76961,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "She misses you 👩‍🦰",
+        "hebrew_text": "היא מתגעגעת אליך",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48499-uUlIb1Vd6kJOi2iFM4Dba4AqLqT2W9.mp3"
+    },
+    {
+        "id": 76962,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "I missed you🧔‍♂️",
+        "hebrew_text": "התגעגעתי אליך!",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49031-smEKdACYKj5eT2BObrCI5sq2z120kQ.mp3"
+    },
+    {
+        "id": 76963,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "She missed him",
+        "hebrew_text": "היא התגעגעה אליו",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48500-cQHEQW64VGPojFoQvtPD6hMcRc3R0D.mp3"
+    },
+    {
+        "id": 76965,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "They missed me",
+        "hebrew_text": "הם התגעגעו אליי",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48513-MsVF2hKIuljGhPi8hfUw5LMaft7kWl.mp3"
+    },
+    {
+        "id": 76966,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Seriously?? really?? for real??",
+        "hebrew_text": "אשכרה???",
+        "subject": "No Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47737-NM7JQA2AiUUPZqwq2CdfJ8smUdivm6.mp3"
+    },
+    {
+        "id": 76968,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "She is looking at the sea",
+        "hebrew_text": "היא מסתכלת על הים",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47738-nPvJqSreNYoaJrSTXSJWxALPU9dR51.mp3"
+    },
+    {
+        "id": 76970,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "We looked at the view",
+        "hebrew_text": "הסתכלנו על הנוף",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47739-GBeiyPqMe1pUmXmp2NnkIvbLEHGzEC.mp3"
+    },
+    {
+        "id": 76971,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "View",
+        "hebrew_text": "נוף (ז)",
+        "subject": "No Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48518-srHAycgQOwZZOYJS2wl1IlVW0H6OyE.mp3"
+    },
+    {
+        "id": 76973,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "She talked about me",
+        "hebrew_text": "היא דיברה עליי",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47741-mmhCYZeNf00NiAeqZuyKRmGfNR2oGy.mp3"
+    },
+    {
+        "id": 76974,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Today the beer is on me",
+        "hebrew_text": "היום הבירה עליי",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48520-4cufi3jJERYnhl4usq0J8vVa2GNlvW.mp3"
+    },
+    {
+        "id": 76976,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "She looked at the moon",
+        "hebrew_text": "היא הסתכלה על הירח",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47740-kVgKPkziHF2eNc5MpgIr9MduBc1OeC.mp3"
+    },
+    {
+        "id": 76977,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "He is looking at her",
+        "hebrew_text": "הוא מסתכל עליה",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48521-tO0U4GBYaObMKP7qAQMvRmbIB0OMhE.mp3"
+    },
+    {
+        "id": 76978,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "She is looking at him",
+        "hebrew_text": "היא מסתכלת עליו",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47743-dvdTAqNzCxnDDU5FHfS00XDQq36g7j.mp3"
+    },
+    {
+        "id": 76980,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "She's crazy about Tel Aviv!",
+        "hebrew_text": "היא מתה על תל אביב!",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47746-sNE22ZA9dyRZXtgqo7xMHFh7QfQIUR.mp3"
+    },
+    {
+        "id": 76981,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "He's crazy about her!",
+        "hebrew_text": "הוא מת עליה!",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48523-qEYi2NJiVyfIuc2pIHpMXkfQgwnHRG.mp3"
+    },
+    {
+        "id": 76983,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Cookies",
+        "hebrew_text": "עוגיות (נ, רבים)",
+        "subject": "No Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47747-GXfaLtSHuugkCGZfWNxcLTXd54hGNm.mp3"
+    },
+    {
+        "id": 76984,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Ring",
+        "hebrew_text": "טבעת (נ)",
+        "subject": "No Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48525-SIYUorb4LfO5IBl0X1zfwZdIgYsFTW.mp3"
+    },
+    {
+        "id": 76986,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Look🧔‍♂️ at me!",
+        "hebrew_text": "תסתכל עליי!",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48527-YIR69myxItALKpI05h90eP2EqL27D4.mp3"
+    },
+    {
+        "id": 76987,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Don't look👩‍🦰up!",
+        "hebrew_text": "אל תסתכלי למעלה!",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47749-t4fU1M1ETJ2Ol0RcOOnvoXBXqiciAk.mp3"
+    },
+    {
+        "id": 76989,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "The exam was really challenging",
+        "hebrew_text": "המבחן היה ממש מאתגר",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48529-mdqALRJ9cbaRyCSFlW1jWPt9XPRlQv.mp3"
+    },
+    {
+        "id": 76990,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "I wanted to but I couldn't",
+        "hebrew_text": "רציתי אבל לא יכולתי",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49097-66YCk1Wv8Q05brM4C5xB3xdUx8RnSA.mp3"
+    },
+    {
+        "id": 76991,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Will you🧔‍♂️be able to come tomorrow?",
+        "hebrew_text": "תוכל לבוא מחר?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48530-zEhrEi7XM5G2vbd2mBuK2XmGCiMv4Y.mp3"
+    },
+    {
+        "id": 76992,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "She couldn't eat anything",
+        "hebrew_text": "היא לא יכלה לאכול כלום",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48531-oEqsieRpt3YlfxsNXgRvGOaF59jHSR.mp3"
+    },
+    {
+        "id": 76994,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Website",
+        "hebrew_text": "אתר (ז)",
+        "subject": "No Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48532-ZyElIJjwZHhKWdYChSWjFkc9VnPDKe.mp3"
+    },
+    {
+        "id": 76995,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Math/Account/Bill\nAccounts, bills",
+        "hebrew_text": "חשבון (ז)\nחשבונות",
+        "subject": "No Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/59162-Swe5JSkTJjJtv9YsoxomyqeG4F6csx.mp3"
+    },
+    {
+        "id": 76996,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Bank account",
+        "hebrew_text": "חשבון בנק (ז)",
+        "subject": "No Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48533-ImcwQcgZUiF83coZDTCSstB3GG3uVM.mp3"
+    },
+    {
+        "id": 76998,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Come in👩‍🦰, come in👩‍🦰!",
+        "hebrew_text": "תיכנסי, תיכנסי!",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49100-GNnM1wxim1aVjHsts43IRPD5Fe06iL.mp3"
+    },
+    {
+        "id": 76999,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "She'll enter the classroom",
+        "hebrew_text": "היא תיכנס לכיתה",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49101-NVjHu8Ve38VciIV09PjjYzZz1wPG4N.mp3"
+    },
+    {
+        "id": 77001,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "When do you🧔‍♂️ want to meet up?",
+        "hebrew_text": "מתי אתה רוצה להיפגש?",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49103-Pd5ocdVukWNy0LnkKY35UX1WRexrbi.mp3"
+    },
+    {
+        "id": 77002,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "She will meet up with her boss",
+        "hebrew_text": "היא תיפגש עם הבוס שלה",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48536-MtTeMhmnpzZbFosj5hBwsfDGKDiTqy.mp3"
+    },
+    {
+        "id": 77004,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Let's meet up!",
+        "hebrew_text": "בוא ניפגש!",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48538-6gfLrLZfk6kKvCJwLadBQQW26gkaaW.mp3"
+    },
+    {
+        "id": 77005,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "I🧔‍♂️need a wide table",
+        "hebrew_text": "אני צריך שולחן רחב",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49105-99dgGfFIeLKuXSArjJz4BmzO9tLsmv.mp3"
+    },
+    {
+        "id": 77006,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "This chair is too narrow",
+        "hebrew_text": "הכיסא הזה צר מידי",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48540-DfEhppivRSWBQyGweosYQ4Gb8uHssM.mp3"
+    },
+    {
+        "id": 77008,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Are you👩‍🦰 willing to look at this?",
+        "hebrew_text": "את מוכנה להסתכל על זה?",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49106-fAbspiasy82Gbf9qIMnN23KX1NCM5R.mp3"
+    },
+    {
+        "id": 77059,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "She wants shoes like those",
+        "hebrew_text": "היא רוצה נעליים כאלה",
+        "subject": "In Context",
+        "segment": "15",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48579-LDfLe5kRTMNhldSNbW9PuD4BcRsq0x.mp3"
+    },
+    {
+        "id": 77061,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "Color",
+        "hebrew_text": "צבע (ז)",
+        "subject": "No Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48584-VgFfMRbvkdgmovUrvGWivgj4vZZ7iI.mp3"
+    },
+    {
+        "id": 77075,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "The bus was late",
+        "hebrew_text": "האוטובוס איחר",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/15-Blue-2dc33b68-f685-48b6-8a28-0d94a1da3758-37OIQJKu50ininsDSFa07Y2VJAsB8x"
+    },
+    {
+        "id": 77079,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "How many more times will I have to see you 👩‍🦰crying",
+        "hebrew_text": "כמה פעמים עוד אצטרך לראות אותך בוכה",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48083-WlamTHuWncEyj93lfpVlOHVwjlvm8U.mp3"
+    },
+    {
+        "id": 77082,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "Will you👩‍🦰 need help?",
+        "hebrew_text": "תצטרכי עזרה?",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/16-Blue-d74d8de3-f1fd-4511-bee0-942a1871668f-2SvEi2ZWueYKQD3sZaGCdaV9qrxhWW"
+    },
+    {
+        "id": 77065,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "He will be late for the train",
+        "hebrew_text": "הוא יאחר לרכבת",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57664-tCdy93TtpsPGWVsJDltvg6KMZ5fnUE.mp3"
+    },
+    {
+        "id": 77066,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "What's the opposite of strong?",
+        "hebrew_text": "מה ההפך של חזק?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57657-j2Us1VVQPNQ8HsyRvwF1PLZZuOzU3g.mp3"
+    },
+    {
+        "id": 77067,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "They changed the date",
+        "hebrew_text": "הם שינו את התאריך",
+        "subject": "In Context",
+        "segment": "16",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48600-GaGzPRQbi5MtCbAPMHle5QlloWMbKL.mp3"
+    },
+    {
+        "id": 77069,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "He met up with his ex 👩‍🦰",
+        "hebrew_text": "הוא נפגש עם האקסית שלו",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48017-PhOFA2N70l06L479TbyRzfeZbCFgWO.mp3"
+    },
+    {
+        "id": 77070,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "He needed a challenge",
+        "hebrew_text": "הוא היה צריך אתגר",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48081-XGipuS8MPNHVhi53dcXjFwAI11lJvf.mp3"
+    },
+    {
+        "id": 77072,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "She completely exaggerated",
+        "hebrew_text": "היא לגמרי הגזימה!!",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51126-dC1pFhejwjs0Aoy9tkkt5y25fU21pA.mp3"
+    },
+    {
+        "id": 77076,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "Gym, fitness room",
+        "hebrew_text": "חדר כושר (ז)",
+        "subject": "No Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48581-zJboMkzF1FuTrMsh9noAfutfGLP55b.mp3"
+    },
+    {
+        "id": 77077,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Date (as in a calendar)",
+        "hebrew_text": "תאריך (ז)",
+        "subject": "No Context",
+        "segment": "16",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57668-PX0du2tPPdPF1z2Dn1h9CqYjJ7KHVM.mp3"
+    },
+    {
+        "id": 77080,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "We needed to wait",
+        "hebrew_text": "היינו צריכים לחכות",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/434201-jaIdFAvW1PJepqOFR8D8TEG5BeHcmI.mp3"
+    },
+    {
+        "id": 77083,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "At my place or at yours👩‍🦰",
+        "hebrew_text": "אצלי או אצלך?",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48079-CT1vZGVSL4Djcf0uPbUIMWWsva4XNr.mp3"
+    },
+    {
+        "id": 77085,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "I had a friend",
+        "hebrew_text": "היה לי חבר",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51129-a4wwOnPloHfBaZxXCRytItSrKoOo9d.mp3"
+    },
+    {
+        "id": 77086,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "We will need to wait",
+        "hebrew_text": "אנחנו נצטרך לחכות",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46415-nEIkWQ5SbO28UDQKKC7h0CRsw1ClM1.mp3"
+    },
+    {
+        "id": 77089,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": " it’s something completely different",
+        "hebrew_text": "זה משהו אחר לגמרי",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46638-BH9npLz5fF8JigFEQ9XJilYx0xKt7G.mp3"
+    },
+    {
+        "id": 77090,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "He interrupted me",
+        "hebrew_text": "הוא הפריע לי",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51125-OOifw7EuYVOFdiroIgjno41dmtJZYe.mp3"
+    },
+    {
+        "id": 77092,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "At your 👩‍🦰🧔‍♂️place",
+        "hebrew_text": "אצלכם",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48080-IKPqAE62qRGNw8ioV7uDhwtYUvwsSJ.mp3"
+    },
+    {
+        "id": 77093,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "Did you👩‍🦰start on time?",
+        "hebrew_text": "את התחלת בזמן?",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51128-fgIDTsqdFRB80nbUHVGVxzFdTpQGeb.mp3"
+    },
+    {
+        "id": 77094,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "We went in and immediately went out",
+        "hebrew_text": "נכנסנו ומיד יצאנו",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50156-d7WMpkSOXf8KTabJDrryIxCqpAShao.mp3"
+    },
+    {
+        "id": 77096,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Did you 👩‍🦰🧔‍♂️stay at the party?",
+        "hebrew_text": "נשארתם במסיבה?",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/63967-pzbhnc46ZohFnL602EpEWieQwGxHiS.mp3"
+    },
+    {
+        "id": 77097,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "Do you 🧔‍♂️ feel like staying with us?",
+        "hebrew_text": "בא לך להישאר איתנו",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49154-7B4qX2JuDN6BeN3w9IZ4Gxa6QOslHe.mp3"
+    },
+    {
+        "id": 77098,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Yesterday she met up with him",
+        "hebrew_text": "אתמול היא נפגשה איתו",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50154-m9Z6BhKOuqNOnvzRgyIJvyXUcdXPVe.mp3"
+    },
+    {
+        "id": 77100,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "Be careful 🧔‍♂️it's dangerous!",
+        "hebrew_text": "תיזהר, זה מסוכן!",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49164-wN2HZ5B1yLWgPRBRiTSLJrNUUxArRt.mp3"
+    },
+    {
+        "id": 77101,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "Be careful 👩‍🦰it's really dangerous!",
+        "hebrew_text": "תיזהרי, זה ממש מסוכן!",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48566-wmRTE7rFa9r4zqereifUjDmYBJsoCp.mp3"
+    },
+    {
+        "id": 77103,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Lucky you 👩‍🦰remembered!",
+        "hebrew_text": "מזל שנזכרת!",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48570-pzrcJMgfYkwxwIksHlmFbop4qODjhd.mp3"
+    },
+    {
+        "id": 77104,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Yesterday he stayed home",
+        "hebrew_text": "אתמול הוא נשאר בבית",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48567-SnLx17zEgHXzoL7S7N9Xfvni2Rl6g9.mp3"
+    },
+    {
+        "id": 77107,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "Actually, I'm doing ok",
+        "hebrew_text": "דווקא הולך לי בסדר",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50158-SUpGhkfKJpiTdrgwIP62fYwl0An4by.mp3"
+    },
+    {
+        "id": 77108,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "I didn't go in, I didn't enter",
+        "hebrew_text": "לא נכנסתי",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48568-oDSO3IhW8XpxeRJgmTkmd6uKRJbcsj.mp3"
+    },
+    {
+        "id": 77160,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "Why couldn't you 🧔‍♂️?",
+        "hebrew_text": "למה לא יכולת?",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47980-wHE1SKcFhBcy5WFFWS4zoogSeIO5zg.mp3"
+    },
+    {
+        "id": 77161,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "She will be able to stay",
+        "hebrew_text": "היא תוכל להישאר",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48200-e6OIqq7THjQUYISTivbIu4VJu5HyJ1.mp3"
+    },
+    {
+        "id": 76869,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "He changed the subject",
+        "hebrew_text": "הוא שינה את הנושא",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46851-wSrx1UugSppy9K0yepiuLEZ8m8oWMR.mp3"
+    },
+    {
+        "id": 76872,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "He waited for the bus",
+        "hebrew_text": "הוא חיכה לאוטובוס",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47537-C7U2iUoxJM63w6DuKItIFiIaD8TedZ.mp3"
+    },
+    {
+        "id": 76873,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "Do you 👩‍🦰like changes?",
+        "hebrew_text": "את אוהבת שינויים?",
+        "subject": "In Context",
+        "segment": "3 אופציונלי",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46853-Cru1cQYqxmrZvXqBJcBh5W9E3Jxqbd.mp3"
+    },
+    {
+        "id": 76877,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "advantage \r\nadvantages",
+        "hebrew_text": "יתרון (ז)\nיתרונות",
+        "subject": "No Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/59159-rz0d8kT7In0KC9CzJmXf2Rfh0hclux.mp3"
+    },
+    {
+        "id": 76880,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "shall I start? Should I start? Do you want me to start?",
+        "hebrew_text": "להתחיל?",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45485-3z8gdMTEO2E67vwy6oWtSI9htCsNJ2.mp3"
+    },
+    {
+        "id": 76891,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "candle\r\ncandles",
+        "hebrew_text": "נר (ז)\nנרות",
+        "subject": "No Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/59158-0MJAdQMDcPcEWVNXnOs8JOERpuhVYJ.mp3"
+    },
+    {
+        "id": 76893,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "\"nothing too important\" I'm🧔‍♂️ just watching TV",
+        "hebrew_text": "סתם, אני רואה טלוויזיה",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46868-TkhnDUaW5NgwDIgARlDVJLWJdpKSYG.mp3"
+    },
+    {
+        "id": 76897,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "She changed the password",
+        "hebrew_text": "היא שינתה את הסיסמה",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47541-BYFkQxdinCRFnqgDBPyZjGEbd4Xe9Q.mp3"
+    },
+    {
+        "id": 76901,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "I drank water",
+        "hebrew_text": "אני שתיתי מים",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47545-oalX78KD8FPhBORIqGJxuqVMipZlDs.mp3"
+    },
+    {
+        "id": 76904,
+        "lesson": "4",
+        "level": "Blue",
+        "english_text": "Just kidding😆",
+        "hebrew_text": "סתם, סתם!",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/59161-hmT0LBoVjvkfXrl5ogdLl4YCGL3aIi.mp3"
+    },
+    {
+        "id": 76907,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "Why \"specifically\" me??",
+        "hebrew_text": "למה דווקא אני??",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45674-Cmmjy6kwGyRSLDp3kA26alHMW9o4oE.mp3"
+    },
+    {
+        "id": 76960,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "She misses her family",
+        "hebrew_text": "היא מתגעגעת למשפחה שלה",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49030-mkTOIkO6F8GHUVP2fbvyY48JOH5ikL.mp3"
+    },
+    {
+        "id": 76964,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "He missed her",
+        "hebrew_text": "הוא התגעגע אליה",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49032-22KLN3pIpQ71X8QXhiEzopnj0w3OGC.mp3"
+    },
+    {
+        "id": 76967,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "I have exactly the same shoes!",
+        "hebrew_text": "יש לי בדיוק אותן נעליים!",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48514-xYJHzNnhNFqK8wiVWQkvl5OGDP2EwU.mp3"
+    },
+    {
+        "id": 76969,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "I looked at the sky",
+        "hebrew_text": "הסתכלתי על השמים",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/149461-lf0GEplsO0MgAPTkIG09UYX0s2sCwm.mp3"
+    },
+    {
+        "id": 76972,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "He looked at me",
+        "hebrew_text": "הוא הסתכל עליי",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48519-aR8GNGI4QgCLKzYNK072EX6wPF7anj.mp3"
+    },
+    {
+        "id": 76975,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Yesterday I thought about you👩‍🦰",
+        "hebrew_text": "אתמול חשבתי עליך",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47742-Yfx0RKlZeTbrP8d7VkKog2zz0xXqnn.mp3"
+    },
+    {
+        "id": 76979,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Today the coffee is on us!",
+        "hebrew_text": "היום הקפה עלינו!",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48522-TBE6VtN8LmFVTV8wizp8BFbRQMpM4r.mp3"
+    },
+    {
+        "id": 76883,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "dirty",
+        "hebrew_text": "מלוּכלך, מלוּכלֵכת",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/2-Blue-a572ad7a-f40f-41ab-a3ba-e0ebac01c96b-ZmhVxqcJxIyFzbN8gGop9tzOECu4yj"
+    },
+    {
+        "id": 76887,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "The same thing",
+        "hebrew_text": "אותו דבר",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/3-Blue-9b64b13f-5f54-409c-a130-3d856bb2ad5e-TbcFdlojJbSMy7PDkR4CIQQBRrJpbd"
+    },
+    {
+        "id": 76865,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "I have the same phone!",
+        "hebrew_text": "יש לי אותו טלפון!",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/3-Blue-a16b41e3-b97b-49b9-a293-9cb66eda16b7-rmFBQKNYMDn7Zuw4R93UlBEK5CblCw"
+    },
+    {
+        "id": 76982,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "He's crazy about cookies!",
+        "hebrew_text": "הוא מת על עוגיות!",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48524-4qus5AMnuQ3acY7KjIL7nvqhO2gVhS.mp3"
+    },
+    {
+        "id": 76985,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": " Look 👩‍🦰🧔‍♂️at the moon",
+        "hebrew_text": "תסתכלו על הירח!",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47748-6e8Q1IHCMUIQjZg7zsJKTExww5Tuao.mp3"
+    },
+    {
+        "id": 76988,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Why are you🧔‍♂️looking at them👩‍🦰🧔‍♂️?",
+        "hebrew_text": "למה אתה מסתכל עליהם?",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48528-b4oJeNujZqgVd4e4a5bLftOhmcLToH.mp3"
+    },
+    {
+        "id": 76993,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Knock knock! May I come in?",
+        "hebrew_text": "טוק טוק! אפשר להיכנס?",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49098-sAoMy6rhExh37Y1PvFZk73CpK61Ne5.mp3"
+    },
+    {
+        "id": 76997,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "He'll enter the store",
+        "hebrew_text": "הוא יכנס לחנות",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48534-VyUCMjIQAcT4leSwCf7D0SocVZTelj.mp3"
+    },
+    {
+        "id": 77000,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Let's go inside (let's enter home)",
+        "hebrew_text": "בוא ניכנס הביתה",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48535-AIhITGyU9BkevYcQLCatB4LvYtXb4q.mp3"
+    },
+    {
+        "id": 77003,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "He'll meet up with her tomorrow",
+        "hebrew_text": "הוא יפגש איתה מחר",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49104-KCBSdE0hN8GRKIJZYcuNcqooKv97Ci.mp3"
+    },
+    {
+        "id": 77007,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "He's always willing to help",
+        "hebrew_text": "הוא תמיד מוכן לעזור",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48539-cM06ZeKMzezkg4o5jLSvYeKRGNjOCD.mp3"
+    },
+    {
+        "id": 77060,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Don't 👩‍🦰be late for class",
+        "hebrew_text": "אל תאחרי לשיעור",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48590-GeFy7qpocZ6qlEzeL2ockLIm7e8qTu.mp3"
+    },
+    {
+        "id": 77063,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "I have a \"ton\" of work",
+        "hebrew_text": "יש לי מלא עבודה",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48599-5dcGMyBq51G1bx0aMsE7vzpPUbxN28.mp3"
+    },
+    {
+        "id": 77064,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Don't 👩‍🦰🧔‍♂️be late for the meeting",
+        "hebrew_text": "אל תאחרו לפגישה",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57662-zQieLIiXnWrxZ8dBfMqAvAb3z3mBoz.mp3"
+    },
+    {
+        "id": 77068,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "At your 🧔‍♂️place",
+        "hebrew_text": "אצלך",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46395-o1fhDNs3zyHVhHrmdSZJX9P0m0kEMW.mp3"
+    },
+    {
+        "id": 77071,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "They continued working",
+        "hebrew_text": "הם המשיכו לעבוד",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46637-foFZUTqUzh6uM6ieR40qGK3BMd6e8J.mp3"
+    },
+    {
+        "id": 77074,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "I waited and waited and waited",
+        "hebrew_text": "חיכיתי וחיכיתי וחיכיתי",
+        "subject": "In Context",
+        "segment": "16",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48598-AYXSjYBDYu9l9bA8A8mleNWdn0rMsC.mp3"
+    },
+    {
+        "id": 77078,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "I will need help",
+        "hebrew_text": "אני אצטרך עזרה",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48082-BemWmhNhKJQdLGKdP5G8x9FQ6iZUND.mp3"
+    },
+    {
+        "id": 77081,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "If you🧔‍♂️ need help, I'm here",
+        "hebrew_text": "אם תצטרך עזרה, אני פה",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46417-jOgPcjcR2dVB8NzgmdjxH9uL4Qe5DX.mp3"
+    },
+    {
+        "id": 77084,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "Did the noise bother you🧔‍♂️?",
+        "hebrew_text": "הרעש הפריע לך?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46635-pxjiilCmU5rmWCSAlw1eG17fiNAJha.mp3"
+    },
+    {
+        "id": 77088,
+        "lesson": "16",
+        "level": "Blue",
+        "english_text": "I👩‍🦰needed to finish something",
+        "hebrew_text": "הייתי צריכה לסיים משהו",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46398-VJnnf1ANw6e4l94y8x3dqJvQk07Awa.mp3"
+    },
+    {
+        "id": 77091,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "Do you🧔‍♂️ want another/ a different dessert?",
+        "hebrew_text": "אתה רוצה קינוח אחר?",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51127-5AT8Z86bwvL7t24YmYoh20vVRvNLTz.mp3"
+    },
+    {
+        "id": 77095,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "He would rather stay outside",
+        "hebrew_text": "הוא מעדיף להישאר בחוץ",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48756-RcALjEiUDMTSxjNNfxuicSd5Zsnx7y.mp3"
+    },
+    {
+        "id": 77099,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "Did you🧔‍♂️continue to work?",
+        "hebrew_text": "אתה המשכת לעבוד?",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46639-n7Bm14GUBDIsaIcod1vSXiz93w8Yko.mp3"
+    },
+    {
+        "id": 77105,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Whose dress is this?",
+        "hebrew_text": "של מי השמלה הזאת?",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48571-NYVOBu1DzuALx4MpzzsAAZKvJhkjkb.mp3"
+    },
+    {
+        "id": 77106,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "What's your🧔‍♂️ favorite dessert?",
+        "hebrew_text": "מה הקינוח האהוב עליך?",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50162-qWR5oJXc20g3bxYB98uqjpp5yjAjil.mp3"
+    },
+    {
+        "id": 77159,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "He will be able to help you 👩‍🦰",
+        "hebrew_text": "הוא יוכל לעזור לך",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48199-JwEc6fxTNdS6ekEJfxeSvpGUeA9FrP.mp3"
+    },
+    {
+        "id": 77102,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "to go with the flow (Slang)",
+        "hebrew_text": "לזרום",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/11-Blue-ca8c4ebf-4d8e-402a-b433-843d425a5cb9-9sOGpZkVplSzqDrTlDySoTwRyHdTZW"
+    },
+    {
+        "id": 572052,
+        "lesson": "9",
+        "level": "Blue",
+        "english_text": "Today the coffee is on me",
+        "hebrew_text": "היום הקפה עליי.",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/9-Blue-ecb6169c-9685-452e-8332-b504c6550f97-rP5D5ZPTK0pi6KWvWfTFsJZh5ZqFtM"
+    },
+    {
+        "id": 76818,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "I wonder where he is",
+        "hebrew_text": "מעניין איפה הוא",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44822-6imZvSlZTuzlzpz349cost3V4880Ey.mp3"
+    },
+    {
+        "id": 76819,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "I 👩‍🦰am waiting for someone",
+        "hebrew_text": "אני מחכה למישהו",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/82013-sW6LnTcU0V8Ym1AcDhAJOaKpyT6oap.mp3"
+    },
+    {
+        "id": 76820,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "I wonder why",
+        "hebrew_text": "מעניין למה",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43688-kVlQ2GdlTox2UaUATCZKHK1epkCXdg.mp3"
+    },
+    {
+        "id": 76822,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "I🧔‍♂️am waiting for a taxi",
+        "hebrew_text": "אני מחכה למונית",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44825-YydKGvXPO8SXYWwOUoHNZnDtQPxPW8.mp3"
+    },
+    {
+        "id": 76823,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "I wonder when ",
+        "hebrew_text": "מעניין מתי ",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43687-hT2aQfAdGhT7PPpHqmwHtHpraUwuRk.mp3"
+    },
+    {
+        "id": 76824,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "I wonder how much",
+        "hebrew_text": "מעניין כמה",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44823-CF3VrVHD5OcyRui0xLNCdF4WBy6e6E.mp3"
+    },
+    {
+        "id": 76826,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "It doesn't matter, never mind",
+        "hebrew_text": "לא משנה",
+        "subject": "No Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44833-TfP5oDJZa2GBEpO2zvWoCpxQ4Ss0Pe.mp3"
+    },
+    {
+        "id": 76827,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "He's waiting for someone (female)",
+        "hebrew_text": "הוא מחכה למישהי",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44834-ulcm6hVyCTDhKe05ZJi62Gaa7s9MHP.mp3"
+    },
+    {
+        "id": 76829,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "\"Someone\" refers to a girl, a female \"someone\"",
+        "hebrew_text": "מישהי (נ)",
+        "subject": "No Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43694-PEZYybgjljoMNAKQem40LUB2SAmipY.mp3"
+    },
+    {
+        "id": 76830,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "He's changing the topic",
+        "hebrew_text": "הוא משנה את הנושא",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44830-76jySa1M05ZK1sWwzvigJPmf0TOetX.mp3"
+    },
+    {
+        "id": 76841,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Remind👩‍🦰me...",
+        "hebrew_text": "תזכירי לי ...",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/2-Blue-81bf4271-2c6b-494e-8ce3-845cecd782c8-e8zQRWgiacfKRLgZjs5TgcrqDNFFyz"
+    },
+    {
+        "id": 76915,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "Why Zimbabwe?? (why Zimbabwe \"out of all countries?\")",
+        "hebrew_text": "למה דווקא זימבבואה??",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47610-F9d0qNJECfyJaeEaXVeJOdMv84BaCx.mp3"
+    },
+    {
+        "id": 76912,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "The apartment is \"actually not\" dirty",
+        "hebrew_text": "הדירה דווקא לא מלוכלכת",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47557-TjMKsmvbdPHjHEkuc2nCASTzz7bRrF.mp3"
+    },
+    {
+        "id": 76923,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "He arrives at the office at 8",
+        "hebrew_text": "הוא מגיע למשרד בשמונה",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47620-8taenTfXIavUQo5597IdUL1naLDJFn.mp3"
+    },
+    {
+        "id": 76834,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "I🧔‍♂️hope he comes ",
+        "hebrew_text": "אני מקווה שהוא יבוא",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44828-w37QptLcqMorBOR2vfPJOvVIbKJrCg.mp3"
+    },
+    {
+        "id": 76836,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "password \r\nPasswords",
+        "hebrew_text": "סיסמה (נ)\nסיסמאות",
+        "subject": "No Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/59156-pGHrN3fMEXT5mDeFxhWVyDGT0C5QYV.mp3"
+    },
+    {
+        "id": 76837,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "Address",
+        "hebrew_text": "כתובת (נ)",
+        "subject": "No Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43698-LQx6rAKiNAdaCDVdCd3p7i2PtXaOiK.mp3"
+    },
+    {
+        "id": 76838,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Think🧔‍♂️ about it",
+        "hebrew_text": "תחשוב על זה",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45461-TIxeBaRMQ0rU2XeZifMiiOhXSt99iy.mp3"
+    },
+    {
+        "id": 76840,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "He will drink coffee",
+        "hebrew_text": "הוא ישתה קפה",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43938-S5JAGm5zzy16T6sANMwu2ovLuwJc22.mp3"
+    },
+    {
+        "id": 76842,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Help👩‍🦰me",
+        "hebrew_text": "תעזרי לי",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43935-T9wITMI9NgsCVMX2yNuA8mTPSdBRCe.mp3"
+    },
+    {
+        "id": 76844,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Wait🧔‍♂️for me!",
+        "hebrew_text": "תחכה לי!",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/91410-O5TtNAijaYNohxRcKgg2AedcnMd3d5.mp3"
+    },
+    {
+        "id": 76845,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "Not necessarily, not specifically",
+        "hebrew_text": "לאו דווקא",
+        "subject": "No Context",
+        "segment": "15",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44839-bLR4SyW8ioj8sMOf6R73O68S7uZgLx.mp3"
+    },
+    {
+        "id": 76850,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "They are waiting for you🧔‍♂️",
+        "hebrew_text": "הם מחכים לך",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45469-AeBuub1lsSFDZlQHay2pya9AC5a6QC.mp3"
+    },
+    {
+        "id": 76851,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "He's waiting patiently",
+        "hebrew_text": "הוא מחכה בסבלנות",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43936-HfikMdaKYLjgyUS9JEv2PvjRLNFU1z.mp3"
+    },
+    {
+        "id": 76852,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Don't change 👩‍🦰the subject",
+        "hebrew_text": "אל תשני את הנושא",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45476-i6gfCHu2ysgl2PxXnJ1i0VVckovgcD.mp3"
+    },
+    {
+        "id": 76854,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "The kitchen is dirty",
+        "hebrew_text": "המטבח מלוכלך",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/88461-KFVjxDydkv1NQluZJlBqdnAlDi6ZcL.mp3"
+    },
+    {
+        "id": 76855,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Where will she wait for him?",
+        "hebrew_text": "איפה היא תחכה לו?",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/88462-ExUOP3ax7hMJuz8TvgoPdcPQCJWIVc.mp3"
+    },
+    {
+        "id": 76857,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "Shall I switch off the AC?",
+        "hebrew_text": "לכבות את המזגן?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48934-FnJZUuOueia4lckR1ONKbQPx5vGQX4.mp3"
+    },
+    {
+        "id": 76858,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "She has to clean the house",
+        "hebrew_text": "היא צריכה לנקות את הבית",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45479-YE0JYd7hmGDIaKAFF4dPYxrjvvX2bp.mp3"
+    },
+    {
+        "id": 76909,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "What did you👩‍🦰 try to do?",
+        "hebrew_text": "מה ניסית לעשות?",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/63966-KcZvqF7D4EKWWuMIc41W5fqy7Fokbu.mp3"
+    },
+    {
+        "id": 76911,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "He tried to call Sher",
+        "hebrew_text": "הוא ניסה להתקשר לשר",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47547-bV4kKgkP8nugDEMz37yF8DpcorG3iq.mp3"
+    },
+    {
+        "id": 76914,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "Event",
+        "hebrew_text": "אירוע (ז)",
+        "subject": "No Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47559-nv4WpcSd5Z4r3ilVbNQyveuHLag4Vo.mp3"
+    },
+    {
+        "id": 76917,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "Why did you👩‍🦰👩‍🦰turn off the AC?",
+        "hebrew_text": "למה כיביתן את המזגן?",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47554-3uHqfdGbLTIinymbczs4eEjKn0BODo.mp3"
+    },
+    {
+        "id": 76918,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "He did it to spite me!",
+        "hebrew_text": "הוא עשה לי דווקא!",
+        "subject": "In Context",
+        "segment": "16",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47561-Ycn9e70tA0Z0grS8zA9lSwhkvVemlM.mp3"
+    },
+    {
+        "id": 76919,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "The event was really a bummer",
+        "hebrew_text": "האירוע היה ממש מבאס",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/119378-0ojFTVz9SdgGSc6zSxXKOw6vmSHZjb.mp3"
+    },
+    {
+        "id": 76920,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "I did it to spite her!",
+        "hebrew_text": "עשיתי לה דווקא!",
+        "subject": "In Context",
+        "segment": "16",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45683-6FBSvWBBBB0MwPg87BLTLtFRyJiFKc.mp3"
+    },
+    {
+        "id": 76922,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "When are you🧔‍♂️ starting?",
+        "hebrew_text": "מתי אתה מתחיל?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47566-pOWP8cdf6SysbjMdKtQgGZoXLB42MI.mp3"
+    },
+    {
+        "id": 76924,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "Can I interrupt?",
+        "hebrew_text": "אפשר להפריע?",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47623-eG2RU4bhvZPrrBSV0qSWwppmAzYKRr.mp3"
+    },
+    {
+        "id": 76926,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "He invited me to the party",
+        "hebrew_text": "הוא הזמין אותי למסיבה",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47578-mfe025GQBCyQZURpULEJyNcJ2WSZqT.mp3"
+    },
+    {
+        "id": 77018,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "Before the price goes up",
+        "hebrew_text": "לפני שהמחיר יעלה",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48557-pRF2Pwn1DtyUi5YW7a6Nlsty0LxRa8.mp3"
+    },
+    {
+        "id": 76929,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "Did you👩‍🦰continue working?",
+        "hebrew_text": "את המשכת לעבוד?",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47581-4rRuJCjly3PoEGGv4vz2xq05KE82UW.mp3"
+    },
+    {
+        "id": 76930,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "He is lighting the candles",
+        "hebrew_text": "הוא מדליק את הנרות",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47567-pKbnbMBBEmuIzk49Ya040CZepn4a3t.mp3"
+    },
+    {
+        "id": 76932,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "They didn't invite me",
+        "hebrew_text": "הם לא הזמינו אותי",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47626-D2MPFclAylAszX5e4cgkkD089dhcWw.mp3"
+    },
+    {
+        "id": 76933,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "She explained everything to me",
+        "hebrew_text": "היא הסבירה לי הכל",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47628-eD2ziESISGWoXtcWIcJNVNcAieDHeF.mp3"
+    },
+    {
+        "id": 76934,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "He turned on the light",
+        "hebrew_text": "הוא הדליק את האור",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47627-Fwdym2QL3RAjqx7Y5rqxwJ00jU2ht3.mp3"
+    },
+    {
+        "id": 76936,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "Did it bother you🧔‍♂️?",
+        "hebrew_text": "זה הפריע לך?",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47631-JCT2JzPiB8syfWeQWDeY9WIHUUtFcL.mp3"
+    },
+    {
+        "id": 76937,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "You👩‍🦰🧔‍♂️ didn't arrive on time",
+        "hebrew_text": "אתם לא הגעתם בזמן",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47607-M0dwcgtKGOpC9ET0uauj4WBsQ8jxEz.mp3"
+    },
+    {
+        "id": 76939,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "I didn't get around to buying a gift",
+        "hebrew_text": "לא הספקתי לקנות מתנה",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47633-AcSXjtBneYg4pwPVomOBOK2uz84Rzl.mp3"
+    },
+    {
+        "id": 76940,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "excuses, excuses...",
+        "hebrew_text": "תירוצים, תירוצים...",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47592-na3bZjnP2wuf5Z8e3coMmhgDE4rtsr.mp3"
+    },
+    {
+        "id": 76941,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "She gets her haircut once a month",
+        "hebrew_text": "היא מסתפרת פעם בחודש",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47617-3HG42w2jw3bnb0WMDpBz2JO68dQUhq.mp3"
+    },
+    {
+        "id": 76943,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "They👩‍🦰🧔‍♂️have to get used to it",
+        "hebrew_text": "הם חייבים להתרגל לזה",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47621-HH0FavzPZJychgmWJo9FruKLO24FzU.mp3"
+    },
+    {
+        "id": 76944,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "He will call the police",
+        "hebrew_text": "הוא יתקשר למשטרה",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49018-y9bHA3ZuuP3uvCEOzdJ9Fz70kmshiQ.mp3"
+    },
+    {
+        "id": 76945,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "I👩‍🦰am sure you👩‍🦰will manage",
+        "hebrew_text": "אני בטוחה שאת תסתדרי",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47657-tYUiooBax008xUQ7Zvb955gsHsxX9z.mp3"
+    },
+    {
+        "id": 76947,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "\"I've waited for so long\" for the summer to come",
+        "hebrew_text": "כמה חיכיתי שהקיץ יבוא",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49020-GJ5nBBbUn8EqK03Nc3S18ZjcsRVcDF.mp3"
+    },
+    {
+        "id": 76948,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "She is probably outside",
+        "hebrew_text": "היא בטח בחוץ",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47658-STsjkQIF4uap7It13pGwoBtz3HV7Lj.mp3"
+    },
+    {
+        "id": 76950,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "Did you call me?",
+        "hebrew_text": "התקשרת אליי?",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49021-vVJadNVxuAJoqw2Tv5syEcJQAbWtdG.mp3"
+    },
+    {
+        "id": 76951,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "I've gotten used to her",
+        "hebrew_text": "התרגלתי אליה",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47660-NmU2trPmVf1lebLbiJmGeVO45F7QCx.mp3"
+    },
+    {
+        "id": 76952,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "When does the lesson end?",
+        "hebrew_text": "מתי השיעור מסתיים?",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49022-3cKT56cq4adKRk2K9pZgVWEYseKX00.mp3"
+    },
+    {
+        "id": 76954,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "The exam ended two hours ago",
+        "hebrew_text": "המבחן הסתיים לפני שעתיים",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49025-HZliwFrVCCEpR4Bb7c1OyiPZqZ07VA.mp3"
+    },
+    {
+        "id": 76955,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "The meeting ended at five",
+        "hebrew_text": "הפגישה הסתיימה בחמש",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47662-ToErvCv93SyF249Ue4TyDZRnTu8lgw.mp3"
+    },
+    {
+        "id": 76957,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "They👩‍🦰🧔‍♂️have the same accent",
+        "hebrew_text": "יש להם אותו מבטא",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48497-OBNuMClvh0ix8aihiRsd5c8TzHVktG.mp3"
+    },
+    {
+        "id": 76958,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "They 👩‍🦰🧔‍♂️live in the same city",
+        "hebrew_text": "הם גרים באותה עיר",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49027-vmtj0mLqy5yYObS2O3fxk9YKaeJLgq.mp3"
+    },
+    {
+        "id": 77009,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Don't🧔‍♂️ do it to spite me!",
+        "hebrew_text": "אל תעשה לי דווקא!",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49107-tej7cLJw0AjFGq0AKbrZw2TuqYiD9w.mp3"
+    },
+    {
+        "id": 77011,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "I'm 👩‍🦰counting on you🧔‍♂️",
+        "hebrew_text": "אני סומכת עליך",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48542-xLqYSaxqrqq9EZdFUZTRUPBVuui7Ve.mp3"
+    },
+    {
+        "id": 77013,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "She trusted me!",
+        "hebrew_text": "היא סמכה עלי!",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48543-K5kUbE2yroZ6Ge9bxoItYE64rain7i.mp3"
+    },
+    {
+        "id": 77015,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": " Rely on me!",
+        "hebrew_text": "תסמוך עליי!",
+        "subject": "In Context",
+        "segment": "16",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49114-7lloP8xfTemWi5cUXS7sxWmQ6HSWYU.mp3"
+    },
+    {
+        "id": 77016,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "Price",
+        "hebrew_text": "מחיר (ז)",
+        "subject": "No Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48544-qmBqGj3jKOMcdXEYP7Tv8TwFmVHsDZ.mp3"
+    },
+    {
+        "id": 77052,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "73 ",
+        "hebrew_text": "שבעים ושלוש",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/15-Blue-c8cda8a2-f63f-4daa-bd63-017621388c4a-d62zX5wFxMUsKWvjm5wtVDGSvCGTbf"
+    },
+    {
+        "id": 77022,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": " Is it a good idea to try?",
+        "hebrew_text": "כדאי לנסות?",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/11-Blue-9e84c873-9e07-4ab6-b757-bc12cb7b30a0-0eSpfFNcl2oZwl0PM2j0rFyvsRy3Ui"
+    },
+    {
+        "id": 77056,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "500 ",
+        "hebrew_text": "חמש מאות",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/15-Blue-deb6b6f0-cc9b-4406-803c-6cbf464ab468-8OAjJgk6GGcumSExsy8uaquoM6e5yg"
+    },
+    {
+        "id": 77021,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "It's always worthwhile to try",
+        "hebrew_text": "תמיד כדאי לנסות",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49156-1u3cDg17CDenfj46OsUOX3kUhTvqtL.mp3"
+    },
+    {
+        "id": 77023,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "Where should I go?",
+        "hebrew_text": "לאן כדאי לי ללכת?",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49157-H2bpzaq4ELXQgCB0qb2nw358GX8AtO.mp3"
+    },
+    {
+        "id": 77025,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "Risky, dangerous",
+        "hebrew_text": "מסוכן (ז)",
+        "subject": "No Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48565-vE3HfSoh59OxGi0raouAEjGYiNxlus.mp3"
+    },
+    {
+        "id": 77026,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "She's staying at home",
+        "hebrew_text": "היא נשארת בבית",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/149458-MZiojKQDhsy11bMTTryMaulHZsAbkW.mp3"
+    },
+    {
+        "id": 77027,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Why is she crying?",
+        "hebrew_text": "למה היא בוכה?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50153-jdmt42jRuleEUr4olgevLwvAJ9rPVJ.mp3"
+    },
+    {
+        "id": 77029,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "It's not a good idea to drink coffee at night",
+        "hebrew_text": "לא כדאי לשתות קפה בלילה",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48562-HZlQh71G2IGcamXPuMDrQV6Lh0oFju.mp3"
+    },
+    {
+        "id": 77030,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "I feel like staying in bed",
+        "hebrew_text": "בא לי להישאר במיטה",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48558-hutXSM3Ps3MUsZQJTxl9kK25OXngTK.mp3"
+    },
+    {
+        "id": 77032,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "I🧔‍♂️want a cake like that",
+        "hebrew_text": "אני רוצה עוגה כזאת",
+        "subject": "In Context",
+        "segment": "15",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50164-vkRfpHxkGtaeYFSHYgiMDdZqRX8etk.mp3"
+    },
+    {
+        "id": 77033,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Ahh! I suddenly remembered!",
+        "hebrew_text": "אהה! נזכרתי!",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50157-GyHoL7YfjKoXjBmWMPpLubqZfaFIe9.mp3"
+    },
+    {
+        "id": 77034,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Are we there yet??",
+        "hebrew_text": "הגענו כבר??",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48589-fyzYnhDA5zJrICw73BxiQ1WpL0zN3z.mp3"
+    },
+    {
+        "id": 77035,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Do you 👩‍🦰 have a hat like that?",
+        "hebrew_text": "יש לך כובע כזה?",
+        "subject": "In Context",
+        "segment": "15",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50165-5uo0loAhJjaDMr4UoCXVyFFwiuhIsz.mp3"
+    },
+    {
+        "id": 77037,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Band",
+        "hebrew_text": "להקה (נ)",
+        "subject": "No Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50163-jY3dH8XRkR8j0cEGleWPtsgHX1siXU.mp3"
+    },
+    {
+        "id": 77038,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Partner/ roommate/ business partner",
+        "hebrew_text": "שותף (ז)",
+        "subject": "No Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50160-LzHrZ00sqV3fRJq1miyJSAJDUC9mC1.mp3"
+    },
+    {
+        "id": 77040,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "We met at the gym",
+        "hebrew_text": "נפגשנו בחדר כושר",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48013-q7agqoDowoTlhoaPcNStVjOGvyqZZZ.mp3"
+    },
+    {
+        "id": 77041,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "He's completely relaxed",
+        "hebrew_text": "הוא רגוע לגמרי",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48582-zAMtEJpK8qbR6Ma7S4wCYmgjCs57fr.mp3"
+    },
+    {
+        "id": 77043,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "What's your👩‍🦰🧔‍♂️ favorite band?",
+        "hebrew_text": "מה הלהקה האהובה עליכם?",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48578-6om0b2IiNXm9qRYdAZAQluFeI23qpg.mp3"
+    },
+    {
+        "id": 77044,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "Ex (as in ex - boyfriend, ex - husband)",
+        "hebrew_text": "אקס (ז)",
+        "subject": "No Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48585-7hSvxsVeD8KalTlX1h29blaFGS9uxI.mp3"
+    },
+    {
+        "id": 77045,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "He's running five minutes late",
+        "hebrew_text": "הוא מאחר בחמש דקות",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57658-o0agtENu8fzWBwWJEBoH6eWKsSMSef.mp3"
+    },
+    {
+        "id": 77047,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Fifty thousand",
+        "hebrew_text": "חמישים אלף",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57667-m7PeZxZjRNq9qFI6BuzsuZC5XR1cQs.mp3"
+    },
+    {
+        "id": 77048,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "Relax 👩‍🦰, It will be fine",
+        "hebrew_text": "תירגעי, יהיה בסדר",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48015-hWA7m2fYgrEhtKkNKXzaYdvecnx5lD.mp3"
+    },
+    {
+        "id": 77049,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "She's running late",
+        "hebrew_text": "היא מאחרת",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/63968-r01k3JuJl1eqgTgDATepunbsMhB671.mp3"
+    },
+    {
+        "id": 77051,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "The bus is late",
+        "hebrew_text": "האוטובוס מאחר",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48592-0qr4GGjx7wJMejHNsEy1XetF6AXNTu.mp3"
+    },
+    {
+        "id": 77054,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "Why are you👩‍🦰stressed out?",
+        "hebrew_text": "למה את לחוצה?!",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48014-jKlYJ7rBbt5tHzv1eHv2aPPMQKrBKX.mp3"
+    },
+    {
+        "id": 77055,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "She doesn't like to be late",
+        "hebrew_text": "היא לא אוהבת לאחר!",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48587-6sOkhL2Xr9hUTI693NvN0nAJR9iI5v.mp3"
+    },
+    {
+        "id": 77057,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "I'll calm down",
+        "hebrew_text": "אני ארגע",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48583-RNvLRr7PcYzHI0wnW6iWoy63HjqJBk.mp3"
+    },
+    {
+        "id": 77109,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Whose flag is this?",
+        "hebrew_text": "של מי הדגל הזה?",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50159-1QuV4DcdHl3gN64WyRYiB3Dqg43kFm.mp3"
+    },
+    {
+        "id": 77110,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "I stayed outside",
+        "hebrew_text": "נשארתי בחוץ",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/50155-vYdHs7BeIxSsgeLgEZShKk7PmcuQpT.mp3"
+    },
+    {
+        "id": 77135,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "You're👩‍🦰 probably saying it was all \"stam\" (pointless, didn't mean anything)",
+        "hebrew_text": "בטח את אומרת שהכל היה סתם",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/63970-lrDVAgRdk3ddMdZ0dly2ikkCVF8BWd.mp3"
+    },
+    {
+        "id": 77114,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "I met up with my roommate 👩‍🦰",
+        "hebrew_text": "ניפגשתי עם השותפה שלי",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48574-looFBNv7HF2kK6CrMeLdNnwawPlDAL.mp3"
+    },
+    {
+        "id": 77115,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "box \r\nboxes",
+        "hebrew_text": "קופסה (נ)\nקופסאות",
+        "subject": "No Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/59164-Pknot013N238j2f0AZZ7O00VFWJ2d7.mp3"
+    },
+    {
+        "id": 77117,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "I had a question",
+        "hebrew_text": "הייתה לי שאלה",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46640-MgUI2YzKpmPwAsTa4SPZooM2XxavMj.mp3"
+    },
+    {
+        "id": 77118,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "Did you👩‍🦰 update the excel?",
+        "hebrew_text": "עדכנת את האקסל?",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46641-D9AbDxDYO0CRGkJBFiJfB3j3MyeQfv.mp3"
+    },
+    {
+        "id": 77120,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "I didn't have time",
+        "hebrew_text": "לא היה לי זמן",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51133-aJb3HENH1rxy4MIwr3OJx3u3S3Xypd.mp3"
+    },
+    {
+        "id": 77121,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "Keep 👩‍🦰🧔‍♂️me posted ",
+        "hebrew_text": "תעדכנו אותי",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46642-G7MYt0VmGzblxmKXgIkkzR6OolmV25.mp3"
+    },
+    {
+        "id": 77122,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "I didn't have tickets",
+        "hebrew_text": "לא היו לי כרטיסים",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/46643-okRvf9nsf8GD6nkKfsJNgPXepX9dPA.mp3"
+    },
+    {
+        "id": 77126,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "It's permitted to take a stroll in the park",
+        "hebrew_text": "מותר לטייל בפארק",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48148-iJ4G0IrtbbafdObEw98D14hYwpe8jd.mp3"
+    },
+    {
+        "id": 77127,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "Of course it's allowed!",
+        "hebrew_text": "ברור שמותר!",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48602-VaNuIpfCMeFfvmUtS2KglLDaXNhh2i.mp3"
+    },
+    {
+        "id": 77128,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "A private pool",
+        "hebrew_text": "בריכה פרטית",
+        "subject": "No Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48603-y89CNq1EMdaJl6YpLobzuuo8DVmqTd.mp3"
+    },
+    {
+        "id": 77129,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "Swimming pool",
+        "hebrew_text": "בריכה (נ)",
+        "subject": "No Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48149-2TIppRhbgoTeIi13LVXyvbs4qT7Jm6.mp3"
+    },
+    {
+        "id": 77131,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "She wanted him to trust her",
+        "hebrew_text": "היא רצתה שהוא יסמוך עליה",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48151-33WZQSp1rP24l6jAUsAD2JCjgnKp4B.mp3"
+    },
+    {
+        "id": 77132,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "I want 🧔‍♂️you🧔‍♂️ to help me",
+        "hebrew_text": "אני רוצה שתעזור לי",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48150-kaLkPnOsyVCW8Ws07gk1gylNT6j0pJ.mp3"
+    },
+    {
+        "id": 77134,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "He didn't want her to bother him",
+        "hebrew_text": "הוא לא רצה שהיא תפריע לו",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48605-9nl1Od15c7nAxYOTICclG5eI4VfYns.mp3"
+    },
+    {
+        "id": 77136,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "Tardiness, \"Lateness\"",
+        "hebrew_text": "איחור (ז)",
+        "subject": "No Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48606-cYBWHzzrPg6rrOwGATTndNgxRXA6AI.mp3"
+    },
+    {
+        "id": 77138,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "an update",
+        "hebrew_text": "עדכון (ז)",
+        "subject": "No Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48607-5skta3AnKZ0zGVSvH2vjesPf5oXJ77.mp3"
+    },
+    {
+        "id": 77139,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "Are there any updates?",
+        "hebrew_text": "יש עדכונים?",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/66291-bRlxf77ahQ8ShX05ahlLnRjDqz9uPw.mp3"
+    },
+    {
+        "id": 77141,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "I'll decide",
+        "hebrew_text": "אני אחליט",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48609-iWK2cbEPbl9Xc023XQGnBwE0Yyx0J5.mp3"
+    },
+    {
+        "id": 77142,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "When will she decide?",
+        "hebrew_text": "מתי היא תחליט?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51118-bA8K2m33lxHH0z7bD5On6BGYF68Xft.mp3"
+    },
+    {
+        "id": 77144,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "He already decided",
+        "hebrew_text": "הוא כבר החליט",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51119-xtqDegPLFGBRQJyPcohYtTwQ27LoLu.mp3"
+    },
+    {
+        "id": 77145,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "I decided not to decide",
+        "hebrew_text": "החלטתי לא להחליט",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48611-hVeAMj2FsLBvDSvqkvzttHhatCdV6s.mp3"
+    },
+    {
+        "id": 77146,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "We didn't decide yet",
+        "hebrew_text": "עוד לא החלטנו",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51120-eM2ezN3Qoint3nIl6Jbe762CMBAUHz.mp3"
+    },
+    {
+        "id": 77148,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "It's your🧔‍♂️ call",
+        "hebrew_text": "החלטה שלך",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51121-dvSxvja9p46ppH2PAfPntVqZ1rS2rC.mp3"
+    },
+    {
+        "id": 77149,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "Decision",
+        "hebrew_text": "החלטה (נ)",
+        "subject": "No Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48613-YRunQVzlznawEbpLise0NtehWrWvjb.mp3"
+    },
+    {
+        "id": 77151,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "Soooo, have you👩‍🦰 decided yet?",
+        "hebrew_text": "נווווו, כבר החלטת?",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48615-gXfBaFrri1Bal5DXsVeYDXJyYXNTRa.mp3"
+    },
+    {
+        "id": 77152,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "I have questions about the contract",
+        "hebrew_text": "יש לי שאלות לגבי החוזה",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51124-cIZ7ZjbrTEfzcQmElpU4rVMmaEiwuB.mp3"
+    },
+    {
+        "id": 77153,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "I wasn't late!",
+        "hebrew_text": "אני לא איחרתי!",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48196-nTmYdGVm6RqfvprFcqpif9bN0WGo23.mp3"
+    },
+    {
+        "id": 77155,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "We shared beautiful moments",
+        "hebrew_text": "היו בינינו רגעים יפים",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47978-1Kzi9QjvsLmD7tYVT4jt2rlRqjvDC8.mp3"
+    },
+    {
+        "id": 77156,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "He doesn't dream about her anymore",
+        "hebrew_text": "הוא כבר לא חולם עליה",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48197-n3LcrSJYWmVrdAvrHeCb2o4bwFAsZ0.mp3"
+    },
+    {
+        "id": 77158,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "You🧔‍♂️will have friends",
+        "hebrew_text": "יהיו לך חברים",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47979-aW2GzH1SQsoWazroMsJUkQKNRtSLKJ.mp3"
+    },
+    {
+        "id": 76821,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "She's waiting for him",
+        "hebrew_text": "היא מחכה לו",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44827-MVpJVqDrTZjyGBGIU8GEk0hvb3MrGq.mp3"
+    },
+    {
+        "id": 76825,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "\"I👩‍🦰 hope so\"",
+        "hebrew_text": "אני מקווה",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43690-wbLudysmNfYhrlIv1eDcCv38TQbaB7.mp3"
+    },
+    {
+        "id": 76828,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "To change the world",
+        "hebrew_text": "לשנות את העולם",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43693-MmXEa2Al5R8sX6rVESxB6C9jTwiOFk.mp3"
+    },
+    {
+        "id": 76831,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "Subject/ Topic",
+        "hebrew_text": "נושא (ז)",
+        "subject": "No Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43692-JGNmcK5QLQqiiIEzgvmR0S4A8oUj19.mp3"
+    },
+    {
+        "id": 76833,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "Everyone is waiting for you👩‍🦰 ",
+        "hebrew_text": "כולם מחכים לך",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43696-GLa5Spt30c40BH0cEABIqz6BfMDKSJ.mp3"
+    },
+    {
+        "id": 76839,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "What will you 🧔‍♂️ do?",
+        "hebrew_text": "מה אתה תעשה?",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43937-4R1qDWqSZqEVL4Q7d3mZMMeoOYvPSQ.mp3"
+    },
+    {
+        "id": 76843,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Do you👩‍🦰 have plans for the weekend?",
+        "hebrew_text": "יש לך תכניות לסופ\"ש?",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43933-9huzfo8n5D2hEUm86fVxgXjOxAqpM3.mp3"
+    },
+    {
+        "id": 76846,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "What is your🧔‍♂️address",
+        "hebrew_text": "מה הכתובת שלך?",
+        "subject": "In Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43699-4AzkkZktPn1YJ8RnHqXM0PJezzMwF2.mp3"
+    },
+    {
+        "id": 76849,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Where will you 🧔‍♂️live?",
+        "hebrew_text": "איפה אתה תגור?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45459-Tig46eiJMCZcEWo5YiFMxIfWtdmkh2.mp3"
+    },
+    {
+        "id": 76853,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "She will do Yoga",
+        "hebrew_text": "היא תעשה יוגה",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45474-Cyn1dKnKtTpcGStMYcNZXDeScTJc5H.mp3"
+    },
+    {
+        "id": 76856,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Are you🧔‍♂️ cleaning your room?",
+        "hebrew_text": "אתה מנקה את החדר שלך?",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/88460-EScUJS8rXIKIAAE1b0u9g7sAlNLgqD.mp3"
+    },
+    {
+        "id": 76910,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "I cleaned and cleaned and cleaned",
+        "hebrew_text": "ניקיתי וניקיתי וניקיתי",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45673-ZJKnznyZH2LzfAl53mn2Zxe1rkuZok.mp3"
+    },
+    {
+        "id": 76913,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "Where did you 👩‍🦰🧔‍♂️wait for her?",
+        "hebrew_text": "איפה חיכיתם לה?",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45675-ecI7EF0mUKRuljRz921rAd88M14wnp.mp3"
+    },
+    {
+        "id": 76921,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "She's \"actually not\" lazy",
+        "hebrew_text": "היא דווקא לא עצלנית",
+        "subject": "In Context",
+        "segment": "18",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47564-ReA1rtvxb13HdUXc0VPEKGusf6dxv4.mp3"
+    },
+    {
+        "id": 76925,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "She's disrupting the class",
+        "hebrew_text": "היא מפריעה לשיעור",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47624-M24M0io4KxbRWrFAqCqSvIh1VzE5nT.mp3"
+    },
+    {
+        "id": 76927,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "He didn't feel well",
+        "hebrew_text": "הוא לא הרגיש טוב",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47625-hxnmSEGIbR5KVlbYUn4Q0iK2s72Gud.mp3"
+    },
+    {
+        "id": 76928,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "It's disturbing me!",
+        "hebrew_text": "זה מפריע לי!",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47571-WrEBbTBqhqVkMs02jzRvoUHzA0kpAE.mp3"
+    },
+    {
+        "id": 76931,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "They👩‍🦰🧔‍♂️ are \"sort of\" my colleagues",
+        "hebrew_text": "הם סוג של קולגות שלי",
+        "subject": "In Context",
+        "segment": "4 אופציונלי",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47575-8gvt7Lnx6kQfs2HbMKk8emD9yFzN3D.mp3"
+    },
+    {
+        "id": 76935,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "When did you arrive at the office?",
+        "hebrew_text": "מתי הגעת למשרד?",
+        "subject": "In Context",
+        "segment": "7",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47603-32t1bZ5ON91TagStrYfdwrFXwCtLNn.mp3"
+    },
+    {
+        "id": 76938,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "I didn't get around to calling you👩‍🦰",
+        "hebrew_text": "לא הספקתי להתקשר אליך",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47590-U0s7MOzT1KlTNHpNy7WkfPC8dvFG0g.mp3"
+    },
+    {
+        "id": 76942,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "I🧔‍♂️use google maps a lot",
+        "hebrew_text": "אני משתמש הרבה ב google maps?",
+        "subject": "In Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49017-Cbk7MdZIyXfzMkQEbULcYbJOiFlz4D.mp3"
+    },
+    {
+        "id": 76946,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "You🧔‍♂️are probably tired",
+        "hebrew_text": "אתה בטח עייף",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49019-dPLI3RROVSA2GZgetLwCWB75fBB0sn.mp3"
+    },
+    {
+        "id": 76916,
+        "lesson": "5",
+        "level": "Blue",
+        "english_text": "It's actually interesting",
+        "hebrew_text": "זה דווקא מעניין",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/5-Blue-275a9093-98a3-464e-add7-3e0d026efc7c-kjc67LHgcZd7y29fyBxkRZrdG1mGvI"
+    },
+    {
+        "id": 76949,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "It never felt so good",
+        "hebrew_text": "זה אף פעם לא הרגיש כל כך טוב",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47659-qACgdtMVwnP5hQb6lkPaaLNOuM4qQ6.mp3"
+    },
+    {
+        "id": 76835,
+        "lesson": "1",
+        "level": "Blue",
+        "english_text": "She is changing the password",
+        "hebrew_text": "היא משנה את הסיסמה",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/44837-NS6W4ER2PPcFz17e9DlgGc7mQqdiXN.mp3"
+    },
+    {
+        "id": 76953,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "When does the meeting end?",
+        "hebrew_text": "מתי הפגישה מסתיימת?",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47661-WtJY59uamEpNSQyM2KpxeW6iwM30Fo.mp3"
+    },
+    {
+        "id": 76956,
+        "lesson": "7",
+        "level": "Blue",
+        "english_text": "The exam will end in two hours",
+        "hebrew_text": "המבחן יסתיים עוד שעתיים",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49026-6LxTNBoLLuyJnPb5JIcnsMG2xGl6tA.mp3"
+    },
+    {
+        "id": 77010,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "Do you🧔‍♂️trust me?",
+        "hebrew_text": "אתה סומך עליי?",
+        "subject": "In Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49108-K5iZ7mQJa6BSwr82G1SrccXneI5Pz4.mp3"
+    },
+    {
+        "id": 77014,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "The opposite of dirty is clean",
+        "hebrew_text": "ההפך של מלוכלך זה נקי",
+        "subject": "In Context",
+        "segment": "15",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49112-NWYVmUodPy5xdgJtfmqBaboTu4zDro.mp3"
+    },
+    {
+        "id": 77017,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "You're👩‍🦰 better off not drinking coffee ",
+        "hebrew_text": "לא כדאי לך לשתות קפה ",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48561-DwL5PcFOgMJPUFvkKLiSFCiqAzf2Z0.mp3"
+    },
+    {
+        "id": 77019,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "They👩‍🦰🧔‍♂️are entering the classroom",
+        "hebrew_text": "הם נכנסים לכיתה",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49161-whnGn36xotgt5GhwvYYmDU3wyc6IPo.mp3"
+    },
+    {
+        "id": 77020,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "He will stay home tomorrow",
+        "hebrew_text": "הוא ישאר בבית מחר",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48560-DI7ZqLvP1IvQaVQJzJtltauh246wcg.mp3"
+    },
+    {
+        "id": 77028,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "He 's meeting up with his friend",
+        "hebrew_text": "הוא נפגש עם חבר שלו",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48564-GZ4zwGYRCcrSYVuxAKb4QiHhpVVVF6.mp3"
+    },
+    {
+        "id": 77036,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Capital city",
+        "hebrew_text": "עיר בירה (נ)",
+        "subject": "No Context",
+        "segment": "14",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48576-OId9NxCnuyv9aeZUdJ7qH93PYXOuP1.mp3"
+    },
+    {
+        "id": 77039,
+        "lesson": "14",
+        "level": "Blue",
+        "english_text": "What's his favorite color?",
+        "hebrew_text": "מה הצבע האהוב עליו?",
+        "subject": "In Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48016-e0YdIlXw96CDae3o0DXH7UomYYTpS3.mp3"
+    },
+    {
+        "id": 77042,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Why were you 👩‍🦰🧔‍♂️late??",
+        "hebrew_text": "למה איחרתם??",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57665-IRaJsf1JluyIzCxYmMwldYeyg8ILJa.mp3"
+    },
+    {
+        "id": 77046,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "What's the opposite of clean?",
+        "hebrew_text": "מה ההפך של נקי?",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48586-rGDUNRUMHL7qPTx6z9E7fmFzvqRfvo.mp3"
+    },
+    {
+        "id": 77050,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Enough! \"You're🧔‍♂️ drilling a hole in my brain\"!!",
+        "hebrew_text": "די! אתה חופר!!",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57661-3W6boHLaSiKQUZbQbP9u4ERYJqWBTT.mp3"
+    },
+    {
+        "id": 77053,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "We 👩‍🦰🧔‍♂️are running late for class",
+        "hebrew_text": "אנחנו מאחרים לשיעור",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57659-wOt342oMZmIavwsCuBawNyqfLoVSCS.mp3"
+    },
+    {
+        "id": 77058,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "Don't 🧔‍♂️be too late",
+        "hebrew_text": "אל תאחר מדי",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/57663-6YtlKIIXRC2JN73LVXb8MTJ2RZOP0v.mp3"
+    },
+    {
+        "id": 77111,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "He got into the box",
+        "hebrew_text": "הוא נכנס לקופסה",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48575-Z5vxFiCJhhgBRrc0zptkMFOHuigt3o.mp3"
+    },
+    {
+        "id": 77113,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "Whose clothes are these?",
+        "hebrew_text": "של מי הבגדים האלה?",
+        "subject": "In Context",
+        "segment": "8",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48572-F0lTNVvEbxweTDTrndqq0km5gWEKtQ.mp3"
+    },
+    {
+        "id": 77116,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "Stay👩‍🦰 here and wait for us",
+        "hebrew_text": "תישארי פה ותחכי לנו",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49155-9en5GxxoC8NVd735Gyysb2IkdYkGN6.mp3"
+    },
+    {
+        "id": 77119,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "I had a few questions",
+        "hebrew_text": "היו לי כמה שאלות",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51130-66DeqcBoKPgT0QEtAtxKOp8dc4sJbL.mp3"
+    },
+    {
+        "id": 77123,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "It's a private event",
+        "hebrew_text": "זה אירוע פרטי",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48147-2tQUJj9chjJYsvMRa6rMBVkIfbET7L.mp3"
+    },
+    {
+        "id": 77125,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "it is forbidden to light a fire in the park",
+        "hebrew_text": "אסור להדליק אש בפארק",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48601-zJAT1I4Rzu3f4Fda2iXg3hpIVF2f2Y.mp3"
+    },
+    {
+        "id": 77130,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "I wanted you 👩‍🦰to stay with me",
+        "hebrew_text": "רציתי שתישארי איתי",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48604-uU09KfcDpIuS2uSZHfXrnAvdZSJfVS.mp3"
+    },
+    {
+        "id": 77133,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "Sorry for the noise",
+        "hebrew_text": "סליחה על הרעש",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/66289-yj5gX0qXxkicL3lyHsOGqC6Oax4eLg.mp3"
+    },
+    {
+        "id": 77137,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "Sorry for the delay",
+        "hebrew_text": "סליחה על האיחור",
+        "subject": "In Context",
+        "segment": "9",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/66290-oYS8R2Ap4dioPys3BMl7GebWaUEssI.mp3"
+    },
+    {
+        "id": 77140,
+        "lesson": "18",
+        "level": "Blue",
+        "english_text": "Thank you for the gift",
+        "hebrew_text": "תודה על המתנה",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48608-P76D6GC9wTbLqmihBUpiWZAPKlblVk.mp3"
+    },
+    {
+        "id": 77143,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "They'll decide tomorrow",
+        "hebrew_text": "הם יחליטו מחר",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48610-Tdvp3IJeCeOcyrGv6RdVIVMeJQ4fxn.mp3"
+    },
+    {
+        "id": 77147,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "We trust you 👩‍🦰🧔‍♂️",
+        "hebrew_text": "אנחנו סומכים עליכם",
+        "subject": "In Context",
+        "segment": "4",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48612-73gssnGuIfagE54FTdloMCXHIk679t.mp3"
+    },
+    {
+        "id": 77150,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "I have a question regarding the date",
+        "hebrew_text": "יש לי שאלה בקשר לתאריך",
+        "subject": "In Context",
+        "segment": "11",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51122-N6CA9JhpbBnpyGf2sGMErV0zUx8paO.mp3"
+    },
+    {
+        "id": 77154,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "Please don't🧔‍♂️ be late",
+        "hebrew_text": "אל תאחר בבקשה",
+        "subject": "In Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/47977-vocm5Z7zIR0s4fncDY2I3RDNyqUNOG.mp3"
+    },
+    {
+        "id": 77024,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "We'll meet whenever you🧔‍♂️want, I'm👩‍🦰 going with the flow",
+        "hebrew_text": "ניפגש מתי שאתה רוצה, אני זורמת",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48563-TYfj3lsnpJTxpSD1FAS1CKXUe5QjKc.mp3"
+    },
+    {
+        "id": 77157,
+        "lesson": "20",
+        "level": "Blue",
+        "english_text": "One day I will have time",
+        "hebrew_text": "יום אחד יהיה לי זמן",
+        "subject": "In Context",
+        "segment": "6",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/48198-IvzfCC5uyTQZJFaOSMmoKneDsB0psm.mp3"
+    },
+    {
+        "id": 77073,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "difficult, hard",
+        "hebrew_text": "קשה",
+        "subject": "In Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/2-Blue-be673ae1-17f9-4326-a3c4-2507f58f0f1f-PD63JUHWL94vKNdosgV3Bky5C2NCds"
+    },
+    {
+        "id": 77124,
+        "lesson": "17",
+        "level": "Blue",
+        "english_text": "She updated her website",
+        "hebrew_text": "היא עדכנה את האתר שלה",
+        "subject": "In Context",
+        "segment": "10",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/51131-QmdskpCsqmykJ7XovBfQODp328ePG6.mp3"
+    },
+    {
+        "id": 76848,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "Plan",
+        "hebrew_text": "תוכנית (נ)",
+        "subject": "No Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/2-Blue-2bf740e5-18c2-4d1a-aca3-d584028ad9c7-I9Reslgb7gWp2jEMSykYw4EwQhktry"
+    },
+    {
+        "id": 76847,
+        "lesson": "2",
+        "level": "Blue",
+        "english_text": "What will you 👩‍🦰 buy?",
+        "hebrew_text": "מה את תקני?",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/45472-jCavDEv6UeiNTxcF5zRg1JjvOlnuJA.mp3"
+    },
+    {
+        "id": 76885,
+        "lesson": "3",
+        "level": "Blue",
+        "english_text": "They 👨👨are putting out the fire",
+        "hebrew_text": "הם מכבים את האש",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/43684-Byjd7VnaayoXNYu2YPaCb94grLjeRF.mp3"
+    },
+    {
+        "id": 574653,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "to trust, to rely on",
+        "hebrew_text": "לסמוך על",
+        "subject": "No Context",
+        "segment": "13",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/10-Blue-12dd5874-0311-4ea2-a4fa-1f1364231211-QfdsuxRbABtTvCLxayO8fUre05c21u"
+    },
+    {
+        "id": 574654,
+        "lesson": "10",
+        "level": "Blue",
+        "english_text": "to meet up with, to meet with",
+        "hebrew_text": "להיפגש עם",
+        "subject": "No Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/10-Blue-2f274899-9a1c-41cf-bc3d-84cb543dac8d-IeBFTAB9G0D7Jp6rIyO9lvxp4WRUAy"
+    },
+    {
+        "id": 574655,
+        "lesson": "13",
+        "level": "Blue",
+        "english_text": "to suddenly remember, to recall after forgetting",
+        "hebrew_text": "להיזכר",
+        "subject": "No Context",
+        "segment": "5",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/13-Blue-6646a5d3-4548-45ad-a87d-8cf1bb3f1500-P9qXGqDyZ7RfwPc8iPUeXXYo4RHhDi"
+    },
+    {
+        "id": 574656,
+        "lesson": "15",
+        "level": "Blue",
+        "english_text": "to be late, to run late",
+        "hebrew_text": "לאחר",
+        "subject": "No Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/15-Blue-55ab14eb-c310-4037-96cb-fa9a9013f3ca-hMkXs0W6hDVmBYU8RYVc4YXNorEySI"
+    },
+    {
+        "id": 574657,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "to decide, to make up one's mind",
+        "hebrew_text": "להחליט",
+        "subject": "No Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/19-Blue-ff397ce3-e838-4318-bddd-b2de8ba8756a-88QFRxjsrq0uVhCwOYODKNRk3iBrnI"
+    },
+    {
+        "id": 574658,
+        "lesson": "19",
+        "level": "Blue",
+        "english_text": "to decide, to make up one's mind",
+        "hebrew_text": "להחליט",
+        "subject": "No Context",
+        "segment": "2",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/19-Blue-af513a07-59ba-4b2f-80b2-d3b8f99a6a1f-AAAHyqzgHFB1fYklVanMdDVZn3PKuB"
+    },
+    {
+        "id": 574659,
+        "lesson": "6",
+        "level": "Blue",
+        "english_text": "to disturb, to bother",
+        "hebrew_text": "להפריע",
+        "subject": "No Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/6-Blue-bdb195cf-3afb-4983-82d3-4ebbec5de689-M49Qmjj0JIS5rMhsnqu8JUkhwPELC6"
+    },
+    {
+        "id": 574660,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "to stay, to remain",
+        "hebrew_text": "להישאר",
+        "subject": "No Context",
+        "segment": "3",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/11-Blue-cef32c41-6cdc-490b-a292-dc607b21e8cd-x0vgkBfbqeoQAf0uzfqklWF3KZ7u0B"
+    },
+    {
+        "id": 574661,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "to be careful, to watch out",
+        "hebrew_text": "להיזהר",
+        "subject": "No Context",
+        "segment": "12",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/11-Blue-41591688-1fac-49fb-b30c-64371a060f9a-9RsupMhkGgFhrBZwOzatc0KJIFuURC"
+    },
+    {
+        "id": 77012,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "He trusted his intuition",
+        "hebrew_text": "הוא סמך על האינטואיציה שלו",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49110-jZLpY6ad4TxABdi8rkrd7FhKfRX2fp.mp3"
+    },
+    {
+        "id": 77112,
+        "lesson": "11",
+        "level": "Blue",
+        "english_text": "Let's👨🏻👩🏻‍🦰 talk about the price",
+        "hebrew_text": "בואו נדבר על המחיר",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/11-Blue-e8b45050-0fd2-402c-9346-a9b4ecb5e5ae-tpNrJPOrKtVlShMEqa9m3XJQqwtJXI"
+    },
+    {
+        "id": 77031,
+        "lesson": "0",
+        "level": "Blue",
+        "english_text": "Call me after you👩‍🦰 talk to him",
+        "hebrew_text": "תתקשרי אליי אחרי שתדברי איתו",
+        "subject": "In Context",
+        "segment": "1",
+        "audio_text": "https://yebs9k6htpb0y0ak.public.blob.vercel-storage.com/audio/flashcards/49153-REZf1KORkajWFWyPPDWb9svBFFaKfR.mp3"
+    }
+]

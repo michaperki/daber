@@ -15,7 +15,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'lessonId required' }, { status: 400 });
     }
 
-    const lesson = await prisma.lesson.findUnique({ where: { id: lessonId } });
+    const ensureLesson = async () => {
+      if (lessonId === 'vocab_all') {
+        return prisma.lesson.upsert({
+          where: { id: lessonId },
+          update: { title: 'All Vocab', language: 'he', level: 'mixed', type: 'vocab', description: 'Drill across all vocab lessons' },
+          create: { id: lessonId, title: 'All Vocab', language: 'he', level: 'mixed', type: 'vocab', description: 'Drill across all vocab lessons' }
+        });
+      }
+      const found = await prisma.lesson.findUnique({ where: { id: lessonId } });
+      return found;
+    };
+    const lesson = await ensureLesson();
     if (!lesson) return NextResponse.json({ error: 'Lesson not found' }, { status: 404 });
 
     const subsetData = (subset && subset.length ? (subset as any) : undefined);

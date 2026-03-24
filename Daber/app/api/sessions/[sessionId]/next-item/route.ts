@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { logEvent } from '@/lib/log';
 import { generateNextFromLexicon } from '@/lib/drill/generators';
 
 export async function GET(req: Request, { params }: { params: { sessionId: string } }) {
@@ -38,8 +39,13 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     if (!pacing && baseCap > 0 && attemptsCount >= baseCap) {
       return NextResponse.json({ done: true, index: attemptsCount, total: baseCap });
     }
-    const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { lesson: { select: { type: true } } } });
+    const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { lesson: { select: { id: true, type: true } } } });
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+
+    const isCrossVocab = session.lesson_id === 'vocab_all';
+    const allowedLessonIds: string[] = isCrossVocab
+      ? (await prisma.lesson.findMany({ where: { type: 'vocab' }, select: { id: true } })).map(l => l.id)
+      : [session.lesson_id];
 
     const attempted = await prisma.attempt.findMany({
       where: { session_id: sessionId },
@@ -67,6 +73,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const gen = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak });
         if (gen) {
           const phase = await computePhaseFor(gen.id);
+          logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: gen.id, source: 'lex', cross: isCrossVocab } }).catch(() => {});
           return NextResponse.json({ done: false, item: gen, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
         }
       } catch {
@@ -74,17 +81,18 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       }
       // fall through to regular selection when no generated item is available
     }
-    if (dueParam === 'item' || dueParam === 'blend') {
+    if (!dueParam || dueParam === 'item' || dueParam === 'blend') {
       // Pick an authored item from this lesson that is due in ItemStat
       const now = new Date();
       const dueItems = await prisma.itemStat.findMany({ where: { next_due: { lte: now } } });
       const dueSet = new Set(dueItems.map(d => d.lesson_item_id));
-      const remaining = await prisma.lessonItem.findMany({ where: { lesson_id: session.lesson_id, id: { in: Array.from(dueSet) }, NOT: { id: { in: Array.from(attemptedIds) } } }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+      const remaining = await prisma.lessonItem.findMany({ where: { lesson_id: { in: allowedLessonIds }, id: { in: Array.from(dueSet) }, NOT: { id: { in: Array.from(attemptedIds) } } }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
       const pick = useRandom ? (remaining.length ? remaining[Math.floor(Math.random() * remaining.length)] : null) : (remaining[0] || null);
       if (pick) {
-        const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
+        const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
         const index = attemptedIds.size + 1;
         const phase = await computePhaseFor(pick.id);
+        logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_item', cross: isCrossVocab } }).catch(() => {});
         return NextResponse.json({ done: false, item: pick, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
       }
       // continue to normal selection if none due
@@ -98,26 +106,39 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       if (!item) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
       const phase = await computePhaseFor(item.id);
+      logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: item.id, source: 'subset', cross: isCrossVocab } }).catch(() => {});
       return NextResponse.json({ done: false, item, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
     } else {
-      let nextItem: any = null;
-      if (useRandom) {
-        const remain = await prisma.lessonItem.findMany({
-          where: { lesson_id: session.lesson_id, NOT: { id: { in: Array.from(attemptedIds) } } },
-          select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true }
+      // SRS priority when not using due mode explicitly: weak items before new
+      const remaining = await prisma.lessonItem.findMany({
+        where: { lesson_id: { in: allowedLessonIds }, NOT: { id: { in: Array.from(attemptedIds) } } },
+        select: { id: true }
+      });
+      const remainingIds = remaining.map(r => r.id);
+      let nextItem: { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null } | null = null;
+      if (remainingIds.length) {
+        const weakStats = await prisma.itemStat.findMany({
+          where: { lesson_item_id: { in: remainingIds }, OR: [{ correct_streak: { lte: 1 } }, { incorrect_count: { gt: 0 } }] },
+          orderBy: [{ incorrect_count: 'desc' }, { last_attempt: 'desc' }]
         });
-        if (remain.length) nextItem = remain[Math.floor(Math.random() * remain.length)] as any;
-      } else {
-        nextItem = await prisma.lessonItem.findFirst({
-          where: { lesson_id: session.lesson_id, NOT: { id: { in: Array.from(attemptedIds) } } },
-          orderBy: { id: 'asc' },
-          select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true }
-        });
+        const weakIds = weakStats.map(s => s.lesson_item_id);
+        let pickId: string | null = null;
+        if (weakIds.length) {
+          pickId = useRandom ? weakIds[Math.floor(Math.random() * weakIds.length)] : weakIds[0];
+        }
+        if (!pickId) {
+          // No weak items — pick a new item
+          pickId = useRandom ? remainingIds[Math.floor(Math.random() * remainingIds.length)] : remainingIds[0];
+        }
+        if (pickId) {
+          nextItem = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+        }
       }
-      const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
+      const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
       if (!nextItem) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
       const phase = await computePhaseFor(nextItem.id);
+      logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: nextItem.id, source: useRandom ? 'random' : 'sequential', cross: isCrossVocab } }).catch(() => {});
       return NextResponse.json({ done: false, item: nextItem, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
     }
   } catch (e: any) {

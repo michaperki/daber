@@ -37,9 +37,29 @@ export const zNextItemResponse = z.object({
   total: z.number().optional(),
   offerEnd: z.boolean().optional(),
   offerExtend: z.boolean().optional(),
-  phase: zDrillPhase.optional()
+  phase: zDrillPhase.optional(),
+  // True if new generated content arrived since session start
+  newContentReady: z.boolean().optional()
 });
 export type NextItemResponse = z.infer<typeof zNextItemResponse>;
+
+// Generation (server-triggered) — simple contracts for optional manual triggers
+export const zGenerateDrillsRequest = z.object({
+  userId: z.string().optional(),
+  targets: z.number().int().min(1).max(8).optional(),
+  itemsPerTarget: z.number().int().min(1).max(6).optional(),
+  background: z.boolean().optional()
+});
+export type GenerateDrillsRequest = z.infer<typeof zGenerateDrillsRequest>;
+
+export const zGenerateDrillsResponse = z.object({
+  ok: z.literal(true),
+  batchId: z.string(),
+  started: z.boolean().optional(),
+  created: z.number().optional(),
+  itemIds: z.array(z.string()).optional()
+});
+export type GenerateDrillsResponse = z.infer<typeof zGenerateDrillsResponse>;
 
 export const zAttemptResponse = z.object({
   grade: zGrade,

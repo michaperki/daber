@@ -44,7 +44,12 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
 
     const isCrossVocab = session.lesson_id === 'vocab_all';
     const allowedLessonIds: string[] = isCrossVocab
-      ? (await prisma.lesson.findMany({ where: { type: 'vocab' }, select: { id: true } })).map(l => l.id)
+      ? (
+        [
+          ...(await prisma.lesson.findMany({ where: { type: 'vocab' }, select: { id: true } })).map(l => l.id),
+          ...(await prisma.lesson.findMany({ where: { type: 'vocab_generated' }, select: { id: true } })).map(l => l.id),
+        ]
+      )
       : [session.lesson_id];
 
     const attempted = await prisma.attempt.findMany({
@@ -74,7 +79,10 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         if (gen) {
           const phase = await computePhaseFor(gen.id);
           logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: gen.id, source: 'lex', cross: isCrossVocab } }).catch(() => {});
-          return NextResponse.json({ done: false, item: gen, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
+          const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
+            .then(c => c > 0)
+            .catch(() => false);
+          return NextResponse.json({ done: false, item: gen, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, newContentReady: newGenReady || undefined });
         }
       } catch {
         // fall through to regular selection when generator fails
@@ -93,7 +101,10 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const index = attemptedIds.size + 1;
         const phase = await computePhaseFor(pick.id);
         logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_item', cross: isCrossVocab } }).catch(() => {});
-        return NextResponse.json({ done: false, item: pick, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
+        const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
+          .then(c => c > 0)
+          .catch(() => false);
+        return NextResponse.json({ done: false, item: pick, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, newContentReady: newGenReady || undefined });
       }
       // continue to normal selection if none due
     }
@@ -107,7 +118,10 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const index = attemptedIds.size + 1;
       const phase = await computePhaseFor(item.id);
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: item.id, source: 'subset', cross: isCrossVocab } }).catch(() => {});
-      return NextResponse.json({ done: false, item, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
+      const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
+        .then(c => c > 0)
+        .catch(() => false);
+      return NextResponse.json({ done: false, item, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, newContentReady: newGenReady || undefined });
     } else {
       // SRS priority when not using due mode explicitly: weak items before new
       const remaining = await prisma.lessonItem.findMany({
@@ -131,7 +145,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           pickId = useRandom ? remainingIds[Math.floor(Math.random() * remainingIds.length)] : remainingIds[0];
         }
         if (pickId) {
-          nextItem = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+          const raw = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+          if (raw) nextItem = { ...raw, features: raw.features as Record<string, string | null> | null };
         }
       }
       const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
@@ -139,7 +154,10 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const index = attemptedIds.size + 1;
       const phase = await computePhaseFor(nextItem.id);
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: nextItem.id, source: useRandom ? 'random' : 'sequential', cross: isCrossVocab } }).catch(() => {});
-      return NextResponse.json({ done: false, item: nextItem, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase });
+      const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
+        .then(c => c > 0)
+        .catch(() => false);
+      return NextResponse.json({ done: false, item: nextItem, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, newContentReady: newGenReady || undefined });
     }
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || 'Failed to get next item' }, { status: 500 });

@@ -70,6 +70,11 @@ export default function DaberSessionPage() {
       if (data.offerEnd) setPacingOffer('end');
       else if (data.offerExtend) setPacingOffer('extend');
       else setPacingOffer(null);
+      // Surface mid-session content arrival once
+      if (data.newContentReady && !fetchNextRaw._toastShown) {
+        try { toast.success('New sentences ready'); } catch {}
+        (fetchNextRaw as any)._toastShown = true;
+      }
       return data;
     } catch {
       toast.error('Failed to fetch next item');

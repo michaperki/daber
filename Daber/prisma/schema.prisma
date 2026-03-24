@@ -35,6 +35,7 @@ model LessonItem {
   lexeme_id           String?
   lexeme              Lexeme?  @relation(fields: [lexeme_id], references: [id])
   features            Json?
+  generatedDrills     GeneratedDrill[]
 }
 
 model Session {
@@ -116,6 +117,7 @@ model Lexeme {
   features    Json?
   inflections Inflection[]
   lessonItems LessonItem[]
+  generatedDrills GeneratedDrill[]
 }
 
 model Inflection {
@@ -131,4 +133,36 @@ model Inflection {
   gender          String?
   binyan          String?
   features        Json?
+}
+
+// Async LLM-generated drill content tracking
+model GeneratedBatch {
+  id            String   @id @default(cuid())
+  user_id       String?
+  status        String   // 'pending' | 'complete' | 'failed'
+  model         String?
+  targets       Json?
+  context       Json?
+  item_count    Int      @default(0)
+  error         String?
+  created_at    DateTime @default(now())
+  completed_at  DateTime?
+  drills        GeneratedDrill[]
+}
+
+model GeneratedDrill {
+  id               String   @id @default(cuid())
+  lesson_item_id   String   @unique
+  lesson_item      LessonItem @relation(fields: [lesson_item_id], references: [id])
+  target_lexeme_id String?
+  target_lexeme    Lexeme?  @relation(fields: [target_lexeme_id], references: [id])
+  batch_id         String
+  batch            GeneratedBatch @relation(fields: [batch_id], references: [id])
+  drill_type       String   // 'he_to_en' | 'en_to_he'
+  difficulty       Int
+  grammar_focus    String?
+  created_at       DateTime @default(now())
+
+  @@index([batch_id], map: "idx_gen_drill_batch")
+  @@index([target_lexeme_id], map: "idx_gen_drill_lexeme")
 }

@@ -91,3 +91,34 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - Updated next-item selection to respect cross-lesson sessions: due-item and default selection now query across all vocab lessons instead of a single lesson when `lesson_id === 'vocab_all'`.
 - Session creation API upserts the `vocab_all` lesson on demand.
 - Lesson-specific sessions from the library remain unchanged.
+
+## 2026-03-24 — POS data cleanup + generator safety + UX polish
+
+**Lexeme POS cleanup (3 layers):**
+- Layer 1: Manually reclassified 26 of 54 “nouns” in the Heroku Lexeme table — adverbs (4), prepositions (4), adjectives (6), expressions (6), phrases (6). Nouns: 54 → 28.
+- Layer 2: Changed `parseVocab.ts` catch-all POS from `noun` to `untagged`. Prevents mass misclassification when ~2,400 CC vocab items are eventually parsed into Lexeme/Inflection tables.
+- Layer 3: `generateNounItem()` now skips multi-word nouns that lack a `definite_form` in features. Single-word nouns work as before.
+
+**Compound noun (סמיכות) support:**
+- Added `definite_form` field in Lexeme features for construct-state pairs (e.g., `מצב רוח` → `מצב הרוח`).
+- Generator uses stored definite form instead of blindly prepending ה. Reclassified מצב רוח and פרורי לחם back to `noun` with correct definite forms.
+
+**Audio play/replay button:**
+- New `AudioPlayButton` component: circular button shows play icon when idle, animated waveform bars during playback.
+- Replaced standalone “hear”/”hear again” buttons on both intro card and listen-and-translate card with inline play button.
+- StatusStrip waveform animates during TTS playback in recognition mode.
+
+**Dynamic drill quick-start:**
+- Removed “use dynamic drills (lexicon)” checkbox from settings/profile page.
+- Added “dynamic drill” button to home page quick-start grid (6 buttons, 2 rows of 3).
+
+**TS fix:** Cast `JsonValue` → `Record<string, string | null>` in next-item route (pre-existing type error).
+
+## 2026-03-24 — LLM drill pipeline v1 (async generation)
+
+- DB: Added `GeneratedBatch` and `GeneratedDrill` Prisma models to track batches and per-item metadata (drill_type, difficulty, grammar_focus).
+- API: New `POST /api/generate-drills` to trigger a batch; uses OpenAI (gpt-4o-mini) with strict JSON and v1 drill types only (he_to_en, en_to_he). Grammar exposure hardcoded to: present/past/future, definite articles, construct state, possession; level: intermediate.
+- Pipeline: `Daber/lib/generation/pipeline.ts` selects 3–4 target lexemes (weak/new) + 8–10 known lemmas, calls LLM, validates, persists items into `vocab_all_gen` lesson, links `GeneratedDrill` rows.
+- Session trigger: `/api/sessions` now fires a background generation job when the undrilled generated queue is below threshold (ENV `GEN_QUEUE_THRESHOLD`, default 20) and no batch is pending.
+- UX: `/api/sessions/[id]/next-item` includes `newContentReady` if generated items landed since `session.started_at`; session page shows a toast (no polling).
+- Picker: Cross‑vocab sessions now include lessons of type `vocab_generated` in selection.

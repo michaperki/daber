@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { logEvent } from '@/lib/log';
 import { zCreateSessionRequest } from '@/lib/contracts';
+import { runGenerationJob } from '../../../lib/generation/pipeline';
 
 export async function POST(req: Request) {
   try {
@@ -35,6 +36,18 @@ export async function POST(req: Request) {
       select: { id: true, lesson_id: true, started_at: true }
     });
     logEvent({ type: 'session_started', session_id: session.id, lesson_id: lessonId, user_id: userId ?? undefined });
+
+    // Background generation trigger: ensure we have a queue of undrilled generated items
+    try {
+      const threshold = Number.parseInt(process.env.GEN_QUEUE_THRESHOLD || '', 10) || 20;
+      const pending = await prisma.generatedBatch.count({ where: { status: 'pending' } });
+      if (pending === 0) {
+        const undrilled = await prisma.lessonItem.count({ where: { lesson: { type: 'vocab_generated' }, attempts: { none: {} } } });
+        if (undrilled < threshold) {
+          runGenerationJob({ userId }).catch(() => {});
+        }
+      }
+    } catch {}
     return NextResponse.json({ session });
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || 'Failed to create session' }, { status: 500 });

@@ -28,7 +28,7 @@ export default function VocabClient({ cards }: { cards: Card[] }) {
       ) : null}
       <div className="cta-row">
         <button className="btn-start" onClick={() => setShow(true)} disabled={show}>reveal</button>
-        <button className="btn-start" onClick={() => tts.play(card.he, settings.ttsRate)} disabled={!card.he}>hear</button>
+        <button className="btn-start" onClick={() => tts.play(card.he, settings.ttsRate)} disabled={!card.he || tts.playing}>hear</button>
         <button className="btn-resume" onClick={next}>next</button>
       </div>
     </div>

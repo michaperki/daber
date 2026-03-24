@@ -10,7 +10,8 @@ export function AudioPlayButton({ playing, onPlay }: Props) {
   return (
     <button
       className={`audio-play-btn ${playing ? 'is-playing' : ''}`}
-      onClick={onPlay}
+      onClick={() => { if (!playing) onPlay(); }}
+      disabled={playing}
       aria-label={playing ? 'Playing' : 'Play audio'}
     >
       {playing ? (

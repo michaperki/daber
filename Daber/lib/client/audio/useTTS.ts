@@ -17,6 +17,7 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
   const orderRef = React.useRef<string[]>([]);
   const bytesRef = React.useRef<number>(0);
   const settings = useSettings();
+  const busyRef = React.useRef<boolean>(false);
 
   const put = React.useCallback((key: string, blob: Blob) => {
     const prev = cacheRef.current.get(key);
@@ -59,7 +60,8 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
 
   const play = React.useCallback(async (text: string, rate?: number) => {
     if (!text) return;
-    if (playing) cancel();
+    if (busyRef.current || playing) return;
+    busyRef.current = true;
     setPlaying(true);
     try {
       let blob = get(text);
@@ -96,6 +98,7 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
           audio.removeEventListener('ended', onEnd);
           audio.removeEventListener('error', onErr);
           try { URL.revokeObjectURL(url); } catch {}
+          try { audioRef.current = null; } catch {}
           setPlaying(false);
         };
         audio.addEventListener('ended', onEnd, { once: true });
@@ -103,9 +106,10 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
         audio.play().catch(onErr);
       });
     } finally {
+      busyRef.current = false;
       setPlaying(false);
     }
-  }, [playing, cancel, get, put]);
+  }, [playing, get, put]);
 
   const prefetch = React.useCallback(async (text?: string | null) => {
     if (!text) return;

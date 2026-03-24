@@ -101,16 +101,12 @@ export default function DaberSessionPage() {
       total: data.total ?? 0,
       showHint: settings.showTransliteration || false,
     });
-    // Speak prompt once per item (guard dev double-invoke)
+    // Prepare prompt state once per item (no auto TTS)
     if (lastPromptIdRef.current !== data.item.id) {
       lastPromptIdRef.current = data.item.id;
       if (mode === 'he_to_en') {
-        // In he→en mode, play the Hebrew audio as the prompt
         setEnglishInput('');
-        await playTTS(data.item.target_hebrew);
         try { englishInputRef.current?.focus(); } catch {}
-      } else if (settings.speakPrompt) {
-        await playTTS(stripHowDoISay(data.item.english_prompt));
       }
     }
     // Prefetch TTS for correction and prompt
@@ -156,14 +152,8 @@ export default function DaberSessionPage() {
     try {
       const data: AttemptResponse = await apiAttempt(sessionId, item.id, raw, isListeningMode ? 'he_to_en' : undefined);
       dispatch({ type: 'FEEDBACK_RECEIVED', feedback: data });
-      // Play correction without blocking UI
-      if (data.correct_hebrew) {
-        playTTS(data.correct_hebrew).catch(() => {
-          try { audio.sfxGradeIncorrect(); } catch {}
-        });
-      } else {
-        try { (data.grade === 'correct') ? audio.sfxGradeCorrect() : audio.sfxGradeIncorrect(); } catch {}
-      }
+      // No auto TTS on feedback; play simple SFX only
+      try { (data.grade === 'correct') ? audio.sfxGradeCorrect() : audio.sfxGradeIncorrect(); } catch {}
       if (settings.autoResumeListening && data.grade !== 'correct') {
         try { await startVoice(); } catch {}
       }
@@ -234,7 +224,7 @@ export default function DaberSessionPage() {
   const emojiCue = deriveEmojiCue(cleanedPrompt, item?.id);
   const showReviewUI = settings.reviewBeforeSubmit && (phase === 'reviewing' || phase === 'prompting');
   const showFeedback = feedback && (phase === 'feedback' || phase === 'evaluating');
-  const micDisabled = audio.ttsPlaying || phase === 'evaluating' || phase === 'advancing';
+  const micDisabled = phase === 'evaluating' || phase === 'advancing';
 
   return (
     <div className="drill-root">
@@ -374,6 +364,11 @@ export default function DaberSessionPage() {
       {showFeedback && feedback ? (
         <>
           <FeedbackPanel grade={feedback.grade} reason={feedback.reason} correctHebrew={feedback.correct_hebrew} transliteration={item.transliteration} features={item.features || null} userTranscript={isListeningMode ? undefined : transcript} />
+          {!isListeningMode && (
+            <div className="audio-row" style={{ justifyContent: 'center' }}>
+              <AudioPlayButton playing={audio.ttsPlaying} onPlay={() => playTTS(feedback.correct_hebrew)} />
+            </div>
+          )}
           {isListeningMode && (
             <div style={{ marginBottom: 12, padding: '8px 16px', background: 'var(--color-background-secondary)', borderRadius: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>
               <span style={{ color: 'var(--color-text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>english: </span>

@@ -2,6 +2,8 @@
 
 This file is the durable charter for any AI agent working on Hebrew Drills (Daber). It encodes constraints, collaboration norms, product goals, and the doc protocol. It is not a status tracker — use `memory/MEMORY.md` and `Dev Journal.md` for state and chronology.
 
+Modifications or additions to SOUL.md are welcome but require Mike's approval. This is an evolving doc.
+
 ---
 
 ## Target User — This Is the Most Important Section
@@ -131,4 +133,3 @@ Pointers:
 - Contracts: `Daber/lib/contracts.ts`
 - Evaluator: `Daber/lib/evaluator/*` and `scripts/test_evaluator.ts`
 - Voice I/O: `Daber/app/api/stt/route.ts`, `Daber/app/api/tts/route.ts`
-

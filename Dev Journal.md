@@ -30,6 +30,21 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - Session phases: Introduced optional `phase` in `NextItemResponse` (contracts) and compute in `next-item` route from `ItemStat` (streak 0 → recognition, else free recall).
 - Client: `session/[sessionId]/page.tsx` now respects `phase` to select he→en (recognition) vs en→he (free recall) per item.
 
+## 2026-03-24 — Word families (intro gating)
+
+- Schema: Added `family_id` (string) and `family_base` (boolean) to `LessonItem`; added `FamilyStat` table for family-level intro state. Applied to Heroku Postgres.
+- Phase logic: `next-item` computes phase with family awareness — if no `ItemStat` exists but the item’s family is in `FamilyStat`, phase is `recognition` (skip intro); else `intro`.
+- Base preference: When introducing a family, selection swaps to the family’s `family_base` item (if available in the current lesson scope).
+- Intro seen: `/api/sessions/[id]/seen` now upserts `FamilyStat` for the item’s family so future forms skip intro.
+- Generator: New generated items set `family_id = 'lex:' + targetLexemeId`; mark `family_base=true` when the item is the bare lemma.
+- POC linking: Present‑tense basics — `fam_ktov` (ptb01_005–008, base=ptb01_005) and `fam_lmd` (ptb01_009–010, base=ptb01_009).
+- Smoke (Prisma): First pick resolves to base→intro; subsequent family items→recognition.
+- CC items: 2,653 total; 640 bare-form candidates; 612 unique forms. LLM tagger produced `{form, lemma, pos, confidence}`; applied links for confidence ≥ 0.8.
+  - Apply result: 348 LessonItems updated across 337 pairs; total CC items with `family_id`: 590/2,653 (~22%).
+- Scripts: `scripts/smoke_family_intro.ts`, `scripts/count_cc_standalone.ts`, `scripts/tag_cc_families.ts`, `scripts/apply_cc_family_links.ts`.
+
+Note: SOUL.md unchanged (requires approval).
+
 ## 2026-03-23 — Organizational cleanup
 - Updated `memory/MEMORY.md` to reflect actual project state (was stale — still said "establish root docs").
 - Backfilled this journal with entries for 03-15 and 03-17 shipped work.

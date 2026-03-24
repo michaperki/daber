@@ -29,10 +29,24 @@ Last updated: 2026-03-24
 `/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/admin/lexicon/validate`.
 
 ## Current Focus
-- Validate LLM drill quality in real usage; iterate on prompt/validator as needed.
-- Keep legacy generators as fallback until generated pool builds up.
+- Word families shipped: intros happen once per family; expand coverage as needed.
+- Validate LLM drill quality in real usage; iterate on prompt/validator.
 - Next: guided production phase; feature‑aware grading; minor mobile keyboard polish.
 - Backlog: user auth, STT confidence guardrails, CC import pipeline docs.
+
+## Recent Changes (2026-03-24)
+- Word families infrastructure:
+  - `LessonItem.family_id` / `LessonItem.family_base`; `FamilyStat` table.
+  - `next-item` phase logic checks family intro; `seen` marks family introduced.
+  - Base-form preference when introducing families.
+  - Generator sets `family_id = 'lex:<id>'`; marks `family_base` on bare-lemma items.
+- POC: linked present‑tense basics (`fam_ktov`, `fam_lmd`); smoke test validated behavior.
+- CC linking: identified 612 unique standalone forms; LLM-tagged `{form, lemma, pos, confidence}`; applied high-confidence links (≥0.8): 348 updates; total CC items with family_id now 590/2,653 (~22%).
+- New scripts:
+  - `scripts/smoke_family_intro.ts` — verifies family gating (Prisma).
+  - `scripts/count_cc_standalone.ts` — counts/uniques of bare-form CC items.
+  - `scripts/tag_cc_families.ts` — LLM tagger (dry‑run JSON only).
+  - `scripts/apply_cc_family_links.ts` — applies links to DB (confidence thresholded).
 
 ## Recent Changes (2026-03-23)
 - PWA baseline: added `public/manifest.webmanifest` and head links; lightweight SVG icon.
@@ -52,6 +66,8 @@ Last updated: 2026-03-24
 - Generators: `Daber/lib/drill/generators.ts`
 - Seed data: `Daber/prisma/seed.ts`; lessons: `Daber/data/lessons/*`
 - CC imports: `Daber/data/imports/*`; scraper: `scraper/cc_scraper.js`; importer: `scripts/import_citizen_cafe.ts`
+- Families: `Daber/app/api/sessions/[sessionId]/next-item/route.ts` (phase logic), `Daber/app/api/sessions/[sessionId]/seen/route.ts` (intro seen)
+- Family scripts: `scripts/count_cc_standalone.ts`, `scripts/tag_cc_families.ts`, `scripts/apply_cc_family_links.ts`, `scripts/smoke_family_intro.ts`
 - Oolpan schema ref: `Oolpan/README.md` (design artifact, not running code)
 
 ## Ops / Dev Notes

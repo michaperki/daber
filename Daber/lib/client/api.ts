@@ -104,3 +104,13 @@ export async function apiMarkSeen(sessionId: string, lessonItemId: string) {
   if (!res.ok) throw new Error('Failed to record intro seen');
   return json(res, zOkResponse);
 }
+
+export async function apiMarkKnown(sessionId: string, lessonItemId: string) {
+  const res = await fetch(`/api/sessions/${sessionId}/known`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ lessonItemId })
+  });
+  if (!res.ok) throw new Error('Failed to mark known');
+  return json(res, zOkResponse);
+}

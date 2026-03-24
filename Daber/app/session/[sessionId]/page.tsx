@@ -2,7 +2,7 @@
 import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAudioCoordinator } from '@/lib/client/audio/useAudioCoordinator';
-import { apiNextItem, apiAttempt, apiSTTFromBlob, apiOverrideAttempt, apiMarkSeen } from '@/lib/client/api';
+import { apiNextItem, apiAttempt, apiSTTFromBlob, apiOverrideAttempt, apiMarkSeen, apiMarkKnown } from '@/lib/client/api';
 import type { NextItemResponse, AttemptResponse } from '@/lib/contracts';
 import { PromptHeader } from '@/app/components/PromptHeader';
 import { PromptCard } from '@/app/components/PromptCard';
@@ -247,17 +247,36 @@ export default function DaberSessionPage() {
             {stripHowDoISay(item.english_prompt)}
           </div>
           <div className="intro-hint">Listen and look — no pressure to answer</div>
-          <div className="cta-row" style={{ marginTop: 10 }}>
+          <div className="cta-row" style={{ marginTop: 10, gap: 8 }}>
             <button
               className="btn-start"
               onClick={async () => {
                 try {
                   await apiMarkSeen(sessionId, item.id);
-                } catch { /* non-fatal */ }
+                } catch {}
                 setShowIntro(false);
               }}
             >
               start practice
+            </button>
+            <button
+              className="btn-resume"
+              onClick={async () => {
+                try {
+                  await apiMarkKnown(sessionId, item.id);
+                  try { toast.success('Marked known'); } catch {}
+                } catch {
+                  toast.error('Failed to mark known');
+                }
+                await nextItem();
+              }}
+            >
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Known
+              </span>
             </button>
           </div>
         </div>

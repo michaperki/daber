@@ -185,3 +185,10 @@ Note: SOUL.md unchanged (requires approval).
   - Nouns: Hebrew uses singular (indefinite) without `ה`; compounds use the definite form when available. English drops leading `the`.
 - Family gating remains; intro card renders `intro.hebrew/english` while drills still use the picked item.
 - Client: `session/[sessionId]/page.tsx` uses `intro` for the intro card and TTS.
+
+## 2026-03-25 — Family progression + evaluator tweak + guided hint
+
+- Selection: After a family is introduced, recognition prefers a reasonable next form within the same family (present 3sg m → 3sg f → 1sg → 3pl m), then falls back. Adds `explain.familyProgress` in debug.
+- Evaluator: If `pos='noun'`, mismatch in definite article (ה) is graded `flawed` with a targeted reason.
+- Guided UX: Added an “insert pronoun” hint button based on item features (person/number/gender).
+- Scripts: `apply_cc_family_links.ts` now accepts `--min <confidence>`; added `scan_normalize_english.ts` (dry-run; `--apply` to write) for conservative English cleanup.

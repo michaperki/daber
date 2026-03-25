@@ -40,6 +40,12 @@ export const zNextItemResponse = z.object({
   phase: zDrillPhase.optional(),
   // Canonicalized surfaces for intro card
   intro: z.object({ hebrew: z.string(), english: z.string().optional() }).optional(),
+  // Optional guided production hints
+  hints: z.object({
+    baseForm: z.string().optional(),
+    firstLetter: z.string().optional(),
+    definiteness: z.boolean().optional(),
+  }).optional(),
   // True if new generated content arrived since session start
   newContentReady: z.boolean().optional()
 });

@@ -192,3 +192,11 @@ Note: SOUL.md unchanged (requires approval).
 - Evaluator: If `pos='noun'`, mismatch in definite article (ה) is graded `flawed` with a targeted reason.
 - Guided UX: Added an “insert pronoun” hint button based on item features (person/number/gender).
 - Scripts: `apply_cc_family_links.ts` now accepts `--min <confidence>`; added `scan_normalize_english.ts` (dry-run; `--apply` to write) for conservative English cleanup.
+
+## 2026-03-25 — Guided hints (v1) + family spacing guard
+
+- Contracts: `NextItemResponse` now includes optional `hints` with `{ baseForm, firstLetter, definiteness }`.
+- API: `/api/sessions/[id]/next-item` computes hints for guided items and adds a spacing guard to avoid runs of 3+ picks from the same family within a session (with `explain.familySpacing` when active).
+- Client: Guided phase shows a definiteness chip (“definite: add ה”) when applicable and a progressive reveal button (base form → first letter).
+- Mobile polish: ensured guided input doesn’t summon the native keyboard (`inputMode="none"`) and 16px font to prevent iOS zoom.
+- Notes: English normalization script expanded; dry‑run planned locally and on Heroku with `DATABASE_URL`.

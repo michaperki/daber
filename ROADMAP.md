@@ -8,7 +8,7 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
    - Done: library filters wired, vocab page no runtime FS, settings button links to Profile.
    - Remaining: mobile keyboard UX polish.
 3. **Word lifecycle phases** — **SHIPPED (v1)**. Intro, recognition, guided production, and free recall are live. ~2,400 known vocab pre-seeded at free recall from Citizen Cafe class history.
-4. **Verb introduction flow** — **PARTIALLY SHIPPED** (2026-03-25): “new word” intros now use the infinitive; conjugations surface later via recognition/guided/free recall. Next: space/prioritize conjugations across sessions.
+4. **Verb introduction flow** — **PARTIALLY SHIPPED** (2026-03-25): “new word” intros now use the infinitive; conjugations surface later via recognition/guided/free recall. Update: added a same‑family spacing guard to avoid back‑to‑back forms; next: broader scheduling across sessions.
 5. **Smarter sentence generation** — Constraint-based: mix known words with target words for natural, varied sentences. See SOUL.md “Sentence Generation Vision.”
 6. **SRS drives drill type** — **PARTIALLY SHIPPED**. `correct_streak` now drives phase (intro/recognition/guided/free_recall). Wrong answers demote to recognition. FeatureStat not yet wired to phase selection.
 
@@ -16,7 +16,7 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
 - Family progression spacing — After infinitive intros, schedule present forms (3sg m → 3sg f → 1sg → 3pl m) and space follow‑ups across sessions; interleave familiar content.
 - Feature‑blend due selection — Blend `ItemStat` and `FeatureStat` so weak features (number/gender/person/tense) steer picks when requested.
 - Admin family tooling — Quick actions to set `family_base` and `family_id` on `/admin/lexicon/validate` to accelerate coverage.
-- Guided production hints — Add “insert pronoun” and “show base form” hints; optional noun definiteness hint.
+- Guided production hints — SHIPPED (v1): insert‑pronoun CTA, base‑form + first‑letter hints, and a noun definiteness chip in guided mode.
 - English normalization pass — Scripted cleanup of CC/generated English prompts (drop leading “the”, lower‑case nouns, remove adjective parentheticals) with dry‑run and apply switches.
 7. **TTS Hebrew quality** — Hard problem. Investigate alternatives when time allows.
 

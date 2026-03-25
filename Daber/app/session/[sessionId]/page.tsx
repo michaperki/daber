@@ -36,6 +36,8 @@ export default function DaberSessionPage() {
   const [drillPhase, setDrillPhase] = React.useState<'intro' | 'recognition' | 'guided' | 'free_recall' | null>(null);
   const [introHebrew, setIntroHebrew] = React.useState<string | null>(null);
   const [introEnglish, setIntroEnglish] = React.useState<string | null>(null);
+  const [hints, setHints] = React.useState<{ baseForm?: string; firstLetter?: string; definiteness?: boolean } | null>(null);
+  const [hintLevel, setHintLevel] = React.useState<number>(0);
 
   const lastPromptIdRef = React.useRef<string | null>(null);
   const newContentToastShownRef = React.useRef<boolean>(false);
@@ -122,6 +124,8 @@ export default function DaberSessionPage() {
     setDrillPhase((data.phase as any) || null);
     setIntroHebrew((data.intro && data.intro.hebrew) || null);
     setIntroEnglish((data.intro && data.intro.english) || null);
+    setHints((data as any).hints || null);
+    setHintLevel(0);
     setForcedDirection(mode);
     dispatch({
       type: 'ITEM_LOADED',
@@ -377,7 +381,7 @@ export default function DaberSessionPage() {
               ref={hebrewInputRef}
               autoCorrect="off"
               autoCapitalize="off"
-              inputMode="text"
+              inputMode="none"
               enterKeyHint="send"
               dir="rtl"
             />
@@ -395,6 +399,25 @@ export default function DaberSessionPage() {
               </div>
             ) : null;
           })()}
+
+          {hints ? (
+            <div className="cta-row" style={{ marginTop: 6, gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+              {hints.definiteness ? (
+                <span className="vocab-chip">definite: add D</span>
+              ) : null}
+              {hintLevel >= 1 && hints.baseForm ? (
+                <span className="vocab-chip" dir="rtl">{hints.baseForm}</span>
+              ) : null}
+              {hintLevel >= 2 && hints.firstLetter ? (
+                <span className="vocab-chip" dir="rtl">{hints.firstLetter}…</span>
+              ) : null}
+              {hintLevel < 2 ? (
+                <button className="qs-btn" onClick={() => setHintLevel((n) => Math.min(n + 1, 2))}>
+                  {hintLevel === 0 ? 'show base form' : 'show first letter'}
+                </button>
+              ) : null}
+            </div>
+          ) : null}
 
           <div className="cta-row" style={{ marginTop: 8, marginBottom: 12 }}>
             <button className="btn-start" onClick={() => submitAnswer(hebrewInput)} disabled={!hebrewInput.trim() || phase === 'feedback' || phase === 'evaluating'}>submit</button>

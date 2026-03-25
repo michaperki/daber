@@ -311,3 +311,11 @@ body {
 .footer-nav { position: fixed; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 10px 12px; border-top: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); }
 .footer-link { display: flex; align-items: center; justify-content: center; height: 36px; border-radius: 10px; border: 0.5px solid var(--color-border-secondary); color: var(--color-text-secondary); text-decoration: none; font-size: 12px; }
 .footer-link:hover { border-color: var(--color-text-primary); color: var(--color-text-primary); }
+
+@media (max-width: 480px) {
+  .kb-key { height: 40px; min-width: 28px; max-width: none; font-size: 16px; }
+  .kb-key.space { max-width: none; }
+  .kb-key.backspace { max-width: none; }
+  .editor-textarea { font-size: 16px; }
+  .app-main { padding-bottom: 72px; }
+}

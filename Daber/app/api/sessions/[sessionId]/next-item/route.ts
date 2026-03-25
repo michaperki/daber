@@ -239,6 +239,102 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       }
     }
 
+    async function getFamilyIdForItem(itemId: string): Promise<string | null> {
+      try {
+        const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { family_id: true, lexeme_id: true } });
+        if (!li) return null;
+        return li.family_id || (li.lexeme_id ? `lex:${li.lexeme_id}` : null);
+      } catch {
+        return null;
+      }
+    }
+
+    async function getRecentFamilyRun(sessionId: string): Promise<{ familyId: string | null; runLength: number }> {
+      try {
+        const recent = await prisma.attempt.findMany({
+          where: { session_id: sessionId },
+          orderBy: { created_at: 'desc' },
+          take: 3,
+          select: { lesson_item_id: true }
+        });
+        if (!recent.length) return { familyId: null, runLength: 0 };
+        const ids = recent.map(r => r.lesson_item_id);
+        const lis = await prisma.lessonItem.findMany({ where: { id: { in: ids } }, select: { id: true, family_id: true, lexeme_id: true } });
+        const famOf = (id: string): (string | null) => {
+          const li = lis.find(x => x.id === id);
+          if (!li) return null;
+          return li.family_id || (li.lexeme_id ? `lex:${li.lexeme_id}` : null);
+        };
+        const firstFam = famOf(ids[0]) || null;
+        if (!firstFam) return { familyId: null, runLength: 0 };
+        let run = 0;
+        for (const id of ids) {
+          if (famOf(id) === firstFam) run += 1; else break;
+        }
+        return { familyId: firstFam, runLength: run };
+      } catch {
+        return { familyId: null, runLength: 0 };
+      }
+    }
+
+    async function maybeApplyFamilySpacing(
+      item: { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null },
+      attemptedIds: Set<string>,
+      allowedLessonIds: string[],
+      useRandom: boolean
+    ): Promise<{ id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null }> {
+      const run = await getRecentFamilyRun(sessionId);
+      const curFam = await getFamilyIdForItem(item.id);
+      if (run.runLength >= 2 && run.familyId && curFam && run.familyId === curFam) {
+        try {
+          const pool = await prisma.lessonItem.findMany({
+            where: { lesson_id: { in: allowedLessonIds }, NOT: { id: { in: Array.from(attemptedIds) } } },
+            select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true, family_id: true, lexeme_id: true },
+            take: 1000,
+          });
+          const famOf = (li: any): string | null => (li.family_id || (li.lexeme_id ? `lex:${li.lexeme_id}` : null));
+          const alts = pool.filter(li => famOf(li) !== curFam);
+          const pick = useRandom ? (alts.length ? alts[Math.floor(Math.random() * alts.length)] : null) : (alts[0] || null);
+          if (pick) {
+            if (debug) explain.familySpacing = { from: item.id, to: pick.id, runLength: run.runLength };
+            return { id: pick.id, english_prompt: pick.english_prompt, target_hebrew: pick.target_hebrew, transliteration: pick.transliteration, features: (pick.features as any) || null } as any;
+          }
+        } catch {
+          // ignore, keep original
+        }
+      }
+      return item;
+    }
+
+    async function buildHintsFor(itemId: string): Promise<{ baseForm?: string; firstLetter?: string; definiteness?: boolean } | null> {
+      try {
+        const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { target_hebrew: true, features: true, lexeme_id: true } });
+        if (!li) return null;
+        const stripHebPronoun = (s: string): string => {
+          const pronouns = ['אני','אתה','את','הוא','היא','אנחנו','אתם','אתן','הם','הן'];
+          let out = (s || '').trim();
+          for (const p of pronouns) { if (out.startsWith(p + ' ')) { out = out.slice(p.length).trim(); break; } }
+          return out;
+        };
+        const stripHebNikkud = (s: string): string => s.replace(/[\u0591-\u05C7]/g, '');
+        let baseForm: string | undefined;
+        if (li.lexeme_id) {
+          const lex = await prisma.lexeme.findUnique({ where: { id: li.lexeme_id }, select: { lemma: true } });
+          if (lex?.lemma) baseForm = stripHebNikkud(lex.lemma);
+        }
+        const core = stripHebNikkud(stripHebPronoun(li.target_hebrew || ''));
+        const firstLetter = core ? core.charAt(0) : undefined;
+        const fx = (li.features as any) || {};
+        let definiteness: boolean | undefined;
+        if (typeof fx.definite === 'boolean') definiteness = fx.definite;
+        else if (typeof fx.definite === 'string') definiteness = ['true','yes','1','def'].includes(fx.definite.toLowerCase());
+        else if (typeof fx.article === 'string') definiteness = ['ha','def'].includes((fx.article || '').toLowerCase());
+        return { baseForm, firstLetter, definiteness };
+      } catch {
+        return null;
+      }
+    }
+
     async function maybePromoteFamilyProgress(
       item: { id: string },
       attemptedIds: Set<string>,
@@ -317,14 +413,16 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
             explain.pick = { id: gen.id, source: 'lex' };
           }
           const adjBase = await maybeSwapToFamilyBase(gen, allowedLessonIds);
-          const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+          let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+          adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
           const phase = await computePhaseFor(adj.id);
           logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: gen.id, source: 'lex', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
           const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
             .then(c => c > 0)
             .catch(() => false);
           const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
-          const resp: any = { done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+          const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
+          const resp: any = { done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
           if (debug) resp.explain = explain;
           return NextResponse.json(resp);
         }
@@ -382,14 +480,16 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
           const index = attemptedIds.size + 1;
           const adjBase = await maybeSwapToFamilyBase(pick as any, allowedLessonIds);
-          const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+          let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+          adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
           const phase = await computePhaseFor(adj.id);
           logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_feature', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
           const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
             .then(c => c > 0)
             .catch(() => false);
           const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
-          const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+          const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
+          const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
           if (debug) resp.explain = explain;
           return NextResponse.json(resp);
         }
@@ -417,14 +517,16 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
         const index = attemptedIds.size + 1;
         const adjBase = await maybeSwapToFamilyBase(pick as any, allowedLessonIds);
-        const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+        let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+        adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
         const phase = await computePhaseFor(adj.id);
         logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_item', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
         const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
           .then(c => c > 0)
           .catch(() => false);
         const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
-        const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+        const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
+        const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
         if (debug) {
           explain.pick = { id: pick.id, source: useRandom ? 'random' : 'sequential' };
           resp.explain = explain;
@@ -442,14 +544,16 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       if (!item) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
       const adjBase = await maybeSwapToFamilyBase(item as any, allowedLessonIds);
-      const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+      let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+      adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
       const phase = await computePhaseFor(adj.id);
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: item.id, source: 'subset', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
       const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
         .then(c => c > 0)
         .catch(() => false);
       const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
-      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+      const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
       if (debug) {
         explain.path = 'subset';
         explain.candidates = { subsetRemaining: remainingIds.length };
@@ -491,14 +595,16 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       if (!nextItem) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
       const adjBase = await maybeSwapToFamilyBase(nextItem as any, allowedLessonIds);
-      const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+      let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+      adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
       const phase = await computePhaseFor(adj.id);
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: nextItem.id, source: useRandom ? 'random' : 'sequential', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
       const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
         .then(c => c > 0)
         .catch(() => false);
       const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
-      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+      const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
       if (debug) resp.explain = explain;
       return NextResponse.json(resp);
     }

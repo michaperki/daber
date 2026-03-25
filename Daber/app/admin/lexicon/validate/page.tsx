@@ -9,6 +9,7 @@ type Issue = {
   target: string;
   reason: string;
   details?: string;
+  lexemeId?: string | null;
 };
 
 function stripHebPronoun(s: string): string {
@@ -35,7 +36,7 @@ async function getIssues(): Promise<Issue[]> {
     const normItem = normalizeFormForMatch(it.target_hebrew || '');
     const match = infl.find((f: { form: string }) => normalizeFormForMatch(f.form) === normItem) || null;
     if (!match) {
-      issues.push({ lessonItemId: it.id, english: it.english_prompt, target: it.target_hebrew, reason: 'missing_inflection_form', details: `No Inflection with form='${form}'` });
+      issues.push({ lessonItemId: it.id, english: it.english_prompt, target: it.target_hebrew, reason: 'missing_inflection_form', details: `No Inflection with form='${form}'`, lexemeId: (it as any).lexeme_id as string | null });
       continue;
     }
     const f = (it.features as any) || {};
@@ -45,7 +46,7 @@ async function getIssues(): Promise<Issue[]> {
     if (f.number && match.number && f.number !== match.number) diffs.push(`number=${f.number}!=${match.number}`);
     if (f.gender && match.gender && f.gender !== match.gender) diffs.push(`gender=${f.gender}!=${match.gender}`);
     if (diffs.length) {
-      issues.push({ lessonItemId: it.id, english: it.english_prompt, target: it.target_hebrew, reason: 'feature_mismatch', details: diffs.join(', ') });
+      issues.push({ lessonItemId: it.id, english: it.english_prompt, target: it.target_hebrew, reason: 'feature_mismatch', details: diffs.join(', '), lexemeId: (it as any).lexeme_id as string | null });
     }
   }
   return issues;
@@ -81,6 +82,19 @@ export default async function AdminLexiconValidatePage() {
               <input type="hidden" name="lessonItemId" value={i.lessonItemId} />
               <input type="hidden" name="action" value="unlink" />
               <button className="qs-btn" type="submit">unlink lexeme</button>
+            </form>
+            <form action={`/api/admin/lexicon/family`} method="post" style={{ display: 'inline-flex', gap: 8 }}>
+              <input type="hidden" name="lessonItemId" value={i.lessonItemId} />
+              <input type="hidden" name="action" value="set_base" />
+              {i.lexemeId ? <input type="hidden" name="useLexeme" value="1" /> : null}
+              <button className="qs-btn" type="submit">mark family base</button>
+            </form>
+            <form action={`/api/admin/lexicon/family`} method="post" style={{ display: 'inline-flex', gap: 8 }}>
+              <input type="hidden" name="lessonItemId" value={i.lessonItemId} />
+              <input type="hidden" name="action" value="set_family" />
+              {i.lexemeId ? <input type="hidden" name="useLexeme" value="1" /> : null}
+              <input type="text" name="familyId" placeholder="family id (optional)" style={{ padding: '6px 8px', borderRadius: 8, border: '1px solid var(--color-border)' }} />
+              <button className="qs-btn" type="submit">set family</button>
             </form>
           </div>
         </div>

@@ -333,6 +333,75 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       }
       // fall through to regular selection when no generated item is available
     }
+    // Feature due selection: prioritize items whose features match due/weak FeatureStat rows
+    if (dueParam === 'feature' || dueParam === 'blend') {
+      const now = new Date();
+      try {
+        const dueFeatures = await prisma.featureStat.findMany({
+          where: {
+            OR: [
+              { next_due: { lte: now } },
+              { correct_streak: { lte: 1 } },
+              { incorrect_count: { gt: 0 } },
+            ]
+          },
+          take: 500,
+        });
+        const mkKey = (r: { pos?: string | null; tense?: string | null; person?: string | null; number?: string | null; gender?: string | null }) => {
+          const pos = (r.pos || '').toLowerCase();
+          const tense = (r.tense || '').toLowerCase();
+          const person = (r.person || '').toLowerCase();
+          const number = (r.number || '').toLowerCase();
+          const gender = (r.gender || '').toLowerCase();
+          return [pos, tense, person, number, gender].join('|');
+        };
+        const dueSet = new Set(dueFeatures.map(mkKey));
+        // Pull a pool of remaining items with features
+        const remainingPool = await prisma.lessonItem.findMany({
+          where: { lesson_id: { in: allowedLessonIds }, NOT: { id: { in: Array.from(attemptedIds) } } },
+          select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true },
+          take: 1000,
+        });
+        const featsMatch = (f: any): boolean => {
+          if (!f || typeof f !== 'object') return false;
+          const pos = (f.pos || '').toLowerCase();
+          const tense = (f.tense || '').toLowerCase();
+          const person = (f.person || '').toLowerCase();
+          const number = (f.number || '').toLowerCase();
+          const gender = (f.gender || '').toLowerCase();
+          if (!pos) return false;
+          return dueSet.has([pos, tense, person, number, gender].join('|'));
+        };
+        const featureCandidates = remainingPool.filter(r => featsMatch((r as any).features));
+        if (debug) {
+          explain.path = 'due_feature';
+          explain.candidates = { ...(explain.candidates || {}), featureDue: dueFeatures.length, featureCandidates: featureCandidates.length };
+        }
+        const pick = useRandom ? (featureCandidates.length ? featureCandidates[Math.floor(Math.random() * featureCandidates.length)] : null) : (featureCandidates[0] || null);
+        if (pick) {
+          const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
+          const index = attemptedIds.size + 1;
+          const adjBase = await maybeSwapToFamilyBase(pick as any, allowedLessonIds);
+          const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
+          const phase = await computePhaseFor(adj.id);
+          logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_feature', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
+          const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
+            .then(c => c > 0)
+            .catch(() => false);
+          const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
+          const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+          if (debug) resp.explain = explain;
+          return NextResponse.json(resp);
+        }
+        // If blend: fall through to other due modes; if pure feature and none found, return done
+        if (dueParam === 'feature') {
+          const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
+          return NextResponse.json({ done: true, index: attemptedIds.size, total });
+        }
+      } catch {
+        // ignore and fall through
+      }
+    }
     if (!dueParam || dueParam === 'item' || dueParam === 'blend') {
       // Pick an authored item from this lesson that is due in ItemStat
       const now = new Date();

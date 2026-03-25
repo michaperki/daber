@@ -209,3 +209,10 @@ Note: SOUL.md unchanged (requires approval).
 - Session defaults enforced in client: always `due=blend`, `random=1`, `pacing=adaptive`; `focus=weak` when lexicon drills are enabled.
 - TTS fallback is always on: fall back to `speechSynthesis` when server TTS fails.
 - Docs updated: SOUL (four phases live), STATE (env/flow), ROADMAP (defaults), AI_SETUP (STT audio‑only).
+
+## 2026-03-25 — Session double‑firing + mic overlap guards
+
+- Prevented duplicate initial load in React 18 dev: added a mount ref and a loading guard around `loadItem()`.
+- Blocked overlapping mic recordings and submissions: `startVoice` now ignores calls while listening/transcribing or submitting; `submitAnswer` is guarded to one in‑flight request at a time.
+- Auto‑resume gate: ensured re‑arming the mic after feedback cannot recursively trigger multiple starts; resets on next item.
+- File: `Daber/app/session/[sessionId]/page.tsx`.

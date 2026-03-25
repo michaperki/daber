@@ -62,7 +62,8 @@ Actual happy path (today)
   - Intro card: play Hebrew, show canonical English; actions: “start practice” (marks seen) or “Known” (marks known and advances).
   - Recognition: Hebrew audio prompt; user types English; graded via englishEvaluator.
   - Guided: English prompt; user types Hebrew; graded via main evaluator.
-  - Free recall: English prompt; user speaks; STT → evaluator; feedback with chips; auto-resume on non-correct.
+- Free recall: English prompt; user speaks; STT → evaluator; feedback with chips; auto-resume on non-correct.
+  - Session stability: initial data load is guarded against React dev double-invoke; mic recording and submit paths are de-duplicated to prevent overlapping calls; auto-resume is gated to a single re-arm.
   - Family behavior: first encounter prefers family_base; after intro, family members are selected with a simple prioritization for reasonable next steps; a spacing guard avoids 3+ consecutive picks from the same family in a session.
 - Generated content
   - Two sources: rule-based generators (adjectives/verbs/nouns) and LLM pipeline (generate-drills API / background job). Mixed into cross-vocab sessions.
@@ -83,6 +84,7 @@ Known debt
 - Stats are global (not per user). Acceptable for current single-user use; will need scoping before multi-user.
  
 - Minimal error surfacing: many server write paths are fire-and-forget; failures won’t block UX but reduce fidelity.
+ - React Strict Mode dev double-invoke is mitigated via guards; revisit if more effects are added.
 
 Assumptions made
 - Family-first intros: prefer introducing lemmas via family_base (infinitive/adjective m.sg./noun sg); then progress within family.

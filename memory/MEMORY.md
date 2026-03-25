@@ -77,7 +77,7 @@ Last updated: 2026-03-25
   - API: `next-item` returns optional `intro { hebrew, english? }` when `phase='intro'`.
   - Rules: verbs→infinitive (lemma), adjectives→masc sg, nouns→singular (drop leading ה); compounds use stored definite form when available.
   - Client: intro card uses canonical `intro` for display and TTS; English drops leading “the”.
-- Selection debug + simulation harness
+ - Selection debug + simulation harness
   - `GET /api/sessions/[id]/next-item?debug=1` returns `explain` for selection path and candidate pools.
   - `scripts/simulate_vocab_session.ts` drives simulated sessions and writes JSONL traces.
  - Simplification pass
@@ -85,7 +85,9 @@ Last updated: 2026-03-25
    - Removed client‑log pipeline (`/api/client-log`, `lib/client/logClient.ts`).
    - Settings cleanup: removed dead/low‑value toggles (drillDirection, due mode selector, random order, focus weakness, adaptive pacing, auto‑resume listening, browser TTS fallback, review‑before‑submit). TTS speed and mic settings remain.
    - Session flow always requests `due=blend`, `random=1`, `pacing=adaptive`, and `focus=weak` when lexicon mode is enabled.
-   - TTS fallback now always falls back to `speechSynthesis` if server TTS fails.
+  - TTS fallback now always falls back to `speechSynthesis` if server TTS fails.
+ - Session stability
+   - Guarded initial item load against double-invoke; added in-flight guards to `startVoice` and `submitAnswer`; auto-resume is gated and reset per item.
 
 ## Ops / Dev Notes — DB Sync (Heroku)
 - Schema (idempotent): set `DATABASE_URL` to Heroku and run `npm run db:push`.

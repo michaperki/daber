@@ -403,7 +403,7 @@ export default function DaberSessionPage() {
           {hints ? (
             <div className="cta-row" style={{ marginTop: 6, gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
               {hints.definiteness ? (
-                <span className="vocab-chip">definite: add D</span>
+                <span className="vocab-chip">definite: add ה</span>
               ) : null}
               {hintLevel >= 1 && hints.baseForm ? (
                 <span className="vocab-chip" dir="rtl">{hints.baseForm}</span>

@@ -30,9 +30,10 @@ Last updated: 2026-03-25
 `/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/admin/lexicon/validate`.
 
 ## Current Focus
-- Word families shipped: intros happen once per family; expand coverage as needed.
+- Word families shipped: intros happen once per family; expand coverage and base‑form linking.
+- Canonical intros live: new words show infinitives (verbs), m.sg. (adjectives), and singular (nouns). Validate across lessons.
 - Validate LLM drill quality in real usage; iterate on prompt/validator.
-- Next: guided production phase; feature‑aware grading; minor mobile keyboard polish.
+- Next: guided production polish; feature‑aware selection/grading; minor mobile keyboard polish.
 - Backlog: user auth, STT confidence guardrails, CC import pipeline docs.
 
 ## Recent Changes (2026-03-24)
@@ -64,6 +65,25 @@ Last updated: 2026-03-25
 - Library page: made filters functional (client-side) and linked settings gear to `/profile`.
 - Vocab page: removed runtime FS read of `Mike_Hebrew_Vocab.md`; relies on DB-seeded vocab lesson.
 - Recognition UX: auto-focus input after Hebrew TTS; mobile input attributes tuned.
+
+## Recent Changes (2026-03-25)
+- Canonical “new word” intros
+  - API: `next-item` returns optional `intro { hebrew, english? }` when `phase='intro'`.
+  - Rules: verbs→infinitive (lemma), adjectives→masc sg, nouns→singular (drop leading ה); compounds use stored definite form when available.
+  - Client: intro card uses canonical `intro` for display and TTS; English drops leading “the”.
+- Selection debug + simulation harness
+  - `GET /api/sessions/[id]/next-item?debug=1` returns `explain` for selection path and candidate pools.
+  - `scripts/simulate_vocab_session.ts` drives simulated sessions and writes JSONL traces.
+
+## Ops / Dev Notes — DB Sync (Heroku)
+- Schema (idempotent): set `DATABASE_URL` to Heroku and run `npm run db:push`.
+- Data linking/seeding (idempotent):
+  - Link authored families: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/link_authored_families.ts`
+  - Apply CC family links: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/apply_cc_family_links.ts --in cc_family_tags.json`
+  - Seed mastery: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/seed_mastery.ts`
+- Verify:
+  - Schema tables: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/check_generated_tables.ts`
+  - Family columns/rows: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/verify_db_state.ts`
 
 ## Pointers & Artifacts
 - Contracts: `Daber/lib/contracts.ts`

@@ -7,10 +7,10 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
 2. **Fix existing bugs** — Stabilize what exists now that real mobile use will surface issues.
    - Done: library filters wired, vocab page no runtime FS, settings button links to Profile.
    - Remaining: mobile keyboard UX polish.
-3. **Word lifecycle phases** — ~~Introduce words gently~~ **PARTIALLY SHIPPED** (2026-03-24). Intro, recognition, and free recall phases are live. ~2,400 known vocab pre-seeded at free recall from Citizen Cafe class history. Guided production phase not yet built.
-4. **Verb introduction flow** — Infinitive first, then conjugations one at a time, interleaved with familiar words.
+3. **Word lifecycle phases** — **SHIPPED (v1)**. Intro, recognition, guided production, and free recall are live. ~2,400 known vocab pre-seeded at free recall from Citizen Cafe class history.
+4. **Verb introduction flow** — **PARTIALLY SHIPPED** (2026-03-25): “new word” intros now use the infinitive; conjugations surface later via recognition/guided/free recall. Next: space/prioritize conjugations across sessions.
 5. **Smarter sentence generation** — Constraint-based: mix known words with target words for natural, varied sentences. See SOUL.md “Sentence Generation Vision.”
-6. **SRS drives drill type** — ~~Use ItemStat/FeatureStat to determine which phase~~ **PARTIALLY SHIPPED** (2026-03-24). `correct_streak` now drives phase (intro/recognition/free_recall). Wrong answers demote to recognition. FeatureStat not yet wired to phase selection.
+6. **SRS drives drill type** — **PARTIALLY SHIPPED**. `correct_streak` now drives phase (intro/recognition/guided/free_recall). Wrong answers demote to recognition. FeatureStat not yet wired to phase selection.
 7. **TTS Hebrew quality** — Hard problem. Investigate alternatives when time allows.
 
 ## Previous Priorities (many shipped)

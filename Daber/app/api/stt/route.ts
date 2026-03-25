@@ -3,7 +3,7 @@ import { getOpenAI } from '@/lib/openai';
 import { toFile } from 'openai/uploads';
 import { logEvent } from '@/lib/log';
 import { rateLimitGuard } from '@/lib/rateLimit';
-import { zSTTTextRequest } from '@/lib/contracts';
+// text passthrough removed; only audio is accepted
 
 export const runtime = 'nodejs';
 
@@ -17,18 +17,7 @@ export async function POST(req: Request) {
     const openai = getOpenAI();
 
     if (contentType.includes('application/json')) {
-      const body = await req.json();
-      const parsed = zSTTTextRequest.safeParse(body);
-      if (!parsed.success) {
-        return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
-      }
-      const { text } = parsed.data;
-      const allow = process.env.ALLOW_STT_TEXT_PASSTHROUGH === '1';
-      if (allow) {
-        logEvent({ type: 'stt_text_passthrough', payload: { length: (text || '').length } });
-        return NextResponse.json({ transcript: text, confidence: 0.9 });
-      }
-      return NextResponse.json({ error: 'Text passthrough disabled' }, { status: 403 });
+      return NextResponse.json({ error: 'Unsupported content type' }, { status: 415 });
     }
 
     if (contentType.includes('multipart/form-data')) {

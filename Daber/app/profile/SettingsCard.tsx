@@ -5,7 +5,7 @@ import { useMicRecorder } from '@/lib/client/audio/useMicRecorder';
 import type { MicDevice } from '@/lib/client/audio/useMicRecorder';
 
 export default function SettingsCard() {
-  const { showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, randomOrder, reviewBeforeSubmit, targetWeakness, autoResumeListening, ttsRate, browserTTSFallback, uiSoundEffects, dueMode, micDeviceId, micSensitivity, micSilenceMs, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setRandomOrder, setReviewBeforeSubmit, setTargetWeakness, setAutoResumeListening, setTtsRate, setBrowserTTSFallback, setUiSoundEffects, setDueMode, setMicDeviceId, setMicSensitivity, setMicSilenceMs } = useSettings();
+  const { showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, ttsRate, uiSoundEffects, micDeviceId, micSensitivity, micSilenceMs, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setTtsRate, setUiSoundEffects, setMicDeviceId, setMicSensitivity, setMicSilenceMs } = useSettings();
 
   const [micDevices, setMicDevices] = React.useState<MicDevice[]>([]);
   const [testing, setTesting] = React.useState(false);
@@ -69,10 +69,6 @@ export default function SettingsCard() {
       <div className="section-label" style={{ padding: 0, marginBottom: 8 }}>settings</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-          <input type="checkbox" checked={reviewBeforeSubmit} onChange={e => setReviewBeforeSubmit(e.target.checked)} />
-          review before submit (edit transcript)
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           <input type="checkbox" checked={showTransliteration} onChange={e => setShowTransliteration(e.target.checked)} />
           show transliteration
         </label>
@@ -88,18 +84,6 @@ export default function SettingsCard() {
           <input type="checkbox" checked={manualAdvance} onChange={e => setManualAdvance(e.target.checked)} />
           manual next (no auto-advance)
         </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-          <input type="checkbox" checked={randomOrder} onChange={e => setRandomOrder(e.target.checked)} />
-          randomize item order
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-          <input type="checkbox" checked={targetWeakness} onChange={e => setTargetWeakness(e.target.checked)} />
-          target my weak spots
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-          <input type="checkbox" checked={autoResumeListening} onChange={e => setAutoResumeListening(e.target.checked)} />
-          auto-resume listening after feedback
-        </label>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           <span style={{ width: 160 }}>TTS speed</span>
           <select value={String(ttsRate)} onChange={e => setTtsRate(Number(e.target.value))}>
@@ -109,22 +93,9 @@ export default function SettingsCard() {
           </select>
         </div>
         <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-          <input type="checkbox" checked={browserTTSFallback} onChange={e => setBrowserTTSFallback(e.target.checked)} />
-          use browser TTS if server TTS fails
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           <input type="checkbox" checked={uiSoundEffects} onChange={e => setUiSoundEffects(e.target.checked)} />
           UI sound effects (mic + grade)
         </label>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-          <span style={{ width: 160 }}>due mode</span>
-          <select value={dueMode} onChange={e => setDueMode(e.target.value as any)}>
-            <option value="off">off</option>
-            <option value="feature">features (lexicon)</option>
-            <option value="item">items (authored)</option>
-            <option value="blend">blend (due feature-item)</option>
-          </select>
-        </div>
       </div>
 
       <div className="section-label" style={{ padding: 0, marginTop: 16, marginBottom: 8 }}>audio</div>

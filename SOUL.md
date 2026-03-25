@@ -24,18 +24,17 @@ Do build:
 - Things that fix bugs Mike hits during real sessions
 - Things that make the drill content smarter and more adaptive
 
-## Current Product State (as of 2026-03-24)
+## Current Product State (as of 2026-03-25)
 
 The app is **deployed on Heroku** and accessible on mobile. The core drill flow works and Mike likes it.
 
 What works:
-- **Three drill phases are live** — Introduction (see/hear a new word), Recognition (Hebrew → English typing), and Free Recall (English → Hebrew spoken). Phase is driven by `ItemStat.correct_streak`.
+- **Four drill phases are live** — Introduction (see/hear a new word), Recognition (Hebrew → English typing), Guided Production (English → Hebrew typing with hints), and Free Recall (English → Hebrew spoken). Phase is driven by `ItemStat.correct_streak`.
 - **~2,400 vocab items imported** from 7 Citizen Cafe class levels (blue through yellow), pre-seeded at free recall. Green-level items start at recognition.
 - **Wrong answers self-correct** — any miss resets `correct_streak` to 0, demoting the word to recognition until re-mastered.
 - **Core en→he spoken drill** — the flow (prompt → record → evaluate → TTS correction → next) feels good and the timing works for learning.
 
 Remaining gaps:
-- **Guided production phase not built** — the gap between recognition (easy) and free recall (hard) is still too large.
 - **TTS Hebrew pronunciation is poor** — OpenAI TTS doesn't pronounce Hebrew well. Known hard problem.
 - **Dynamic sentence generation is weak** — template-based, mechanical output.
 - **No pedagogy for verbs** — conjugations are thrown at the user without introducing the infinitive first or spacing out forms.
@@ -47,6 +46,7 @@ Remaining gaps:
 - Environment: Local development; avoid CI suggestions or setup. Validation happens via local runs and lightweight scripts.
 - No claims without artifacts: Do not say something “works” unless we have logs, screenshots, or local outputs to point to.
 - Resource awareness: STT/TTS endpoints are rate‑limited; do not add network‑heavy loops or polling.
+- You are not done with a task until STATE.md reflects what you actually shipped. If you added a feature flag, stubbed something, or made an assumption — it goes in STATE.md before you call the work complete.
 
 ## Collaboration Model
 - Mike is the product lead and primary tester.
@@ -71,7 +71,7 @@ Words and grammar forms should move through phases, not jump straight to hard re
 3. **Guided production** — Heavily scaffolded recall. Fill-in-the-blank, sentence completion, strong hints. The user is producing but with training wheels.
 4. **Free recall** — The current en→he spoken drill. This is the hardest mode. The user hears English, must produce Hebrew from memory.
 
-Phases 1, 2, and 4 are live. Phase 3 (guided production) is the main remaining gap — the jump from recognition to free recall is still too steep. ~2,400 known vocab items are pre-seeded at free recall from Citizen Cafe class history; wrong answers demote to recognition automatically.
+All four phases are live. ~2,400 known vocab items are pre-seeded at free recall from Citizen Cafe class history; wrong answers demote to recognition automatically.
 
 **Verb-specific pedagogy:** Introduce the infinitive first. Then one conjugation at a time, spaced out. Interleave with familiar nouns/adjectives between new verb forms so sessions don't feel like conjugation tables.
 
@@ -109,12 +109,16 @@ The approach (before reaching for ML/transformers):
 At the start of a session:
 1. Skim `SOUL.md` for constraints and vision.
 2. Read `memory/MEMORY.md` for architecture snapshot and current focus.
-3. Skim the most recent entries in `Dev Journal.md`.
+3. Read `STATE.md` for the honest snapshot of toggles, stubs, and actual flows.
+4. Skim the most recent entries in `Dev Journal.md`.
 
 At the end of a session:
 1. Update `memory/MEMORY.md` ▸ Current Focus and Recent Changes.
-2. Add an entry to `Dev Journal.md` if work was meaningful.
-3. If any durable lesson emerged, consider promoting it to `SOUL.md`.
+2. Update `STATE.md` if any structural changes were made (flags, gates, stubs, flows).
+3. Add an entry to `Dev Journal.md` if work was meaningful.
+4. If any durable lesson emerged, consider promoting it to `SOUL.md`.
+4. Update STATE.md if you added, removed, or changed anything structural — flags, stubs, assumptions, wiring.
+
 
 ---
 
@@ -124,10 +128,13 @@ At the end of a session:
 |------|------|---------|
 | `SOUL.md` | Agent charter and durable norms | Rarely |
 | `memory/MEMORY.md` | Project state, architecture, current focus | Every session |
+| `STATE.md` | Honest snapshot of what's built, what's temporary, what's stubbed | Every session |
 | `Dev Journal.md` | Chronological log of changes/decisions | Per work session |
 | `ROADMAP.md` | Product roadmap and milestones | Per milestone |
 | `AI_SETUP.md` | Env and local‑run instructions (STT/TTS, rate limits) | As needed |
 | `archive/` | Write‑once context dumps and older docs | Write‑once |
+| `STATE.md` | Honest snapshot of what's built, temporary, stubbed | Every session |
+
 
 Pointers:
 - Contracts: `Daber/lib/contracts.ts`

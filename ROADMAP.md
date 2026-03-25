@@ -34,7 +34,7 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
 - Feature chips
   - Surface `LessonItem.features` on Prompt and Feedback.
 - Auto‑resume listening
-  - Optional setting to re‑arm mic after feedback playback.
+  - Re‑arm mic after feedback playback (default ON).
 - TTS rate
   - User‑selectable playback rate (0.85×/1×/1.15×).
 - Mic guidance
@@ -48,11 +48,11 @@ Shipped (2026‑03‑16)
 - Vocab page splits multi‑form entries into single‑form cards with hints; adds dynamic drill CTA.
 - Dynamic generator improvements: pick a single English alternative; correct phrasal verb “‑ing” (picking up), preserve and append parentheticals.
 - Persist features to generated items; store features on attempts; weakness‑targeted selection by `(number, gender)`.
-- Client can request `focus=weak` for next item; profile toggle added (“target my weak spots”).
+- Weakness targeting integrated for lexicon drills.
 - Evaluator normalization strips zero‑width chars and additional punctuation (hyphen/slash).
 - Mic device handling stabilized (no update‑depth loop); enumerates on mount and `devicechange`; defers restoring saved device until devices load.
  - Feature chips surfaced on client (Prompt/Feedback) from `LessonItem.features`.
- - Auto‑resume listening setting and TTS speed control (client + session flow).
+ - Auto‑resume listening default ON and TTS speed control (client + session flow).
  - Home adds “Drill my weak spots” CTA (lexicon mode + focus=weak).
  - Mic guidance banner when inputs/labels are missing.
  - Normalization expanded (romanization ch→kh, tz→ts; hyphen/emdash) + tests added.
@@ -72,12 +72,12 @@ Shipped (2026‑03‑16)
   - Add cases for punctuation/spacing noise, romanization variants, article omissions, wrong pronoun/tense when authored, and confidence‑driven outcomes.
 
 ## Voice I/O Reliability
-- Auto‑resume listening (setting‑driven)
-  - After correction playback ends, optionally re‑arm the mic automatically; toggle exposed in Profile.
+- Auto‑resume listening (default ON)
+  - After correction playback ends, re‑arm the mic automatically.
 - Waveform from live mic level
   - Drive `StatusStrip` bars from `useMicRecorder().level` for immediate visual feedback (shipped).
 - Browser TTS fallback
-  - If server TTS fails, optionally fall back to `speechSynthesis` (user‑controlled) to keep the loop unblocked offline/without API.
+  - If server TTS fails, fall back to `speechSynthesis` to keep the loop unblocked offline/without API.
 - Device UX guidance
   - Help banner on session page when devices are missing/unlabeled (permissions/HTTPS/OS input hints).
 

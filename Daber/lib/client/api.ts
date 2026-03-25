@@ -65,16 +65,6 @@ export async function apiSTTFromBlob(audio: Blob) {
   return json(res, zSTTResponse);
 }
 
-export async function apiSTTFromText(text: string) {
-  const res = await fetch('/api/stt', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text })
-  });
-  if (!res.ok) throw new Error('STT failed');
-  return json(res, zSTTResponse);
-}
-
 export async function apiTTS(text: string, voice?: string): Promise<Blob> {
   const res = await fetch('/api/tts', {
     method: 'POST',

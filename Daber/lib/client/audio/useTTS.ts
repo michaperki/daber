@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { apiTTS } from '@/lib/client/api';
-import { useSettings } from '@/lib/client/settings';
+// Always fall back to browser TTS when server TTS fails
 
 export type UseTTS = {
   playing: boolean;
@@ -16,7 +16,6 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
   const cacheRef = React.useRef<Map<string, Blob>>(new Map());
   const orderRef = React.useRef<string[]>([]);
   const bytesRef = React.useRef<number>(0);
-  const settings = useSettings();
   const busyRef = React.useRef<boolean>(false);
 
   const put = React.useCallback((key: string, blob: Blob) => {
@@ -70,7 +69,6 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
           blob = await apiTTS(text);
           put(text, blob);
         } catch (e) {
-          if (!settings.browserTTSFallback) throw e;
           await new Promise<void>((resolve, reject) => {
             try {
               const u = new SpeechSynthesisUtterance(text);

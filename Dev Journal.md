@@ -195,8 +195,17 @@ Note: SOUL.md unchanged (requires approval).
 
 ## 2026-03-25 — Guided hints (v1) + family spacing guard
 
-- Contracts: `NextItemResponse` now includes optional `hints` with `{ baseForm, firstLetter, definiteness }`.
+    - Contracts: `NextItemResponse` now includes optional `hints` with `{ baseForm, firstLetter, definiteness }`.
 - API: `/api/sessions/[id]/next-item` computes hints for guided items and adds a spacing guard to avoid runs of 3+ picks from the same family within a session (with `explain.familySpacing` when active).
-- Client: Guided phase shows a definiteness chip (“definite: add ה”) when applicable and a progressive reveal button (base form → first letter).
-- Mobile polish: ensured guided input doesn’t summon the native keyboard (`inputMode="none"`) and 16px font to prevent iOS zoom.
-- Notes: English normalization script expanded; dry‑run planned locally and on Heroku with `DATABASE_URL`.
+    - Client: Guided phase shows a definiteness chip (“definite: add ה”) when applicable and a progressive reveal button (base form → first letter).
+    - Mobile polish: ensured guided input doesn’t summon the native keyboard (`inputMode="none"`) and 16px font to prevent iOS zoom.
+    - Notes: English normalization script expanded; dry‑run planned locally and on Heroku with `DATABASE_URL`.
+
+## 2026-03-25 — Simplification pass (defaults + dead code removal)
+
+- Removed STT JSON passthrough from `/api/stt`; endpoint accepts audio only.
+- Removed client log pipeline (`/api/client-log`, `lib/client/logClient.ts`).
+- Settings simplified: removed `drillDirection`, due mode selector, random order, focus weakness, adaptive pacing, auto‑resume listening, browser TTS fallback, review‑before‑submit. Kept TTS speed and mic controls.
+- Session defaults enforced in client: always `due=blend`, `random=1`, `pacing=adaptive`; `focus=weak` when lexicon drills are enabled.
+- TTS fallback is always on: fall back to `speechSynthesis` when server TTS fails.
+- Docs updated: SOUL (four phases live), STATE (env/flow), ROADMAP (defaults), AI_SETUP (STT audio‑only).

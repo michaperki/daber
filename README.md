@@ -5,6 +5,7 @@ Single Next.js app for a spoken Hebrew drill loop. The canonical app and API liv
 ## Docs
 - Root charter: `SOUL.md`
 - Project state: `memory/MEMORY.md`
+- Current reality: `STATE.md`
 - Journal: `Dev Journal.md`
 - Roadmap: `ROADMAP.md` (moved from `Daber/ROADMAP.md`)
 - AI setup: `AI_SETUP.md`
@@ -25,7 +26,7 @@ Single Next.js app for a spoken Hebrew drill loop. The canonical app and API liv
 - Run a 25-pick simulation (default SRS path):
   - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_vocab_session.ts --count 25 --mode db --due off --random 1`
 
-- Variants:
+- Variants (diagnostic; in-app uses blend+adaptive by default):
   - Due authored items only: `--mode db --due item --random 0`
   - Feature-driven/dynamic generator: `--mode lex --due feature --random 1`
 
@@ -49,7 +50,7 @@ API debug (dev only): append `?debug=1` to `GET /api/sessions/:id/next-item` to 
 - `archive/` — context dumps and older docs (write‑once)
 
 ## Notes
-- STT `/api/stt` uses OpenAI Whisper; TTS `/api/tts` uses `gpt-4o-mini-tts`.
+- STT `/api/stt` uses OpenAI Whisper (audio only); TTS `/api/tts` uses `gpt-4o-mini-tts` with browser TTS fallback on failure.
 - Subset review sessions are supported from `/retry` (select items and start).
 - The session UI always shows the English prompt and strips "How do I say…".
 

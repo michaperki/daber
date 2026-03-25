@@ -95,8 +95,7 @@ export default function DaberSessionPage() {
 
   const fetchNextRaw = React.useCallback(async (): Promise<NextItemResponse> => {
     try {
-      const due = settings.dueMode === 'feature' ? 'feature' : (settings.dueMode === 'item' ? 'item' : (settings.dueMode === 'blend' ? 'blend' : undefined));
-      const data = await apiNextItem(sessionId, { random: settings.randomOrder, mode: (useLex || settings.dueMode === 'feature' || settings.dueMode === 'blend') ? 'lex' : undefined, focus: (useLex && settings.targetWeakness) ? 'weak' : undefined, due, pacing: settings.sessionPacing });
+      const data = await apiNextItem(sessionId, { random: true, mode: useLex ? 'lex' : undefined, focus: useLex ? 'weak' : undefined, due: 'blend', pacing: 'adaptive' });
       if (data.offerEnd) setPacingOffer('end');
       else if (data.offerExtend) setPacingOffer('extend');
       else setPacingOffer(null);
@@ -109,7 +108,7 @@ export default function DaberSessionPage() {
       toast.error('Failed to fetch next item');
       return { done: true } as NextItemResponse;
     }
-  }, [sessionId, settings.randomOrder, useLex, settings.targetWeakness, settings.dueMode, settings.sessionPacing]);
+  }, [sessionId, useLex]);
 
   const loadItem = React.useCallback(async () => {
     const data = await fetchNextRaw();
@@ -167,9 +166,7 @@ export default function DaberSessionPage() {
       const blob = await audio.record();
       const { transcript: text } = await apiSTTFromBlob(blob);
       dispatch({ type: 'TRANSCRIPT_RECEIVED', transcript: text });
-      if (!settings.reviewBeforeSubmit) {
-        await submitAnswer(text);
-      }
+      // always review before submit
     } catch (e: unknown) {
       // If cancelled or failed, return to prompting
       dispatch({ type: 'CANCEL_LISTENING' });
@@ -192,7 +189,7 @@ export default function DaberSessionPage() {
       dispatch({ type: 'FEEDBACK_RECEIVED', feedback: data });
       // No auto TTS on feedback; play simple SFX only
       try { (data.grade === 'correct') ? audio.sfxGradeCorrect() : audio.sfxGradeIncorrect(); } catch {}
-      if (settings.autoResumeListening && data.grade !== 'correct') {
+      if (data.grade !== 'correct') {
         try { await startVoice(); } catch {}
       }
     } catch (e: unknown) {
@@ -260,7 +257,7 @@ export default function DaberSessionPage() {
   const cleanedPrompt = stripHowDoISay(item.english_prompt);
 
   const emojiCue = deriveEmojiCue(cleanedPrompt, item?.id);
-  const showReviewUI = settings.reviewBeforeSubmit && (phase === 'reviewing' || phase === 'prompting');
+  const showReviewUI = (phase === 'reviewing' || phase === 'prompting');
   const showFeedback = feedback && (phase === 'feedback' || phase === 'evaluating');
   const micDisabled = phase === 'evaluating' || phase === 'advancing';
 

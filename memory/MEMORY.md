@@ -21,19 +21,18 @@ Last updated: 2026-03-25
     - Background trigger: `/api/sessions` starts a batch if undrilled generated queue < `GEN_QUEUE_THRESHOLD` (default 20) and no pending batch.
     - Session signal: `/api/sessions/[id]/next-item` includes `newContentReady` when a batch landed after `session.started_at`; client shows a toast (no polling).
     - Mixing: cross‑vocab sessions include lessons of type `vocab_generated`.
-- Drill directions: `en_to_he` (voice) and `he_to_en` (typed). Controlled by `drillDirection` setting.
+- Drill directions: recognition is he→en (typed); guided and free recall are en→he (typing/voice) based on phase.
 - Session state machine: `Daber/lib/client/state/sessionMachine.ts` — pure reducer.
-- Client settings: 15+ settings persisted to localStorage via `Daber/lib/client/settings.tsx`.
+- Client settings: TTS speed and mic device/sensitivity/silence; most drill behaviors are default‑on (random order, blend due, adaptive pacing, review‑before‑submit, auto‑resume listening, browser TTS fallback).
  - Selection debug (dev): `GET /api/sessions/[id]/next-item?debug=1` returns `explain` with selection path, candidate sizes, family swaps, etc. No change to normal behavior.
 
 ## Pages
 `/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/admin/lexicon/validate`.
 
 ## Current Focus
-- Word families shipped: intros happen once per family; expand coverage and base‑form linking.
-- Canonical intros live: new words show infinitives (verbs), m.sg. (adjectives), and singular (nouns). Validate across lessons.
-- Validate LLM drill quality in real usage; iterate on prompt/validator.
-- Next: guided production polish; feature‑aware selection/grading; minor mobile keyboard polish.
+- Family coverage: intros once per family; broaden base‑form linking.
+- Validate guided phase and hints in real sessions; polish scaffolds.
+- Defaults: keep sessions randomized, blend due selection, adaptive pacing; monitor feel.
 - Backlog: user auth, STT confidence guardrails, CC import pipeline docs.
 
 ## Near‑Term High‑Leverage
@@ -81,6 +80,12 @@ Last updated: 2026-03-25
 - Selection debug + simulation harness
   - `GET /api/sessions/[id]/next-item?debug=1` returns `explain` for selection path and candidate pools.
   - `scripts/simulate_vocab_session.ts` drives simulated sessions and writes JSONL traces.
+ - Simplification pass
+   - Removed STT text passthrough (JSON) from `/api/stt`; audio only.
+   - Removed client‑log pipeline (`/api/client-log`, `lib/client/logClient.ts`).
+   - Settings cleanup: removed dead/low‑value toggles (drillDirection, due mode selector, random order, focus weakness, adaptive pacing, auto‑resume listening, browser TTS fallback, review‑before‑submit). TTS speed and mic settings remain.
+   - Session flow always requests `due=blend`, `random=1`, `pacing=adaptive`, and `focus=weak` when lexicon mode is enabled.
+   - TTS fallback now always falls back to `speechSynthesis` if server TTS fails.
 
 ## Ops / Dev Notes — DB Sync (Heroku)
 - Schema (idempotent): set `DATABASE_URL` to Heroku and run `npm run db:push`.

@@ -2,7 +2,7 @@
 
 Role: Honest, always-current snapshot of the running codebase. Descriptive, not aspirational.
 
-Last reviewed: 2026-03-25
+Last reviewed: 2026-03-25 (simplified settings)
 
 —
 
@@ -17,11 +17,6 @@ Temporary scaffolding and feature flags
   - What: In‑process per‑IP token bucket rate limits.
   - Why: Prevents accidental hammering during dev.
   - Keep or kill: Temporary for single-instance; replace with shared store if scaling.
-- ALLOW_STT_TEXT_PASSTHROUGH
-  - Where: Daber/app/api/stt/route.ts
-  - What: Allows POST JSON {text} to STT for dev/testing.
-  - Why: Dev convenience to bypass audio.
-  - Keep or kill: Temporary. Ensure OFF in production.
 - SESSION_DUE_CAP
   - Where: Daber/app/api/sessions/[sessionId]/next-item/route.ts
   - What: Session item cap (base). ‘adaptive’ pacing can extend up to a hard 25.
@@ -32,11 +27,6 @@ Temporary scaffolding and feature flags
   - What: Triggers background LLM generation when undrilled generated queue is low and no pending batch.
   - Why: Keeps a buffer of fresh content.
   - Keep or kill: Keep, but consider centralized job control when scaling.
-- NEXT_PUBLIC_LOG_CLIENT_EVENTS
-  - Where: Daber/lib/client/logClient.ts
-  - What: Client → server event forwarding toggle.
-  - Why: Debug telemetry during dev.
-  - Keep or kill: Keep behind env; default OFF.
 - SEED_LEXEMES / SEED_CC / SEED_CC_PREFIX
   - Where: Daber/prisma/seed.ts
   - What: Data seeding toggles (structured lexicon, Citizen Cafe imports).
@@ -46,8 +36,6 @@ Temporary scaffolding and feature flags
 Debug/dev-only endpoints and tools
 - /api/sessions/[id]/next-item?debug=1
   - Adds explain payload (selection path, pools) in response; used by scripts/simulate_vocab_session.ts.
-- /api/client-log (POST)
-  - Logs client events when NEXT_PUBLIC_LOG_CLIENT_EVENTS=1.
 - Admin lexicon tools (all require ADMIN_ENABLED=1)
   - /admin/lexicon/validate (page)
   - /api/admin/lexicon/{sync, family, export, fix}
@@ -59,9 +47,7 @@ Stubbed or partial implementations
   - Shipped: Server computes lightweight hints and client renders them in guided mode.
     - Hints: baseForm (lemma), firstLetter (of target form), definiteness (noun article cue).
   - Missing: Additional hint types and per‑hint analytics.
-- Drill direction setting
-  - Setting exists (drillDirection) in Daber/lib/client/settings.tsx.
-  - Current session uses phase to decide direction (he→en for recognition; en→he for guided/free_recall). Setting is not wired.
+ 
 - Global vs per-user stats
   - ItemStat, FeatureStat, FamilyStat are global, not per user. user_id exists on Session but is unused across stats.
   - Intentional simplification for single-user; will need scoping later.
@@ -70,13 +56,13 @@ Actual happy path (today)
 - Start a drill
   - Home StartOrContinue launches a session on ‘vocab_all’ (cross-pack) or a specific pack.
   - Session creation may kick a background generation batch if generated queue is low.
-  - Settings influence selection: random order, due mode (off/feature/item/blend), lexicon mode, adaptive pacing.
+  - Selection/pacing: random order ON, due mode always blend (feature+item), lexicon mode optional, adaptive pacing with end/extend offers.
 - Intro → Recognition → Guided → Free recall
   - next-item returns phase and optional intro surfaces for new items (canonical forms by POS), plus optional `hints` for guided.
   - Intro card: play Hebrew, show canonical English; actions: “start practice” (marks seen) or “Known” (marks known and advances).
   - Recognition: Hebrew audio prompt; user types English; graded via englishEvaluator.
   - Guided: English prompt; user types Hebrew; graded via main evaluator.
-  - Free recall: English prompt; user speaks; STT → evaluator; feedback with chips; optional auto-resume on non-correct.
+  - Free recall: English prompt; user speaks; STT → evaluator; feedback with chips; auto-resume on non-correct.
   - Family behavior: first encounter prefers family_base; after intro, family members are selected with a simple prioritization for reasonable next steps; a spacing guard avoids 3+ consecutive picks from the same family in a session.
 - Generated content
   - Two sources: rule-based generators (adjectives/verbs/nouns) and LLM pipeline (generate-drills API / background job). Mixed into cross-vocab sessions.
@@ -95,18 +81,18 @@ Known debt
 - TTS cache is in-process only; memory pressure possible at larger sizes.
 - LLM generation pipeline and background trigger assume single-writer semantics; multiple instances could duplicate work without coordination.
 - Stats are global (not per user). Acceptable for current single-user use; will need scoping before multi-user.
-- STT text passthrough is a footgun if left enabled; ensure ALLOW_STT_TEXT_PASSTHROUGH is OFF in prod.
+ 
 - Minimal error surfacing: many server write paths are fire-and-forget; failures won’t block UX but reduce fidelity.
 
 Assumptions made
 - Family-first intros: prefer introducing lemmas via family_base (infinitive/adjective m.sg./noun sg); then progress within family.
-- Session pacing defaults: fixed cap via SESSION_DUE_CAP; adaptive mode offers early end on streak of incorrect and optional extend on high accuracy.
+- Session pacing: client requests adaptive pacing; base cap via SESSION_DUE_CAP with extend/end thresholds.
 - Single-user environment: global FeatureStat/ItemStat are acceptable; ADMIN_ENABLED gates admin instead of auth.
 - Accept typed recognition and guided phases to smooth difficulty before voice free recall.
 
 Environment variables in use (runtime)
 - DATABASE_URL, OPENAI_API_KEY
-- ADMIN_ENABLED, RL_STT_PER_MIN, RL_TTS_PER_MIN, ALLOW_STT_TEXT_PASSTHROUGH, SESSION_DUE_CAP, GEN_QUEUE_THRESHOLD, NEXT_PUBLIC_LOG_CLIENT_EVENTS
+- ADMIN_ENABLED, RL_STT_PER_MIN, RL_TTS_PER_MIN, SESSION_DUE_CAP, GEN_QUEUE_THRESHOLD
 - Seed-time: SEED_LEXEMES, SEED_CC, SEED_CC_PREFIX
 
 Pointers (files)

@@ -36,6 +36,13 @@ Last updated: 2026-03-25
 - Next: guided production polish; feature‑aware selection/grading; minor mobile keyboard polish.
 - Backlog: user auth, STT confidence guardrails, CC import pipeline docs.
 
+## Near‑Term High‑Leverage
+- Family progression polish: space conjugation exposures across picks and sessions; avoid back‑to‑back forms; keep interleaving with familiar nouns/adjectives.
+- Feature‑blend due mode: incorporate `FeatureStat` into selection when `due=blend` to target weak number/gender/person/tense features across items.
+- Admin family tools: on `/admin/lexicon/validate`, add actions to mark `family_base` and assign `family_id` for obvious lemmas.
+- Guided hints expansion: optional “insert pronoun” and “show base form” hints in guided mode; surface definiteness hint for nouns.
+- English cleanup pass: run `scripts/scan_normalize_english.ts` on generated/CC lessons to standardize articles/casing (dry‑run then `--apply`).
+
 ## Recent Changes (2026-03-24)
 - Word families infrastructure:
   - `LessonItem.family_id` / `LessonItem.family_base`; `FamilyStat` table.

@@ -41,6 +41,10 @@ export default function DaberSessionPage() {
 
   const lastPromptIdRef = React.useRef<string | null>(null);
   const newContentToastShownRef = React.useRef<boolean>(false);
+  const mountedRef = React.useRef<boolean>(false);
+  const loadingItemRef = React.useRef<boolean>(false);
+  const submittingRef = React.useRef<boolean>(false);
+  const autoResumeRef = React.useRef<boolean>(false);
 
   function stripHowDoISay(text: string): string {
     const re = /^\s*how\s+do\s+i\s+say[:\s-]*/i;
@@ -111,10 +115,13 @@ export default function DaberSessionPage() {
   }, [sessionId, useLex]);
 
   const loadItem = React.useCallback(async () => {
+    if (loadingItemRef.current) return;
+    loadingItemRef.current = true;
     const data = await fetchNextRaw();
     if (data.done) {
       dispatch({ type: 'SESSION_DONE' });
       router.push(`/session/${sessionId}/summary`);
+      loadingItemRef.current = false;
       return;
     }
     if (!data.item) return;
@@ -146,20 +153,26 @@ export default function DaberSessionPage() {
         try { hebrewInputRef.current?.focus(); } catch {}
       }
     }
-    // Prefetch TTS for correction and prompt
+    
     try {
       await audio.prefetchTTS(data.item.target_hebrew);
       if (settings.speakPrompt) {
         await audio.prefetchTTS(stripHowDoISay(data.item.english_prompt));
       }
     } catch {}
+    loadingItemRef.current = false;
   }, [fetchNextRaw, dispatch, router, sessionId, settings.showTransliteration, settings.speakPrompt]);
 
   // Initial load
-  React.useEffect(() => { loadItem(); }, [loadItem]);
+  React.useEffect(() => {
+    if (mountedRef.current) return;
+    mountedRef.current = true;
+    loadItem();
+  }, [loadItem]);
 
   /* ── Voice capture ─────────────────────────────────────── */
   const startVoice = async () => {
+    if (state.phase === 'listening' || state.phase === 'transcribing' || submittingRef.current) return;
     dispatch({ type: 'START_LISTENING' });
     try {
       try { audio.sfxMicStart(); } catch {}
@@ -183,18 +196,23 @@ export default function DaberSessionPage() {
   /* ── Submit answer ─────────────────────────────────────── */
   const submitAnswer = async (raw: string) => {
     if (!item) return;
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     dispatch({ type: 'SUBMIT' });
     try {
       const data: AttemptResponse = await apiAttempt(sessionId, item.id, raw, isRecognition ? 'he_to_en' : (isGuided ? 'en_to_he' : undefined), drillPhase || undefined as any);
       dispatch({ type: 'FEEDBACK_RECEIVED', feedback: data });
       // No auto TTS on feedback; play simple SFX only
       try { (data.grade === 'correct') ? audio.sfxGradeCorrect() : audio.sfxGradeIncorrect(); } catch {}
-      if (data.grade !== 'correct') {
+      if (data.grade !== 'correct' && !autoResumeRef.current) {
+        autoResumeRef.current = true;
         try { await startVoice(); } catch {}
+        autoResumeRef.current = false;
       }
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : 'Submission failed');
     }
+    submittingRef.current = false;
   };
 
   const skip = async () => {
@@ -204,6 +222,7 @@ export default function DaberSessionPage() {
   const nextItem = async () => {
     dispatch({ type: 'NEXT_ITEM' });
     try { audio.cancelTTS(); } catch {}
+    autoResumeRef.current = false;
     await loadItem();
   };
 

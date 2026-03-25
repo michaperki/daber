@@ -32,7 +32,8 @@
       "Bash(git log:*)",
       "Bash(PGPASSWORD=pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9 psql:*)",
       "Bash(1 -c \"DELETE FROM \"\"Lesson\"\" WHERE id = ''sentences_gen'';\")",
-      "Bash(DATABASE_URL=\"postgresql://ua6ms4rrk5feh7:pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9@c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1hpgsj66s2lvv\" npx tsx scripts/clean_gender_markers.ts)"
+      "Bash(DATABASE_URL=\"postgresql://ua6ms4rrk5feh7:pae0bb8a887be41f5acdfd4427b2873f917ab37e069cf59dbbfd077345448b4e9@c7b4i1efuvdata.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1hpgsj66s2lvv\" npx tsx scripts/clean_gender_markers.ts)",
+      "Bash(git push:*)"
     ]
   }
 }

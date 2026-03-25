@@ -158,6 +158,16 @@ Note: SOUL.md unchanged (requires approval).
 
 ## 2026-03-24 — Guided production phase (UI + logic) and review
 
+## 2026-03-25 — Selection debug + simulation harness
+
+- API: Added opt-in debug trace to `GET /api/sessions/[sessionId]/next-item` gated by `debug=1` query.
+  - Response includes `explain` object with session/query params, lesson scope, candidate pool sizes (due/weak/remaining/subset), chosen path and pick source, and family base swap details.
+  - Event payload for `next_item_pick` enriched with `phase` and `random` for easier correlation.
+- Script: New `scripts/simulate_vocab_session.ts` drives a full session via in-process API handlers and writes JSONL traces to `scripts/out/`.
+  - Args: `--count`, `--mode db|lex`, `--due off|item|feature|blend`, `--random 0|1`, `--pacing fixed|adaptive`, `--lesson <id>` (default `vocab_all`).
+  - Console prints compact per-pick summary; JSONL rows contain the `explain` details for inspection.
+- Docs: README and MEMORY updated with runbook and commands; no behavior change for normal clients.
+
 - Phase logic: `next-item` now returns `guided` when `ItemStat.correct_streak === 1` (no row → intro, 0 → recognition, 1 → guided, ≥2 → free recall).
 - Session UI: Added guided production mode to `session/[sessionId]/page.tsx`.
   - English → Hebrew typing with on‑screen Hebrew keyboard.
@@ -165,3 +175,13 @@ Note: SOUL.md unchanged (requires approval).
   - Submits with `direction='en_to_he'` and passes the `phase` for logging.
 - Attempts logging: `/api/attempts` accepts optional `phase` and logs it in `attempt_graded` events.
 - Review surface: `/admin/attempts` lists recent attempts from DB (time, grade, English prompt, user answer, correct Hebrew) to quickly inspect guided outcomes.
+
+## 2026-03-25 — Canonical “new word” intros (verbs/adjectives/nouns)
+
+- API: `GET /api/sessions/[id]/next-item` adds optional `intro` payload `{ hebrew, english? }` when `phase==='intro'`.
+- Canonicalization rules:
+  - Verbs: Hebrew shows the lexeme lemma (infinitive). English prefers a linked `to <verb>` card; else derives from continuous form when possible.
+  - Adjectives: Hebrew uses masculine singular inflection; English drops parentheticals.
+  - Nouns: Hebrew uses singular (indefinite) without `ה`; compounds use the definite form when available. English drops leading `the`.
+- Family gating remains; intro card renders `intro.hebrew/english` while drills still use the picked item.
+- Client: `session/[sessionId]/page.tsx` uses `intro` for the intro card and TTS.

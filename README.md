@@ -16,6 +16,25 @@ Single Next.js app for a spoken Hebrew drill loop. The canonical app and API liv
 - Seed lessons: `npm run seed` (also imports your `Mike_Hebrew_Vocab.md` as "My Vocab 01")
 - Dev server: `npm run dev` and open http://localhost:3000
 
+## Simulation & Diagnostics
+- Seed realistic dataset (Citizen Cafe + mastery):
+  - `cd Daber && npm run db:push`
+  - `SEED_CC=1 npm run seed`
+  - `cd .. && ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/seed_mastery.ts`
+
+- Run a 25-pick simulation (default SRS path):
+  - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_vocab_session.ts --count 25 --mode db --due off --random 1`
+
+- Variants:
+  - Due authored items only: `--mode db --due item --random 0`
+  - Feature-driven/dynamic generator: `--mode lex --due feature --random 1`
+
+Output:
+- Console per-pick summary with phase and selection path.
+- JSONL at `scripts/out/drill_run_<timestamp>.jsonl` with an `explain` object (lesson scope, candidate pool sizes, selection path, pick source, family-base swap).
+
+API debug (dev only): append `?debug=1` to `GET /api/sessions/:id/next-item` to include `explain` in the response.
+
 ## Commands
 - Dev: `npm run dev`
 - Build/Start: `npm run build` / `npm run start`

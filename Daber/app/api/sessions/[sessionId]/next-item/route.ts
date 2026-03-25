@@ -6,16 +6,23 @@ import { generateNextFromLexicon } from '@/lib/drill/generators';
 export async function GET(req: Request, { params }: { params: { sessionId: string } }) {
   const { sessionId } = params;
   try {
+    const url = new URL(req.url);
+    const debug = url.searchParams.get('debug') === '1' || url.searchParams.get('debug') === 'true';
+    const explain: any = { sessionId };
     // Session cap (applies to all sessions; tune via env)
     const baseCap = Number.parseInt(process.env.SESSION_DUE_CAP || '', 10) || 20;
     const hardMax = 25;
     const attemptsCount = await prisma.attempt.count({ where: { session_id: sessionId } });
-    const url = new URL(req.url);
     const pacing = url.searchParams.get('pacing'); // 'adaptive' | null
     const useRandom = url.searchParams.get('random') === '1' || url.searchParams.get('random') === 'true';
     const useLex = url.searchParams.get('mode') === 'lex';
     const focusWeak = url.searchParams.get('focus') === 'weak';
     const dueParam = url.searchParams.get('due'); // 'feature' | 'item'
+    if (debug) {
+      explain.query = { pacing: pacing || 'fixed', random: useRandom, mode: useLex ? 'lex' : 'db', focus: focusWeak ? 'weak' : undefined, due: dueParam || 'off' };
+      explain.attemptsCount = attemptsCount;
+      explain.cap = { base: baseCap, hardMax };
+    }
 
     // Adaptive pacing logic
     let offerEnd = false;
@@ -51,12 +58,16 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         ]
       )
       : [session.lesson_id];
+    if (debug) {
+      explain.lesson = { id: session.lesson_id, cross: isCrossVocab, allowedLessonIds };
+    }
 
     const attempted = await prisma.attempt.findMany({
       where: { session_id: sessionId },
       select: { lesson_item_id: true }
     });
     const attemptedIds = new Set(attempted.map(a => a.lesson_item_id));
+    if (debug) explain.attemptedCount = attemptedIds.size;
 
     const subsetRaw = (session as any).subset_item_ids as unknown;
     const subset = Array.isArray(subsetRaw) ? (subsetRaw as unknown[]).map(String) : [];
@@ -82,7 +93,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       }
     }
 
-    async function maybeSwapToFamilyBase(
+  async function maybeSwapToFamilyBase(
       item: { id: string },
       allowedLessonIds: string[]
     ): Promise<{ id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null }> {
@@ -97,7 +108,12 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
               where: { family_id: familyId, lesson_id: { in: allowedLessonIds }, family_base: true },
               select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true },
             });
-            if (base) return { ...base, features: (base.features as any) || null } as any;
+            if (base) {
+              if (debug && item.id !== base.id) {
+                explain.familySwap = { from: item.id, to: base.id, reason: 'family_base' };
+              }
+              return { ...base, features: (base.features as any) || null } as any;
+            }
           }
         }
         const orig = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
@@ -108,6 +124,118 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const orig = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } }).catch(() => null);
         if (orig) return { ...orig, features: (orig.features as any) || null } as any;
         return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
+    }
+    }
+
+    async function buildIntroFor(itemId: string): Promise<{ hebrew: string; english?: string } | null> {
+      try {
+        function stripHebPronoun(s: string): string {
+          const pronouns = ['אני','אתה','את','הוא','היא','אנחנו','אתם','אתן','הם','הן'];
+          let out = s.trim();
+          for (const p of pronouns) {
+            if (out.startsWith(p + ' ')) { out = out.slice(p.length).trim(); break; }
+          }
+          return out.replace(/[\u2000-\u206F\s]+$/g, '').replace(/[!?,.;:]+$/g, '').trim();
+        }
+        function stripHebNikkud(s: string): string { return s.replace(/[\u0591-\u05C7]/g, ''); }
+        function cleanEnglishBase(s: string): string {
+          const t = s.replace(/^\s*how\s+do\s+i\s+say[:\s-]*/i, '').replace(/\?+\s*$/i, '').trim();
+          return t;
+        }
+        function lowerFirst(s: string): string { return s ? s.charAt(0).toLowerCase() + s.slice(1) : s; }
+        function dropLeadingThe(s: string): string { return s.replace(/^\s*the\s+/i, '').trim(); }
+        function pickToVerb(cands: string[]): string | null {
+          for (const c of cands) {
+            const t = cleanEnglishBase(c);
+            if (/^to\s+[A-Za-z]/.test(t)) return 'to ' + t.slice(3).trim().toLowerCase();
+          }
+          return null;
+        }
+        function fromContinuousToInfinitive(s: string): string | null {
+          const t = cleanEnglishBase(s).toLowerCase();
+          if (/getting\s+ready/.test(t)) return 'to get ready';
+          const m = t.match(/\b(?:am|is|are|was|were|'m|'s|'re)\s+([a-z]+?ing)\b/);
+          if (!m) return null;
+          const ing = m[1];
+          let base = ing;
+          if (/ying$/.test(ing)) { base = ing.slice(0, -4) + 'y'; }
+          else if (/([b-df-hj-np-tv-z])\1ing$/.test(ing)) { base = ing.slice(0, -4); }
+          else if (/ing$/.test(ing)) { base = ing.slice(0, -3); }
+          if (/mak$/.test(base)) base = base + 'e';
+          if (/tak$/.test(base)) base = base + 'e';
+          return 'to ' + base;
+        }
+
+        const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { id: true, english_prompt: true, target_hebrew: true, features: true, lexeme_id: true } });
+        if (!li) return null;
+        let lexId = li.lexeme_id as string | null;
+        let lexPos: string | null = null;
+        let lexLemma: string | null = null;
+        let lexFeat: Record<string, any> | null = null;
+        if (lexId) {
+          const lex = await prisma.lexeme.findUnique({ where: { id: lexId }, select: { id: true, pos: true, lemma: true, features: true } });
+          if (lex) { lexPos = lex.pos; lexLemma = lex.lemma; lexFeat = (lex.features as any) || null; }
+        }
+        if (!lexId) {
+          const form = stripHebPronoun(li.target_hebrew || '');
+          const inf = await prisma.inflection.findFirst({ where: { form } });
+          if (inf) {
+            lexId = inf.lexeme_id;
+            const lex = await prisma.lexeme.findUnique({ where: { id: lexId }, select: { id: true, pos: true, lemma: true, features: true } });
+            if (lex) { lexPos = lex.pos; lexLemma = lex.lemma; lexFeat = (lex.features as any) || null; }
+          }
+        }
+        const pos = (lexPos || ((li.features as any)?.pos as string | null) || '').toLowerCase();
+
+        // Hebrew canonical
+        let heb: string | null = null;
+        if (pos === 'verb' && lexLemma) {
+          heb = stripHebNikkud(lexLemma);
+        } else if (pos === 'adjective' && lexId) {
+          const adjBase = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, number: 'sg', gender: 'm' }, select: { form: true } });
+          heb = stripHebNikkud((adjBase?.form || lexLemma || li.target_hebrew || '').trim());
+        } else if (pos === 'noun' && lexId) {
+          const isCompound = !!(lexLemma && lexLemma.includes(' ')) || !!(lexFeat && (lexFeat as any).definite_form);
+          if (isCompound) {
+            const def = (lexFeat && (lexFeat as any).definite_form) || null;
+            heb = stripHebNikkud((def || lexLemma || '').trim());
+          } else {
+            const sg = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, number: 'sg' }, select: { form: true } });
+            const base = (sg?.form || lexLemma || '').trim();
+            heb = stripHebNikkud(base.replace(/^ה+/, ''));
+          }
+        } else if (lexLemma) {
+          heb = stripHebNikkud(lexLemma);
+        } else {
+          const fallback = stripHebPronoun(li.target_hebrew || '');
+          heb = stripHebNikkud(fallback.replace(/^ה+/, ''));
+        }
+
+        // English canonical
+        let eng: string | undefined;
+        const liEnglish = cleanEnglishBase(li.english_prompt || '');
+        if (pos === 'verb') {
+          if (lexId) {
+            const linked = await prisma.lessonItem.findMany({ where: { lexeme_id: lexId }, select: { english_prompt: true }, take: 20 });
+            const byTo = pickToVerb(linked.map(r => r.english_prompt));
+            if (byTo) eng = byTo;
+          }
+          if (!eng) {
+            const naive = fromContinuousToInfinitive(liEnglish);
+            if (naive) eng = naive;
+          }
+          if (!eng) eng = lowerFirst(liEnglish);
+        } else if (pos === 'adjective') {
+          eng = lowerFirst(liEnglish.replace(/\([^)]*\)/g, '').trim());
+        } else if (pos === 'noun') {
+          eng = dropLeadingThe(lowerFirst(liEnglish));
+        } else {
+          eng = lowerFirst(liEnglish);
+        }
+
+        return { hebrew: heb || '', english: eng || undefined };
+      } catch {
+        return null;
       }
     }
 
@@ -115,13 +243,20 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       try {
         const gen = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak });
         if (gen) {
+          if (debug) {
+            explain.path = 'lex';
+            explain.pick = { id: gen.id, source: 'lex' };
+          }
           const adj = await maybeSwapToFamilyBase(gen, allowedLessonIds);
           const phase = await computePhaseFor(adj.id);
-          logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: gen.id, source: 'lex', cross: isCrossVocab } }).catch(() => {});
+          logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: gen.id, source: 'lex', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
           const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
             .then(c => c > 0)
             .catch(() => false);
-          return NextResponse.json({ done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, newContentReady: newGenReady || undefined });
+          const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
+          const resp: any = { done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+          if (debug) resp.explain = explain;
+          return NextResponse.json(resp);
         }
       } catch {
         // fall through to regular selection when generator fails
@@ -134,17 +269,27 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const dueItems = await prisma.itemStat.findMany({ where: { next_due: { lte: now } } });
       const dueSet = new Set(dueItems.map(d => d.lesson_item_id));
       const remaining = await prisma.lessonItem.findMany({ where: { lesson_id: { in: allowedLessonIds }, id: { in: Array.from(dueSet) }, NOT: { id: { in: Array.from(attemptedIds) } } }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+      if (debug) {
+        explain.path = 'due_item';
+        explain.candidates = { dueCount: remaining.length };
+      }
       const pick = useRandom ? (remaining.length ? remaining[Math.floor(Math.random() * remaining.length)] : null) : (remaining[0] || null);
       if (pick) {
         const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
         const index = attemptedIds.size + 1;
         const adj = await maybeSwapToFamilyBase(pick as any, allowedLessonIds);
         const phase = await computePhaseFor(adj.id);
-        logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_item', cross: isCrossVocab } }).catch(() => {});
+        logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_item', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
         const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
           .then(c => c > 0)
           .catch(() => false);
-        return NextResponse.json({ done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, newContentReady: newGenReady || undefined });
+        const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
+        const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+        if (debug) {
+          explain.pick = { id: pick.id, source: useRandom ? 'random' : 'sequential' };
+          resp.explain = explain;
+        }
+        return NextResponse.json(resp);
       }
       // continue to normal selection if none due
     }
@@ -158,11 +303,19 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const index = attemptedIds.size + 1;
       const adj = await maybeSwapToFamilyBase(item as any, allowedLessonIds);
       const phase = await computePhaseFor(adj.id);
-      logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: item.id, source: 'subset', cross: isCrossVocab } }).catch(() => {});
+      logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: item.id, source: 'subset', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
       const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
         .then(c => c > 0)
         .catch(() => false);
-      return NextResponse.json({ done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, newContentReady: newGenReady || undefined });
+      const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+      if (debug) {
+        explain.path = 'subset';
+        explain.candidates = { subsetRemaining: remainingIds.length };
+        explain.pick = { id: item.id, source: useRandom ? 'random' : 'sequential' };
+        resp.explain = explain;
+      }
+      return NextResponse.json(resp);
     } else {
       // SRS priority when not using due mode explicitly: weak items before new
       const remaining = await prisma.lessonItem.findMany({
@@ -170,6 +323,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         select: { id: true }
       });
       const remainingIds = remaining.map(r => r.id);
+      if (debug) explain.candidates = { ...(explain.candidates || {}), remainingCount: remainingIds.length };
       let nextItem: { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null } | null = null;
       if (remainingIds.length) {
         const weakStats = await prisma.itemStat.findMany({
@@ -177,6 +331,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           orderBy: [{ incorrect_count: 'desc' }, { last_attempt: 'desc' }]
         });
         const weakIds = weakStats.map(s => s.lesson_item_id);
+        if (debug) explain.candidates.weakCount = weakIds.length;
         let pickId: string | null = null;
         if (weakIds.length) {
           pickId = useRandom ? weakIds[Math.floor(Math.random() * weakIds.length)] : weakIds[0];
@@ -188,6 +343,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         if (pickId) {
           const raw = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
           if (raw) nextItem = { ...raw, features: raw.features as Record<string, string | null> | null };
+          if (debug) explain.pick = { id: pickId, source: weakIds.length ? (useRandom ? 'weak_random' : 'weak_first') : (useRandom ? 'new_random' : 'new_first') };
         }
       }
       const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
@@ -195,11 +351,14 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const index = attemptedIds.size + 1;
       const adj = await maybeSwapToFamilyBase(nextItem as any, allowedLessonIds);
       const phase = await computePhaseFor(adj.id);
-      logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: nextItem.id, source: useRandom ? 'random' : 'sequential', cross: isCrossVocab } }).catch(() => {});
+      logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: nextItem.id, source: useRandom ? 'random' : 'sequential', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
       const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
         .then(c => c > 0)
         .catch(() => false);
-      return NextResponse.json({ done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, newContentReady: newGenReady || undefined });
+      const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, newContentReady: newGenReady || undefined };
+      if (debug) resp.explain = explain;
+      return NextResponse.json(resp);
     }
   } catch (e: any) {
     return NextResponse.json({ error: e?.message || 'Failed to get next item' }, { status: 500 });

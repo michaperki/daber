@@ -2,7 +2,7 @@
 
 Role: Live project state, architecture snapshot, and current focus. Update this file at the end of each work session.
 
-Last updated: 2026-03-24
+Last updated: 2026-03-25
 
 ---
 
@@ -24,6 +24,7 @@ Last updated: 2026-03-24
 - Drill directions: `en_to_he` (voice) and `he_to_en` (typed). Controlled by `drillDirection` setting.
 - Session state machine: `Daber/lib/client/state/sessionMachine.ts` — pure reducer.
 - Client settings: 15+ settings persisted to localStorage via `Daber/lib/client/settings.tsx`.
+ - Selection debug (dev): `GET /api/sessions/[id]/next-item?debug=1` returns `explain` with selection path, candidate sizes, family swaps, etc. No change to normal behavior.
 
 ## Pages
 `/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/admin/lexicon/validate`.
@@ -84,6 +85,8 @@ Last updated: 2026-03-24
   - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/run_generation_once.ts` (prints raw JSON and persisted rows)
   - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/call_generate_drills.ts` (invokes API handler; in non‑prod prints raw/items)
   - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/print_recent_generated.ts`
+  - Session simulation with explain traces: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_vocab_session.ts --count 25 --mode db --due off --random 1`
+    - Outputs JSONL to `scripts/out/drill_run_<timestamp>.jsonl`; add `--mode lex --due feature` to exercise generator path.
 
 
 ## Maintenance Notes

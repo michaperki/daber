@@ -38,6 +38,8 @@ export const zNextItemResponse = z.object({
   offerEnd: z.boolean().optional(),
   offerExtend: z.boolean().optional(),
   phase: zDrillPhase.optional(),
+  // Canonicalized surfaces for intro card
+  intro: z.object({ hebrew: z.string(), english: z.string().optional() }).optional(),
   // True if new generated content arrived since session start
   newContentReady: z.boolean().optional()
 });

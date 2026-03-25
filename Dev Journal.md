@@ -4,6 +4,13 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 
 ## 2026-03-24 — Drill UX: TTS autoplay removed
 
+## 2026-03-25 — Prompt emoji duplication fix
+
+- Cause: CC-imported English prompts contain inline gender/number emojis; the session UI also appends an emoji hint chip, causing duplication like “Where are they 👩‍🦰👩‍🦰 going? 👨👩”.
+- Fix: Strip emojis from the rendered English prompt and any TTS of the prompt; derive the emoji hint from the original prompt text or generated ID so the cue remains visible without mutating the text.
+- Files: `Daber/app/session/[sessionId]/page.tsx` (render-time `stripEmoji`, stronger `deriveEmojiCue`).
+- Follow-up: `scripts/scan_normalize_english.ts --apply` can permanently clean stored prompts (emoji, “How do I say…”, punctuation). Requires a working `DATABASE_URL` and Postgres.
+
 - Removed automatic TTS playback on item load and after feedback. Prompts and corrections can be played manually via the play button. (session page)
 - Mic is no longer blocked during TTS; starting to record cancels any playing TTS to allow immediate retries.
 - Prevented double/overlapping playback: play buttons disable while audio is playing; `useTTS` ignores overlapping calls.

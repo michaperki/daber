@@ -52,6 +52,10 @@ export default function DaberSessionPage() {
     return text.replace(re, '').replace(/\?+\s*$/, '').trim();
   }
 
+  function stripEmoji(text: string): string {
+    return text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{2702}-\u{27B0}]/gu, '');
+  }
+
   const playTTS = async (text: string): Promise<void> => {
     if (!text) return;
     try {
@@ -157,7 +161,7 @@ export default function DaberSessionPage() {
     try {
       await audio.prefetchTTS(data.item.target_hebrew);
       if (settings.speakPrompt) {
-        await audio.prefetchTTS(stripHowDoISay(data.item.english_prompt));
+        await audio.prefetchTTS(stripHowDoISay(stripEmoji(data.item.english_prompt)));
       }
     } catch {}
     loadingItemRef.current = false;
@@ -273,9 +277,9 @@ export default function DaberSessionPage() {
     return { dotClass: '', dotActive: true, label: 'ready', waveActive: false, micRecording: false };
   })();
 
-  const cleanedPrompt = stripHowDoISay(item.english_prompt);
+  const cleanedPrompt = stripEmoji(stripHowDoISay(item.english_prompt));
 
-  const emojiCue = deriveEmojiCue(cleanedPrompt, item?.id);
+  const emojiCue = deriveEmojiCue(item.english_prompt, item?.id);
   const showReviewUI = (phase === 'reviewing' || phase === 'prompting');
   const showFeedback = feedback && (phase === 'feedback' || phase === 'evaluating');
   const micDisabled = phase === 'evaluating' || phase === 'advancing';
@@ -597,6 +601,12 @@ function deriveEmojiCue(en: string, id?: string): string {
   const fromId = id ? parseEmojiFromGeneratedId(id) : '';
   if (fromId) return fromId;
   const s = en.toLowerCase();
+  const femaleCount = ((en.match(/👩/g) || []).length) + ((en.match(/🧕/g) || []).length);
+  const maleCount = ((en.match(/👨/g) || []).length) + ((en.match(/🧔/g) || []).length);
+  if (femaleCount >= 2 && maleCount === 0) return '👩👩';
+  if (maleCount >= 1 && femaleCount >= 1) return '👨👩';
+  if (femaleCount >= 1) return '👩';
+  if (maleCount >= 1) return '👨';
   if (/(female\s*speaker|\(female\))/i.test(en)) return '👩';
   if (/(male\s*speaker|\(male\))/i.test(en)) return '👨';
   if (/\b(she|her)\b/.test(s)) return '👩';

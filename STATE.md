@@ -65,6 +65,7 @@ Actual happy path (today)
 - Free recall: English prompt; user speaks; STT → evaluator; feedback with chips; auto-resume on non-correct.
   - Session stability: initial data load is guarded against React dev double-invoke; mic recording and submit paths are de-duplicated to prevent overlapping calls; auto-resume is gated to a single re-arm.
   - Family behavior: first encounter prefers family_base; after intro, family members are selected with a simple prioritization for reasonable next steps; a spacing guard avoids 3+ consecutive picks from the same family in a session.
+  - Prompt normalization: render-time English prompts strip emoji and “How do I say” wrappers; a separate emoji hint chip is derived from the original prompt text or item ID to avoid duplicates.
 - Generated content
   - Two sources: rule-based generators (adjectives/verbs/nouns) and LLM pipeline (generate-drills API / background job). Mixed into cross-vocab sessions.
   - Server TTS has in-process LRU cache; client prefetches prompt/correction audio.

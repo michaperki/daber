@@ -239,6 +239,75 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       }
     }
 
+    async function maybePromoteFamilyProgress(
+      item: { id: string },
+      attemptedIds: Set<string>,
+      allowedLessonIds: string[]
+    ): Promise<{ id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null }> {
+      try {
+        const li = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, family_id: true, lexeme_id: true } });
+        const familyId = li?.family_id || (li?.lexeme_id ? `lex:${li.lexeme_id}` : null);
+        if (!familyId) {
+          const orig = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+          if (orig) return { ...orig, features: (orig.features as any) || null } as any;
+          return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
+        }
+        const famIntro = await prisma.familyStat.findUnique({ where: { family_id: familyId } });
+        if (!famIntro) {
+          const orig = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+          if (orig) return { ...orig, features: (orig.features as any) || null } as any;
+          return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
+        }
+        // Prefer a reasonable next step within this family for recognition phase
+        const famItems = await prisma.lessonItem.findMany({
+          where: { family_id: familyId, lesson_id: { in: allowedLessonIds } },
+          select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true }
+        });
+        const candidates = famItems.filter(fi => !attemptedIds.has(fi.id));
+        if (!candidates.length) {
+          const orig = famItems.find(fi => fi.id === item.id) || null;
+          if (orig) return { ...orig, features: (orig.features as any) || null } as any;
+          const fallback = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+          if (fallback) return { ...fallback, features: (fallback.features as any) || null } as any;
+          return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
+        }
+        const score = (f: any): number => {
+          const fx = (f?.features || {}) as Record<string, string | null>;
+          const pos = (fx.pos || '').toLowerCase();
+          const tense = (fx.tense || '').toLowerCase();
+          const person = fx.person || '';
+          const number = fx.number || '';
+          const gender = fx.gender || '';
+          // High priority: present 3sg masc, then 3sg fem, then 1sg, then 3pl masc
+          if (pos === 'verb' && tense === 'present' && person === '3' && number === 'sg' && gender === 'm') return 100;
+          if (pos === 'verb' && tense === 'present' && person === '3' && number === 'sg' && gender === 'f') return 95;
+          if (pos === 'verb' && tense === 'present' && person === '1' && number === 'sg') return 90;
+          if (pos === 'verb' && tense === 'present' && person === '3' && number === 'pl' && gender === 'm') return 85;
+          if (pos === 'adjective' && number === 'sg' && gender === 'm') return 80;
+          if (pos === 'noun' && number === 'sg') return 75;
+          return 10; // default low preference
+        };
+        const ranked = candidates
+          .map(ci => ({ ci, s: score(ci as any) }))
+          .sort((a, b) => b.s - a.s);
+        const best = ranked[0]?.ci || null;
+        const selected = best || candidates[0];
+        if (selected && selected.id !== item.id) {
+          if (debug) explain.familyProgress = { from: item.id, to: selected.id };
+          return { id: selected.id, english_prompt: selected.english_prompt, target_hebrew: selected.target_hebrew, transliteration: selected.transliteration, features: (selected.features as any) || null } as any;
+        }
+        const orig = famItems.find(fi => fi.id === item.id) || null;
+        if (orig) return { ...orig, features: (orig.features as any) || null } as any;
+        const fallback = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+        if (fallback) return { ...fallback, features: (fallback.features as any) || null } as any;
+        return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
+      } catch {
+        const fallback = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } }).catch(() => null);
+        if (fallback) return { ...fallback, features: (fallback.features as any) || null } as any;
+        return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
+      }
+    }
+
     if ((useLex || dueParam === 'feature' || dueParam === 'blend') && session.lesson?.type === 'vocab') {
       try {
         const gen = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak });
@@ -247,7 +316,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
             explain.path = 'lex';
             explain.pick = { id: gen.id, source: 'lex' };
           }
-          const adj = await maybeSwapToFamilyBase(gen, allowedLessonIds);
+          const adjBase = await maybeSwapToFamilyBase(gen, allowedLessonIds);
+          const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
           const phase = await computePhaseFor(adj.id);
           logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: gen.id, source: 'lex', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
           const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
@@ -277,7 +347,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       if (pick) {
         const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
         const index = attemptedIds.size + 1;
-        const adj = await maybeSwapToFamilyBase(pick as any, allowedLessonIds);
+        const adjBase = await maybeSwapToFamilyBase(pick as any, allowedLessonIds);
+        const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
         const phase = await computePhaseFor(adj.id);
         logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_item', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
         const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
@@ -301,7 +372,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const item = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
       if (!item) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
-      const adj = await maybeSwapToFamilyBase(item as any, allowedLessonIds);
+      const adjBase = await maybeSwapToFamilyBase(item as any, allowedLessonIds);
+      const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
       const phase = await computePhaseFor(adj.id);
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: item.id, source: 'subset', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
       const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
@@ -349,7 +421,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
       if (!nextItem) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const index = attemptedIds.size + 1;
-      const adj = await maybeSwapToFamilyBase(nextItem as any, allowedLessonIds);
+      const adjBase = await maybeSwapToFamilyBase(nextItem as any, allowedLessonIds);
+      const adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
       const phase = await computePhaseFor(adj.id);
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: nextItem.id, source: useRandom ? 'random' : 'sequential', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
       const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })

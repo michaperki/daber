@@ -159,5 +159,21 @@ export function deterministicEvaluate(
     if (false) {}
   }
 
+  // Noun definiteness (article) mismatch: only apply when pos==='noun'
+  try {
+    const fpos = (item.features && (item.features as any).pos) as string | undefined;
+    if (fpos && fpos.toLowerCase() === 'noun') {
+      const targetFirst = (item.target_hebrew || '').trim().split(/\s+/)[0] || '';
+      const heardFirst = (rawTranscript || '').trim().split(/\s+/)[0] || '';
+      const tHasHa = /^ה/.test(targetFirst);
+      const hHasHa = /^ה/.test(heardFirst);
+      if (tHasHa !== hHasHa) {
+        const code = tHasHa ? 'article_missing' : 'article_extra';
+        const message = tHasHa ? 'Close. Use the definite article (ה).' : 'Close. Drop the definite article (ה).';
+        return { grade: 'flawed', reasons: [{ code, message }] };
+      }
+    }
+  } catch {}
+
   return null; // let caller decide incorrect or fallback
 }

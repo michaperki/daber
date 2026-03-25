@@ -84,6 +84,7 @@ Last updated: 2026-03-25
 - Verify:
   - Schema tables: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/check_generated_tables.ts`
   - Family columns/rows: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/verify_db_state.ts`
+  - English cleanup (dry-run): `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/scan_normalize_english.ts` (add `--apply` to write)
 
 ## Pointers & Artifacts
 - Contracts: `Daber/lib/contracts.ts`

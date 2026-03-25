@@ -73,6 +73,24 @@ export default function DaberSessionPage() {
   const [hebrewInput, setHebrewInput] = React.useState('');
   const hebrewInputRef = React.useRef<HTMLInputElement | null>(null);
 
+  function deriveHebPronounFromFeatures(feat?: Record<string, string | null> | null): string | null {
+    if (!feat) return null;
+    const p = (feat.person || '').trim();
+    const n = (feat.number || '').trim();
+    const g = (feat.gender || '').trim();
+    if (p === '1' && n === 'sg') return 'אני';
+    if (p === '1' && n === 'pl') return 'אנחנו';
+    if (p === '2' && n === 'sg' && g === 'm') return 'אתה';
+    if (p === '2' && n === 'sg' && g === 'f') return 'את';
+    if (p === '2' && n === 'pl' && g === 'm') return 'אתם';
+    if (p === '2' && n === 'pl' && g === 'f') return 'אתן';
+    if (p === '3' && n === 'sg' && g === 'm') return 'הוא';
+    if (p === '3' && n === 'sg' && g === 'f') return 'היא';
+    if (p === '3' && n === 'pl' && g === 'm') return 'הם';
+    if (p === '3' && n === 'pl' && g === 'f') return 'הן';
+    return null;
+  }
+
   const fetchNextRaw = React.useCallback(async (): Promise<NextItemResponse> => {
     try {
       const due = settings.dueMode === 'feature' ? 'feature' : (settings.dueMode === 'item' ? 'item' : (settings.dueMode === 'blend' ? 'blend' : undefined));
@@ -365,6 +383,18 @@ export default function DaberSessionPage() {
             />
           </div>
           <HebrewKeyboard onInsert={(txt) => setHebrewInput((v) => v + txt)} onBackspace={() => setHebrewInput((v) => v.slice(0, -1))} />
+
+          {(() => {
+            const pron = deriveHebPronounFromFeatures(item.features || null);
+            const needsPron = pron && !hebrewInput.startsWith(pron + ' ');
+            return needsPron ? (
+              <div className="cta-row" style={{ marginTop: 6, gap: 8 }}>
+                <button className="qs-btn" onClick={() => setHebrewInput((v) => (pron + (v ? ' ' + v : ' ')))}>
+                  insert pronoun ({pron})
+                </button>
+              </div>
+            ) : null;
+          })()}
 
           <div className="cta-row" style={{ marginTop: 8, marginBottom: 12 }}>
             <button className="btn-start" onClick={() => submitAnswer(hebrewInput)} disabled={!hebrewInput.trim() || phase === 'feedback' || phase === 'evaluating'}>submit</button>

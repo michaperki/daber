@@ -20,10 +20,12 @@ async function main() {
   if (!fs.existsSync(file)) throw new Error(`Tags file not found: ${file}`);
 
   const tags = readTags(file);
+  const minIdx = process.argv.indexOf('--min');
+  const min = minIdx > -1 ? Number(process.argv[minIdx + 1]) : 0.8;
   const updates: Array<{ form: string; lemma: string; updated: number }> = [];
   let totalUpdated = 0;
   for (const t of tags.items) {
-    if (typeof t.confidence !== 'number' || t.confidence < 0.8) continue;
+    if (typeof t.confidence !== 'number' || t.confidence < min) continue;
     const form = (t.form || '').trim();
     const lemma = (t.lemma || '').trim();
     if (!form || !lemma) continue;
@@ -38,8 +40,7 @@ async function main() {
     }
   }
   // eslint-disable-next-line no-console
-  console.log(JSON.stringify({ total_updated: totalUpdated, changed_pairs: updates.length }, null, 2));
+  console.log(JSON.stringify({ total_updated: totalUpdated, changed_pairs: updates.length, min_confidence: min }, null, 2));
 }
 
 main().catch((e) => { console.error(e); process.exit(1); }).finally(async () => { await prisma.$disconnect(); });
-

@@ -18,7 +18,8 @@
     "import:cc": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/import_citizen_cafe.ts",
     "heroku-postbuild": "npm run prisma:generate && npm run build",
     "import:vocab-folder": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/import_vocab_folder.ts --vocab-dir vocab",
-    "simulate:session": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_vocab_session.ts"
+    "simulate:session": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_vocab_session.ts",
+    "normalize:english": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/scan_normalize_english.ts"
   },
   "engines": {
     "node": "24.x"

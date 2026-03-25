@@ -16,9 +16,6 @@ function normalizeFormForMatch(s: string): string {
 
 export async function GET(req: Request) {
   try {
-    if (process.env.ADMIN_ENABLED !== '1') {
-      return NextResponse.json({ error: 'Admin disabled' }, { status: 403 });
-    }
     const url = new URL(req.url);
     const scope = url.searchParams.get('scope') || 'mismatches'; // 'mismatches' | 'all'
     const lessonId = url.searchParams.get('lessonId') || undefined;

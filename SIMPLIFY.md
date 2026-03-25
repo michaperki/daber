@@ -56,7 +56,6 @@ These are all good features that don't need to be optional. Just turn them on an
 
 | Flag/Feature | Why keep |
 |---|---|
-| `ADMIN_ENABLED` | Cheap gate, useful until real auth |
 | `RL_STT_PER_MIN` / `RL_TTS_PER_MIN` | Protects your OpenAI bill |
 | `SESSION_DUE_CAP` | Shapes session length — tunable, not a toggle |
 | `GEN_QUEUE_THRESHOLD` | Controls LLM generation buffering |

@@ -7,11 +7,6 @@ Last reviewed: 2026-03-25 (simplified settings)
 —
 
 Temporary scaffolding and feature flags
-- ADMIN_ENABLED
-  - Where: Daber/app/api/admin/lexicon/*, Daber/app/admin/*
-  - What: Gates admin tools (validate/sync family links, quick fixes, attempts view).
-  - Why: Quick protection for dev-only endpoints and pages.
-  - Keep or kill: Temporary. Replace with real auth when users exist.
 - RL_STT_PER_MIN / RL_TTS_PER_MIN
   - Where: Daber/app/api/stt/route.ts, Daber/app/api/tts/route.ts
   - What: In‑process per‑IP token bucket rate limits.
@@ -36,7 +31,7 @@ Temporary scaffolding and feature flags
 Debug/dev-only endpoints and tools
 - /api/sessions/[id]/next-item?debug=1
   - Adds explain payload (selection path, pools) in response; used by scripts/simulate_vocab_session.ts.
-- Admin lexicon tools (all require ADMIN_ENABLED=1)
+- Admin lexicon tools
   - /admin/lexicon/validate (page)
   - /api/admin/lexicon/{sync, family, export, fix}
   - Note: fix route includes hard-coded IDs for quick DB patching (temporary scaffolding).
@@ -90,12 +85,12 @@ Known debt
 Assumptions made
 - Family-first intros: prefer introducing lemmas via family_base (infinitive/adjective m.sg./noun sg); then progress within family.
 - Session pacing: client requests adaptive pacing; base cap via SESSION_DUE_CAP with extend/end thresholds.
-- Single-user environment: global FeatureStat/ItemStat are acceptable; ADMIN_ENABLED gates admin instead of auth.
+- Single-user environment: global FeatureStat/ItemStat are acceptable; admin tools currently have no auth.
 - Accept typed recognition and guided phases to smooth difficulty before voice free recall.
 
 Environment variables in use (runtime)
 - DATABASE_URL, OPENAI_API_KEY
-- ADMIN_ENABLED, RL_STT_PER_MIN, RL_TTS_PER_MIN, SESSION_DUE_CAP, GEN_QUEUE_THRESHOLD
+- RL_STT_PER_MIN, RL_TTS_PER_MIN, SESSION_DUE_CAP, GEN_QUEUE_THRESHOLD
 - Seed-time: SEED_LEXEMES, SEED_CC, SEED_CC_PREFIX
 
 Pointers (files)

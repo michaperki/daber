@@ -223,3 +223,12 @@ Note: SOUL.md unchanged (requires approval).
 - Blocked overlapping mic recordings and submissions: `startVoice` now ignores calls while listening/transcribing or submitting; `submitAnswer` is guarded to one in‑flight request at a time.
 - Auto‑resume gate: ensured re‑arming the mic after feedback cannot recursively trigger multiple starts; resets on next item.
 - File: `Daber/app/session/[sessionId]/page.tsx`.
+
+## 2026-03-25 — Removed ADMIN_ENABLED gate
+
+- Removed the `ADMIN_ENABLED` feature flag and all runtime checks.
+- Admin lexicon tools are now always available (no auth yet):
+  - Page: `Daber/app/admin/lexicon/validate/page.tsx`
+  - APIs: `Daber/app/api/admin/lexicon/{export, family, fix, sync}/route.ts`
+- Docs updated to drop references: `STATE.md`, `DEPLOY.md`, `SIMPLIFY.md`.
+- Rationale: single-user environment; prefer simplicity until real auth lands.

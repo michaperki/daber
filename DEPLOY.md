@@ -16,10 +16,9 @@ Steps
 
 2) Config vars
    - heroku config:set OPENAI_API_KEY=... -a daber-hebrew
-   - Optional:
+ - Optional:
      - RL_STT_PER_MIN=20
      - RL_TTS_PER_MIN=40
-     - ADMIN_ENABLED=0
 
 3) Deploy
    - Connect GitHub in the Heroku dashboard and deploy main
@@ -44,4 +43,3 @@ Notes
 - If you prefer manual seeding only, remove the `release` step in Procfile and run:
   - heroku run npm run db:push -a daber-hebrew
   - heroku run npm run seed -a daber-hebrew
-

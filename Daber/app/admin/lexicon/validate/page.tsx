@@ -53,9 +53,6 @@ async function getIssues(): Promise<Issue[]> {
 }
 
 export default async function AdminLexiconValidatePage() {
-  if (process.env.ADMIN_ENABLED !== '1') {
-    return <div style={{ padding: 16 }}>Admin disabled. Set ADMIN_ENABLED=1 in env.</div>;
-  }
   const issues = await getIssues();
   return (
     <div className="lib-root">

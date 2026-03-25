@@ -44,9 +44,6 @@ const featuresToSet: FeatNeed[] = [
 
 export async function POST() {
   try {
-    if (process.env.ADMIN_ENABLED !== '1') {
-      return NextResponse.json({ error: 'Admin disabled' }, { status: 403 });
-    }
     let created = 0;
     for (const need of inflectionsToEnsure) {
       const exists = await prisma.inflection.findFirst({ where: { lexeme_id: need.lexeme_id, form: need.form } });

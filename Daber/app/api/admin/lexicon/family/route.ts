@@ -3,9 +3,6 @@ import { prisma } from '@/lib/db';
 
 export async function POST(req: Request) {
   try {
-    if (process.env.ADMIN_ENABLED !== '1') {
-      return NextResponse.json({ error: 'Admin disabled' }, { status: 403 });
-    }
     const ct = req.headers.get('content-type') || '';
     let lessonItemId = '';
     let action = '';
@@ -58,4 +55,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: e?.message || 'Failed' }, { status: 500 });
   }
 }
-

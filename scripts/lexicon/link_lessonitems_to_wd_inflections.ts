@@ -8,7 +8,10 @@
   - Produce:
       - A JSON report in scripts/out/
       - Optional DB annotations:
-          - set LessonItem.lexeme_id when the whole LessonItem is a single-token match (safe)
+          - set LessonItem.lexeme_id when the whole LessonItem is a single-token match.
+            We allow:
+              - exact form match
+              - OR strip-leading-ל match IF matched lexeme is a verb (Wikidata lexicalCategory Q24905)
           - for multiword items, DO NOT mutate LessonItem yet; just report matches.
 
   Usage:
@@ -89,8 +92,16 @@ async function main() {
   // Load inflections for wd: lexemes into a map: form -> [{lexeme_id,...}]
   const inflections = await prisma.inflection.findMany({
     where: { lexeme_id: { startsWith: 'wd:' } },
-    select: { lexeme_id: true, form: true, features: true },
+    select: { lexeme_id: true, form: true },
   });
+
+  // Load lexeme POS for wd: lexemes (Wikidata lexicalCategory Q-id stored in Lexeme.pos)
+  const wdLexemes = await prisma.lexeme.findMany({
+    where: { id: { startsWith: 'wd:' } },
+    select: { id: true, pos: true },
+  });
+  const posByLexemeId = new Map<string, string>();
+  for (const l of wdLexemes) posByLexemeId.set(l.id, l.pos);
 
   const formMap = new Map<string, Array<{ lexeme_id: string }>>();
   for (const infl of inflections) {
@@ -160,10 +171,15 @@ async function main() {
       });
     }
 
-    // Only write LessonItem.lexeme_id for single-token items where we have an exact match
-    if (args.writeSingleTokenLinks && tokens.length === 1 && tokenMatches.length === 1 && tokenMatches[0].why === 'exact') {
-      const newLexemeId = tokenMatches[0].lexeme_id;
-      if (!it.lexeme_id) {
+    // Only write LessonItem.lexeme_id for single-token items when we have a high-confidence match
+    if (args.writeSingleTokenLinks && tokens.length === 1 && tokenMatches.length === 1) {
+      const m = tokenMatches[0];
+      const newLexemeId = m.lexeme_id;
+      const pos = posByLexemeId.get(newLexemeId);
+      const isVerb = pos === 'Q24905';
+      const okToWrite = m.why === 'exact' || (m.why === 'strip_ל' && isVerb);
+
+      if (okToWrite && !it.lexeme_id) {
         await prisma.lessonItem.update({ where: { id: it.id }, data: { lexeme_id: newLexemeId } });
         wroteLinks++;
       }

@@ -93,7 +93,37 @@ function queryVariants(tok: string): string[] {
   return Array.from(vars);
 }
 
-async function wikidataSearchLexeme(query: string, timeoutMs = 10000): Promise<string | null> {
+async function fetchJsonWithRetry(url: string, timeoutMs = 10000, maxRetries = 6): Promise<any> {
+  let attempt = 0;
+  while (true) {
+    attempt++;
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), timeoutMs);
+
+    const res = await fetch(url, {
+      headers: { 'user-agent': 'daber-lexicon-seed/0.1 (wikidata bulk)' },
+      signal: controller.signal,
+    }).finally(() => clearTimeout(t));
+
+    if (res.status === 429) {
+      const retryAfter = Number(res.headers.get('retry-after') || '0');
+      const backoffMs = Math.max(retryAfter * 1000, 500 * Math.pow(2, Math.min(attempt, 6)));
+      if (attempt > maxRetries) throw new Error(`Wikidata rate limited (429) after ${attempt} attempts`);
+      console.log(`429 rate limit; backing off ${backoffMs}ms`);
+      await sleep(backoffMs);
+      continue;
+    }
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new Error(`Wikidata HTTP ${res.status}: ${text.slice(0, 120)}`);
+    }
+
+    return await res.json();
+  }
+}
+
+async function wikidataSearchLexeme(query: string): Promise<string | null> {
   const url = new URL('https://www.wikidata.org/w/api.php');
   url.searchParams.set('action', 'wbsearchentities');
   url.searchParams.set('format', 'json');
@@ -103,32 +133,18 @@ async function wikidataSearchLexeme(query: string, timeoutMs = 10000): Promise<s
   url.searchParams.set('limit', '1');
   url.searchParams.set('search', query);
 
-  const controller = new AbortController();
-  const t = setTimeout(() => controller.abort(), timeoutMs);
-  const res = await fetch(url.toString(), {
-    headers: { 'user-agent': 'daber-lexicon-seed/0.1 (wikidata bulk)' },
-    signal: controller.signal,
-  }).finally(() => clearTimeout(t));
-
-  const json: any = await res.json();
+  const json: any = await fetchJsonWithRetry(url.toString());
   const id = json?.search?.[0]?.id;
   return typeof id === 'string' ? id : null;
 }
 
-async function wikidataGetLexeme(id: string, timeoutMs = 10000): Promise<any | null> {
+async function wikidataGetLexeme(id: string): Promise<any | null> {
   const url = new URL('https://www.wikidata.org/w/api.php');
   url.searchParams.set('action', 'wbgetentities');
   url.searchParams.set('format', 'json');
   url.searchParams.set('ids', id);
 
-  const controller = new AbortController();
-  const t = setTimeout(() => controller.abort(), timeoutMs);
-  const res = await fetch(url.toString(), {
-    headers: { 'user-agent': 'daber-lexicon-seed/0.1 (wikidata bulk)' },
-    signal: controller.signal,
-  }).finally(() => clearTimeout(t));
-
-  const json: any = await res.json();
+  const json: any = await fetchJsonWithRetry(url.toString());
   return json?.entities?.[id] ?? null;
 }
 

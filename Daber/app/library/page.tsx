@@ -72,11 +72,20 @@ export default async function LibraryPage() {
 
       <div className="divider" />
       <div className="section-eyebrow">reference</div>
+      <Link href="/dictionary" className="pack-card" style={{ padding: 12, marginTop: 8 }}>
+        <div className="pack-top">
+          <div className="pack-meta">
+            <p className="pack-name">Dictionary</p>
+            <p className="pack-desc">lemmas + forms (seeded from public Wikidata lexemes)</p>
+          </div>
+          <span className="pack-status-badge">open</span>
+        </div>
+      </Link>
       <Link href="/library/words" className="pack-card" style={{ padding: 12, marginTop: 8 }}>
         <div className="pack-top">
           <div className="pack-meta">
-            <p className="pack-name">Words</p>
-            <p className="pack-desc">auto-extracted from all items (deduped tokens)</p>
+            <p className="pack-name">Raw Words</p>
+            <p className="pack-desc">auto-extracted tokens from phrases (no morphology)</p>
           </div>
           <span className="pack-status-badge">open</span>
         </div>

@@ -85,9 +85,30 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
       }
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
+      // Always max out element volume; user can adjust device volume.
+      try { audio.volume = 1; } catch {}
       if (typeof rate === 'number' && rate > 0) {
         try { audio.playbackRate = rate; } catch {}
       }
+
+      // Optional: boost perceived loudness using WebAudio GainNode (can exceed element volume=1).
+      // Controlled by localStorage key "ttsGain" (string float). Default: 1.
+      let audioCtx: AudioContext | null = null;
+      let source: MediaElementAudioSourceNode | null = null;
+      let gain: GainNode | null = null;
+      try {
+        const raw = typeof window !== 'undefined' ? window.localStorage?.getItem('ttsGain') : null;
+        const g = raw ? Number(raw) : 1;
+        if (Number.isFinite(g) && g > 1) {
+          audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+          source = audioCtx.createMediaElementSource(audio);
+          gain = audioCtx.createGain();
+          gain.gain.value = Math.min(3, Math.max(1, g));
+          source.connect(gain);
+          gain.connect(audioCtx.destination);
+        }
+      } catch {}
+
       audioRef.current = audio;
       await new Promise<void>((resolve, reject) => {
         const onEnd = () => { cleanup(); resolve(); };
@@ -97,6 +118,9 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
           audio.removeEventListener('error', onErr);
           try { URL.revokeObjectURL(url); } catch {}
           try { audioRef.current = null; } catch {}
+          try { source?.disconnect(); } catch {}
+          try { gain?.disconnect(); } catch {}
+          try { audioCtx?.close(); } catch {}
           setPlaying(false);
         };
         audio.addEventListener('ended', onEnd, { once: true });

@@ -10,9 +10,8 @@ export default function FooterNav() {
   return (
     <nav className="footer-nav">
       <Link href="/" className={cls('/')}>home</Link>
-      <Link href="/library" className={cls('/library')}>library</Link>
       <Link href="/dictionary" className={cls('/dictionary')}>dict</Link>
-      <Link href="/progress" className={cls('/progress')}>progress</Link>
+      <Link href="/library" className={cls('/library')}>library</Link>
       <Link href="/profile" className={cls('/profile')}>profile</Link>
     </nav>
   );

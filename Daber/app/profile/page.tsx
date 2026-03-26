@@ -35,6 +35,15 @@ export default async function ProfilePage() {
         <span className="section-label">quick links</span>
       </div>
       <div className="quick-start-row" style={{ flexWrap: 'wrap' }}>
+        <Link href="/progress" className="qs-btn" style={{ textDecoration: 'none' }}>
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4">
+            <path d="M3 11.5V8.5" strokeLinecap="round"/>
+            <path d="M7.5 11.5V4" strokeLinecap="round"/>
+            <path d="M12 11.5V6.5" strokeLinecap="round"/>
+            <path d="M2 12.5h11" strokeLinecap="round"/>
+          </svg>
+          progress
+        </Link>
         <Link href="/conjugations" className="qs-btn" style={{ textDecoration: 'none' }}>
           <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="2" y="2" width="11" height="11" rx="1.5"/><path d="M2 5.5h11M5.5 2v11" strokeLinecap="round"/></svg>
           tables

@@ -1,14 +1,12 @@
-# Hebrew Drills (Daber)
+# Daber (Hebrew drills)
 
 Single Next.js app for a spoken Hebrew drill loop. The canonical app and API live under `Daber/`.
 
 ## Docs
-- Root charter: `SOUL.md`
-- Project state: `memory/MEMORY.md`
-- Current reality: `STATE.md`
-- Journal: `Dev Journal.md`
-- Roadmap: `ROADMAP.md` (moved from `Daber/ROADMAP.md`)
-- AI setup: `AI_SETUP.md`
+- Charter: `SOUL.md`
+- Docs index: `docs/README.md`
+- Agent docs (roadmap/state/deploy/etc): `docs/agent/`
+- Project memory/logs: `memory/`
 
 ## Getting Started
 - Install deps: `npm install`

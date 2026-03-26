@@ -71,6 +71,18 @@ export default async function LibraryPage() {
       <LibraryClient lessons={ lessons } />
 
       <div className="divider" />
+      <div className="section-eyebrow">reference</div>
+      <Link href="/library/words" className="pack-card" style={{ padding: 12, marginTop: 8 }}>
+        <div className="pack-top">
+          <div className="pack-meta">
+            <p className="pack-name">Words</p>
+            <p className="pack-desc">auto-extracted from all items (deduped tokens)</p>
+          </div>
+          <span className="pack-status-badge">open</span>
+        </div>
+      </Link>
+
+      <div className="divider" />
       <div className="section-eyebrow">coming soon</div>
       <div className="pack-card locked">
         <div className="pack-top">

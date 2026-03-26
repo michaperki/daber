@@ -23,7 +23,7 @@ type Args = {
   out: string;
   limit: number;
   fromDb: boolean;
-  lang: 'en';
+  host: string;
   sleepMs: number;
 };
 
@@ -32,7 +32,7 @@ function parseArgs(argv: string[]): Args {
     out: 'scripts/out/wiktionary_he.jsonl',
     limit: 200,
     fromDb: false,
-    lang: 'en',
+    host: 'en.wiktionary.org',
     sleepMs: 250,
   };
 
@@ -43,11 +43,7 @@ function parseArgs(argv: string[]): Args {
     else if (a === '--limit') args.limit = Number(argv[++i] || '200');
     else if (a === '--from-db') args.fromDb = true;
     else if (a === '--sleep-ms') args.sleepMs = Number(argv[++i] || '250');
-    else if (a === '--lang') {
-      const v = (argv[++i] as any) || 'en';
-      if (v !== 'en') throw new Error(`unsupported --lang ${v}`);
-      args.lang = v;
-    }
+    else if (a === '--host') args.host = argv[++i] || args.host;
   }
 
   if (!args.fromDb && !args.in) {
@@ -78,9 +74,9 @@ function unique<T>(arr: T[]): T[] {
   return Array.from(new Set(arr));
 }
 
-async function fetchWikitext(title: string): Promise<string | null> {
+async function fetchWikitext(host: string, title: string): Promise<string | null> {
   // MediaWiki API: parse wikitext
-  const url = new URL('https://en.wiktionary.org/w/api.php');
+  const url = new URL(`https://${host}/w/api.php`);
   url.searchParams.set('action', 'parse');
   url.searchParams.set('format', 'json');
   url.searchParams.set('prop', 'wikitext');
@@ -188,7 +184,7 @@ async function main() {
     let error: string | null = null;
 
     try {
-      wikitext = await fetchWikitext(token);
+      wikitext = await fetchWikitext(args.host, token);
     } catch (e: any) {
       error = e?.message ?? String(e);
     }
@@ -220,6 +216,7 @@ async function main() {
 
   out.end();
   console.log(`wrote ${outPath}`);
+  console.log(`host ${args.host}`);
 }
 
 main().catch(err => {

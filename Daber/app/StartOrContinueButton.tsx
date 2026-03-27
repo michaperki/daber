@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function StartOrContinueButton({ sessionId, lessonId, label }: { sessionId: string | null; lessonId: string; label: string }) {
+export default function StartOrContinueButton({ sessionId = null, lessonId, label, bootstrapUrl }: { sessionId?: string | null; lessonId: string; label: string; bootstrapUrl?: string }) {
   const router = useRouter();
   const [busy, setBusy] = React.useState(false);
   const onClick = async () => {
@@ -11,6 +11,10 @@ export default function StartOrContinueButton({ sessionId, lessonId, label }: { 
       if (sessionId) {
         router.push(`/session/${sessionId}`);
         return;
+      }
+      if (bootstrapUrl) {
+        // Ensure backing lesson/items exist (idempotent server bootstrap)
+        try { await fetch(bootstrapUrl, { method: 'POST' }); } catch {}
       }
       const res = await fetch('/api/sessions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonId }) });
       const data = await res.json();

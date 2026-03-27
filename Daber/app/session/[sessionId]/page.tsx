@@ -279,7 +279,7 @@ export default function DaberSessionPage() {
 
   const cleanedPrompt = stripEmoji(stripHowDoISay(item.english_prompt));
 
-  const emojiCue = deriveEmojiCue(item.english_prompt, item?.id);
+  const emojiCue = deriveEmojiFromFeatures(item.features || null) || deriveEmojiCue(item.english_prompt, item?.id);
   const showReviewUI = (phase === 'reviewing' || phase === 'prompting');
   const showFeedback = feedback && (phase === 'feedback' || phase === 'evaluating');
   const micDisabled = phase === 'evaluating' || phase === 'advancing';
@@ -594,6 +594,17 @@ function parseEmojiFromGeneratedId(id: string): string | '' {
     if (gender === 'f') return '👩';
     return '';
   }
+  return '';
+}
+
+function deriveEmojiFromFeatures(feat?: Record<string, string | null> | null): string {
+  if (!feat) return '';
+  const number = feat.number || null;
+  const gender = feat.gender || null;
+  // We only use this when we have explicit features; otherwise we fall back to legacy heuristics.
+  if (number === 'pl') return gender === 'f' ? '👩👩' : '👨👩';
+  if (gender === 'm') return '👨';
+  if (gender === 'f') return '👩';
   return '';
 }
 

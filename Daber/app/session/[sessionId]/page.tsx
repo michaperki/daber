@@ -83,6 +83,17 @@ export default function DaberSessionPage() {
   const [hebrewInput, setHebrewInput] = React.useState('');
   const hebrewInputRef = React.useRef<HTMLInputElement | null>(null);
 
+  // On iOS/mobile, prefer the native keyboard and hide the custom on-screen Hebrew keyboard.
+  const [showNativeKeyboard, setShowNativeKeyboard] = React.useState<boolean>(false);
+  React.useEffect(() => {
+    try {
+      const ua = navigator.userAgent || '';
+      const isIOS = /iPhone|iPad|iPod/i.test(ua);
+      const isCoarse = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+      setShowNativeKeyboard(isIOS || isCoarse);
+    } catch {}
+  }, []);
+
   function deriveHebPronounFromFeatures(feat?: Record<string, string | null> | null): string | null {
     if (!feat) return null;
     const p = (feat.person || '').trim();
@@ -406,7 +417,9 @@ export default function DaberSessionPage() {
               dir="rtl"
             />
           </div>
-          <HebrewKeyboard onInsert={(txt) => setHebrewInput((v) => v + txt)} onBackspace={() => setHebrewInput((v) => v.slice(0, -1))} />
+          {showNativeKeyboard ? null : (
+            <HebrewKeyboard onInsert={(txt) => setHebrewInput((v) => v + txt)} onBackspace={() => setHebrewInput((v) => v.slice(0, -1))} />
+          )}
 
           {(() => {
             const pron = deriveHebPronounFromFeatures(item.features || null);
@@ -470,7 +483,9 @@ export default function DaberSessionPage() {
           {showReviewUI ? (
             <>
               <TranscriptEditor value={transcript} onChange={(v) => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: v })} />
-              <HebrewKeyboard onInsert={(ch) => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript + ch })} onBackspace={() => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript.slice(0, -1) })} />
+              {showNativeKeyboard ? null : (
+                <HebrewKeyboard onInsert={(ch) => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript + ch })} onBackspace={() => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript.slice(0, -1) })} />
+              )}
               <div className="cta-row" style={{ marginTop: 8 }}>
                 <button className="btn-start" onClick={() => submitAnswer(transcript)} disabled={!transcript.trim()}>submit</button>
                 <button className="btn-resume" onClick={startVoice}>record again</button>

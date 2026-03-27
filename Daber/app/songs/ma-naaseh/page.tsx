@@ -39,6 +39,7 @@ function BootstrapAndStartButton() {
       lessonId="song_ma_naaseh_chorus_v1"
       bootstrapUrl="/api/song-packs/ma-naaseh/bootstrap"
       label="start chorus"
+      className="qs-btn"
     />
   );
 }

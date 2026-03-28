@@ -192,7 +192,7 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
 }
 
 async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'adjective', ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['adjective', 'Q34698'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
@@ -226,7 +226,7 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
 }
 
 async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'verb', ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, features: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, features: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
@@ -262,7 +262,7 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
 }
 
 async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'verb', ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
@@ -298,7 +298,7 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
 }
 
 async function generateNounItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'noun', ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, features: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['noun', 'Q1084'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, features: true } });
   const usableLex = lex.filter(l => {
     const isMultiWord = l.lemma.includes(' ');
     if (!isMultiWord) return true;
@@ -364,7 +364,7 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
 }
 
 async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: 'verb', ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);

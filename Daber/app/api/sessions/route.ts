@@ -24,6 +24,13 @@ export async function POST(req: Request) {
           create: { id: lessonId, title: 'All Vocab', language: 'he', level: 'mixed', type: 'vocab', description: 'Drill across all vocab lessons' }
         });
       }
+      if (lessonId === 'vocab_green') {
+        return prisma.lesson.upsert({
+          where: { id: lessonId },
+          update: { title: 'Green Vocab', language: 'he', level: 'green', type: 'vocab', description: 'Foundational drill: Green lexeme set (base forms + conjugations later)' },
+          create: { id: lessonId, title: 'Green Vocab', language: 'he', level: 'green', type: 'vocab', description: 'Foundational drill: Green lexeme set (base forms + conjugations later)' }
+        });
+      }
       const found = await prisma.lesson.findUnique({ where: { id: lessonId } });
       return found;
     };

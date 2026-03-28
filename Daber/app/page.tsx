@@ -100,7 +100,10 @@ export default async function DaberHome() {
           <div className="today-track"><div className="today-fill" style={{ width: `${pct}%` }} /></div>
           <span className="today-pct">{attemptsDone} of {totalItems} done</span>
         </div>
-        <StartOrContinueButton sessionId={null} lessonId={'vocab_all'} label={fallbackLesson ? 'start vocab drill' : (inProgress ? 'continue drill' : 'start drill')} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <StartOrContinueButton sessionId={null} lessonId={'vocab_green'} label={fallbackLesson ? 'start green drill' : (inProgress ? 'continue green drill' : 'start green drill')} />
+          <StartOrContinueButton sessionId={null} lessonId={'vocab_all'} label={'start all-vocab drill'} />
+        </div>
       </div>
 
       <div className="section-header" style={{ marginTop: '0.25rem' }}>

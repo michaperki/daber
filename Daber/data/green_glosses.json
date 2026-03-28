@@ -1,0 +1,334 @@
+{
+  "generatedAt": "2026-03-28T14:03:29.735Z",
+  "source": "wikidata",
+  "items": {
+    "wd:L204454": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L204394": {
+      "gloss": "to love",
+      "pos": "Q24905"
+    },
+    "wd:L1555922": {
+      "gloss": "(indicates a semantically definite direct object)",
+      "pos": "Q4833830"
+    },
+    "wd:L204656": {
+      "gloss": null,
+      "pos": "Q34698"
+    },
+    "wd:L184903": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L1348294": {
+      "gloss": "with",
+      "pos": "Q4833830"
+    },
+    "wd:L204729": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L204735": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L206575": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L208137": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L208128": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L208804": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L208125": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L208354": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L208663": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L208822": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L208445": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L208859": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L208927": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L209673": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L209077": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L209176": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L209908": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L211407": {
+      "gloss": null,
+      "pos": "Q34698"
+    },
+    "wd:L210829": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L210431": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L213550": {
+      "gloss": "מצג המתעד עובדות או רעיונות",
+      "pos": "Q1084"
+    },
+    "wd:L213196": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L212065": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L215099": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L216859": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L214893": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L219202": {
+      "gloss": null,
+      "pos": "Q34698"
+    },
+    "wd:L219549": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L219408": {
+      "gloss": "black",
+      "pos": "Q34698"
+    },
+    "wd:L218449": {
+      "gloss": null,
+      "pos": "Q24905"
+    },
+    "wd:L492094": {
+      "gloss": "this/that",
+      "pos": "Q576271"
+    },
+    "wd:L491804": {
+      "gloss": "the number 1",
+      "pos": "Q63116"
+    },
+    "wd:L491918": {
+      "gloss": "the number 5",
+      "pos": "Q63116"
+    },
+    "wd:L63778": {
+      "gloss": "university, academic institution for further education",
+      "pos": "Q1084"
+    },
+    "wd:L492155": {
+      "gloss": null,
+      "pos": "Q36484"
+    },
+    "wd:L63749": {
+      "gloss": "ear, organ that detects sound; organ of hearing and balance",
+      "pos": "Q1084"
+    },
+    "wd:L64157": {
+      "gloss": "disappointment",
+      "pos": "Q1084"
+    },
+    "wd:L64201": {
+      "gloss": "פרק זמן במהלך היממה",
+      "pos": "Q1084"
+    },
+    "wd:L63879": {
+      "gloss": "being late",
+      "pos": "Q1084"
+    },
+    "wd:L64356": {
+      "gloss": "request, application",
+      "pos": "Q1084"
+    },
+    "wd:L63898": {
+      "gloss": "email",
+      "pos": "Q1084"
+    },
+    "wd:L64420": {
+      "gloss": "eyebrow, facial feature",
+      "pos": "Q1084"
+    },
+    "wd:L65086": {
+      "gloss": "tail, rear appendage of organism",
+      "pos": "Q1084"
+    },
+    "wd:L64752": {
+      "gloss": "thoroughfare, transportation route connecting one location to another",
+      "pos": "Q1084"
+    },
+    "wd:L64414": {
+      "gloss": "genius, person who has exceptional intellectual ability, creativity, or originality",
+      "pos": "Q1084"
+    },
+    "wd:L64501": {
+      "gloss": "guitar, fretted string instrument",
+      "pos": "Q1084"
+    },
+    "wd:L65128": {
+      "gloss": "בן־זוג או בת־זוג ללא נישואים רשמיים",
+      "pos": "Q1084"
+    },
+    "wd:L65168": {
+      "gloss": "sand, granular material composed of finely divided rock and mineral particles, sand particles range in diameter from 0.063 to 2 mm (per ISO 14688)",
+      "pos": "Q1084"
+    },
+    "wd:L66237": {
+      "gloss": "water",
+      "pos": "Q1084"
+    },
+    "wd:L66209": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L66388": {
+      "gloss": "מקום בו מכינים ומוכרים אוכל מוכן",
+      "pos": "Q1084"
+    },
+    "wd:L66016": {
+      "gloss": "test, procedure for measuring a subject's ability",
+      "pos": "Q1084"
+    },
+    "wd:L66316": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L66377": {
+      "gloss": "אירוע חברתי",
+      "pos": "Q1084"
+    },
+    "wd:L66481": {
+      "gloss": "מכשיר לשמירת תמונות",
+      "pos": "Q1084"
+    },
+    "wd:L66600": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L66599": {
+      "gloss": "סוג של צמח",
+      "pos": "Q1084"
+    },
+    "wd:L67101": {
+      "gloss": "mug, type of cup",
+      "pos": "Q1084"
+    },
+    "wd:L67023": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L67155": {
+      "gloss": "Hebrew, Semitic language spoken primarily in Israel",
+      "pos": "Q1084"
+    },
+    "wd:L67146": {
+      "gloss": "work, process or amount (and direction) of energy transfer to an object via the application of forces on it through a displacement",
+      "pos": "Q1084"
+    },
+    "wd:L67435": {
+      "gloss": "crumb (small amount of something)",
+      "pos": "Q1084"
+    },
+    "wd:L67821": {
+      "gloss": "עשויה מפלסטיק או מקרטון",
+      "pos": "Q1084"
+    },
+    "wd:L67827": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L67648": {
+      "gloss": "(academic) grade",
+      "pos": "Q1084"
+    },
+    "wd:L68357": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L68587": {
+      "gloss": "תופעה שנגרמת מסיבה",
+      "pos": "Q1084"
+    },
+    "wd:L68434": {
+      "gloss": "איבר בפה",
+      "pos": "Q1084"
+    },
+    "wd:L68262": {
+      "gloss": "רהיט המיועד להנחת חפצים",
+      "pos": "Q1084"
+    },
+    "wd:L75590": {
+      "gloss": "שפה גרמאנית שמוצאה באנגליה",
+      "pos": "Q1084"
+    },
+    "wd:L77039": {
+      "gloss": "depression",
+      "pos": "Q1084"
+    },
+    "wd:L75911": {
+      "gloss": "החודש הרביעי בלוח השנה הגרגוריאני",
+      "pos": "Q1084"
+    },
+    "wd:L77100": {
+      "gloss": "החודש השנים עשר בלוח השנה הגרגוריאני",
+      "pos": "Q147276"
+    },
+    "wd:L81603": {
+      "gloss": null,
+      "pos": "Q1084"
+    },
+    "wd:L81684": {
+      "gloss": "מיכל עם פיה לאכסון נוזלים ומזיגתם",
+      "pos": "Q1084"
+    },
+    "wd:L492122": {
+      "gloss": null,
+      "pos": "Q4833830"
+    }
+  }
+}

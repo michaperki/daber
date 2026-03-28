@@ -136,7 +136,8 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
   const baseLesson = await prisma.lesson.findUnique({ where: { id: session.lesson_id } });
   if (!baseLesson) return null;
 
-  const greenLexemeIds = baseLesson.id === 'vocab_green' ? getGreenLexemeIds() : null;
+  const isGreen = baseLesson.id === 'vocab_green';
+  const greenLexemeIds = isGreen ? getGreenLexemeIds() : null;
   const genLessonId = `${session.lesson_id}_gen`;
   await prisma.lesson.upsert({
     where: { id: genLessonId },
@@ -175,11 +176,11 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
   }
 
   const strategies: Array<() => Promise<LessonItemShape | null>> = [
-    async () => generateAdjectiveItem(genLessonId, attemptedIds, desired, greenLexemeIds),
-    async () => generateVerbPresentItem(genLessonId, attemptedIds, desired, greenLexemeIds),
-    async () => generateVerbPastItem(genLessonId, attemptedIds, desired, greenLexemeIds),
-    async () => generateVerbFutureItem(genLessonId, attemptedIds, desired, greenLexemeIds),
-    async () => generateNounItem(genLessonId, attemptedIds, desired, greenLexemeIds)
+    async () => generateAdjectiveItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen),
+    async () => generateVerbPresentItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen),
+    async () => generateVerbPastItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen),
+    async () => generateVerbFutureItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen),
+    async () => generateNounItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen)
   ];
 
   for (let i = 0; i < 6; i++) {
@@ -191,7 +192,7 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
   return null;
 }
 
-async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
+async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['adjective', 'Q34698'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
@@ -207,12 +208,18 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
     const inf = pick(pool);
     if (!inf) continue;
     const pron = pronounFrom({ person: '3', number: inf.number, gender: inf.gender });
-    const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
-    const en = englishFromCard(card?.english_prompt || '');
-    if (!en.base) continue;
-    const enPhrase = en.base ? `${pron} ${beFor(pron)} ${en.base}${en.paren ? ' ' + en.paren : ''}` : pron;
     const hebPron = pronounHeb({ person: '3', number: inf.number, gender: inf.gender }, '3');
-    const englishPrompt = `How do I say: ${enPhrase}?`;
+
+    let englishPrompt: string | null = null;
+    if (isGreen) {
+      englishPrompt = 'Listen and type what you hear.';
+    } else {
+      const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
+      const en = englishFromCard(card?.english_prompt || '');
+      if (!en.base) continue;
+      const enPhrase = en.base ? `${pron} ${beFor(pron)} ${en.base}${en.paren ? ' ' + en.paren : ''}` : pron;
+      englishPrompt = `How do I say: ${enPhrase}?`;
+    }
     const idBase = `gen_adj_${chosen.id}_${inf.number || 'na'}_${inf.gender || 'na'}_${hashShort(englishPrompt)}`;
     if (attemptedIds.has(idBase)) continue;
     const item = await prisma.lessonItem.upsert({
@@ -225,7 +232,7 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
   return null;
 }
 
-async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
+async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, features: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
@@ -242,13 +249,19 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
     if (!inf) continue;
     const pron = pronounFrom({ person: inf.person, number: inf.number, gender: inf.gender });
     const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '3');
-    const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
-    const en = englishFromCard(card?.english_prompt || '');
-    if (!en.base) continue;
-    const verb = en.base;
-    const vIng = ingForm(verb);
-    const enPhrase = verb ? `${pron} ${beFor(pron)} ${vIng}${en.paren ? ' ' + en.paren : ''}` : pron;
-    const englishPrompt = `How do I say: ${enPhrase}?`;
+    let englishPrompt: string | null = null;
+    if (isGreen) {
+      englishPrompt = 'Listen and type what you hear.';
+    } else {
+      const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
+      const en = englishFromCard(card?.english_prompt || '');
+      if (!en.base) continue;
+      const verb = en.base;
+      const vIng = ingForm(verb);
+      const enPhrase = verb ? `${pron} ${beFor(pron)} ${vIng}${en.paren ? ' ' + en.paren : ''}` : pron;
+      englishPrompt = `How do I say: ${enPhrase}?`;
+    }
+    if (!englishPrompt) continue;
     const idBase = `gen_vpr_${chosen.id}_${inf.person || 'na'}_${inf.number || 'na'}_${inf.gender || 'na'}_${hashShort(englishPrompt)}`;
     if (attemptedIds.has(idBase)) continue;
     const item = await prisma.lessonItem.upsert({
@@ -261,7 +274,7 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
   return null;
 }
 
-async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
+async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
@@ -277,13 +290,19 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
     const inf = pick(pool);
     if (!inf) continue;
     const pron = pronounFrom({ person: inf.person, number: inf.number, gender: inf.gender });
-    const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
-    const en = englishFromCard(card?.english_prompt || '');
-    if (!en.base) continue;
-    const verb = en.base;
-    const vPast = pastForm(verb);
-    const enPhrase = verb ? `${pron} ${vPast}${en.paren ? ' ' + en.paren : ''}` : pron;
-    const englishPrompt = `How do I say: ${enPhrase}?`;
+    let englishPrompt: string | null = null;
+    if (isGreen) {
+      englishPrompt = 'Listen and type what you hear.';
+    } else {
+      const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
+      const en = englishFromCard(card?.english_prompt || '');
+      if (!en.base) continue;
+      const verb = en.base;
+      const vPast = pastForm(verb);
+      const enPhrase = verb ? `${pron} ${vPast}${en.paren ? ' ' + en.paren : ''}` : pron;
+      englishPrompt = `How do I say: ${enPhrase}?`;
+    }
+    if (!englishPrompt) continue;
     const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '1');
     const idBase = `gen_vpa_${chosen.id}_${inf.person || 'na'}_${inf.number || 'na'}_${inf.gender || 'na'}_${hashShort(englishPrompt)}`;
     if (attemptedIds.has(idBase)) continue;
@@ -297,7 +316,7 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
   return null;
 }
 
-async function generateNounItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
+async function generateNounItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['noun', 'Q1084'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, features: true } });
   const usableLex = lex.filter(l => {
     const isMultiWord = l.lemma.includes(' ');
@@ -317,9 +336,12 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
     const validInfls = isCompound ? infls : infls.filter(i => !i.form.includes(' '));
     if (!validInfls.length) continue;
 
-    const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
-    const en = englishFromCard(card?.english_prompt || '');
-    if (!en.base) continue;
+    let en: { base: string; isVerb: boolean; paren?: string } | null = null;
+    if (!isGreen) {
+      const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
+      en = englishFromCard(card?.english_prompt || '');
+      if (!en.base) continue;
+    }
 
     const sgPool = validInfls.filter(i => i.number === 'sg' || !i.number);
     const plPool = validInfls.filter(i => i.number === 'pl');
@@ -332,19 +354,25 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
     let usedInf: typeof infls[0];
     let drillType: 'def' | 'pl';
 
-    if (doDef && sgPool.length > 0) {
+    // Green drill: avoid incorrect English generation until glossing is reliable.
+    if (isGreen) {
+      usedInf = pick(validInfls)!;
+      englishPrompt = 'Listen and type what you hear.';
+      targetHebrew = usedInf.form;
+      drillType = usedInf.number === 'pl' ? 'pl' : 'def';
+    } else if (doDef && sgPool.length > 0) {
       usedInf = pick(sgPool)!;
-      englishPrompt = `How do I say: the ${en.base}${en.paren ? ' ' + en.paren : ''}?`;
+      englishPrompt = `How do I say: the ${en!.base}${en!.paren ? ' ' + en!.paren : ''}?`;
       targetHebrew = isCompound && feat?.definite_form ? feat.definite_form : `ה${usedInf.form}`;
       drillType = 'def';
     } else if (canDoPlural) {
       usedInf = pick(plPool)!;
-      englishPrompt = `How do I say: ${en.base}s${en.paren ? ' ' + en.paren : ''} (plural)?`;
+      englishPrompt = `How do I say: ${en!.base}s${en!.paren ? ' ' + en!.paren : ''} (plural)?`;
       targetHebrew = usedInf.form;
       drillType = 'pl';
     } else {
       usedInf = pick(validInfls)!;
-      englishPrompt = `How do I say: the ${en.base}${en.paren ? ' ' + en.paren : ''}?`;
+      englishPrompt = `How do I say: the ${en!.base}${en!.paren ? ' ' + en!.paren : ''}?`;
       targetHebrew = isCompound && feat?.definite_form ? feat.definite_form : `ה${usedInf.form}`;
       drillType = 'def';
     }
@@ -363,7 +391,7 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
   return null;
 }
 
-async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null): Promise<LessonItemShape | null> {
+async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
@@ -379,13 +407,19 @@ async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string
     const inf = pick(pool);
     if (!inf) continue;
     const pron = pronounFrom({ person: inf.person, number: inf.number, gender: inf.gender });
-    const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
-    const en = englishFromCard(card?.english_prompt || '');
-    if (!en.base) continue;
-    const verb = en.base;
-    const vFuture = futureForm(verb);
-    const enPhrase = verb ? `${pron} ${vFuture}${en.paren ? ' ' + en.paren : ''}` : pron;
-    const englishPrompt = `How do I say: ${enPhrase}?`;
+    let englishPrompt: string | null = null;
+    if (isGreen) {
+      englishPrompt = 'Listen and type what you hear.';
+    } else {
+      const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
+      const en = englishFromCard(card?.english_prompt || '');
+      if (!en.base) continue;
+      const verb = en.base;
+      const vFuture = futureForm(verb);
+      const enPhrase = verb ? `${pron} ${vFuture}${en.paren ? ' ' + en.paren : ''}` : pron;
+      englishPrompt = `How do I say: ${enPhrase}?`;
+    }
+    if (!englishPrompt) continue;
     const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '1');
     const idBase = `gen_vfu_${chosen.id}_${inf.person || 'na'}_${inf.number || 'na'}_${inf.gender || 'na'}_${hashShort(englishPrompt)}`;
     if (attemptedIds.has(idBase)) continue;

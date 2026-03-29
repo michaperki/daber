@@ -48,7 +48,7 @@ Per-user stats — SHIPPED (2026-03-29)
  - Session: `Session.user_id` set on creation.
  - Stats: `ItemStat` and `FamilyStat` use composite primary keys with `user_id`; `FeatureStat` has a `user_id` column. All reads/writes are scoped by `user_id`.
  - Dashboard: server reads include both current UUID and legacy `null` sessions to preserve history.
- - Admin: `/admin/users` lists userId, sessions, attempts, accuracy, last active.
+ - Admin: `/admin/users` lists display label (if set), userId, sessions, attempts, accuracy, last active.
 
 New content assemblies
 - Green vocab drill
@@ -69,8 +69,8 @@ Wikidata lexicon infrastructure
 
 TTS volume boost
 - `useTTS.ts` always sets `audio.volume = 1`. When `localStorage.ttsGain > 1`, creates a WebAudio GainNode chain (up to 3×). No AudioContext at gain=1.
-- Settings slider for ttsGain exists in `SettingsCard.tsx` but is marked for removal — redundant with native volume; the boost tool is sufficient.
-- Keep or kill: kill the slider (revert 873e746); keep the useTTS.ts boost.
+- No UI slider for gain (removed). To increase loudness beyond element volume, set `localStorage.ttsGain` to 1–3 in DevTools. Native device volume remains primary control.
+- Keep: the `useTTS.ts` boost. No slider.
 
 UI changes (since 2026-03-25)
 - Footer nav: 4 links (home, dict, library, profile); progress moved to profile.
@@ -113,7 +113,7 @@ Known debt
 - Minimal error surfacing: many server write paths are fire-and-forget; failures won’t block UX but reduce fidelity.
 - React Strict Mode dev double-invoke is mitigated via guards; revisit if more effects are added.
 - "I said it right" override button appears even when grade is `correct` (should only show for incorrect/flawed).
-- Volume slider in settings (873e746) is redundant; to be reverted. The useTTS.ts GainNode boost (0633388) is sufficient.
+- Volume gain slider removed. The useTTS.ts GainNode boost remains available via `localStorage.ttsGain`.
 
 Assumptions made
 - Family-first intros: prefer introducing lemmas via family_base (infinitive/adjective m.sg./noun sg); then progress within family.

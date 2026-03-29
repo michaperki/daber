@@ -10,8 +10,7 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
    - Admin `/admin/users` shows UUIDs, sessions, attempts, accuracy, last active.
 3. **Fix existing bugs** — Stabilize what exists now that real mobile use will surface issues.
    - Done: library filters wired, vocab page no runtime FS, settings button links to Profile, iOS keyboard, footer nav.
- - Remaining: revert volume slider (873e746); “I said it right” button on correct answers; mobile keyboard UX polish.
-  - Shipped: “I said it right” button hidden on correct; mic lifecycle fix on iOS (release on `visibilitychange`/`pagehide`).
+   - Shipped: volume slider removed (keep `localStorage.ttsGain` only); “I said it right” button hidden on correct; mic lifecycle fix on iOS (release on `visibilitychange`/`pagehide`).
 4. **Word lifecycle phases** — **SHIPPED (v1)**. Intro, recognition, guided production, and free recall are live. ~2,400 known vocab pre-seeded at free recall from Citizen Cafe class history.
 5. **Content assemblies** — **SHIPPED**:
    - Green vocab drill: curated ~88 lexeme allowlist with listen-only prompts. Mike uses this for daily practice.

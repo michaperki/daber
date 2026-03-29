@@ -2,6 +2,13 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
+## 2026-03-29 — Optional user labels + TTS doc cleanup
+
+- Settings: Added an optional “display name” field (admin-only use) that saves a label tied to the anonymous UUID.
+- API: `POST /api/profile/label` records a `user_label` event with `{ label }` and `user_id` from the cookie.
+- Admin: `/admin/users` shows the label (if present) above the UUID.
+- Docs: Clarified TTS loudness control — no UI slider; set `localStorage.ttsGain` (1–3) to boost via WebAudio in `useTTS.ts`.
+
 ## 2026-03-29 — Green vocab drill
 
 - New drill assembly: a curated allowlist of ~88 Wikidata lexemes covering common verbs, nouns, and particles from Hebrew media.

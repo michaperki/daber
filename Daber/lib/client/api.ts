@@ -125,3 +125,13 @@ export async function apiMarkKnown(sessionId: string, lessonItemId: string) {
   if (!res.ok) throw new Error('Failed to mark known');
   return json(res, zOkResponse);
 }
+
+export async function apiSetUserLabel(label: string) {
+  const res = await fetch('/api/profile/label', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ label })
+  });
+  if (!res.ok) throw new Error('Failed to save label');
+  return json(res, zOkResponse);
+}

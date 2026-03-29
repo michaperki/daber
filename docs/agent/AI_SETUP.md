@@ -21,6 +21,7 @@ Place vars in `Daber/.env` for the Next.js app, or export them in your shell.
 - STT: `POST /api/stt` accepts `multipart/form-data` (`audio` Blob) only.
 - TTS: `POST /api/tts` accepts JSON `{ text, voice? }` and returns audio (MPEG). In‑process LRU cache reduces duplicate calls.
 - Rate Limits: simple token buckets per IP via `Daber/lib/rateLimit.ts`; see `RL_*` envs above.
+ - Loudness: element volume is always set to `1`. For additional gain, set `localStorage.ttsGain` (1–3) in DevTools; no UI slider is exposed.
 
 ## Evaluator (Offline)
 - Quick checks: `node --loader ts-node/esm scripts/test_evaluator.ts` (or `npm run test:evaluator`).

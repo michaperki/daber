@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { useSettings } from '@/lib/client/settings';
+import { apiSetUserLabel } from '@/lib/client/api';
 import { useMicRecorder } from '@/lib/client/audio/useMicRecorder';
 import type { MicDevice } from '@/lib/client/audio/useMicRecorder';
 
@@ -10,6 +11,8 @@ export default function SettingsCard() {
   const [micDevices, setMicDevices] = React.useState<MicDevice[]>([]);
   const [testing, setTesting] = React.useState(false);
   const [micError, setMicError] = React.useState<string | null>(null);
+  const [label, setLabel] = React.useState<string>('');
+  const [labelSaved, setLabelSaved] = React.useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   const mic = useMicRecorder({
     deviceId: micDeviceId,
@@ -28,6 +31,13 @@ export default function SettingsCard() {
   React.useEffect(() => {
     refreshDevices();
   }, [refreshDevices]);
+
+  React.useEffect(() => {
+    try {
+      const existing = window.localStorage?.getItem('userLabel');
+      if (existing) setLabel(existing);
+    } catch {}
+  }, []);
 
   React.useEffect(() => {
     const handler = () => { refreshDevices().catch(() => {}); };
@@ -53,6 +63,21 @@ export default function SettingsCard() {
     }
   }, [testing, mic, micDeviceId, refreshDevices]);
 
+  const saveLabel = React.useCallback(async () => {
+    const v = (label || '').trim();
+    setLabel(v);
+    setLabelSaved('saving');
+    try {
+      await apiSetUserLabel(v);
+      try { window.localStorage?.setItem('userLabel', v); } catch {}
+      setLabelSaved('saved');
+      setTimeout(() => setLabelSaved('idle'), 1200);
+    } catch {
+      setLabelSaved('error');
+      setTimeout(() => setLabelSaved('idle'), 1500);
+    }
+  }, [label]);
+
   // Sensitivity: low=0.08, medium=0.035, high=0.015
   const sensitivityLabel = micSensitivity <= 0.02 ? 'high' : micSensitivity <= 0.05 ? 'medium' : 'low';
   // Silence: quick=400, normal=900, patient=1500
@@ -68,6 +93,21 @@ export default function SettingsCard() {
     <div className="pack-card" style={{ padding: '1rem 1rem' }}>
       <div className="section-label" style={{ padding: 0, marginBottom: 8 }}>settings</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+          <span style={{ width: 160 }}>display name</span>
+          <input
+            type="text"
+            value={label}
+            onChange={e => setLabel(e.target.value)}
+            onBlur={saveLabel}
+            onKeyDown={e => { if (e.key === 'Enter') saveLabel(); }}
+            placeholder="optional — for admin only"
+            style={{ flex: 1, height: 28, padding: '0 8px' }}
+          />
+          <button className="qs-btn" style={{ height: 28, padding: '0 8px', flexShrink: 0, fontSize: 12 }} onClick={saveLabel} disabled={labelSaved === 'saving'}>
+            {labelSaved === 'saving' ? 'saving…' : labelSaved === 'saved' ? 'saved' : 'save'}
+          </button>
+        </div>
         <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           <input type="checkbox" checked={showTransliteration} onChange={e => setShowTransliteration(e.target.checked)} />
           show transliteration

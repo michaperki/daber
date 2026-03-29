@@ -58,7 +58,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         if (typeof obj.micSilenceMs === 'number') setMicSilenceMs(obj.micSilenceMs);
       }
       // Initialize anonymous user id and cookie
-      let uid = localStorage.getItem('daber.uid');
+      let uid: string = localStorage.getItem('daber.uid') || '';
       if (!uid) {
         try {
           uid = (crypto as any)?.randomUUID ? (crypto as any).randomUUID() : `u_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;

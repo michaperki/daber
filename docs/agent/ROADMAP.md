@@ -4,14 +4,14 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
 
 ## Priorities at a Glance (ordered by impact)
 1. ~~**Deploy to mobile**~~ — **SHIPPED** (Heroku, 2026-03-23).
-2. **Beta user readiness** — People are organically trying the app and sharing links. Immediate questions:
-   - Do we need login/profiles, or can per-device localStorage suffice for now?
-   - Global stats (ItemStat, FeatureStat, FamilyStat) will collide if multiple people drill. Minimum viable: a lightweight device-id or anonymous profile to isolate stats.
-   - Admin routes have no auth — acceptable for Mike, risky with external users.
-   - Goal: let beta users come in the door seamlessly without adding friction.
+2. ~~**Beta user readiness**~~ — **SHIPPED** (2026-03-29)
+   - Anonymous per-device UUIDs in localStorage + cookie; `Session.user_id` populated.
+   - Stats are per-user (ItemStat/FeatureStat/FamilyStat), fully scoped server-side.
+   - Admin `/admin/users` shows UUIDs, sessions, attempts, accuracy, last active.
 3. **Fix existing bugs** — Stabilize what exists now that real mobile use will surface issues.
    - Done: library filters wired, vocab page no runtime FS, settings button links to Profile, iOS keyboard, footer nav.
-   - Remaining: revert volume slider (873e746); “I said it right” button on correct answers; mobile keyboard UX polish.
+ - Remaining: revert volume slider (873e746); “I said it right” button on correct answers; mobile keyboard UX polish.
+  - Shipped: “I said it right” button hidden on correct; mic lifecycle fix on iOS (release on `visibilitychange`/`pagehide`).
 4. **Word lifecycle phases** — **SHIPPED (v1)**. Intro, recognition, guided production, and free recall are live. ~2,400 known vocab pre-seeded at free recall from Citizen Cafe class history.
 5. **Content assemblies** — **SHIPPED**:
    - Green vocab drill: curated ~88 lexeme allowlist with listen-only prompts. Mike uses this for daily practice.
@@ -176,6 +176,13 @@ Next (post‑2026‑03‑16)
 - DX: Optional lexicon scaffolding (Lexeme/Inflection) behind `SEED_LEXEMES` for future structured drills.
 
 ## Changelog
+
+2026‑03‑29 — Identity isolation + admin users + mic lifecycle
+- Anonymous device identity using UUID in localStorage + cookie.
+- Per-user stat scoping through attempts, override, next-item, seen/known, generation.
+- Admin `/admin/users` dashboard.
+- iOS mic cleanup via `visibilitychange`/`pagehide` on session page.
+- Heroku deploy now runs `prisma db push --accept-data-loss` before build to apply schema changes.
 
 2026‑03‑17 — Agent updates
 - Evaluation:

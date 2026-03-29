@@ -2,13 +2,15 @@
 
 Role: Live project state, architecture snapshot, and current focus. Update this file at the end of each work session.
 
-Last updated: 2026-03-29
+Last updated: 2026-03-29 (post-identity rollout)
 
 ---
 
 ## Architecture Snapshot
 - Platform: Next.js (App Router) app in `Daber/`; API routes under `Daber/app/api/*`.
 - Data: Prisma (SQLite/Postgres via `DATABASE_URL`). Dual SRS: `ItemStat` (per-item SM-2) + `FeatureStat` (per grammatical feature).
+- Identity & scoping: Anonymous per-device UUID in `localStorage` (`daber.uid`) + cookie; `Session.user_id` populated; stats are per-user.
+  - `ItemStat` and `FamilyStat` use composite PKs with `user_id`; `FeatureStat` has a `user_id` column and all queries include it.
 - Voice I/O: STT (`/api/stt`, Whisper), TTS (`/api/tts`, gpt-4o-mini-tts) with in-process rate limiting + LRU cache.
 - Evaluator: 4-layer pipeline — deterministic → Levenshtein-1 → fuzzy Hebrew confusables → English evaluator (he→en). Code in `Daber/lib/evaluator/*`; tests via `scripts/test_evaluator.ts`.
 - Drill generation:
@@ -33,13 +35,13 @@ Last updated: 2026-03-29
 - **Doc alignment**: keeping SOUL, MEMORY, STATE, ROADMAP, and Dev Journal in sync with shipped code.
 - **Green vocab drill**: curated ~88 lexeme drill for daily practice during development. Listen-only prompts (no generated English).
 - **Song packs**: Ma Na'aseh chorus live; expand to verse chunks.
-- **Beta readiness**: people are organically trying the app and sharing the link. Need to think about: seamless entry for beta users, profiles/identity (lightweight or anonymous?), admin gating, and whether login adds friction vs. value.
+- **Pilot feedback**: with anonymous identity shipped, observe `/admin/users` for activity and accuracy. Decide if optional names/labels are needed later.
 - Family coverage: intros once per family; broaden base‑form linking.
 - Validate guided phase and hints in real sessions; polish scaffolds.
 - Backlog: user auth/profiles, STT confidence guardrails, CC import pipeline docs.
 
 ## Near‑Term High‑Leverage
-- **Beta user onboarding**: the app is being shared organically. Immediate questions: do we need login/profiles, or can we stay anonymous with per-device localStorage? What admin gating (if any) is needed? How do multiple users coexist with global stats?
+- **Pilot flow polish**: Keep friction at zero; consider optional name label in settings that maps to the UUID for admin readability.
 - **Revert volume slider** (commit 873e746): redundant UI; the useTTS.ts boost tool is sufficient. Users use native volume.
 - **"I said it right" button**: should not appear when grade is `correct` — only for incorrect/flawed overrides.
 - Family progression polish: basic same‑family spacing guard shipped; next up is cross‑session scheduling and staged conjugations.
@@ -137,6 +139,7 @@ Last updated: 2026-03-29
 - Env:
   - `DATABASE_URL` to Heroku Postgres; `OPENAI_API_KEY` for generation.
   - `GEN_QUEUE_THRESHOLD` (default 20) controls background batch trigger on session start.
+  - Deploy: Heroku `heroku-postbuild` runs `prisma db push --accept-data-loss` → `prisma generate` → `build`.
 - Local testing (no server):
   - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/run_generation_once.ts` (prints raw JSON and persisted rows)
   - `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/call_generate_drills.ts` (invokes API handler; in non‑prod prints raw/items)

@@ -2,7 +2,7 @@
 
 Role: Honest, always-current snapshot of the running codebase. Descriptive, not aspirational.
 
-Last reviewed: 2026-03-29
+Last reviewed: 2026-03-29 (post-identity rollout)
 
 —
 
@@ -43,9 +43,12 @@ Stubbed or partial implementations
     - Hints: baseForm (lemma), firstLetter (of target form), definiteness (noun article cue).
   - Missing: Additional hint types and per‑hint analytics.
  
-- Global vs per-user stats
-  - ItemStat, FeatureStat, FamilyStat are global, not per user. user_id exists on Session but is unused across stats.
-  - Intentional simplification for single-user; will need scoping later.
+Per-user stats — SHIPPED (2026-03-29)
+ - Identity: anonymous UUID stored in `localStorage` as `daber.uid` and as a cookie for server components.
+ - Session: `Session.user_id` set on creation.
+ - Stats: `ItemStat` and `FamilyStat` use composite primary keys with `user_id`; `FeatureStat` has a `user_id` column. All reads/writes are scoped by `user_id`.
+ - Dashboard: server reads include both current UUID and legacy `null` sessions to preserve history.
+ - Admin: `/admin/users` lists userId, sessions, attempts, accuracy, last active.
 
 New content assemblies
 - Green vocab drill
@@ -72,6 +75,7 @@ TTS volume boost
 UI changes (since 2026-03-25)
 - Footer nav: 4 links (home, dict, library, profile); progress moved to profile.
 - iOS/mobile: custom HebrewKeyboard hidden on touch/coarse-pointer devices; native keyboard used.
+- iOS mic lifecycle: session page now cools down the mic on `visibilitychange` and `pagehide` to release iOS mic access when leaving.
 - Emoji: `deriveEmojiFromFeatures()` prefers item grammatical features over prompt-parsing heuristic.
 
 Actual happy path (today)
@@ -104,7 +108,7 @@ Known debt
 - Rate limiting is in-memory per instance; ineffective across multiple replicas. Consider shared store.
 - TTS cache is in-process only; memory pressure possible at larger sizes.
 - LLM generation pipeline and background trigger assume single-writer semantics; multiple instances could duplicate work without coordination.
-- Stats are global (not per user). Acceptable for current single-user use; will need scoping before multi-user.
+// removed: stats are now per-user
  
 - Minimal error surfacing: many server write paths are fire-and-forget; failures won’t block UX but reduce fidelity.
 - React Strict Mode dev double-invoke is mitigated via guards; revisit if more effects are added.
@@ -114,7 +118,7 @@ Known debt
 Assumptions made
 - Family-first intros: prefer introducing lemmas via family_base (infinitive/adjective m.sg./noun sg); then progress within family.
 - Session pacing: client requests adaptive pacing; base cap via SESSION_DUE_CAP with extend/end thresholds.
-- Single-user environment: global FeatureStat/ItemStat are acceptable; admin tools currently have no auth. **Under review**: people are organically trying the app. Need to decide on profiles/identity before stats collide.
+- Anonymous identities: per-device UUID is sufficient for beta; no login required. Admin tools remain ungated.
 - Accept typed recognition and guided phases to smooth difficulty before voice free recall.
 
 Environment variables in use (runtime)
@@ -131,3 +135,4 @@ Pointers (files)
 - Voice I/O: Daber/app/api/stt/route.ts, Daber/app/api/tts/route.ts; client hooks under Daber/lib/client/audio/*
 - Session UI: Daber/app/session/[sessionId]/page.tsx
 - Admin tools: Daber/app/admin/*, Daber/app/api/admin/lexicon/*
+ - Users dashboard: Daber/app/admin/users/page.tsx

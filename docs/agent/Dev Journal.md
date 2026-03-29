@@ -12,6 +12,30 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - Commits: 0562b33 (entrypoint + allowlist), bafe5a8 (wd pos Q-id support), 1b50953 (fix bogus English prompts), 601627e (backfill green verb infinitives).
 - Purpose: Mike uses this for daily practice while developing the app — learn Hebrew while building.
 
+## 2026-03-29 — Anonymous identity, users dashboard, iOS mic cleanup
+
+- Anonymous identity isolation — SHIPPED
+  - Client generates a UUID on first visit and stores it in `localStorage` (`daber.uid`) and a cookie for server components.
+  - `Session.user_id` is now populated on creation; all stat reads/writes are scoped per‑user:
+    - `ItemStat` and `FamilyStat` use composite primary keys `[lesson_item_id, user_id]` and `[family_id, user_id]`.
+    - `FeatureStat` includes `user_id` and all queries add `user_id` filters.
+  - Dashboard aggregates include both the current `user_id` and legacy `null` sessions so Mike’s history isn’t lost.
+  - Files: session buttons now pass `userId`; API routes (`attempts`, `override`, `next-item`, `seen`, `known`) scope by user; generation pipeline and dynamic generators use the session user.
+
+- Admin `/admin/users` — SHIPPED
+  - Lists anonymous users (UUIDs), session count, attempts, accuracy, and last active.
+  - Purpose: observe pilot usage without adding login friction.
+
+- iOS mic lifecycle — SHIPPED
+  - Session page listens to `visibilitychange` and `pagehide` to promptly release mic resources when the app is backgrounded or the page is left.
+  - Goal: eliminate the persistent iOS orange/green mic indicator after leaving a session.
+
+- Deploy tweaks — SHIPPED
+  - Heroku `heroku-postbuild` runs `prisma db push --accept-data-loss` before build to apply schema updates reliably.
+  - Removed a strict unique on `FeatureStat` to avoid deploy conflicts.
+
+Notes: Anonymous identity is intentionally lightweight (no login). Clearing storage or switching devices creates a new identity.
+
 ## 2026-03-28 — Song packs (Ma Na'aseh)
 
 - New song-based lesson system starting with "מה נעשה" (Hadag Nahash).

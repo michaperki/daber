@@ -48,6 +48,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     }
     const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { lesson: { select: { id: true, type: true } } } });
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+    const userId = (session.user_id || 'anon');
 
     const isCrossVocab = session.lesson_id === 'vocab_all';
     const allowedLessonIds: string[] = isCrossVocab
@@ -74,7 +75,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
 
     async function computePhaseFor(itemId: string): Promise<'intro' | 'recognition' | 'guided' | 'free_recall'> {
       try {
-        const stat = await prisma.itemStat.findUnique({ where: { lesson_item_id: itemId } });
+        const stat = await prisma.itemStat.findUnique({ where: { lesson_item_id_user_id: { lesson_item_id: itemId, user_id: userId } } });
         if (stat) {
           const streak = stat.correct_streak || 0;
           if (streak === 0) return 'recognition';
@@ -85,7 +86,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { family_id: true, lexeme_id: true } });
         const familyId = li?.family_id || (li?.lexeme_id ? `lex:${li.lexeme_id}` : null);
         if (!familyId) return 'intro';
-        const fam = await prisma.familyStat.findUnique({ where: { family_id: familyId } });
+        const fam = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: familyId, user_id: userId } } });
         if (fam) return 'recognition';
         return 'intro';
       } catch {
@@ -102,7 +103,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const li = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { family_id: true, lexeme_id: true } });
         const familyId = li?.family_id || (li?.lexeme_id ? `lex:${li.lexeme_id}` : null);
         if (familyId) {
-          const famIntro = await prisma.familyStat.findUnique({ where: { family_id: familyId } });
+          const famIntro = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: familyId, user_id: userId } } });
           if (!famIntro) {
             const base = await prisma.lessonItem.findFirst({
               where: { family_id: familyId, lesson_id: { in: allowedLessonIds }, family_base: true },
@@ -348,7 +349,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           if (orig) return { ...orig, features: (orig.features as any) || null } as any;
           return { id: item.id, english_prompt: '', target_hebrew: '', transliteration: null, features: null };
         }
-        const famIntro = await prisma.familyStat.findUnique({ where: { family_id: familyId } });
+        const famIntro = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: familyId, user_id: userId } } });
         if (!famIntro) {
           const orig = await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
           if (orig) return { ...orig, features: (orig.features as any) || null } as any;
@@ -437,6 +438,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       try {
         const dueFeatures = await prisma.featureStat.findMany({
           where: {
+            user_id: userId,
             OR: [
               { next_due: { lte: now } },
               { correct_streak: { lte: 1 } },
@@ -505,7 +507,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     if (!dueParam || dueParam === 'item' || dueParam === 'blend') {
       // Pick an authored item from this lesson that is due in ItemStat
       const now = new Date();
-      const dueItems = await prisma.itemStat.findMany({ where: { next_due: { lte: now } } });
+      const dueItems = await prisma.itemStat.findMany({ where: { user_id: userId, next_due: { lte: now } } });
       const dueSet = new Set(dueItems.map(d => d.lesson_item_id));
       const remaining = await prisma.lessonItem.findMany({ where: { lesson_id: { in: allowedLessonIds }, id: { in: Array.from(dueSet) }, NOT: { id: { in: Array.from(attemptedIds) } } }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
       if (debug) {
@@ -572,7 +574,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       let nextItem: { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null } | null = null;
       if (remainingIds.length) {
         const weakStats = await prisma.itemStat.findMany({
-          where: { lesson_item_id: { in: remainingIds }, OR: [{ correct_streak: { lte: 1 } }, { incorrect_count: { gt: 0 } }] },
+          where: { user_id: userId, lesson_item_id: { in: remainingIds }, OR: [{ correct_streak: { lte: 1 } }, { incorrect_count: { gt: 0 } }] },
           orderBy: [{ incorrect_count: 'desc' }, { last_attempt: 'desc' }]
         });
         const weakIds = weakStats.map(s => s.lesson_item_id);

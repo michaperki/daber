@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { apiCreateSession, getUserId } from '@/lib/client/api';
 
 export default function StartSubsetButton({ lessonId, itemIds, label }: { lessonId: string; itemIds: string[]; label?: string }) {
   const router = useRouter();
@@ -8,13 +9,8 @@ export default function StartSubsetButton({ lessonId, itemIds, label }: { lesson
   const onClick = async () => {
     try {
       setBusy(true);
-      const res = await fetch('/api/sessions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lessonId, subset: itemIds })
-      });
-      const data = await res.json();
-      if (res.ok && data.session?.id) router.push(`/session/${data.session.id}`);
+      const { session } = await apiCreateSession(lessonId, getUserId(), itemIds);
+      if (session?.id) router.push(`/session/${session.id}`);
     } finally {
       setBusy(false);
     }
@@ -25,4 +21,3 @@ export default function StartSubsetButton({ lessonId, itemIds, label }: { lesson
     </button>
   );
 }
-

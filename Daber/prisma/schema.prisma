@@ -74,7 +74,8 @@ model Attempt {
 }
 
 model ItemStat {
-  lesson_item_id String   @id
+  lesson_item_id String
+  user_id       String   @default("anon")
   correct_streak Int      @default(0)
   easiness      Float     @default(2.5)
   interval_days Int       @default(0)
@@ -83,6 +84,8 @@ model ItemStat {
   correct_count Int       @default(0)
   flawed_count  Int       @default(0)
   incorrect_count Int     @default(0)
+
+  @@id([lesson_item_id, user_id])
 }
 
 model FeatureStat {
@@ -92,6 +95,7 @@ model FeatureStat {
   person          String?
   number          String?
   gender          String?
+  user_id         String   @default("anon")
   correct_streak  Int      @default(0)
   easiness        Float    @default(2.5)
   interval_days   Int      @default(0)
@@ -100,6 +104,8 @@ model FeatureStat {
   correct_count   Int      @default(0)
   flawed_count    Int      @default(0)
   incorrect_count Int      @default(0)
+
+  @@unique([pos, tense, person, number, gender, user_id])
 }
 
 model Event {
@@ -173,6 +179,9 @@ model GeneratedDrill {
 
 // Family-level introduction state (global; per-user not needed yet)
 model FamilyStat {
-  family_id     String   @id
+  family_id     String
+  user_id       String   @default("anon")
   introduced_at DateTime @default(now())
+
+  @@id([family_id, user_id])
 }

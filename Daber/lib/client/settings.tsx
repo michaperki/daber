@@ -12,6 +12,8 @@ export type Settings = {
   micDeviceId: string;
   micSensitivity: number;
   micSilenceMs: number;
+  // Read-only: anonymous UUID for this device
+  userId: string;
   setShowTransliteration: (v: boolean) => void;
   setStayOnFlawed: (v: boolean) => void;
   setSpeakPrompt: (v: boolean) => void;
@@ -37,6 +39,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [micDeviceId, setMicDeviceId] = React.useState<string>('');
   const [micSensitivity, setMicSensitivity] = React.useState<number>(0.035);
   const [micSilenceMs, setMicSilenceMs] = React.useState<number>(900);
+  const [userId, setUserId] = React.useState<string>('anon');
 
   React.useEffect(() => {
     try {
@@ -54,6 +57,22 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
         if (typeof obj.micSensitivity === 'number') setMicSensitivity(obj.micSensitivity);
         if (typeof obj.micSilenceMs === 'number') setMicSilenceMs(obj.micSilenceMs);
       }
+      // Initialize anonymous user id and cookie
+      let uid = localStorage.getItem('daber.uid');
+      if (!uid) {
+        try {
+          uid = (crypto as any)?.randomUUID ? (crypto as any).randomUUID() : `u_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+        } catch {
+          uid = `u_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+        }
+        localStorage.setItem('daber.uid', uid);
+      }
+      setUserId(uid || 'anon');
+      try {
+        // Persist as cookie for server components
+        const maxAge = 60 * 60 * 24 * 365 * 2; // ~2 years
+        document.cookie = `daber.uid=${uid}; path=/; max-age=${maxAge}; samesite=lax`;
+      } catch {}
     } catch {}
   }, []);
 
@@ -64,8 +83,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, [showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, useLexiconDrills, ttsRate, uiSoundEffects, micDeviceId, micSensitivity, micSilenceMs]);
 
   const value: Settings = React.useMemo(
-    () => ({ showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, useLexiconDrills, ttsRate, uiSoundEffects, micDeviceId, micSensitivity, micSilenceMs, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setUseLexiconDrills, setTtsRate, setUiSoundEffects, setMicDeviceId, setMicSensitivity, setMicSilenceMs }),
-    [showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, useLexiconDrills, ttsRate, uiSoundEffects, micDeviceId, micSensitivity, micSilenceMs]
+    () => ({ showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, useLexiconDrills, ttsRate, uiSoundEffects, micDeviceId, micSensitivity, micSilenceMs, userId, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setUseLexiconDrills, setTtsRate, setUiSoundEffects, setMicDeviceId, setMicSensitivity, setMicSilenceMs }),
+    [showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, useLexiconDrills, ttsRate, uiSoundEffects, micDeviceId, micSensitivity, micSilenceMs, userId]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

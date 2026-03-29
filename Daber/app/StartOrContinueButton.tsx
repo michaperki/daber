@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { apiCreateSession, getUserId } from '@/lib/client/api';
 
 export default function StartOrContinueButton({ sessionId = null, lessonId, label, bootstrapUrl, className }: { sessionId?: string | null; lessonId: string; label: string; bootstrapUrl?: string; className?: string }) {
   const router = useRouter();
@@ -16,9 +17,8 @@ export default function StartOrContinueButton({ sessionId = null, lessonId, labe
         // Ensure backing lesson/items exist (idempotent server bootstrap)
         try { await fetch(bootstrapUrl, { method: 'POST' }); } catch {}
       }
-      const res = await fetch('/api/sessions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonId }) });
-      const data = await res.json();
-      if (res.ok && data.session?.id) router.push(`/session/${data.session.id}`);
+      const { session } = await apiCreateSession(lessonId, getUserId());
+      if (session?.id) router.push(`/session/${session.id}`);
     } finally {
       setBusy(false);
     }
@@ -32,4 +32,3 @@ export default function StartOrContinueButton({ sessionId = null, lessonId, labe
     </button>
   );
 }
-

@@ -28,6 +28,27 @@ export async function apiCreateSession(lessonId: string, userId?: string, subset
   return json(res, zCreateSessionResponse);
 }
 
+export function getUserId(): string {
+  try {
+    let uid = localStorage.getItem('daber.uid');
+    if (!uid) {
+      try {
+        uid = (crypto as any)?.randomUUID ? (crypto as any).randomUUID() : `u_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+      } catch {
+        uid = `u_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+      }
+      localStorage.setItem('daber.uid', uid);
+      try {
+        const maxAge = 60 * 60 * 24 * 365 * 2; // ~2 years
+        document.cookie = `daber.uid=${uid}; path=/; max-age=${maxAge}; samesite=lax`;
+      } catch {}
+    }
+    return uid || 'anon';
+  } catch {
+    return 'anon';
+  }
+}
+
 export async function apiNextItem(sessionId: string, opts?: { random?: boolean; mode?: 'lex'|'db'; focus?: 'weak'; due?: 'feature'|'item'|'blend'; pacing?: 'fixed'|'adaptive' }) {
   const params = new URLSearchParams();
   if (opts?.random) params.set('random', '1');

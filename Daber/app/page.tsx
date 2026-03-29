@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
+import { cookies } from 'next/headers';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 import StartOrContinueButton from './StartOrContinueButton';
@@ -18,12 +19,14 @@ function localDateKey(d: Date) {
 }
 
 async function getDashboardData() {
+  const uid = cookies().get('daber.uid')?.value || 'anon';
   const inProgress = await prisma.session.findFirst({
-    where: { ended_at: null },
+    where: { ended_at: null, OR: [{ user_id: uid }, { user_id: null }] },
     orderBy: { started_at: 'desc' },
     select: { id: true, lesson_id: true, correct_count: true, flawed_count: true, incorrect_count: true, started_at: true, lesson: { select: { title: true, level: true, type: true } } }
   });
   const lastSession = inProgress || await prisma.session.findFirst({
+    where: { OR: [{ user_id: uid }, { user_id: null }] },
     orderBy: { started_at: 'desc' },
     select: { id: true, lesson_id: true, correct_count: true, flawed_count: true, incorrect_count: true, ended_at: true, started_at: true, lesson: { select: { title: true, level: true, type: true } } }
   });
@@ -35,7 +38,7 @@ async function getDashboardData() {
       totalItems = await prisma.lessonItem.count({ where: { lesson_id: lastSession.lesson_id } });
     }
   }
-  const sums = await prisma.session.aggregate({ _sum: { correct_count: true, flawed_count: true, incorrect_count: true } });
+  const sums = await prisma.session.aggregate({ where: { OR: [{ user_id: uid }, { user_id: null }] }, _sum: { correct_count: true, flawed_count: true, incorrect_count: true } });
   const sumCorrect = sums._sum.correct_count || 0;
   const sumFlawed = sums._sum.flawed_count || 0;
   const sumIncorrect = sums._sum.incorrect_count || 0;
@@ -43,7 +46,7 @@ async function getDashboardData() {
   const accuracy = totalAttempts ? Math.round((sumCorrect / totalAttempts) * 100) : 0;
 
   const since = new Date(); since.setDate(since.getDate() - 6);
-  const recentSessions = await prisma.session.findMany({ where: { started_at: { gte: since } }, select: { started_at: true } });
+  const recentSessions = await prisma.session.findMany({ where: { started_at: { gte: since }, OR: [{ user_id: uid }, { user_id: null }] }, select: { started_at: true } });
   const daySet = new Set(recentSessions.map(s => localDateKey(new Date(s.started_at))));
   // streak: count back from today
   let streak = 0; {
@@ -56,7 +59,7 @@ async function getDashboardData() {
   }
 
   const missed = await prisma.attempt.findMany({
-    where: { OR: [{ grade: 'flawed' }, { grade: 'incorrect' }] },
+    where: { OR: [{ grade: 'flawed' }, { grade: 'incorrect' }], session: { OR: [{ user_id: uid }, { user_id: null }] } },
     orderBy: { created_at: 'desc' },
     take: 3,
     select: { grade: true, correct_hebrew: true, lesson_item: { select: { english_prompt: true } } }

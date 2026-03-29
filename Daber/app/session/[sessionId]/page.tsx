@@ -65,10 +65,28 @@ export default function DaberSessionPage() {
     }
   };
 
-  /* ── Warm up mic on mount, cool down on unmount ─────────── */
+  /* ── Warm up mic; pause on hide; cleanup ─────────── */
   React.useEffect(() => {
     audio.warmUp().catch(() => {});
-    return () => { audio.coolDown(); };
+    const onVis = () => {
+      try {
+        if (document.hidden) {
+          audio.coolDown();
+        } else {
+          audio.warmUp().catch(() => {});
+        }
+      } catch {}
+    };
+    const onHide = () => {
+      try { audio.coolDown(); } catch {}
+    };
+    try { document.addEventListener('visibilitychange', onVis); } catch {}
+    try { window.addEventListener('pagehide', onHide); } catch {}
+    return () => {
+      try { audio.coolDown(); } catch {}
+      try { document.removeEventListener('visibilitychange', onVis); } catch {}
+      try { window.removeEventListener('pagehide', onHide); } catch {}
+    };
   }, []);
 
   /* ── Fetch next item ───────────────────────────────────── */

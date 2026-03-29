@@ -19,16 +19,17 @@ export async function POST(req: Request, { params }: { params: { sessionId: stri
     ]);
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     if (!item) return NextResponse.json({ error: 'Lesson item not found' }, { status: 404 });
+    const userId = (session.user_id || 'anon');
 
     const now = new Date();
 
     await prisma.$transaction(async (tx) => {
       const familyId = item.family_id || (item.lexeme_id ? `lex:${item.lexeme_id}` : null);
       if (familyId) {
-        await tx.familyStat.upsert({ where: { family_id: familyId }, update: {}, create: { family_id: familyId } });
+        await tx.familyStat.upsert({ where: { family_id_user_id: { family_id: familyId, user_id: userId } }, update: {}, create: { family_id: familyId, user_id: userId } });
       }
 
-      const existing = await tx.itemStat.findUnique({ where: { lesson_item_id: lessonItemId } });
+      const existing = await tx.itemStat.findUnique({ where: { lesson_item_id_user_id: { lesson_item_id: lessonItemId, user_id: userId } } });
       const correct_streak = Math.max(existing?.correct_streak || 0, 2);
       const easiness = existing?.easiness ?? 2.5;
       const interval_days = correct_streak === 1 ? 1 : correct_streak >= 2 ? 6 : 0;
@@ -40,12 +41,12 @@ export async function POST(req: Request, { params }: { params: { sessionId: stri
       };
       if (existing) {
         await tx.itemStat.update({
-          where: { lesson_item_id: lessonItemId },
+          where: { lesson_item_id_user_id: { lesson_item_id: lessonItemId, user_id: userId } },
           data: { correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters }
         });
       } else {
         await tx.itemStat.create({
-          data: { lesson_item_id: lessonItemId, correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters }
+          data: { lesson_item_id: lessonItemId, user_id: userId, correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters }
         });
       }
 
@@ -69,4 +70,3 @@ export async function POST(req: Request, { params }: { params: { sessionId: stri
     return NextResponse.json({ error: e?.message || 'Failed to mark known' }, { status: 500 });
   }
 }
-

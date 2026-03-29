@@ -58,7 +58,7 @@ export async function runGenerationJob(opts?: { userId?: string; targets?: numbe
   });
 
   try {
-    const { targets, known } = await selectTargetsAndKnown(targetsCount, 10);
+    const { targets, known } = await selectTargetsAndKnown(targetsCount, 10, opts?.userId);
 
     // Persist selection on batch
     await prisma.generatedBatch.update({ where: { id: batch.id }, data: { targets: targets as any, context: { known, grammar_exposure: HARD_GRAMMAR, level: 'intermediate' } as any } });
@@ -84,9 +84,11 @@ export async function runGenerationJob(opts?: { userId?: string; targets?: numbe
   }
 }
 
-async function selectTargetsAndKnown(targetsCount: number, knownCount: number): Promise<{ targets: TargetMeta[]; known: string[] }> {
+async function selectTargetsAndKnown(targetsCount: number, knownCount: number, userId?: string): Promise<{ targets: TargetMeta[]; known: string[] }> {
+  const uid = userId || 'anon';
   // Weak/new: prefer items with incorrect history or no streak
   const weakStats = await prisma.itemStat.findMany({
+    where: { user_id: uid },
     orderBy: [{ incorrect_count: 'desc' }, { correct_streak: 'asc' }],
     take: 200,
   });
@@ -129,7 +131,7 @@ async function selectTargetsAndKnown(targetsCount: number, knownCount: number): 
 
   // Known words: high mastery lexemes
   const strongStats = await prisma.itemStat.findMany({
-    where: { correct_streak: { gte: 2 } },
+    where: { user_id: uid, correct_streak: { gte: 2 } },
     orderBy: [{ correct_streak: 'desc' }, { correct_count: 'desc' }],
     take: 500,
   });

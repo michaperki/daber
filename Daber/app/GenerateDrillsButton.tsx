@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { useToast } from '@/lib/client/toast';
+import { getUserId } from '@/lib/client/api';
 
 export default function GenerateDrillsButton() {
   const [busy, setBusy] = React.useState(false);
@@ -11,7 +12,7 @@ export default function GenerateDrillsButton() {
       const res = await fetch('/api/generate-drills', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ background: false }),
+        body: JSON.stringify({ background: false, userId: getUserId() }),
       });
       const data = await res.json();
       if (!res.ok) {

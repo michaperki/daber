@@ -20,6 +20,7 @@ export async function POST(req: Request) {
     ]);
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     if (!item) return NextResponse.json({ error: 'Lesson item not found' }, { status: 404 });
+    const userId = (session.user_id || 'anon');
 
     const t0 = Date.now();
 
@@ -177,7 +178,7 @@ export async function POST(req: Request) {
         const number = (features as any).number || null;
         const gender = (features as any).gender || null;
         await prisma.$transaction(async (tx) => {
-          const existing = await tx.featureStat.findFirst({ where: { pos, tense, person, number, gender } });
+          const existing = await tx.featureStat.findFirst({ where: { pos, tense, person, number, gender, user_id: userId } });
           let correct_streak = existing?.correct_streak || 0;
           let easiness = existing?.easiness || 2.5;
           let interval_days = existing?.interval_days || 0;
@@ -198,7 +199,7 @@ export async function POST(req: Request) {
           if (existing) {
             await tx.featureStat.update({ where: { id: existing.id }, data: { correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters } });
           } else {
-            await tx.featureStat.create({ data: { pos, tense, person, number, gender, correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters } });
+            await tx.featureStat.create({ data: { pos, tense, person, number, gender, user_id: userId, correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters } });
           }
         });
       };
@@ -206,7 +207,7 @@ export async function POST(req: Request) {
       // Build item stat update function
       const itemStatUpdate = async () => {
         await prisma.$transaction(async (tx) => {
-          const existing = await tx.itemStat.findUnique({ where: { lesson_item_id: lessonItemId } });
+          const existing = await tx.itemStat.findUnique({ where: { lesson_item_id_user_id: { lesson_item_id: lessonItemId, user_id: userId } } });
           let correct_streak = existing?.correct_streak || 0;
           let easiness = existing?.easiness || 2.5;
           let interval_days = existing?.interval_days || 0;
@@ -225,9 +226,9 @@ export async function POST(req: Request) {
             incorrect_count: (existing?.incorrect_count || 0) + (grade === 'incorrect' ? 1 : 0)
           };
           if (existing) {
-            await tx.itemStat.update({ where: { lesson_item_id: lessonItemId }, data: { correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters } });
+            await tx.itemStat.update({ where: { lesson_item_id_user_id: { lesson_item_id: lessonItemId, user_id: userId } }, data: { correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters } });
           } else {
-            await tx.itemStat.create({ data: { lesson_item_id: lessonItemId, correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters } });
+            await tx.itemStat.create({ data: { lesson_item_id: lessonItemId, user_id: userId, correct_streak, easiness, interval_days, last_attempt: now, next_due, ...counters } });
           }
         });
       };

@@ -18,6 +18,7 @@ export async function POST(req: Request) {
     ]);
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     if (!item) return NextResponse.json({ error: 'Lesson item not found' }, { status: 404 });
+    const userId = (session.user_id || 'anon');
 
     const attempt = await prisma.attempt.findFirst({
       where: { session_id: sessionId, lesson_item_id: lessonItemId },
@@ -41,7 +42,7 @@ export async function POST(req: Request) {
 
       try {
         // Recompute ItemStat fully from attempts (ensures SRS reflects override)
-        const atts = await tx.attempt.findMany({ where: { lesson_item_id: lessonItemId }, orderBy: { created_at: 'asc' } });
+        const atts = await tx.attempt.findMany({ where: { lesson_item_id: lessonItemId, session: { user_id: userId } }, orderBy: { created_at: 'asc' } });
         let correct_streak = 0;
         let easiness = 2.5;
         let interval_days = 0;
@@ -68,11 +69,11 @@ export async function POST(req: Request) {
           last_attempt = a.created_at;
           next_due = interval_days > 0 ? new Date(a.created_at.getTime() + interval_days * 86400000) : a.created_at;
         }
-        const existing = await tx.itemStat.findUnique({ where: { lesson_item_id: lessonItemId } });
+        const existing = await tx.itemStat.findUnique({ where: { lesson_item_id_user_id: { lesson_item_id: lessonItemId, user_id: userId } } });
         if (existing) {
-          await tx.itemStat.update({ where: { lesson_item_id: lessonItemId }, data: { correct_streak, easiness, interval_days, last_attempt, next_due, correct_count, flawed_count, incorrect_count } });
+          await tx.itemStat.update({ where: { lesson_item_id_user_id: { lesson_item_id: lessonItemId, user_id: userId } }, data: { correct_streak, easiness, interval_days, last_attempt, next_due, correct_count, flawed_count, incorrect_count } });
         } else {
-          await tx.itemStat.create({ data: { lesson_item_id: lessonItemId, correct_streak, easiness, interval_days, last_attempt, next_due, correct_count, flawed_count, incorrect_count } });
+          await tx.itemStat.create({ data: { lesson_item_id: lessonItemId, user_id: userId, correct_streak, easiness, interval_days, last_attempt, next_due, correct_count, flawed_count, incorrect_count } });
         }
       } catch {}
 
@@ -84,8 +85,8 @@ export async function POST(req: Request) {
           const person = (feat as any).person || null;
           const number = (feat as any).number || null;
           const gender = (feat as any).gender || null;
-          // Recompute FeatureStat from all attempts with matching feature bundle
-          const all = await tx.attempt.findMany({ where: {}, orderBy: { created_at: 'asc' }, select: { grade: true, created_at: true, features: true } });
+          // Recompute FeatureStat from all attempts with matching feature bundle (scoped to user)
+          const all = await tx.attempt.findMany({ where: { session: { user_id: userId } }, orderBy: { created_at: 'asc' }, select: { grade: true, created_at: true, features: true } });
           const matches = all.filter(a => {
             const f = (a.features as any) || null;
             if (!f || typeof f !== 'object') return false;
@@ -117,11 +118,11 @@ export async function POST(req: Request) {
             last_attempt = a.created_at as Date;
             next_due = interval_days > 0 ? new Date((a.created_at as Date).getTime() + interval_days * 86400000) : (a.created_at as Date);
           }
-          const existing = await tx.featureStat.findFirst({ where: { pos, tense, person, number, gender } });
+          const existing = await tx.featureStat.findFirst({ where: { pos, tense, person, number, gender, user_id: userId } });
           if (existing) {
             await tx.featureStat.update({ where: { id: existing.id }, data: { correct_streak, easiness, interval_days, last_attempt, next_due, correct_count, flawed_count, incorrect_count } });
           } else {
-            await tx.featureStat.create({ data: { pos, tense, person, number, gender, correct_streak, easiness, interval_days, last_attempt, next_due, correct_count, flawed_count, incorrect_count } });
+            await tx.featureStat.create({ data: { pos, tense, person, number, gender, user_id: userId, correct_streak, easiness, interval_days, last_attempt, next_due, correct_count, flawed_count, incorrect_count } });
           }
         }
       } catch {}

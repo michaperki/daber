@@ -131,7 +131,7 @@ function futureForm(base: string): string {
 }
 
 export async function generateNextFromLexicon(sessionId: string, attemptedIds: Set<string>, opts?: { focusWeakness?: boolean }): Promise<LessonItemShape | null> {
-  const session = await prisma.session.findUnique({ where: { id: sessionId }, select: { lesson_id: true } });
+  const session = await prisma.session.findUnique({ where: { id: sessionId }, select: { lesson_id: true, user_id: true } });
   if (!session) return null;
   const baseLesson = await prisma.lesson.findUnique({ where: { id: session.lesson_id } });
   if (!baseLesson) return null;
@@ -149,13 +149,13 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
   let desired: Desired | null = null;
   try {
     const now = new Date();
-    const due = await prisma.featureStat.findFirst({ where: { next_due: { lte: now } }, orderBy: { next_due: 'asc' } });
+    const due = await prisma.featureStat.findFirst({ where: { user_id: (session.user_id || 'anon'), next_due: { lte: now } }, orderBy: { next_due: 'asc' } });
     if (due) desired = { person: (due as any).person || null, number: (due as any).number || null, gender: (due as any).gender || null };
   } catch {}
   if (opts?.focusWeakness) {
     const since = new Date(); since.setDate(since.getDate() - 30);
     const misses = await prisma.attempt.findMany({
-      where: { created_at: { gte: since }, OR: [{ grade: 'flawed' }, { grade: 'incorrect' }] },
+      where: { created_at: { gte: since }, OR: [{ grade: 'flawed' }, { grade: 'incorrect' }], session: { user_id: (session.user_id || 'anon') } },
       select: { features: true }
     });
     const counts = new Map<string, number>();

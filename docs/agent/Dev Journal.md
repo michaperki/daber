@@ -2,6 +2,54 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
+## 2026-03-29 — Green vocab drill
+
+- New drill assembly: a curated allowlist of ~88 Wikidata lexemes covering common verbs, nouns, and particles from Hebrew media.
+- Data files: `Daber/data/green_lexemes.json` (lexeme IDs), `Daber/data/green_glosses.json` (English meanings).
+- Home page offers "start green drill" with lesson ID `vocab_green`.
+- Key design: prompts use "listen and type what you hear" (listen-only) — no auto-generated English prompts that might be inaccurate.
+- Generator (`Daber/lib/drill/generators.ts`) checks `isGreen` flag to use listen-only prompts and supports Wikidata POS Q-ids (e.g. `Q24905` for verb) alongside plain POS strings.
+- Commits: 0562b33 (entrypoint + allowlist), bafe5a8 (wd pos Q-id support), 1b50953 (fix bogus English prompts), 601627e (backfill green verb infinitives).
+- Purpose: Mike uses this for daily practice while developing the app — learn Hebrew while building.
+
+## 2026-03-28 — Song packs (Ma Na'aseh)
+
+- New song-based lesson system starting with "מה נעשה" (Hadag Nahash).
+- Landing page at `/songs/ma-naaseh` with song description and YouTube link.
+- Bootstrap API (`POST /api/song-packs/ma-naaseh/bootstrap`) creates lesson + 12 items (7 chorus phrases + 5 key verbs/nouns) on first access.
+- Lesson type `song` in DB; lesson ID `song_ma_naaseh_chorus_v1`.
+- UI fix: start button visibility on light-colored cards.
+- Commits: cce507b (chorus page + bootstrap), 45138d3 (start button fix).
+
+## 2026-03-27 — Wikidata lexicon seeding infrastructure
+
+- Multi-stage pipeline to bulk-import Hebrew lexemes and inflections from Wikidata.
+- Scripts: `scripts/lexicon/seed_wikidata_bulk.ts` (main workhorse), `seed_wikidata_lexemes.ts` (earlier version), `run_wd_seed_forever.sh` (infinite loop with cooldown), `seed_wd_batch_once.sh` (one-shot).
+- Pipeline: reads token list → queries Wikidata Lexeme API with prefix-stripped variants (ה/ל/ו/ב/כ/מ/ש) → ingests lexeme ID, lemma, POS (as Q-id), inflection forms with grammatical features (person, number, gender, tense, binyan).
+- Populates `Lexeme` and `Inflection` tables. Idempotent; resumable via state file (`scripts/out/wd_seed_state.json`).
+- Rate-limit handling with backoff for Wikidata 429s.
+- Token extraction: `scripts/lexicon/extract_tokens.ts` generates input token lists from lesson items.
+
+## 2026-03-27 — Dictionary page
+
+- New searchable dictionary UI at `/dictionary` showing Wikidata-seeded lexemes.
+- List view: search by Hebrew lemma; shows lexeme count, form count, linked lesson items. Up to 300 results.
+- Detail view (`/dictionary/[lexemeId]`): shows lexeme with optimal display form (infinitive for verbs), all unique inflected forms (up to 120), and example sentences from lesson items.
+- POS displayed as Wikidata Q-id (human-readable labels TBD).
+
+## 2026-03-26 — Volume boost (TTS)
+
+- Added WebAudio GainNode boost in `useTTS.ts`: always sets `audio.volume = 1`; optionally creates an AudioContext gain chain when `localStorage.ttsGain > 1` (up to 3×). No AudioContext created at default gain=1.
+- Added UI slider in `SettingsCard.tsx` for controlling ttsGain (1× – 3×). **To be reverted** — redundant with native volume control; the boost tool in useTTS.ts is sufficient.
+- Commits: 0633388 (boost logic), 873e746 (slider UI).
+
+## 2026-03-26 — UI polish batch
+
+- Footer nav: simplified to 4 links (home, dict, library, profile) on one line. Progress stats moved to profile page.
+- iOS/mobile keyboard: custom on-screen HebrewKeyboard hidden on iOS and coarse-pointer (touch) devices; native OS keyboard used instead.
+- Emoji derivation: new `deriveEmojiFromFeatures()` uses item's grammatical features (gender/number) for accurate emoji cues; falls back to prompt-parsing heuristic.
+- Commits: 7f02c03 (footer), 3f101d3 (iOS keyboard), 5f6093e (emoji from features).
+
 ## 2026-03-24 — Drill UX: TTS autoplay removed
 
 ## 2026-03-25 — Prompt emoji duplication fix

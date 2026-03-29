@@ -2,7 +2,7 @@
 
 Role: Honest, always-current snapshot of the running codebase. Descriptive, not aspirational.
 
-Last reviewed: 2026-03-25 (simplified settings)
+Last reviewed: 2026-03-29
 
 —
 
@@ -47,6 +47,33 @@ Stubbed or partial implementations
   - ItemStat, FeatureStat, FamilyStat are global, not per user. user_id exists on Session but is unused across stats.
   - Intentional simplification for single-user; will need scoping later.
 
+New content assemblies
+- Green vocab drill
+  - Curated allowlist of ~88 Wikidata lexemes (`Daber/data/green_lexemes.json`).
+  - Session via lesson_id `vocab_green`; home page has "start green drill" button.
+  - Listen-only prompts — no auto-generated English. Generator checks `isGreen` flag.
+  - Supports Wikidata POS Q-ids (e.g. `Q24905`) in addition to plain POS strings.
+- Song packs
+  - Ma Na'aseh (Hadag Nahash) chorus lesson at `/songs/ma-naaseh`.
+  - Bootstrap API creates lesson (`song_ma_naaseh_chorus_v1`, type `song`) + 12 items on first access.
+  - Plan: expand to verse chunks.
+
+Wikidata lexicon infrastructure
+- Bulk seeding pipeline: `scripts/lexicon/seed_wikidata_bulk.ts` queries Wikidata by token (with Hebrew prefix stripping), ingests Lexeme + Inflection rows.
+- Resumable via `scripts/out/wd_seed_state.json`; handles 429 rate limits with backoff.
+- Runners: `run_wd_seed_forever.sh` (watchdog), `seed_wd_batch_once.sh` (one-shot).
+- Dictionary UI: `/dictionary` (search + list) and `/dictionary/[lexemeId]` (forms + examples).
+
+TTS volume boost
+- `useTTS.ts` always sets `audio.volume = 1`. When `localStorage.ttsGain > 1`, creates a WebAudio GainNode chain (up to 3×). No AudioContext at gain=1.
+- Settings slider for ttsGain exists in `SettingsCard.tsx` but is marked for removal — redundant with native volume; the boost tool is sufficient.
+- Keep or kill: kill the slider (revert 873e746); keep the useTTS.ts boost.
+
+UI changes (since 2026-03-25)
+- Footer nav: 4 links (home, dict, library, profile); progress moved to profile.
+- iOS/mobile: custom HebrewKeyboard hidden on touch/coarse-pointer devices; native keyboard used.
+- Emoji: `deriveEmojiFromFeatures()` prefers item grammatical features over prompt-parsing heuristic.
+
 Actual happy path (today)
 - Start a drill
   - Home StartOrContinue launches a session on ‘vocab_all’ (cross-pack) or a specific pack.
@@ -80,12 +107,14 @@ Known debt
 - Stats are global (not per user). Acceptable for current single-user use; will need scoping before multi-user.
  
 - Minimal error surfacing: many server write paths are fire-and-forget; failures won’t block UX but reduce fidelity.
- - React Strict Mode dev double-invoke is mitigated via guards; revisit if more effects are added.
+- React Strict Mode dev double-invoke is mitigated via guards; revisit if more effects are added.
+- "I said it right" override button appears even when grade is `correct` (should only show for incorrect/flawed).
+- Volume slider in settings (873e746) is redundant; to be reverted. The useTTS.ts GainNode boost (0633388) is sufficient.
 
 Assumptions made
 - Family-first intros: prefer introducing lemmas via family_base (infinitive/adjective m.sg./noun sg); then progress within family.
 - Session pacing: client requests adaptive pacing; base cap via SESSION_DUE_CAP with extend/end thresholds.
-- Single-user environment: global FeatureStat/ItemStat are acceptable; admin tools currently have no auth.
+- Single-user environment: global FeatureStat/ItemStat are acceptable; admin tools currently have no auth. **Under review**: people are organically trying the app. Need to decide on profiles/identity before stats collide.
 - Accept typed recognition and guided phases to smooth difficulty before voice free recall.
 
 Environment variables in use (runtime)

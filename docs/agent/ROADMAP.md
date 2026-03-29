@@ -4,13 +4,21 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
 
 ## Priorities at a Glance (ordered by impact)
 1. ~~**Deploy to mobile**~~ — **SHIPPED** (Heroku, 2026-03-23).
-2. **Fix existing bugs** — Stabilize what exists now that real mobile use will surface issues.
-   - Done: library filters wired, vocab page no runtime FS, settings button links to Profile.
-   - Remaining: mobile keyboard UX polish.
-3. **Word lifecycle phases** — **SHIPPED (v1)**. Intro, recognition, guided production, and free recall are live. ~2,400 known vocab pre-seeded at free recall from Citizen Cafe class history.
-4. **Verb introduction flow** — **PARTIALLY SHIPPED** (2026-03-25): “new word” intros now use the infinitive; conjugations surface later via recognition/guided/free recall. Update: added a same‑family spacing guard to avoid back‑to‑back forms; next: broader scheduling across sessions.
-5. **Smarter sentence generation** — Constraint-based: mix known words with target words for natural, varied sentences. See SOUL.md “Sentence Generation Vision.”
-6. **SRS drives drill type** — **PARTIALLY SHIPPED**. `correct_streak` now drives phase (intro/recognition/guided/free_recall). Wrong answers demote to recognition. FeatureStat not yet wired to phase selection.
+2. **Beta user readiness** — People are organically trying the app and sharing links. Immediate questions:
+   - Do we need login/profiles, or can per-device localStorage suffice for now?
+   - Global stats (ItemStat, FeatureStat, FamilyStat) will collide if multiple people drill. Minimum viable: a lightweight device-id or anonymous profile to isolate stats.
+   - Admin routes have no auth — acceptable for Mike, risky with external users.
+   - Goal: let beta users come in the door seamlessly without adding friction.
+3. **Fix existing bugs** — Stabilize what exists now that real mobile use will surface issues.
+   - Done: library filters wired, vocab page no runtime FS, settings button links to Profile, iOS keyboard, footer nav.
+   - Remaining: revert volume slider (873e746); “I said it right” button on correct answers; mobile keyboard UX polish.
+4. **Word lifecycle phases** — **SHIPPED (v1)**. Intro, recognition, guided production, and free recall are live. ~2,400 known vocab pre-seeded at free recall from Citizen Cafe class history.
+5. **Content assemblies** — **SHIPPED**:
+   - Green vocab drill: curated ~88 lexeme allowlist with listen-only prompts. Mike uses this for daily practice.
+   - Song packs: Ma Na'aseh chorus live. Plan to expand to verse chunks and more songs.
+6. **Verb introduction flow** — **PARTIALLY SHIPPED** (2026-03-25): “new word” intros now use the infinitive; conjugations surface later via recognition/guided/free recall. Same‑family spacing guard shipped; next: broader scheduling across sessions.
+7. **Smarter sentence generation** — Constraint-based: mix known words with target words for natural, varied sentences. See SOUL.md “Sentence Generation Vision.”
+8. **SRS drives drill type** — **PARTIALLY SHIPPED**. `correct_streak` now drives phase (intro/recognition/guided/free_recall). Wrong answers demote to recognition. FeatureStat not yet wired to phase selection.
 
 ## Near‑Term High‑Leverage
 - Family progression spacing — After infinitive intros, schedule present forms (3sg m → 3sg f → 1sg → 3pl m) and space follow‑ups across sessions; interleave familiar content.
@@ -18,7 +26,7 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
 - Admin family tooling — Quick actions to set `family_base` and `family_id` on `/admin/lexicon/validate` to accelerate coverage.
 - Guided production hints — SHIPPED (v1): insert‑pronoun CTA, base‑form + first‑letter hints, and a noun definiteness chip in guided mode.
 - English normalization pass — Scripted cleanup of CC/generated English prompts (drop leading “the”, lower‑case nouns, remove adjective parentheticals) with dry‑run and apply switches.
-7. **TTS Hebrew quality** — Hard problem. Investigate alternatives when time allows.
+9. **TTS Hebrew quality** — Hard problem. Investigate alternatives when time allows.
 
 ## Previous Priorities (many shipped)
 - Feature‑aware feedback chips on Prompt/Feedback.

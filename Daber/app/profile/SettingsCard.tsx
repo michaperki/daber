@@ -7,22 +7,6 @@ import type { MicDevice } from '@/lib/client/audio/useMicRecorder';
 export default function SettingsCard() {
   const { showTransliteration, stayOnFlawed, speakPrompt, manualAdvance, ttsRate, uiSoundEffects, micDeviceId, micSensitivity, micSilenceMs, setShowTransliteration, setStayOnFlawed, setSpeakPrompt, setManualAdvance, setTtsRate, setUiSoundEffects, setMicDeviceId, setMicSensitivity, setMicSilenceMs } = useSettings();
 
-  const [ttsGain, setTtsGain] = React.useState<number>(1);
-
-  React.useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem('ttsGain');
-      const g = raw ? Number(raw) : 1;
-      if (Number.isFinite(g) && g > 0) setTtsGain(Math.min(3, Math.max(1, g)));
-    } catch {}
-  }, []);
-
-  const updateTtsGain = React.useCallback((v: number) => {
-    const clamped = Math.min(3, Math.max(1, v));
-    setTtsGain(clamped);
-    try { window.localStorage.setItem('ttsGain', String(clamped)); } catch {}
-  }, []);
-
   const [micDevices, setMicDevices] = React.useState<MicDevice[]>([]);
   const [testing, setTesting] = React.useState(false);
   const [micError, setMicError] = React.useState<string | null>(null);
@@ -107,19 +91,6 @@ export default function SettingsCard() {
             <option value="1">1.0x</option>
             <option value="1.15">1.15x</option>
           </select>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-          <span style={{ width: 160 }}>TTS volume</span>
-          <input
-            type="range"
-            min="1"
-            max="3"
-            step="0.1"
-            value={ttsGain}
-            onChange={e => updateTtsGain(Number(e.target.value))}
-            style={{ flex: 1 }}
-          />
-          <span style={{ width: 44, textAlign: 'right', fontSize: 12, color: 'var(--color-text-secondary)' }}>{ttsGain.toFixed(1)}×</span>
         </div>
         <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           <input type="checkbox" checked={uiSoundEffects} onChange={e => setUiSoundEffects(e.target.checked)} />

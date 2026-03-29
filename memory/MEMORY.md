@@ -2,7 +2,7 @@
 
 Role: Live project state, architecture snapshot, and current focus. Update this file at the end of each work session.
 
-Last updated: 2026-03-25
+Last updated: 2026-03-29
 
 ---
 
@@ -27,15 +27,21 @@ Last updated: 2026-03-25
  - Selection debug (dev): `GET /api/sessions/[id]/next-item?debug=1` returns `explain` with selection path, candidate sizes, family swaps, etc. No change to normal behavior.
 
 ## Pages
-`/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/admin/lexicon/validate`.
+`/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/dictionary`, `/dictionary/[lexemeId]`, `/songs/ma-naaseh`, `/admin/lexicon/validate`.
 
 ## Current Focus
+- **Doc alignment**: keeping SOUL, MEMORY, STATE, ROADMAP, and Dev Journal in sync with shipped code.
+- **Green vocab drill**: curated ~88 lexeme drill for daily practice during development. Listen-only prompts (no generated English).
+- **Song packs**: Ma Na'aseh chorus live; expand to verse chunks.
+- **Beta readiness**: people are organically trying the app and sharing the link. Need to think about: seamless entry for beta users, profiles/identity (lightweight or anonymous?), admin gating, and whether login adds friction vs. value.
 - Family coverage: intros once per family; broaden base‑form linking.
 - Validate guided phase and hints in real sessions; polish scaffolds.
-- Defaults: keep sessions randomized, blend due selection, adaptive pacing; monitor feel.
-- Backlog: user auth, STT confidence guardrails, CC import pipeline docs.
+- Backlog: user auth/profiles, STT confidence guardrails, CC import pipeline docs.
 
 ## Near‑Term High‑Leverage
+- **Beta user onboarding**: the app is being shared organically. Immediate questions: do we need login/profiles, or can we stay anonymous with per-device localStorage? What admin gating (if any) is needed? How do multiple users coexist with global stats?
+- **Revert volume slider** (commit 873e746): redundant UI; the useTTS.ts boost tool is sufficient. Users use native volume.
+- **"I said it right" button**: should not appear when grade is `correct` — only for incorrect/flawed overrides.
 - Family progression polish: basic same‑family spacing guard shipped; next up is cross‑session scheduling and staged conjugations.
 - Feature‑blend due mode: incorporate `FeatureStat` into selection when `due=blend` to target weak number/gender/person/tense features across items.
 - Admin family tools: on `/admin/lexicon/validate`, add actions to mark `family_base` and assign `family_id` for obvious lemmas.
@@ -71,6 +77,16 @@ Last updated: 2026-03-25
 - Library page: made filters functional (client-side) and linked settings gear to `/profile`.
 - Vocab page: removed runtime FS read of `Mike_Hebrew_Vocab.md`; relies on DB-seeded vocab lesson.
 - Recognition UX: auto-focus input after Hebrew TTS; mobile input attributes tuned.
+
+## Recent Changes (2026-03-29)
+- Green vocab drill: curated ~88 Wikidata lexeme allowlist; listen-only prompts; home page entrypoint (`vocab_green`). Data: `Daber/data/green_lexemes.json`, `green_glosses.json`.
+- Song packs: Ma Na'aseh chorus page at `/songs/ma-naaseh` with bootstrap API creating lesson + 12 items on first access.
+- Wikidata lexicon seeding: bulk pipeline (`scripts/lexicon/seed_wikidata_bulk.ts`) populating Lexeme/Inflection tables from Wikidata. Resumable, rate-limit aware. Watchdog and batch runners.
+- Dictionary UI: `/dictionary` with search + `/dictionary/[lexemeId]` detail (forms, examples).
+- TTS volume boost: `useTTS.ts` sets `audio.volume=1` and optionally applies WebAudio GainNode when `ttsGain > 1`. Slider in settings to be reverted.
+- Footer nav: simplified to 4 links (home, dict, library, profile); progress moved to profile page.
+- iOS/mobile: custom HebrewKeyboard hidden on touch devices; native keyboard used instead.
+- Emoji: `deriveEmojiFromFeatures()` uses item grammatical features; falls back to prompt parsing.
 
 ## Recent Changes (2026-03-25)
 - Canonical “new word” intros
@@ -110,6 +126,11 @@ Last updated: 2026-03-25
 - CC imports: `Daber/data/imports/*`; scraper: `scraper/cc_scraper.js`; importer: `scripts/import_citizen_cafe.ts`
 - Families: `Daber/app/api/sessions/[sessionId]/next-item/route.ts` (phase logic), `Daber/app/api/sessions/[sessionId]/seen/route.ts` (intro seen)
 - Family scripts: `scripts/count_cc_standalone.ts`, `scripts/tag_cc_families.ts`, `scripts/apply_cc_family_links.ts`, `scripts/smoke_family_intro.ts`
+- Green drill data: `Daber/data/green_lexemes.json`, `Daber/data/green_glosses.json`
+- Song packs: `Daber/app/songs/ma-naaseh/page.tsx`, `Daber/app/api/song-packs/ma-naaseh/bootstrap/route.ts`
+- Dictionary: `Daber/app/dictionary/page.tsx`, `Daber/app/dictionary/[lexemeId]/page.tsx`
+- Wikidata seeding: `scripts/lexicon/seed_wikidata_bulk.ts`, `scripts/lexicon/run_wd_seed_forever.sh`
+- TTS volume boost: `Daber/lib/client/audio/useTTS.ts` (GainNode logic)
 - Oolpan schema ref: `Oolpan/README.md` (design artifact, not running code)
 
 ## Ops / Dev Notes

@@ -14,31 +14,38 @@ Mike is an intermediate Hebrew learner. He can read, knows basic grammar, and ha
 
 The success metric is simple: does Mike use this regularly and enjoy it? Everything else — generalization, multi-user support, curriculum design for beginners — comes later. If an agent is choosing between “useful for Mike today” and “nice for future users someday,” always pick Mike.
 
+**Early beta signal (as of 2026-03-29):** People are organically trying the app and sharing the link. This is encouraging but changes nothing about the primary audience yet. The immediate question is: can beta users come in the door seamlessly without their activity colliding with Mike's stats? Solve that with the lightest touch possible — no heavyweight auth unless it earns its friction.
+
 Do not build:
 - Intro lessons, onboarding flows, or beginner content
-- Features for hypothetical users who don't exist yet
 - Generic “learning platform” infrastructure
+- Heavyweight auth/login that adds friction before someone can drill
 
 Do build:
 - Things that make Mike's daily practice better, faster, more interesting
 - Things that fix bugs Mike hits during real sessions
 - Things that make the drill content smarter and more adaptive
+- The minimum needed so a beta user can start drilling without corrupting Mike's progress
 
-## Current Product State (as of 2026-03-25)
+## Current Product State (as of 2026-03-29)
 
-The app is **deployed on Heroku** and accessible on mobile. The core drill flow works and Mike likes it.
+The app is **deployed on Heroku** and accessible on mobile. The core drill flow works and Mike likes it. Others are starting to try it.
 
 What works:
 - **Four drill phases are live** — Introduction (see/hear a new word), Recognition (Hebrew → English typing), Guided Production (English → Hebrew typing with hints), and Free Recall (English → Hebrew spoken). Phase is driven by `ItemStat.correct_streak`.
 - **~2,400 vocab items imported** from 7 Citizen Cafe class levels (blue through yellow), pre-seeded at free recall. Green-level items start at recognition.
 - **Wrong answers self-correct** — any miss resets `correct_streak` to 0, demoting the word to recognition until re-mastered.
 - **Core en→he spoken drill** — the flow (prompt → record → evaluate → TTS correction → next) feels good and the timing works for learning.
+- **Content assemblies beyond "all vocab":**
+  - **Green vocab drill** — a curated ~88 lexeme allowlist from Wikidata, focused on common verbs/nouns/particles. Listen-only prompts (no generated English). Mike uses this daily while developing the app.
+  - **Song packs** — Ma Na'aseh (Hadag Nahash) chorus lesson live. Song-based drills that anchor vocabulary in real music.
+- **Wikidata lexicon** — bulk-seeded Lexeme/Inflection tables from Wikidata with resumable pipeline. Dictionary UI at `/dictionary`.
 
 Remaining gaps:
 - **TTS Hebrew pronunciation is poor** — OpenAI TTS doesn't pronounce Hebrew well. Known hard problem.
 - **Dynamic sentence generation is weak** — template-based, mechanical output.
 - **No pedagogy for verbs** — conjugations are thrown at the user without introducing the infinitive first or spacing out forms.
-- **Mobile keyboard UX needs polish.**
+- **Multi-user stats isolation** — stats are global; beta users will collide with Mike's progress.
 
 ## Operating Constraints
 - Single app: Next.js app under `Daber/` is the canonical frontend + API.
@@ -61,6 +68,11 @@ Remaining gaps:
 - A single, coherent UX: prompt → listen → evaluate → feedback → next; clear settings for pacing, TTS rate, and mic behavior.
 - When dynamic generation is used, it should be deterministic where possible and versioned in docs.
 - Content should feel alive — mixing familiar and unfamiliar words, varying sentence structure, adapting to what Mike knows.
+- **Content assemblies** — vocab isn't one monolithic pile. Different assemblies serve different purposes:
+  - Curated vocab sets (like Green) for focused daily practice.
+  - Song-based packs that anchor vocabulary in real music and culture.
+  - Cross-vocab sessions that pull from everything.
+  - The assembly system should be easy to extend — adding a new song or a new curated list should be lightweight.
 
 ## Pedagogy Model — Word Lifecycle
 

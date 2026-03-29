@@ -547,7 +547,7 @@ export default function DaberSessionPage() {
               </svg>
             </button>
             <button className="next-btn" onClick={handleOverride}>
-              I said it right
+              override
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -561,12 +561,14 @@ export default function DaberSessionPage() {
           </div>
         ) : (
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className="next-btn" onClick={handleOverride}>
-              I said it right
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+            {feedback.grade !== 'correct' && (
+              <button className="next-btn" onClick={handleOverride}>
+                override
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            )}
             <button className="next-btn" onClick={nextItem}>
               next prompt
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

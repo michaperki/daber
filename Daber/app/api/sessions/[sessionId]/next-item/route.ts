@@ -2,6 +2,23 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { logEvent } from '@/lib/log';
 import { generateNextFromLexicon } from '@/lib/drill/generators';
+import fs from 'fs';
+import path from 'path';
+
+// Cache for green glosses (lexemeId -> { gloss, pos })
+let GREEN_GLOSS_MAP: Record<string, { gloss?: string | null; pos?: string | null }> | null = null;
+function getGreenGlossEntry(lexId: string): { gloss?: string | null; pos?: string | null } | null {
+  try {
+    if (!GREEN_GLOSS_MAP) {
+      const p = path.join(process.cwd(), 'data', 'green_glosses.json');
+      const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
+      GREEN_GLOSS_MAP = (raw && raw.items) ? raw.items : {};
+    }
+    return (GREEN_GLOSS_MAP as any)[lexId] || null;
+  } catch {
+    return null;
+  }
+}
 
 export async function GET(req: Request, { params }: { params: { sessionId: string } }) {
   const { sessionId } = params;
@@ -215,7 +232,16 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         // English canonical
         let eng: string | undefined;
         const liEnglish = cleanEnglishBase(li.english_prompt || '');
-        if (pos === 'verb') {
+        // Prefer curated gloss for green drill when available
+        if (session.lesson_id === 'vocab_green' && lexId) {
+          const entry = getGreenGlossEntry(lexId);
+          if (entry && typeof entry.gloss === 'string' && entry.gloss.trim()) {
+            const gloss = entry.gloss.trim();
+            const isVerbPos = (pos === 'verb') || (typeof entry.pos === 'string' && (entry.pos.toLowerCase() === 'verb' || entry.pos === 'Q24905'));
+            eng = isVerbPos && !/^to\s+/i.test(gloss) ? `to ${gloss}` : gloss;
+          }
+        }
+        if (!eng && pos === 'verb') {
           if (lexId) {
             const linked = await prisma.lessonItem.findMany({ where: { lexeme_id: lexId }, select: { english_prompt: true }, take: 20 });
             const byTo = pickToVerb(linked.map(r => r.english_prompt));
@@ -226,11 +252,11 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
             if (naive) eng = naive;
           }
           if (!eng) eng = lowerFirst(liEnglish);
-        } else if (pos === 'adjective') {
+        } else if (!eng && pos === 'adjective') {
           eng = lowerFirst(liEnglish.replace(/\([^)]*\)/g, '').trim());
-        } else if (pos === 'noun') {
+        } else if (!eng && pos === 'noun') {
           eng = dropLeadingThe(lowerFirst(liEnglish));
-        } else {
+        } else if (!eng) {
           eng = lowerFirst(liEnglish);
         }
 

@@ -9,7 +9,7 @@
     "lint": "node ../node_modules/next/dist/bin/next lint",
     "prisma:generate": "node ../node_modules/prisma/build/index.js generate",
     "prisma:migrate": "node ../node_modules/prisma/build/index.js migrate dev",
-    "db:push": "node ../node_modules/prisma/build/index.js db push",
+    "db:push": "node ../node_modules/prisma/build/index.js db push --accept-data-loss",
     "seed": "node ../node_modules/ts-node/dist/bin.js -P prisma/tsconfig.seed.json --transpile-only prisma/seed.ts"
   }
 }

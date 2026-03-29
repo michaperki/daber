@@ -104,8 +104,6 @@ model FeatureStat {
   correct_count   Int      @default(0)
   flawed_count    Int      @default(0)
   incorrect_count Int      @default(0)
-
-  @@unique([pos, tense, person, number, gender, user_id])
 }
 
 model Event {

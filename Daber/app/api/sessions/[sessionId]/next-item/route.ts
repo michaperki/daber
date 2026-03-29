@@ -66,8 +66,9 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { lesson: { select: { id: true, type: true } } } });
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     const userId = (session.user_id || 'anon');
+    const sessionLessonId = session.lesson_id; // capture for inner closures to avoid nullable narrowing issues
 
-    const isCrossVocab = session.lesson_id === 'vocab_all';
+    const isCrossVocab = sessionLessonId === 'vocab_all';
     const allowedLessonIds: string[] = isCrossVocab
       ? (
         [
@@ -233,7 +234,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         let eng: string | undefined;
         const liEnglish = cleanEnglishBase(li.english_prompt || '');
         // Prefer curated gloss for green drill when available
-        if (session.lesson_id === 'vocab_green' && lexId) {
+        if (sessionLessonId === 'vocab_green' && lexId) {
           const entry = getGreenGlossEntry(lexId);
           if (entry && typeof entry.gloss === 'string' && entry.gloss.trim()) {
             const gloss = entry.gloss.trim();

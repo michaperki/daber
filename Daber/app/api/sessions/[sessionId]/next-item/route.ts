@@ -147,6 +147,11 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     }
 
     async function buildIntroFor(itemId: string): Promise<{ hebrew: string; english?: string } | null> {
+      function parseLexemeIdFromGenerated(itemId: string): string | null {
+        // Patterns: gen_adj_<lexId>_..., gen_noun_<lexId>_..., gen_vpr_<lexId>_..., gen_vpa_<lexId>_..., gen_vfu_<lexId>_...
+        const m = itemId.match(/^gen_(?:adj|noun|vpr|vpa|vfu)_([^_]+)_/);
+        return m ? m[1] : null;
+      }
       try {
         function stripHebPronoun(s: string): string {
           const pronouns = ['אני','אתה','את','הוא','היא','אנחנו','אתם','אתן','הם','הן'];
@@ -187,7 +192,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
 
         const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { id: true, english_prompt: true, target_hebrew: true, features: true, lexeme_id: true } });
         if (!li) return null;
-        let lexId = li.lexeme_id as string | null;
+        let lexId = (li.lexeme_id as string | null) || parseLexemeIdFromGenerated(li.id);
         let lexPos: string | null = null;
         let lexLemma: string | null = null;
         let lexFeat: Record<string, any> | null = null;

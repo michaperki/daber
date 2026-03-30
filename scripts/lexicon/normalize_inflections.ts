@@ -26,6 +26,11 @@ function isSingleToken(s: string): boolean {
 function looksPlural(s: string): boolean {
   return /(?:ים|ות)$/.test(s || '');
 }
+function pluralGenderFromSuffix(s: string): 'm'|'f'|null {
+  if (/ים$/.test(s || '')) return 'm';
+  if (/ות$/.test(s || '')) return 'f';
+  return null;
+}
 function looksFeminineSingular(s: string): boolean {
   return /(?:ה|ית)$/.test(s || '');
 }
@@ -67,18 +72,23 @@ async function normalize() {
           patch.number = null;
           patch.gender = null;
         }
-      } else if (pos === 'q34698' || pos === 'adjective') {
-        // Number by suffix if missing
-        if (!row.number) patch.number = looksPlural(form) ? 'pl' : 'sg';
-        // Gender heuristic for singular only if missing
-        if (!row.gender && (patch.number === 'sg' || row.number === 'sg')) {
-          patch.gender = looksFeminineSingular(form) ? 'f' : 'm';
-        }
-      } else if (pos === 'q1084' || pos === 'noun') {
-        if (!row.number) patch.number = looksPlural(form) ? 'pl' : 'sg';
-        // Avoid gender guess for nouns unless clearly feminine by suffix
-        if (!row.gender && (patch.number === 'sg' || row.number === 'sg')) {
-          if (looksFeminineSingular(form)) patch.gender = 'f';
+  } else if (pos === 'q34698' || pos === 'adjective') {
+    // Number by suffix if missing
+    if (!row.number) patch.number = looksPlural(form) ? 'pl' : 'sg';
+    // Gender heuristic for singular only if missing
+    if (!row.gender && (patch.number === 'sg' || row.number === 'sg')) {
+      patch.gender = looksFeminineSingular(form) ? 'f' : 'm';
+    }
+    // For plural adjectives, infer gender by suffix if missing
+    if (!row.gender && (patch.number === 'pl' || row.number === 'pl')) {
+      const g = pluralGenderFromSuffix(form);
+      if (g) patch.gender = g;
+    }
+  } else if (pos === 'q1084' || pos === 'noun') {
+    if (!row.number) patch.number = looksPlural(form) ? 'pl' : 'sg';
+    // Avoid gender guess for nouns unless clearly feminine by suffix
+    if (!row.gender && (patch.number === 'sg' || row.number === 'sg')) {
+      if (looksFeminineSingular(form)) patch.gender = 'f';
         }
       }
 
@@ -96,4 +106,3 @@ async function normalize() {
 normalize()
   .catch((e) => { console.error(e); process.exit(1); })
   .finally(async () => { await prisma.$disconnect(); });
-

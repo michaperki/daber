@@ -22,20 +22,23 @@ async function main() {
   const tags = readTags(file);
   const minIdx = process.argv.indexOf('--min');
   const min = minIdx > -1 ? Number(process.argv[minIdx + 1]) : 0.8;
-  const updates: Array<{ form: string; lemma: string; updated: number }> = [];
+  const updates: Array<{ form: string; lemma: string; pos: string; updated: number }> = [];
   let totalUpdated = 0;
   for (const t of tags.items) {
     if (typeof t.confidence !== 'number' || t.confidence < min) continue;
     const form = (t.form || '').trim();
     const lemma = (t.lemma || '').trim();
+    const pos = (t.pos || '').trim().toLowerCase();
     if (!form || !lemma) continue;
-    const fam = `lemma:${lemma}`;
+    // Only link when POS is one of our core categories to avoid cross-POS contamination
+    if (!['verb','noun','adjective'].includes(pos)) continue;
+    const fam = `lemma:${lemma}|pos:${pos}`;
     const res = await prisma.lessonItem.updateMany({
       where: { lesson: { id: { startsWith: 'cc_' } }, target_hebrew: form, family_id: null },
       data: { family_id: fam, family_base: form === lemma }
     });
     if (res.count > 0) {
-      updates.push({ form, lemma, updated: res.count });
+      updates.push({ form, lemma, pos, updated: res.count });
       totalUpdated += res.count;
     }
   }

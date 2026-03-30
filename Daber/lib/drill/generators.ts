@@ -35,6 +35,40 @@ function pick<T>(arr: T[]): T | null {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+const HEB_PRONOUNS = ['אני','אתה','את','הוא','היא','אנחנו','אתם','אתן','הם','הן'];
+function containsHebrew(s: string): boolean { return /[\u0590-\u05FF]/.test(s || ''); }
+function containsLatin(s: string): boolean { return /[A-Za-z]/.test(s || ''); }
+function englishOk(s: string): boolean { return !!s && !containsHebrew(s) && containsLatin(s); }
+function hebrewOk(s: string): boolean { return !!s && containsHebrew(s) && !containsLatin(s); }
+function hebrewStartsWithPronoun(s: string): boolean {
+  const t = (s || '').trim();
+  return HEB_PRONOUNS.some(p => t.startsWith(p + ' '));
+}
+
+function validateGenerated(kind: 'verb'|'adjective'|'noun', item: { english_prompt: string; target_hebrew: string; features?: Record<string, string | null> | null }): boolean {
+  if (!englishOk(item.english_prompt) || !hebrewOk(item.target_hebrew)) return false;
+  const pos = (item.features?.pos || '').toLowerCase();
+  if (pos !== kind) return false;
+  if (kind === 'verb' || kind === 'adjective') {
+    if (!hebrewStartsWithPronoun(item.target_hebrew)) return false;
+    // For verbs, require tense + person + number to be present
+    if (kind === 'verb') {
+      const f = item.features || {} as any;
+      if (!f.tense || !f.person || !f.number) return false;
+      if (f.number === 'sg' && (f.person === '2' || f.person === '3') && !f.gender) return false;
+    }
+    if (kind === 'adjective') {
+      const f = item.features || {} as any;
+      if (!f.number || !f.gender) return false;
+    }
+  }
+  if (kind === 'noun') {
+    const f = item.features || {} as any;
+    if (!f.number) return false;
+  }
+  return true;
+}
+
 function pronounFrom(inf: { person: string | null; number: string | null; gender: string | null }): string {
   const p = inf.person || '';
   const n = inf.number || '';
@@ -44,8 +78,8 @@ function pronounFrom(inf: { person: string | null; number: string | null; gender
   if (p === '2') return 'you';
   if (p === '3' && n === 'sg' && g === 'm') return 'he';
   if (p === '3' && n === 'sg' && g === 'f') return 'she';
-  if (p === '3' && n === 'pl' && g === 'm') return 'they (m)';
-  if (p === '3' && n === 'pl' && g === 'f') return 'they (f)';
+  if (p === '3' && n === 'pl') return 'they';
+  // Fallback: prefer neutral 'they' to avoid divergence
   return 'they';
 }
 
@@ -61,9 +95,31 @@ function pronounHeb(inf: { person: string | null; number: string | null; gender:
   if (p === '2' && n === 'pl' && g === 'f') return 'אתן';
   if (p === '3' && n === 'sg' && g === 'm') return 'הוא';
   if (p === '3' && n === 'sg' && g === 'f') return 'היא';
-  if (p === '3' && n === 'pl' && g === 'm') return 'הם';
-  if (p === '3' && n === 'pl' && g === 'f') return 'הן';
-  return 'אני';
+  if (p === '3' && n === 'pl') return 'הם';
+  // Fallback aligned with neutral English 'they': default to third‑person plural masculine
+  if (fallbackPerson === '1') return 'אני';
+  if (fallbackPerson === '2') return 'אתם';
+  return 'הם';
+}
+
+// Require complete inflection metadata before generating items, to avoid EN/HE divergence
+function isCompleteVerbInf(inf: { person: string | null; number: string | null; gender: string | null }): boolean {
+  const p = inf.person || '';
+  const n = inf.number || '';
+  const g = inf.gender || '';
+  if (!p || !n) return false;
+  if (n === 'sg' && (p === '2' || p === '3') && !g) return false;
+  return true;
+}
+
+function isCompleteAdjInf(inf: { number: string | null; gender: string | null }): boolean {
+  const n = inf.number || '';
+  const g = inf.gender || '';
+  return !!n && !!g;
+}
+
+function isCompleteNounInf(inf: { number: string | null }): boolean {
+  return !!(inf.number || '');
 }
 
 function englishFromCard(cardEn: string): { base: string; isVerb: boolean; paren?: string } {
@@ -208,9 +264,10 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
     }
     const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id }, select: { form: true, person: true, number: true, gender: true } });
     if (!infls.length) continue;
-    // Prefer canonical defaults for early exposures
-    let pool = infls.filter(i => (i.number === 'sg' || !i.number) && (i.gender === 'm' || !i.gender));
-    if (!pool.length) pool = infls;
+    // Require complete adjective morphology; prefer canonical m.sg for early exposures
+    let pool = infls.filter(i => isCompleteAdjInf({ number: i.number || null, gender: i.gender || null }));
+    if (!pool.length) continue;
+    pool = pool.filter(i => i.number === 'sg' && i.gender === 'm').concat(pool);
     if (desired?.number || desired?.gender) {
       pool = infls.filter(i => (!desired?.number || i.number === desired.number) && (!desired?.gender || i.gender === desired.gender));
       if (!pool.length) pool = infls;
@@ -241,7 +298,9 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
       update: { lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','adjective'], difficulty: 1, features: { pos: 'adjective', number: inf.number || null, gender: inf.gender || null } as any },
       create: { id: idBase, lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','adjective'], difficulty: 1, features: { pos: 'adjective', number: inf.number || null, gender: inf.gender || null } as any }
     });
-    return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    const out = { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    if (!validateGenerated('adjective', out)) continue;
+    return out;
   }
   return null;
 }
@@ -259,7 +318,8 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
     }
     const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'present' }, select: { form: true, person: true, number: true, gender: true, binyan: true } });
     if (!infls.length) continue;
-    let pool = infls;
+    let pool = infls.filter(i => isCompleteVerbInf({ person: i.person || null, number: i.number || null, gender: i.gender || null }));
+    if (!pool.length) continue;
     if (desired?.number || desired?.gender || desired?.person) {
       pool = infls.filter(i => (!desired?.number || i.number === desired.number) && (!desired?.gender || i.gender === desired.gender) && (!desired?.person || i.person === desired.person));
       if (!pool.length) pool = infls;
@@ -294,7 +354,9 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
       update: { lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','present'], difficulty: 1, features: { pos: 'verb', tense: 'present', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any },
       create: { id: idBase, lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','present'], difficulty: 1, features: { pos: 'verb', tense: 'present', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any }
     });
-    return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    const out = { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    if (!validateGenerated('verb', out)) continue;
+    return out;
   }
   return null;
 }
@@ -339,7 +401,7 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
       englishPrompt = `How do I say: ${enPhrase}?`;
     }
     if (!englishPrompt) continue;
-    const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '1');
+    const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '3');
     const idBase = `gen_vpa_${chosen.id}_${inf.person || 'na'}_${inf.number || 'na'}_${inf.gender || 'na'}_${hashShort(englishPrompt)}`;
     if (attemptedIds.has(idBase)) continue;
     const item = await prisma.lessonItem.upsert({
@@ -347,7 +409,9 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
       update: { lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','past'], difficulty: 1, features: { pos: 'verb', tense: 'past', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any },
       create: { id: idBase, lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','past'], difficulty: 1, features: { pos: 'verb', tense: 'past', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any }
     });
-    return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    const out = { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    if (!validateGenerated('verb', out)) continue;
+    return out;
   }
   return null;
 }
@@ -375,7 +439,8 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
     if (!infls.length) continue;
 
     // Prefer singular forms for early exposures; avoid multiword unless compound
-    let validInfls = isCompound ? infls : infls.filter(i => !i.form.includes(' '));
+    let validInfls = (isCompound ? infls : infls.filter(i => !i.form.includes(' ')))
+      .filter(i => isCompleteNounInf({ number: i.number || null }));
     const sgInfls = validInfls.filter(i => i.number === 'sg' || !i.number);
     if (sgInfls.length) validInfls = sgInfls;
     if (!validInfls.length) continue;
@@ -431,7 +496,9 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
       update: { lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: targetHebrew, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','noun'], difficulty: 1, features: { pos: 'noun', number: numLabel, gender: genLabel } as any },
       create: { id: idBase, lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: targetHebrew, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','noun'], difficulty: 1, features: { pos: 'noun', number: numLabel, gender: genLabel } as any }
     });
-    return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    const out = { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    if (!validateGenerated('noun', out)) continue;
+    return out;
   }
   return null;
 }
@@ -476,7 +543,7 @@ async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string
       englishPrompt = `How do I say: ${enPhrase}?`;
     }
     if (!englishPrompt) continue;
-    const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '1');
+    const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '3');
     const idBase = `gen_vfu_${chosen.id}_${inf.person || 'na'}_${inf.number || 'na'}_${inf.gender || 'na'}_${hashShort(englishPrompt)}`;
     if (attemptedIds.has(idBase)) continue;
     const item = await prisma.lessonItem.upsert({
@@ -484,7 +551,9 @@ async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string
       update: { lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','future'], difficulty: 1, features: { pos: 'verb', tense: 'future', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any },
       create: { id: idBase, lesson_id: lessonId, lexeme_id: chosen.id, english_prompt: englishPrompt, target_hebrew: `${hebPron} ${inf.form}`, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['generated','verb','future'], difficulty: 1, features: { pos: 'verb', tense: 'future', person: inf.person || null, number: inf.number || null, gender: inf.gender || null, binyan: (inf as any).binyan || null } as any }
     });
-    return { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    const out = { id: item.id, english_prompt: item.english_prompt, target_hebrew: item.target_hebrew, transliteration: item.transliteration, features: (item as any).features as Record<string, string | null> | null };
+    if (!validateGenerated('verb', out)) continue;
+    return out;
   }
   return null;
 }

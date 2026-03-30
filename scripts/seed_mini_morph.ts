@@ -51,21 +51,32 @@ async function main() {
   // Create lesson
   await prisma.lesson.upsert({
     where: { id: lessonId },
-    update: { title: 'Mini Morph Drill', language: 'he', level: 'mini', type: 'vocab', description: 'Exactly 1 verb, 1 noun, 1 adjective (all key forms)' },
-    create: { id: lessonId, title: 'Mini Morph Drill', language: 'he', level: 'mini', type: 'vocab', description: 'Exactly 1 verb, 1 noun, 1 adjective (all key forms)' }
+    update: { title: 'Mini Morph Drill', language: 'he', level: 'mini', type: 'vocab', description: 'Small allowlisted set with key forms (mini sandbox)' },
+    create: { id: lessonId, title: 'Mini Morph Drill', language: 'he', level: 'mini', type: 'vocab', description: 'Small allowlisted set with key forms (mini sandbox)' }
   });
 
   // Lexemes
   const L_VERB = 'mini_lex_write';
   const L_NOUN = 'mini_lex_book';
   const L_ADJ  = 'mini_lex_big';
+  // Phase 1 expansion
+  const L_VERB2 = 'mini_lex_speak';
+  const L_NOUN2 = 'mini_lex_icecream';
+  const L_ADJ2  = 'mini_lex_new';
   const F_VERB = `lex:${L_VERB}`;
   const F_NOUN = `lex:${L_NOUN}`;
   const F_ADJ  = `lex:${L_ADJ}`;
+  const F_VERB2 = `lex:${L_VERB2}`;
+  const F_NOUN2 = `lex:${L_NOUN2}`;
+  const F_ADJ2  = `lex:${L_ADJ2}`;
 
   await prisma.lexeme.upsert({ where: { id: L_VERB }, update: { lemma: 'לכתוב', language: 'he', pos: 'verb', gloss: 'to write' }, create: { id: L_VERB, lemma: 'לכתוב', language: 'he', pos: 'verb', gloss: 'to write' } });
   await prisma.lexeme.upsert({ where: { id: L_NOUN }, update: { lemma: 'ספר', language: 'he', pos: 'noun', gloss: 'book' }, create: { id: L_NOUN, lemma: 'ספר', language: 'he', pos: 'noun', gloss: 'book' } });
   await prisma.lexeme.upsert({ where: { id: L_ADJ }, update: { lemma: 'גדול', language: 'he', pos: 'adjective', gloss: 'big' }, create: { id: L_ADJ, lemma: 'גדול', language: 'he', pos: 'adjective', gloss: 'big' } });
+  // Phase 1 lexemes
+  await prisma.lexeme.upsert({ where: { id: L_VERB2 }, update: { lemma: 'לדבר', language: 'he', pos: 'verb', gloss: 'to speak' }, create: { id: L_VERB2, lemma: 'לדבר', language: 'he', pos: 'verb', gloss: 'to speak' } });
+  await prisma.lexeme.upsert({ where: { id: L_NOUN2 }, update: { lemma: 'גלידה', language: 'he', pos: 'noun', gloss: 'ice cream' }, create: { id: L_NOUN2, lemma: 'גלידה', language: 'he', pos: 'noun', gloss: 'ice cream' } });
+  await prisma.lexeme.upsert({ where: { id: L_ADJ2 }, update: { lemma: 'חדש', language: 'he', pos: 'adjective', gloss: 'new' }, create: { id: L_ADJ2, lemma: 'חדש', language: 'he', pos: 'adjective', gloss: 'new' } });
 
   // Inflections — VERB (כתב / לכתוב)
   const vInfs: Array<{ form: string; tense?: string | null; person?: string | null; number?: string | null; gender?: string | null }>= [
@@ -95,6 +106,34 @@ async function main() {
     await prisma.inflection.create({ data: { lexeme_id: L_VERB, form: inf.form, transliteration: null, tense: inf.tense ?? null, person: inf.person ?? null, number: inf.number ?? null, gender: inf.gender ?? null } }).catch(() => {});
   }
 
+  // Inflections — VERB 2 (לדבר)
+  const v2Infs: Array<{ form: string; tense?: string | null; person?: string | null; number?: string | null; gender?: string | null }>= [
+    { form: 'לדבר', tense: 'infinitive' },
+    // present
+    { form: 'מדבר', tense: 'present', number: 'sg', gender: 'm', person: '3' },
+    { form: 'מדברת', tense: 'present', number: 'sg', gender: 'f', person: '3' },
+    { form: 'מדברים', tense: 'present', number: 'pl', gender: 'm', person: '3' },
+    { form: 'מדברות', tense: 'present', number: 'pl', gender: 'f', person: '3' },
+    // past (subset)
+    { form: 'דיברתי', tense: 'past', person: '1', number: 'sg', gender: null },
+    { form: 'דיבר', tense: 'past', person: '3', number: 'sg', gender: 'm' },
+    { form: 'דיברה', tense: 'past', person: '3', number: 'sg', gender: 'f' },
+    { form: 'דיברנו', tense: 'past', person: '1', number: 'pl', gender: null },
+    { form: 'דיברו', tense: 'past', person: '3', number: 'pl', gender: null },
+    // future (subset)
+    { form: 'אדבר', tense: 'future', person: '1', number: 'sg', gender: null },
+    { form: 'תדבר', tense: 'future', person: '2', number: 'sg', gender: 'm' },
+    { form: 'תדברי', tense: 'future', person: '2', number: 'sg', gender: 'f' },
+    { form: 'ידבר', tense: 'future', person: '3', number: 'sg', gender: 'm' },
+    { form: 'תדבר', tense: 'future', person: '3', number: 'sg', gender: 'f' },
+    { form: 'נדבר', tense: 'future', person: '1', number: 'pl', gender: null },
+    { form: 'תדברו', tense: 'future', person: '2', number: 'pl', gender: null },
+    { form: 'ידברו', tense: 'future', person: '3', number: 'pl', gender: null },
+  ];
+  for (const inf of v2Infs) {
+    await prisma.inflection.create({ data: { lexeme_id: L_VERB2, form: inf.form, transliteration: null, tense: inf.tense ?? null, person: inf.person ?? null, number: inf.number ?? null, gender: inf.gender ?? null } }).catch(() => {});
+  }
+
   // Inflections — NOUN (ספר)
   const nInfs = [
     { form: 'ספר', number: 'sg', gender: 'm' },
@@ -102,6 +141,15 @@ async function main() {
   ];
   for (const inf of nInfs) {
     await prisma.inflection.create({ data: { lexeme_id: L_NOUN, form: inf.form, transliteration: null, number: inf.number as any, gender: inf.gender as any } }).catch(() => {});
+  }
+
+  // Inflections — NOUN 2 (גלידה)
+  const n2Infs = [
+    { form: 'גלידה', number: 'sg', gender: 'f' },
+    { form: 'גלידות', number: 'pl', gender: 'f' },
+  ];
+  for (const inf of n2Infs) {
+    await prisma.inflection.create({ data: { lexeme_id: L_NOUN2, form: inf.form, transliteration: null, number: inf.number as any, gender: inf.gender as any } }).catch(() => {});
   }
 
   // Inflections — ADJECTIVE (גדול)
@@ -113,6 +161,17 @@ async function main() {
   ];
   for (const inf of aInfs) {
     await prisma.inflection.create({ data: { lexeme_id: L_ADJ, form: inf.form, transliteration: null, number: inf.number as any, gender: inf.gender as any } }).catch(() => {});
+  }
+
+  // Inflections — ADJECTIVE 2 (חדש)
+  const a2Infs = [
+    { form: 'חדש', number: 'sg', gender: 'm' },
+    { form: 'חדשה', number: 'sg', gender: 'f' },
+    { form: 'חדשים', number: 'pl', gender: 'm' },
+    { form: 'חדשות', number: 'pl', gender: 'f' },
+  ];
+  for (const inf of a2Infs) {
+    await prisma.inflection.create({ data: { lexeme_id: L_ADJ2, form: inf.form, transliteration: null, number: inf.number as any, gender: inf.gender as any } }).catch(() => {});
   }
 
   // Helper to upsert item
@@ -128,6 +187,10 @@ async function main() {
   await upsertItem('mini_verb_base', 'How do I say: to write?', 'לכתוב', ['mini','verb','base'], { pos: 'verb', tense: 'infinitive' }, L_VERB, F_VERB, true);
   await upsertItem('mini_noun_base', 'How do I say: book?', 'ספר', ['mini','noun','base'], { pos: 'noun', number: 'sg', gender: 'm' }, L_NOUN, F_NOUN, true);
   await upsertItem('mini_adj_base',  'How do I say: big?', 'גדול', ['mini','adjective','base'], { pos: 'adjective', number: 'sg', gender: 'm' }, L_ADJ, F_ADJ, true);
+  // Phase 1 bases
+  await upsertItem('mini_verb2_base', 'How do I say: to speak?', 'לדבר', ['mini','verb','base'], { pos: 'verb', tense: 'infinitive' }, L_VERB2, F_VERB2, true);
+  await upsertItem('mini_noun2_base', 'How do I say: ice cream?', 'גלידה', ['mini','noun','base'], { pos: 'noun', number: 'sg', gender: 'f' }, L_NOUN2, F_NOUN2, true);
+  await upsertItem('mini_adj2_base',  'How do I say: new?', 'חדש', ['mini','adjective','base'], { pos: 'adjective', number: 'sg', gender: 'm' }, L_ADJ2, F_ADJ2, true);
 
   // Verb variants
   const vBase = 'write';
@@ -179,18 +242,70 @@ async function main() {
     await upsertItem(`mini_v_fu_${i}`, en, he, ['mini','verb','future'], { pos: 'verb', tense: 'future', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB, F_VERB, false);
   }
 
+  // Verb 2 variants — לדבר (to speak)
+  const v2Base = 'speak';
+  const present2: Array<Morph & { form: string }> = [
+    { person: '1', number: 'sg', gender: 'm', form: 'מדבר' },
+    { person: '1', number: 'sg', gender: 'f', form: 'מדברת' },
+    { person: '3', number: 'sg', gender: 'm', form: 'מדבר' },
+    { person: '3', number: 'sg', gender: 'f', form: 'מדברת' },
+    { person: '3', number: 'pl', gender: 'm', form: 'מדברים' },
+    { person: '3', number: 'pl', gender: 'f', form: 'מדברות' },
+  ];
+  for (let i = 0; i < present2.length; i++) {
+    const m = present2[i];
+    const en = `How do I say: ${enPron(m)} ${(['he','she'].includes(enPron(m)) ? 'is' : (enPron(m) === 'I' ? 'am' : 'are'))} ${ing(v2Base)}?`;
+    const he = `${hePron(m)} ${m.form}`;
+    await upsertItem(`mini_v2_pr_${i}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB2, F_VERB2, false);
+  }
+  const past2: Array<Morph & { form: string }> = [
+    { person: '1', number: 'sg', gender: null, form: 'דיברתי' },
+    { person: '3', number: 'sg', gender: 'm', form: 'דיבר' },
+    { person: '3', number: 'sg', gender: 'f', form: 'דיברה' },
+    { person: '1', number: 'pl', gender: null, form: 'דיברנו' },
+    { person: '3', number: 'pl', gender: null, form: 'דיברו' },
+  ];
+  for (let i = 0; i < past2.length; i++) {
+    const m = past2[i];
+    const en = `How do I say: ${enPron(m)} spoke?`;
+    const he = `${hePron(m)} ${m.form}`;
+    await upsertItem(`mini_v2_pa_${i}`, en, he, ['mini','verb','past'], { pos: 'verb', tense: 'past', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB2, F_VERB2, false);
+  }
+  const future2: Array<Morph & { form: string }> = [
+    { person: '1', number: 'sg', gender: null, form: 'אדבר' },
+    { person: '2', number: 'sg', gender: 'f', form: 'תדברי' },
+    { person: '3', number: 'sg', gender: 'm', form: 'ידבר' },
+    { person: '3', number: 'sg', gender: 'f', form: 'תדבר' },
+    { person: '1', number: 'pl', gender: null, form: 'נדבר' },
+    { person: '2', number: 'pl', gender: null, form: 'תדברו' },
+    { person: '3', number: 'pl', gender: null, form: 'ידברו' },
+  ];
+  for (let i = 0; i < future2.length; i++) {
+    const m = future2[i];
+    const en = `How do I say: ${enPron(m)} will ${v2Base}?`;
+    const he = `${hePron(m)} ${m.form}`;
+    await upsertItem(`mini_v2_fu_${i}`, en, he, ['mini','verb','future'], { pos: 'verb', tense: 'future', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB2, F_VERB2, false);
+  }
+
   // Noun variants (definite sg, plural)
   await upsertItem('mini_n_def', 'How do I say: the book?', 'הספר', ['mini','noun','definite'], { pos: 'noun', number: 'sg', gender: 'm' }, L_NOUN, F_NOUN, false);
   await upsertItem('mini_n_pl',  'How do I say: books (plural)?', 'ספרים', ['mini','noun','plural'], { pos: 'noun', number: 'pl', gender: 'm' }, L_NOUN, F_NOUN, false);
+  // Noun 2 variants — גלידה
+  await upsertItem('mini_n2_def', 'How do I say: the ice cream?', 'הגלידה', ['mini','noun','definite'], { pos: 'noun', number: 'sg', gender: 'f' }, L_NOUN2, F_NOUN2, false);
+  await upsertItem('mini_n2_pl',  'How do I say: ice creams (plural)?', 'גלידות', ['mini','noun','plural'], { pos: 'noun', number: 'pl', gender: 'f' }, L_NOUN2, F_NOUN2, false);
 
-  // Adjective variants
+  // Adjective variants — גדול
   await upsertItem('mini_a_m_sg', 'How do I say: he is big?', 'הוא גדול', ['mini','adjective'], { pos: 'adjective', number: 'sg', gender: 'm' }, L_ADJ, F_ADJ, false);
   await upsertItem('mini_a_f_sg', 'How do I say: she is big?', 'היא גדולה', ['mini','adjective'], { pos: 'adjective', number: 'sg', gender: 'f' }, L_ADJ, F_ADJ, false);
   await upsertItem('mini_a_m_pl', 'How do I say: they (m) are big?', 'הם גדולים', ['mini','adjective'], { pos: 'adjective', number: 'pl', gender: 'm' }, L_ADJ, F_ADJ, false);
   await upsertItem('mini_a_f_pl', 'How do I say: they (f) are big?', 'הן גדולות', ['mini','adjective'], { pos: 'adjective', number: 'pl', gender: 'f' }, L_ADJ, F_ADJ, false);
+  // Adjective 2 variants — חדש
+  await upsertItem('mini_a2_m_sg', 'How do I say: he is new?', 'הוא חדש', ['mini','adjective'], { pos: 'adjective', number: 'sg', gender: 'm' }, L_ADJ2, F_ADJ2, false);
+  await upsertItem('mini_a2_f_sg', 'How do I say: she is new?', 'היא חדשה', ['mini','adjective'], { pos: 'adjective', number: 'sg', gender: 'f' }, L_ADJ2, F_ADJ2, false);
+  await upsertItem('mini_a2_m_pl', 'How do I say: they (m) are new?', 'הם חדשים', ['mini','adjective'], { pos: 'adjective', number: 'pl', gender: 'm' }, L_ADJ2, F_ADJ2, false);
+  await upsertItem('mini_a2_f_pl', 'How do I say: they (f) are new?', 'הן חדשות', ['mini','adjective'], { pos: 'adjective', number: 'pl', gender: 'f' }, L_ADJ2, F_ADJ2, false);
 
-  console.log('Seeded vocab_mini_morph with 3 lexemes and variants.');
+  console.log('Seeded vocab_mini_morph with 6 lexemes and variants.');
 }
 
 main().catch((e) => { console.error(e); process.exit(1); }).finally(async () => { await prisma.$disconnect(); });
-

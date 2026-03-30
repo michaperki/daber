@@ -37,6 +37,17 @@ async function run() {
   const sessionId = await createSession(lessonId);
   const seenByPos: Record<string, { heb: string; en?: string; itemId: string }> = {};
 
+  const MINI_ALLOW = new Set<string>([
+    'mini_lex_write','mini_lex_book','mini_lex_big',
+    'mini_lex_speak','mini_lex_icecream','mini_lex_new',
+  ]);
+
+  function isHebrew(s: string) { return /[\u0590-\u05FF]/.test(s); }
+  function isSingleToken(s: string) { return (s || '').trim().split(/\s+/).filter(Boolean).length === 1; }
+  function startsWithHa(s: string) { return /^ה+/.test(s || ''); }
+  function looksPlural(s: string) { return /(?:ים|ות)$/.test(s || ''); }
+  function looksInfinitive(s: string) { return /^ל\S+$/.test(s || ''); }
+
   // Collect first intros for verb, noun, adjective
   for (let i = 0; i < 30; i++) {
     const data = await getNext(sessionId, { random: '1' });
@@ -56,10 +67,10 @@ async function run() {
   assert(seenByPos['verb'], 'verb intro not seen');
   assert(seenByPos['noun'], 'noun intro not seen');
   assert(seenByPos['adjective'], 'adjective intro not seen');
-  // Canonical base checks
-  assert(seenByPos['verb'].heb === 'לכתוב', `verb intro must be infinitive; got ${seenByPos['verb'].heb}`);
-  assert(seenByPos['noun'].heb === 'ספר', `noun intro must be singular; got ${seenByPos['noun'].heb}`);
-  assert(seenByPos['adjective'].heb === 'גדול', `adjective intro must be m.sg; got ${seenByPos['adjective'].heb}`);
+  // Canonical base form sanity
+  assert(isHebrew(seenByPos['verb'].heb) && isSingleToken(seenByPos['verb'].heb) && looksInfinitive(seenByPos['verb'].heb), `verb intro must be an infinitive; got ${seenByPos['verb'].heb}`);
+  assert(isHebrew(seenByPos['noun'].heb) && isSingleToken(seenByPos['noun'].heb) && !startsWithHa(seenByPos['noun'].heb) && !looksPlural(seenByPos['noun'].heb), `noun intro must be singular, no ה-; got ${seenByPos['noun'].heb}`);
+  assert(isHebrew(seenByPos['adjective'].heb) && isSingleToken(seenByPos['adjective'].heb) && !looksPlural(seenByPos['adjective'].heb), `adjective intro must be m.sg base; got ${seenByPos['adjective'].heb}`);
   // English must be present on intros
   assert(!!seenByPos['verb'].en, 'verb intro missing English');
   assert(!!seenByPos['noun'].en, 'noun intro missing English');
@@ -73,10 +84,17 @@ async function run() {
     assert(phase !== 'intro', 'variant created a new intro');
   }
 
-  // Family stats: ensure exactly 3 families introduced for anon
-  const fams = await prisma.familyStat.findMany({ where: { user_id: 'anon' } });
-  const miniFams = fams.filter(f => ['lex:mini_lex_write','lex:mini_lex_book','lex:mini_lex_big'].includes(f.family_id));
-  assert(miniFams.length === 3, `expected 3 mini families introduced, got ${miniFams.length}`);
+  // Family stats: ensure introduced families are a subset of the mini allowlist
+  const session = await prisma.session.findUnique({ where: { id: sessionId } });
+  const userId = (session?.user_id || 'anon');
+  const fams = await prisma.familyStat.findMany({ where: { user_id: userId } });
+  const miniFams = fams.filter(f => f.family_id.startsWith('lex:mini_lex_'));
+  const famIds = new Set(miniFams.map(f => f.family_id));
+  for (const fid of famIds) {
+    const lexId = fid.replace(/^lex:/, '');
+    assert(MINI_ALLOW.has(lexId), `introduced family not in allowlist: ${fid}`);
+  }
+  assert(miniFams.length >= 3 && miniFams.length <= MINI_ALLOW.size, `unexpected number of mini families introduced: ${miniFams.length}`);
 
   // Invalid item rejection: create a mismatched item in the mini lesson and ensure it is skipped in subset
   await prisma.lessonItem.upsert({

@@ -2,7 +2,7 @@
 
 Role: Honest, always-current snapshot of the running codebase. Descriptive, not aspirational.
 
-Last reviewed: 2026-03-30 (card-generation integrity)
+Last reviewed: 2026-03-30 (card-generation integrity + mini hardening)
 
 —
 
@@ -64,9 +64,10 @@ New content assemblies
   - Bootstrap API creates lesson (`song_ma_naaseh_chorus_v1`, type `song`) + 12 items on first access.
   - Plan: expand to verse chunks.
 
-- Mini Morph Drill — SHIPPED (2026-03-30)
+- Mini Morph Drill — SHIPPED (2026-03-30), HARDENED (2026-03-30)
   - Lesson id: `vocab_mini_morph`. UI home has a "start mini morph drill" button.
-  - Scope: exactly one verb (לכתוב), one noun (ספר), one adjective (גדול).
+  - Initial scope: exactly one verb (לכתוב), one noun (ספר), one adjective (גדול).
+  - Phase 1 expansion (2026-03-30): added 3 lexemes — verb: לדבר; noun: גלידה; adjective: חדש. Hard allowlist expanded accordingly; validators unchanged.
   - Canonical intros (family_base items):
     - verb → infinitive (לכתוב)
     - noun → singular base (ספר)
@@ -81,6 +82,8 @@ New content assemblies
     - If `features.pos` present, it must match Lexeme.pos.
     - Verbs/adjectives must include a pronoun in `target_hebrew`.
     - Invalid picks are skipped and logged as `mini_morph_validation_skip`.
+  - MINI_ALLOW lexeme filter now applied to ALL selection paths (feature-due, due-item, SRS). Previously only SRS was filtered, allowing non-mini items from `vocab_mini_morph_gen` to leak through.
+  - English wrapper normalization: `englishFromCard()` strips any leading "How do I say:" before parsing/templating to avoid double-wrap prompts. Generators prefer `Lexeme.gloss` over `LessonItem.english_prompt`.
   - Debug: `?debug=1` adds `explain.meta` with `{ lexeme_id, family_id, pos, features }`.
   - Seed/sim/test: `scripts/seed_mini_morph.ts`, `scripts/simulate_mini_morph_session.ts`, `scripts/test_mini_morph.ts`.
 
@@ -188,6 +191,12 @@ Card-generation integrity — SHIPPED (2026-03-30)
 - Validation gate for generated items
   - Generated cards are validated for script correctness, POS/features coherence, and pronoun presence (verbs/adjectives). Inconsistent items are skipped.
   - Where: Daber/lib/drill/generators.ts (validateGenerated).
+- English source of truth for generators
+  - Generators now prefer `Lexeme.gloss` for English prompts across paths; fall back to sanitized item English only when needed. Wrapper text ("How do I say:") is stripped before composition to prevent garbled prompts.
+  - Where: Daber/lib/drill/generators.ts (englishFromCard / prompt builders).
+- Noun pool cleanup
+  - Possessive-suffixed noun forms (e.g., ״…ך", ״…יהם") are filtered from candidate pools for generated items to avoid unnatural targets.
+  - Where: Daber/lib/drill/generators.ts (noun candidate filters).
 - CC family linking hardened (lemma+POS)
   - Family IDs for CC imports now include POS: `lemma:<lemma>|pos:<pos>` and only link for {verb|noun|adjective}. Prevents cross‑POS contamination (e.g., verb form grouped under noun lemma).
   - Where: scripts/apply_cc_family_links.ts (consumes tags from scripts/tag_cc_families.ts).

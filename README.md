@@ -36,12 +36,12 @@ Output:
 API debug (dev only): append `?debug=1` to `GET /api/sessions/:id/next-item` to include `explain` in the response. For the mini drill, responses also include a `meta` block (session/lesson/item/lexeme/family/path).
 
 ### Mini Morph Drill (debugging)
-- Lesson: `vocab_mini_morph` (exactly 3 lexemes):
-  - verb: לכתוב, noun: ספר, adjective: גדול
+- Lesson: `vocab_mini_morph` (small allowlisted set; expanding):
+  - Current set: verbs — לכתוב, לדבר; nouns — ספר, גלידה; adjectives — גדול, חדש
 - UI: on the home page, use "start mini morph drill".
 - Simulate: `npm run simulate:mini`
 - Tests: `npm run test:mini`
-- Integrity: server enforces a hard allowlist of the 3 lexemes and disables lexicon generation for this lesson.
+- Integrity: server enforces a hard allowlist (applied to all selection paths) and disables lexicon generation for this lesson; selection-time validation skips malformed picks and logs why.
 
 ## Commands
 - Dev: `npm run dev`

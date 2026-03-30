@@ -81,7 +81,11 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const userId = (session.user_id || 'anon');
     const sessionLessonId = session.lesson_id; // capture for inner closures to avoid nullable narrowing issues
     const isMini = sessionLessonId === 'vocab_mini_morph';
-    const MINI_ALLOW = new Set<string>(['mini_lex_write', 'mini_lex_book', 'mini_lex_big']);
+    const MINI_ALLOW = new Set<string>([
+      'mini_lex_write', 'mini_lex_book', 'mini_lex_big',
+      // Phase 1 expansion
+      'mini_lex_speak', 'mini_lex_icecream', 'mini_lex_new',
+    ]);
 
     // Mini-drill validation helpers (only used for vocab_mini_morph)
     // Reuse top-level englishOk; define only hebrewOk/strippers here

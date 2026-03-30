@@ -25,6 +25,12 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
   - Minimal drill (`vocab_mini_morph`) with a hard allowlist (3 lexemes) and selection‑time validation gates
   - Lexicon generator path disabled for this lesson; server returns debug `meta` (session/lesson/item/lexeme/family/path)
   - Loud logging on any blocked pick
+- Mini morph expansion — representative coverage with a tiny matrix — Phase 1 SHIPPED
+  - Goal: scale the mini into a stable, integrity‑gated sandbox that covers all core morphology (verbs: present/past/future × person/number/gender; nouns: number/definiteness/construct; adjectives: number/gender; plus a few particles/prepositions) using 12–20 hand‑picked lexemes.
+  - Keep the hard allowlist and selection‑time validators; continue to disable unrelated generator paths for the mini lesson.
+  - Add seed/script trio per expansion: `seed:mini` for new items, `simulate:mini` to walk the pool, `test:mini` to assert allowlist, feature completeness, and EN/HE hygiene.
+  - Choose lexemes with clean inflection tables and minimal irregularities to reduce noise in early passes.
+  - Track expansion in STATE/Dev Journal with explicit inventories and guard updates.
 - Family progression spacing — After infinitive intros, schedule present forms (3sg m → 3sg f → 1sg → 3pl m) and space follow‑ups across sessions; interleave familiar content.
 - Feature‑blend due selection — Blend `ItemStat` and `FeatureStat` so weak features (number/gender/person/tense) steer picks when requested.
 - Admin family tooling — Quick actions to set `family_base` and `family_id` on `/admin/lexicon/validate` to accelerate coverage.

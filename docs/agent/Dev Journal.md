@@ -11,6 +11,28 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - UI: Intro card shows the English line only when `intro.english` is present; removed fallback to `english_prompt` to prevent instruction text appearing as a translation in Green.
 - Historical data: `Daber/data/green_glosses.json` kept for provenance; not referenced at runtime.
 
+## 2026-03-30 — Mini-drill hardening (leak plugs + English prompt fix)
+
+- Selection integrity:
+  - Applied `MINI_ALLOW` lexeme filter to all selection paths (feature-due, due-item, and SRS), preventing non-mini items from leaking into `vocab_mini_morph`.
+  - Added loud logging for any skipped pick via `mini_morph_validation_skip`.
+- English prompts:
+  - `englishFromCard()` now strips leading "How do I say:" before parsing/templating to prevent double-wrapped prompts.
+  - Generators prefer `Lexeme.gloss` over `LessonItem.english_prompt` across paths.
+- Noun pool cleanup: filter possessive-suffixed noun forms (e.g., ״…ך", ״…יהם") from generator candidates.
+- Verbs: ensure `isCompleteVerbInf` gating applies to past/future (previously only present); avoids partial-feature cards.
+- Files: `Daber/app/api/sessions/[sessionId]/next-item/route.ts`, `Daber/lib/drill/generators.ts`.
+
+## 2026-03-30 — Mini-drill Phase 1 expansion
+
+- Allowlist: added 3 lexemes — `mini_lex_speak` (לדבר), `mini_lex_icecream` (גלידה), `mini_lex_new` (חדש).
+- Seed: added lexemes + inflections; base items and key variants:
+  - לדבר: present (m/f sg, m/f pl), past (1sg, 3sg m/f, 1pl, 3pl), future (1sg, 2sg f, 3sg m/f, 1pl, 2pl, 3pl).
+  - גלידה: definite sg (הגלידה), plural (גלידות).
+  - חדש: m/f sg, m/f pl with pronoun-bearing targets.
+- API: expanded `MINI_ALLOW` in next-item route.
+- Tests: generalized mini tests to check canonical intro shapes by POS (infinitive verb, sg noun w/o ה, m.sg adjective) and to assert introduced families are a subset of the allowlist.
+
 ## 2026-03-29 — Optional user labels + TTS doc cleanup
 
 - Settings: Added an optional “display name” field (admin-only use) that saves a label tied to the anonymous UUID.

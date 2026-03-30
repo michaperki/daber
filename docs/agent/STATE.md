@@ -54,7 +54,9 @@ New content assemblies
 - Green vocab drill
   - Curated allowlist of ~88 Wikidata lexemes (`Daber/data/green_lexemes.json`).
   - Session via lesson_id `vocab_green`; home page has "start green drill" button.
-  - Listen-only prompts — no auto-generated English. Generator checks `isGreen` flag.
+  - Listen-only prompts — no auto-generated English during drills. Generator checks `isGreen` flag.
+  - Intros: English comes from curated glosses (`Daber/data/green_glosses.json`) when available. If missing, derive from linked prompts (adj/noun) or omit (never show instruction text as a “translation”).
+  - Generated items now link to lexemes (`LessonItem.lexeme_id`) for reliable intros/hints; older generated ids are parsed as a fallback.
   - Supports Wikidata POS Q-ids (e.g. `Q24905`) in addition to plain POS strings.
 - Song packs
   - Ma Na'aseh (Hadag Nahash) chorus lesson at `/songs/ma-naaseh`.
@@ -77,6 +79,7 @@ UI changes (since 2026-03-25)
 - iOS/mobile: custom HebrewKeyboard hidden on touch/coarse-pointer devices; native keyboard used.
 - iOS mic lifecycle: session page now cools down the mic on `visibilitychange` and `pagehide` to release iOS mic access when leaving.
 - Emoji: `deriveEmojiFromFeatures()` prefers item grammatical features over prompt-parsing heuristic.
+ - Intro card: only renders the English line when `intro.english` is provided by the server; removes fallback to `english_prompt` to avoid showing instruction text as a translation in Green.
 
 Actual happy path (today)
 - Start a drill

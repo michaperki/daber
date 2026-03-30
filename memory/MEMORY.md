@@ -39,6 +39,7 @@ Last updated: 2026-03-29 (post-identity rollout)
 - Family coverage: intros once per family; broaden base‑form linking.
 - Validate guided phase and hints in real sessions; polish scaffolds.
 - Backlog: user auth/profiles, STT confidence guardrails, CC import pipeline docs.
+ - Green intros: server prefers curated glosses and never shows instruction text as translation; UI renders English only when supplied.
 
 ## Near‑Term High‑Leverage
 - **Pilot flow polish**: Keep friction at zero; consider optional name label in settings that maps to the UUID for admin readability.
@@ -134,6 +135,7 @@ Last updated: 2026-03-29 (post-identity rollout)
 - Wikidata seeding: `scripts/lexicon/seed_wikidata_bulk.ts`, `scripts/lexicon/run_wd_seed_forever.sh`
 - TTS volume boost: `Daber/lib/client/audio/useTTS.ts` (GainNode logic)
 - Oolpan schema ref: `Oolpan/README.md` (design artifact, not running code)
+ - Green intros (2026-03-30): prefer `green_glosses.json` gloss; derive adj/noun English from linked prompts; suppress instruction text; generators link `lexeme_id`.
 
 ## Ops / Dev Notes
 - Env:

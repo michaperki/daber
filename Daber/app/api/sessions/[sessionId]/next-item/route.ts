@@ -133,7 +133,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const ok = await validateMiniItem(shaped);
         if (ok.ok) return { id: cid, explain: skipped ? { skippedInvalid: skipped } : undefined };
         skipped++;
-        try { logEvent({ type: 'mini_morph_validation_skip', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: cid, reason: (!ok.ok ? ok.reason : 'unknown') } }); } catch {}
+        try { logEvent({ type: 'mini_morph_validation_skip', session_id: sessionId, lesson_id: sessionLessonId, payload: { item_id: cid, reason: (!ok.ok ? ok.reason : 'unknown') } }); } catch {}
       }
       return null;
     }

@@ -125,6 +125,11 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       }
       return { ok: true };
     }
+    async function filterMiniAllowed(ids: string[]): Promise<string[]> {
+      if (!isMini) return ids;
+      const lis = await prisma.lessonItem.findMany({ where: { id: { in: ids } }, select: { id: true, lexeme_id: true } });
+      return lis.filter(l => l.lexeme_id && MINI_ALLOW.has(l.lexeme_id)).map(l => l.id);
+    }
     async function pickValidFromIds(ids: string[]): Promise<{ id: string; explain?: any } | null> {
       if (!isMini) return { id: (ids[0] || null) } as any;
       let skipped = 0;
@@ -634,7 +639,12 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           if (!pos) return false;
           return dueSet.has([pos, tense, person, number, gender].join('|'));
         };
-        const featureCandidates = remainingPool.filter(r => featsMatch((r as any).features));
+        let featureCandidates = remainingPool.filter(r => featsMatch((r as any).features));
+        if (isMini) {
+          const allowedIds = await filterMiniAllowed(featureCandidates.map(c => c.id));
+          const allowedSet = new Set(allowedIds);
+          featureCandidates = featureCandidates.filter(c => allowedSet.has(c.id));
+        }
         if (debug) {
           explain.path = 'due_feature';
           explain.candidates = { ...(explain.candidates || {}), featureDue: dueFeatures.length, featureCandidates: featureCandidates.length };
@@ -671,7 +681,12 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const now = new Date();
       const dueItems = await prisma.itemStat.findMany({ where: { user_id: userId, next_due: { lte: now } } });
       const dueSet = new Set(dueItems.map(d => d.lesson_item_id));
-      const remaining = await prisma.lessonItem.findMany({ where: { lesson_id: { in: allowedLessonIds }, id: { in: Array.from(dueSet) }, NOT: { id: { in: Array.from(attemptedIds) } } }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+      let remaining = await prisma.lessonItem.findMany({ where: { lesson_id: { in: allowedLessonIds }, id: { in: Array.from(dueSet) }, NOT: { id: { in: Array.from(attemptedIds) } } }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+      if (isMini) {
+        const allowedIds = await filterMiniAllowed(remaining.map(r => r.id));
+        const allowedSet = new Set(allowedIds);
+        remaining = remaining.filter(r => allowedSet.has(r.id));
+      }
       if (debug) {
         explain.path = 'due_item';
         explain.candidates = { dueCount: remaining.length };

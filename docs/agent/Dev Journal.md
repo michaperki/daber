@@ -330,3 +330,17 @@ Note: SOUL.md unchanged (requires approval).
 - Allowed lessons: selection now includes the generated lesson (`<lesson>_gen`) in non-cross-vocab sessions to find/use base items.
 - Simulator: `scripts/simulate_green_session.ts` no longer posts attempts for `phase: 'intro'` (marks seen only).
 - Logging: `attempts` route skips `session_ended` when the base lesson has zero items, avoiding premature end logs in lex mode.
+## 2026-03-30 — Card-generation integrity alignment
+
+- Root cause: EN/HE pronoun divergence on partial morphology; cross‑POS family contamination from CC lemma tagging; incomplete WD inflection fields; lack of card‑level validation.
+- Pronoun fallbacks: unify to 3rd‑pl neutral — English “they”, Hebrew “הם”. Applies across generators (present/past/future/adjective).
+- Gating: generators require complete features before emitting a card — verbs need tense+person+number (gender for 2sg/3sg), adjectives need number+gender, nouns need number.
+- Validation: new guard rejects generated items with mixed scripts, mismatched POS/features, or missing pronoun for verbs/adjectives.
+- CC families: change family_id to `lemma:<lemma>|pos:<pos>` (and only for {verb|noun|adjective}) to block cross‑POS leakage.
+- Normalization: plural adjective gender inferred (ים → m, ות → f) to improve completeness.
+- Scripts to run after deploy:
+  - Normalize inflections: `DATABASE_URL=… npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/lexicon/normalize_inflections.ts`
+  - Re‑tag + apply CC family links:
+    - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/tag_cc_families.ts --out cc_family_tags.json`
+    - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/apply_cc_family_links.ts --in cc_family_tags.json`
+- Commit: “drill: align pronoun fallbacks; gate generators on complete morphology; CC families lemma+POS; plural adjective gender normalization; validate generated items”.

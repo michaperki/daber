@@ -2,7 +2,7 @@
 
 Role: Live project state, architecture snapshot, and current focus. Update this file at the end of each work session.
 
-Last updated: 2026-03-30 (Green gloss rollout)
+Last updated: 2026-03-30 (card-generation integrity)
 
 ---
 
@@ -34,6 +34,8 @@ Last updated: 2026-03-30 (Green gloss rollout)
 ## Current Focus
 - **Doc alignment**: keeping SOUL, MEMORY, STATE, ROADMAP, and Dev Journal in sync with shipped code.
 - **Green vocab drill**: curated ~82 lexeme drill. Green generators now use gloss-based prompts ("How do I say …"); intros use `Lexeme.gloss`.
+- **Card-generation integrity**: completed alignment of pronoun fallbacks (EN/HE), generator gating on complete morphology, CC family lemma+POS links, plural adjective gender normalization, and validation gates to skip inconsistent items.
+- Next: revisit intro-card polish and orthographic quality (do not change pedagogy until integrity gates are stable in prod).
 - **Song packs**: Ma Na'aseh chorus live; expand to verse chunks.
 - **Pilot feedback**: with anonymous identity shipped, observe `/admin/users` for activity and accuracy. Decide if optional names/labels are needed later.
 - Family coverage: intros once per family; broaden base‑form linking.
@@ -50,6 +52,16 @@ Last updated: 2026-03-30 (Green gloss rollout)
 - Admin family tools: on `/admin/lexicon/validate`, add actions to mark `family_base` and assign `family_id` for obvious lemmas.
 - Guided hints: v1 shipped (base form, first letter, definiteness chip, pronoun insert). Consider more scaffolds and analytics.
 - English cleanup pass: run `scripts/scan_normalize_english.ts` on generated/CC lessons to standardize articles/casing (dry‑run then `--apply`).
+ - Orthography quality (queued after integrity): enrich WD verb forms (mater lectionis) and refine intro selection once data is consistent.
+
+## Recent Changes (2026-03-30)
+- Card-generation integrity alignment:
+  - Unified pronoun fallbacks: EN “they”, HE “הם”.
+  - Generators require complete morphology (verbs/adjectives/nouns) before emitting items.
+  - Validation gate skips mixed-script or POS/feature-inconsistent items.
+  - CC family IDs include POS; only link for {verb|noun|adjective}.
+  - Plural adjective gender inferred by suffix (ים/ות).
+  - Follow-up scripts to run: normalize_inflections → tag_cc_families → apply_cc_family_links.
 
 ## Recent Changes (2026-03-24)
 - Word families infrastructure:

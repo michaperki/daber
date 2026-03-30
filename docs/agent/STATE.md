@@ -2,7 +2,7 @@
 
 Role: Honest, always-current snapshot of the running codebase. Descriptive, not aspirational.
 
-Last reviewed: 2026-03-29 (post-identity rollout)
+Last reviewed: 2026-03-30 (card-generation integrity)
 
 —
 
@@ -154,3 +154,30 @@ Session end logging — SHIPPED (2026-03-30)
 - Attempts API no longer emits `session_ended` when the base lesson has zero items (common in lexicon mode with items under `<lesson>_gen`).
 - Admin tools: Daber/app/admin/*, Daber/app/api/admin/lexicon/*
  - Users dashboard: Daber/app/admin/users/page.tsx
+
+Card-generation integrity — SHIPPED (2026-03-30)
+- Pronoun fallback alignment
+  - English fallback uses neutral “they”; Hebrew fallback uses 3rd‑person plural “הם”. This avoids EN/HE divergence when features are partial.
+  - Where: Daber/lib/drill/generators.ts (pronounFrom, pronounHeb).
+- Morphology completeness gating (generators)
+  - Verbs: require tense + person + number (and gender for 2sg/3sg) before generating a card.
+  - Adjectives: require number + gender.
+  - Nouns: require number.
+  - Incomplete inflections are skipped when selecting forms for generated items.
+  - Where: Daber/lib/drill/generators.ts (isCompleteVerbInf/isCompleteAdjInf/isCompleteNounInf).
+- Validation gate for generated items
+  - Generated cards are validated for script correctness, POS/features coherence, and pronoun presence (verbs/adjectives). Inconsistent items are skipped.
+  - Where: Daber/lib/drill/generators.ts (validateGenerated).
+- CC family linking hardened (lemma+POS)
+  - Family IDs for CC imports now include POS: `lemma:<lemma>|pos:<pos>` and only link for {verb|noun|adjective}. Prevents cross‑POS contamination (e.g., verb form grouped under noun lemma).
+  - Where: scripts/apply_cc_family_links.ts (consumes tags from scripts/tag_cc_families.ts).
+- Inflection normalization improvement
+  - Plural adjective gender inferred by suffix (ים → m, ות → f) to improve feature completeness.
+  - Where: scripts/lexicon/normalize_inflections.ts.
+
+Operational notes (post‑deploy)
+- Normalize inflections for existing data:
+  - `DATABASE_URL=… npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/lexicon/normalize_inflections.ts`
+- Re‑tag and apply CC family links:
+  - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/tag_cc_families.ts --out cc_family_tags.json`
+  - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/apply_cc_family_links.ts --in cc_family_tags.json`

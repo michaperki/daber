@@ -83,7 +83,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const isMini = sessionLessonId === 'vocab_mini_morph';
 
     // Mini-drill validation helpers (only used for vocab_mini_morph)
-    const englishOk = (s: string) => !!s && !/[\u0590-\u05FF]/.test(s || '') && /[A-Za-z]/.test(s || '');
+    // Reuse top-level englishOk; define only hebrewOk/strippers here
     const hebrewOk = (s: string) => !!s && /[\u0590-\u05FF]/.test(s || '') && !/[A-Za-z]/.test(s || '');
     const stripPronoun = (s: string) => {
       const pronouns = ['אני','אתה','את','הוא','היא','אנחנו','אתם','אתן','הם','הן'];

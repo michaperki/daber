@@ -15,6 +15,11 @@ function keyFromReq(req: Request, scope: string): string {
 }
 
 export function rateLimitGuard(req: Request, scope: string, limitPerMinute: number): Response | null {
+  const backend = (process.env.RL_BACKEND || 'memory').toLowerCase();
+  if (backend !== 'memory') {
+    // Placeholder for Redis-backed token bucket; falls back to memory
+    // When wired: use a per-key hash { tokens, last } with atomic Lua script or multi to refill + consume
+  }
   const key = keyFromReq(req, scope);
   const now = Date.now();
   const capacity = Math.max(1, limitPerMinute);
@@ -40,4 +45,3 @@ export function rateLimitGuard(req: Request, scope: string, limitPerMinute: numb
   b.tokens -= 1;
   return null;
 }
-

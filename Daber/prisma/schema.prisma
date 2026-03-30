@@ -86,6 +86,7 @@ model ItemStat {
   incorrect_count Int     @default(0)
 
   @@id([lesson_item_id, user_id])
+  @@index([user_id, next_due], map: "idx_itemstat_user_due")
 }
 
 model FeatureStat {
@@ -104,6 +105,8 @@ model FeatureStat {
   correct_count   Int      @default(0)
   flawed_count    Int      @default(0)
   incorrect_count Int      @default(0)
+  @@index([user_id, next_due], map: "idx_featurestat_user_due")
+  @@index([user_id, pos, tense, person, number, gender], map: "idx_featurestat_user_feature")
 }
 
 model Event {

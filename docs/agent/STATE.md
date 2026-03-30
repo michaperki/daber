@@ -222,6 +222,12 @@ Operational notes (post‑deploy)
   - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/tag_cc_families.ts --out cc_family_tags.json`
   - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/apply_cc_family_links.ts --in cc_family_tags.json`
 
+DB indexes — SHIPPED (2026-03-30)
+- Added indexes to speed due/feature queries:
+  - ItemStat(user_id, next_due)
+  - FeatureStat(user_id, next_due)
+  - FeatureStat(user_id, pos, tense, person, number, gender)
+
 Selection blend default — SHIPPED (2026-03-30)
 - Server defaults `due=blend` when unspecified, attempting FeatureStat-driven picks first, then falling back to ItemStat due.
 - Where: Daber/app/api/sessions/[sessionId]/next-item/route.ts (dueMode default = 'blend').

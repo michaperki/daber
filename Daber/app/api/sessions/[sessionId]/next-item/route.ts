@@ -2,10 +2,40 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { logEvent } from '@/lib/log';
 import { generateNextFromLexicon } from '@/lib/drill/generators';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export async function GET(req: Request, { params }: { params: { sessionId: string } }) {
   const { sessionId } = params;
   try {
+    // Helpers for canonical intro enforcement
+    const containsHebrew = (s: string) => /[\u0590-\u05FF]/.test(s || '');
+    const containsLatin = (s: string) => /[A-Za-z]/.test(s || '');
+    const englishOk = (s: string) => !!s && !containsHebrew(s) && containsLatin(s);
+    const stripHowDoISay = (s: string) => s.replace(/^\s*how\s+do\s+i\s+say[:\s-]*/i, '').replace(/\?+\s*$/, '').trim();
+    const sanitizeEnglish = (s: string) => stripHowDoISay((s || '').replace(/[\u0590-\u05FF]/g, '')).trim();
+    const stripNikkud = (s: string) => (s || '').replace(/[\u0591-\u05C7]/g, '');
+    const isSingleToken = (s: string) => (s || '').split(/\s+/).filter(Boolean).length === 1;
+    const looksPlural = (s: string) => /(?:ים|ות)$/.test(s || '');
+    const hasPossessiveSuffix = (s: string) => /(?:י|ך|ךָ|ךְ|נו|כם|כן|יהם|יהן)$/.test(s || '');
+
+    // Lazy-load Green gloss fallback
+    let GREEN_GLOSSES: Record<string, { gloss: string | null; pos?: string }> | null = null;
+    function getGreenGloss(lexId: string): string | null {
+      try {
+        if (!GREEN_GLOSSES) {
+          const p = path.join(process.cwd(), 'Daber', 'data', 'green_glosses.json');
+          const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
+          GREEN_GLOSSES = raw?.items || {};
+        }
+        const rec = GREEN_GLOSSES![lexId];
+        const g = rec?.gloss;
+        return (typeof g === 'string' && g && !containsHebrew(g)) ? g : null;
+      } catch {
+        return null;
+      }
+    }
+
     const url = new URL(req.url);
     const debug = url.searchParams.get('debug') === '1' || url.searchParams.get('debug') === 'true';
     const explain: any = { sessionId };
@@ -125,28 +155,56 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
               const lex = await prisma.lexeme.findUnique({ where: { id: lexId }, select: { id: true, lemma: true, pos: true, gloss: true } });
               if (lex) {
                 const pos = (lex.pos || '').toLowerCase();
-                const stripN = (s: string) => (s || '').replace(/[\u0591-\u05C7]/g, '');
-                // Prefer canonical base by POS
+                // Canonical base selection by POS
                 let heb: string | null = null;
                 let feat: Record<string, string | null> = {};
                 if (pos === 'verb' || pos === 'q24905') {
+                  // Structured first
                   const inf = await prisma.inflection.findFirst({ where: { lexeme_id: lex.id, tense: 'infinitive' }, select: { form: true } });
-                  heb = stripN(inf?.form || lex.lemma || '');
-                  feat = { pos: 'verb', tense: 'infinitive' } as any;
+                  if (inf?.form) {
+                    heb = stripNikkud(inf.form);
+                  } else {
+                    // Heuristic: pick a single-token form starting with ל
+                    const infls = await prisma.inflection.findMany({ where: { lexeme_id: lex.id }, select: { form: true } });
+                    const cand = infls.map(r => stripNikkud(r.form)).find(f => /^ל\S+$/.test(f));
+                    if (cand) heb = cand;
+                  }
+                  if (heb) feat = { pos: 'verb', tense: 'infinitive' } as any;
                 } else if (pos === 'adjective' || pos === 'q34698') {
                   const adj = await prisma.inflection.findFirst({ where: { lexeme_id: lex.id, number: 'sg', gender: 'm' }, select: { form: true, number: true, gender: true } });
-                  heb = stripN((adj?.form || lex.lemma || '').trim());
-                  feat = { pos: 'adjective', number: adj?.number || 'sg', gender: adj?.gender || 'm' } as any;
+                  if (adj?.form) {
+                    heb = stripNikkud(adj.form);
+                    feat = { pos: 'adjective', number: 'sg', gender: 'm' } as any;
+                  } else {
+                    const base = stripNikkud((lex.lemma || '').trim());
+                    if (isSingleToken(base) && !looksPlural(base)) {
+                      heb = base;
+                      feat = { pos: 'adjective', number: 'sg', gender: 'm' } as any;
+                    }
+                  }
                 } else if (pos === 'noun' || pos === 'q1084') {
                   const sg = await prisma.inflection.findFirst({ where: { lexeme_id: lex.id, number: 'sg' }, select: { form: true, number: true, gender: true } });
-                  heb = stripN(((sg?.form || lex.lemma || '').trim()).replace(/^ה+/, ''));
-                  feat = { pos: 'noun', number: 'sg', gender: (sg?.gender || null) as any } as any;
+                  if (sg?.form) {
+                    let form = stripNikkud(sg.form).replace(/^ה+/, '').trim();
+                    if (!looksPlural(form) && !hasPossessiveSuffix(form)) heb = form;
+                    feat = { pos: 'noun', number: 'sg', gender: (sg?.gender || null) as any } as any;
+                  }
+                  if (!heb) {
+                    let base = stripNikkud((lex.lemma || '').trim()).replace(/^ה+/, '');
+                    if (isSingleToken(base) && !looksPlural(base) && !hasPossessiveSuffix(base)) heb = base;
+                    if (heb) feat = { pos: 'noun', number: 'sg' } as any;
+                  }
                 } else {
-                  heb = stripN(lex.lemma || '');
-                  feat = { pos: (lex.pos || 'unknown').toLowerCase() as any } as any;
+                  const base = stripNikkud(lex.lemma || '');
+                  if (base) { heb = base; feat = { pos: (lex.pos || 'unknown').toLowerCase() as any } as any; }
                 }
 
-                const english = lex.gloss || undefined;
+                // If canonical base cannot be resolved, do not create; fallback to original item path
+                if (!heb) {
+                  return await prisma.lessonItem.findUnique({ where: { id: item.id }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } }) as any;
+                }
+
+                const english = lex.gloss || getGreenGloss(lex.id) || undefined;
                 const englishPrompt = english ? `How do I say: ${english}?` : `How do I say: ${lex.lemma}?`;
                 const id = `lexbase_${lex.id}`;
                 const lessonId = genLessonId; // place base items in the generated lesson alongside dynamic items
@@ -193,7 +251,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           return out.replace(/[\u2000-\u206F\s]+$/g, '').replace(/[!?,.;:]+$/g, '').trim();
         }
 
-        const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { id: true, target_hebrew: true, features: true, lexeme_id: true } });
+        const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { id: true, english_prompt: true, target_hebrew: true, features: true, lexeme_id: true } });
         if (!li) return null;
 
         // Resolve lexeme (direct link or parse from generated ID)
@@ -211,33 +269,61 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const lex = lexId ? await prisma.lexeme.findUnique({ where: { id: lexId }, select: { lemma: true, pos: true, gloss: true, features: true } }) : null;
         const pos = (lex?.pos || ((li.features as any)?.pos as string | null) || '').toLowerCase();
 
-        // Hebrew: canonical base form
+        // Hebrew: canonical base form by POS
         let heb: string | null = null;
         if (pos === 'verb' && lexId) {
           const inf = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, tense: 'infinitive' }, select: { form: true } });
-          heb = stripHebNikkud((inf?.form || lex?.lemma || '').trim());
+          if (inf?.form) {
+            heb = stripHebNikkud(inf.form);
+          } else {
+            // Heuristic: pick single-token ל* form
+            const infls = await prisma.inflection.findMany({ where: { lexeme_id: lexId }, select: { form: true } });
+            const cand = infls.map(r => stripHebNikkud(r.form)).find(f => /^ל\S+$/.test(f));
+            if (cand) heb = cand;
+          }
         } else if (pos === 'adjective' && lexId) {
           const adjBase = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, number: 'sg', gender: 'm' }, select: { form: true } });
-          heb = stripHebNikkud((adjBase?.form || lex?.lemma || li.target_hebrew || '').trim());
+          if (adjBase?.form) {
+            heb = stripHebNikkud(adjBase.form);
+          } else if (lex?.lemma) {
+            const base = stripHebNikkud((lex.lemma || '').trim());
+            if (isSingleToken(base) && !looksPlural(base)) heb = base;
+          }
         } else if (pos === 'noun' && lexId) {
           const feat = (lex?.features as any) || null;
           const isCompound = !!(lex?.lemma && lex.lemma.includes(' ')) || !!(feat?.definite_form);
           if (isCompound) {
-            heb = stripHebNikkud((feat?.definite_form || lex?.lemma || '').trim());
+            const df = (feat?.definite_form || lex?.lemma || '').trim();
+            heb = stripHebNikkud(df);
           } else {
             const sg = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, number: 'sg' }, select: { form: true } });
-            heb = stripHebNikkud(((sg?.form || lex?.lemma || '').trim()).replace(/^ה+/, ''));
+            let form = stripHebNikkud(((sg?.form || lex?.lemma || '').trim())).replace(/^ה+/, '');
+            if (isSingleToken(form) && !looksPlural(form) && !hasPossessiveSuffix(form)) heb = form;
           }
         } else if (lex?.lemma) {
-          heb = stripHebNikkud(lex.lemma);
+          const base = stripHebNikkud(lex.lemma);
+          if (base) heb = base;
         } else {
-          heb = stripHebNikkud(stripHebPronoun(li.target_hebrew || '').replace(/^ה+/, ''));
+          const base = stripHebPronoun(li.target_hebrew || '').replace(/^ה+/, '');
+          heb = stripHebNikkud(base);
         }
 
-        // English: use lexeme.gloss (single source of truth)
-        const eng = lex?.gloss || undefined;
+        if (!heb) return null; // cannot reliably resolve canonical — let caller skip
 
-        return { hebrew: heb || '', english: eng };
+        // English: prefer lexeme.gloss; fallback to Green gloss; fallback to sanitized prompt if valid English
+        let eng: string | undefined = undefined;
+        if (lex?.gloss && englishOk(lex.gloss)) eng = lex.gloss;
+        else if (lexId) {
+          const gg = getGreenGloss(lexId);
+          if (gg) eng = gg;
+        }
+        if (!eng && li.english_prompt) {
+          const s = sanitizeEnglish(li.english_prompt);
+          if (englishOk(s)) eng = s;
+        }
+        if (!eng) return null;
+
+        return { hebrew: heb, english: eng };
       } catch {
         return null;
       }
@@ -416,15 +502,29 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
             explain.path = 'lex';
             explain.pick = { id: gen.id, source: 'lex' };
           }
-          const adjBase = await maybeSwapToFamilyBase(gen, allowedLessonIds);
+          const tried = new Set<string>();
+          let adjBase = await maybeSwapToFamilyBase(gen, allowedLessonIds);
           let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
           adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
-          const phase = await computePhaseFor(adj.id);
+          let phase = await computePhaseFor(adj.id);
+          let intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
+          // Enforce intro contract: must have canonical hebrew + english; try a few alternative picks if missing
+          let attempts = 0;
+          while (phase === 'intro' && (!intro || !intro.hebrew || !intro.english) && attempts < 3) {
+            tried.add(adj.id);
+            const genAlt = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak }).catch(() => null);
+            if (!genAlt || tried.has(genAlt.id)) break;
+            let baseAlt = await maybeSwapToFamilyBase(genAlt, allowedLessonIds);
+            let adjAlt = await maybePromoteFamilyProgress(baseAlt, attemptedIds, allowedLessonIds);
+            adjAlt = await maybeApplyFamilySpacing(adjAlt, attemptedIds, allowedLessonIds, useRandom);
+            const phaseAlt = await computePhaseFor(adjAlt.id);
+            const introAlt = phaseAlt === 'intro' ? await buildIntroFor(adjAlt.id).catch(() => null) : null;
+            adj = adjAlt; phase = phaseAlt; intro = introAlt; attempts++;
+          }
           logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: gen.id, source: 'lex', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
           const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
             .then(c => c > 0)
             .catch(() => false);
-          const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
           const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
           const resp: any = { done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
           if (debug) resp.explain = explain;

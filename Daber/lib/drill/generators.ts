@@ -175,12 +175,14 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
     }
   }
 
+  const userId = (session.user_id || 'anon');
+
   const strategies: Array<() => Promise<LessonItemShape | null>> = [
-    async () => generateAdjectiveItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen),
-    async () => generateVerbPresentItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen),
-    async () => generateVerbPastItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen),
-    async () => generateVerbFutureItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen),
-    async () => generateNounItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen)
+    async () => generateAdjectiveItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen, userId),
+    async () => generateVerbPresentItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen, userId),
+    async () => generateVerbPastItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen, userId),
+    async () => generateVerbFutureItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen, userId),
+    async () => generateNounItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen, userId)
   ];
 
   for (let i = 0; i < 6; i++) {
@@ -192,15 +194,23 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
   return null;
 }
 
-async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
+async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean, userId?: string): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['adjective', 'Q34698'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
     if (!chosen) break;
+    // If Green and family not yet introduced, let selection layer handle canonical intro
+    if (isGreen && userId) {
+      const famId = `lex:${chosen.id}`;
+      const intro = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: famId, user_id: userId } } });
+      if (!intro) continue;
+    }
     const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id }, select: { form: true, person: true, number: true, gender: true } });
     if (!infls.length) continue;
-    let pool = infls;
+    // Prefer canonical defaults for early exposures
+    let pool = infls.filter(i => (i.number === 'sg' || !i.number) && (i.gender === 'm' || !i.gender));
+    if (!pool.length) pool = infls;
     if (desired?.number || desired?.gender) {
       pool = infls.filter(i => (!desired?.number || i.number === desired.number) && (!desired?.gender || i.gender === desired.gender));
       if (!pool.length) pool = infls;
@@ -236,12 +246,17 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
   return null;
 }
 
-async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
+async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean, userId?: string): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true, features: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
     if (!chosen) break;
+    if (isGreen && userId) {
+      const famId = `lex:${chosen.id}`;
+      const intro = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: famId, user_id: userId } } });
+      if (!intro) continue;
+    }
     const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'present' }, select: { form: true, person: true, number: true, gender: true, binyan: true } });
     if (!infls.length) continue;
     let pool = infls;
@@ -284,12 +299,17 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
   return null;
 }
 
-async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
+async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean, userId?: string): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
     if (!chosen) break;
+    if (isGreen && userId) {
+      const famId = `lex:${chosen.id}`;
+      const intro = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: famId, user_id: userId } } });
+      if (!intro) continue;
+    }
     const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'past' }, select: { form: true, person: true, number: true, gender: true, binyan: true } });
     if (!infls.length) continue;
     let pool = infls;
@@ -332,7 +352,7 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
   return null;
 }
 
-async function generateNounItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
+async function generateNounItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean, userId?: string): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['noun', 'Q1084'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true, features: true } });
   const usableLex = lex.filter(l => {
     const isMultiWord = l.lemma.includes(' ');
@@ -344,12 +364,20 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(usableLex);
     if (!chosen) break;
+    if (isGreen && userId) {
+      const famId = `lex:${chosen.id}`;
+      const intro = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: famId, user_id: userId } } });
+      if (!intro) continue;
+    }
     const feat = chosen.features as Record<string, string> | null;
     const isCompound = chosen.lemma.includes(' ');
     const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id }, select: { form: true, number: true, gender: true } });
     if (!infls.length) continue;
 
-    const validInfls = isCompound ? infls : infls.filter(i => !i.form.includes(' '));
+    // Prefer singular forms for early exposures; avoid multiword unless compound
+    let validInfls = isCompound ? infls : infls.filter(i => !i.form.includes(' '));
+    const sgInfls = validInfls.filter(i => i.number === 'sg' || !i.number);
+    if (sgInfls.length) validInfls = sgInfls;
     if (!validInfls.length) continue;
 
     let en: { base: string; isVerb: boolean; paren?: string } | null = null;
@@ -408,12 +436,17 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
   return null;
 }
 
-async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
+async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean, userId?: string): Promise<LessonItemShape | null> {
   const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
     if (!chosen) break;
+    if (isGreen && userId) {
+      const famId = `lex:${chosen.id}`;
+      const intro = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: famId, user_id: userId } } });
+      if (!intro) continue;
+    }
     const infls = await prisma.inflection.findMany({ where: { lexeme_id: chosen.id, tense: 'future' }, select: { form: true, person: true, number: true, gender: true, binyan: true } });
     if (!infls.length) continue;
     let pool = infls;

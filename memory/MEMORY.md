@@ -32,11 +32,13 @@ Last updated: 2026-03-30 (mini morphology drill + validation + hardening)
 `/` (dashboard), `/session/[id]` (drill), `/session/[id]/summary`, `/library`, `/progress`, `/retry`, `/vocab`, `/conjugations`, `/profile`, `/dictionary`, `/dictionary/[lexemeId]`, `/songs/ma-naaseh`, `/admin/lexicon/validate`.
 
 ## Current Focus
+- **LORE codified**: SOUL.md now includes a Long‑Term Direction (LORE) section; ROADMAP has concrete milestones.
 - **Doc alignment**: keeping SOUL, MEMORY, STATE, ROADMAP, and Dev Journal in sync with shipped code.
 - **Green vocab drill**: curated ~82 lexeme drill. Green generators now use gloss-based prompts ("How do I say …"); intros use `Lexeme.gloss`.
 - **Card-generation integrity**: completed alignment of pronoun fallbacks (EN/HE), generator gating on complete morphology, CC family lemma+POS links, plural adjective gender normalization, and validation gates to skip inconsistent items.
   - Follow-up: fixed English wrapper duplication (strip leading "How do I say:") and prefer `Lexeme.gloss` across generator paths; filtered possessive-suffix noun forms from pools.
-- **Mini Morph Drill (vocab_mini_morph)**: starts as 3-lexeme sandbox (verb לכתוב, noun ספר, adj גדול); Phase 1 expands to 6 lexemes: verbs (לכתוב, לדבר), nouns (ספר, גלידה), adjectives (גדול, חדש). Intros are canonical (verb=infinitive, noun=sg base, adj=m.sg). Variants included (verb present/past/future subsets; noun definite/plural; adj m/f sg/pl). Mini-only validation guards skip malformed items and log why. Debug meta (lexeme_id, family_id, pos, features) returned on `?debug=1`.
+ - **Mini Morph Drill (vocab_mini_morph)**: starts as 3-lexeme sandbox (verb לכתוב, noun ספר, adj גדול); Phase 1 expands to 6 lexemes: verbs (לכתוב, לדבר), nouns (ספר, גלידה), adjectives (גדול, חדש). Intros are canonical (verb=infinitive, noun=sg base, adj=m.sg). Variants included (verb present/past/future subsets; noun definite/plural; adj m/f sg/pl). Mini-only validation guards skip malformed items and log why. Debug meta (lexeme_id, family_id, pos, features) returned on `?debug=1`.
+- **Selection default**: server now defaults to `due=blend` (feature then item) when unspecified by client.
 - Next: revisit intro-card polish and orthographic quality (do not change pedagogy until integrity gates are stable in prod).
 - **Song packs**: Ma Na'aseh chorus live; expand to verse chunks.
 - **Pilot feedback**: with anonymous identity shipped, observe `/admin/users` for activity and accuracy. Decide if optional names/labels are needed later.
@@ -49,6 +51,8 @@ Last updated: 2026-03-30 (mini morphology drill + validation + hardening)
 - **Pilot flow polish**: Keep friction at zero; consider optional name label in settings that maps to the UUID for admin readability.
 - **Revert volume slider** (commit 873e746): redundant UI; the useTTS.ts boost tool is sufficient. Users use native volume.
 - **"I said it right" button**: should not appear when grade is `correct` — only for incorrect/flawed overrides.
+ - Feature‑aware grading: deepen tense/voice mismatch reasons.
+ - Infra groundwork: Redis rate limit + queue; DB indexes for hot queries.
 - Family progression polish: basic same‑family spacing guard shipped; next up is cross‑session scheduling and staged conjugations.
 - Feature‑blend due mode: incorporate `FeatureStat` into selection when `due=blend` to target weak number/gender/person/tense features across items.
 - Admin family tools: on `/admin/lexicon/validate`, add actions to mark `family_base` and assign `family_id` for obvious lemmas.

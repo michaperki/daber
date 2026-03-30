@@ -157,3 +157,55 @@ Pointers:
 - Contracts: `Daber/lib/contracts.ts`
 - Evaluator: `Daber/lib/evaluator/*` and `scripts/test_evaluator.ts`
 - Voice I/O: `Daber/app/api/stt/route.ts`, `Daber/app/api/tts/route.ts`
+
+## LORE — Long‑Term Direction
+
+North Star
+- Make daily practice irresistible for Mike: fast, reliable, and pedagogically tight.
+- Scale content coverage with integrity gates; keep generation safe and explainable.
+- Mobile‑first with offline resilience and clear progress signals.
+
+Core Loop Quality
+- Feature‑aware grading with precise wrong‑reason feedback driven by `LessonItem.features`.
+- Selection that blends ItemStat + FeatureStat to target weaknesses; family spacing across sessions.
+- Canonical intros by POS (verb infinitive, noun sg base, adj m.sg) with disciplined English.
+
+Content & Pedagogy
+- Mini → micro‑sandboxes: expand allowlisted minis to cover full morphology (verbs present/past/future × person/number/gender; nouns number/definiteness/construct; adjectives number/gender).
+- Curated “Green‑like” packs with clean glosses and dependable inflections.
+- Families: formal spacing and readiness criteria; synonyms and near‑miss variants with tests.
+
+Generation & Integrity
+- Strict JSON schemas, dual‑pass validation, no nikkud, deterministic English, per‑feature checks.
+- Human‑in‑the‑loop review for new targets; promote only items that pass evaluators + hygiene.
+- Background jobs with quotas and clear “new content ready” signals without UI thrash.
+
+Audio & Latency
+- Better Hebrew TTS; keep browser fallback; pre‑generate/cache audio for popular items.
+- STT resilience: streaming/chunked capture; latency budget instrumentation and fallbacks.
+- Client audio polish: consistent gain; prefetch prompt/correction; graceful device switching.
+
+Platform & Infra
+- Shared rate limits + queues (Redis); background job runner for generation/maintenance.
+- Persistent caches: TTS audio in object storage with normalized keys.
+- DB hygiene: indexes for hot paths; backups/migration discipline; error budgets and alerts.
+
+Product & UX
+- PWA install + limited offline (recognition + cached audio).
+- Progress heatmap: per‑feature mastery; “Drill my weak spots” flows.
+- Session ergonomics: keyboard controls, mic guidance, smoother transitions, clearer hints.
+
+Admin, Safety, Privacy
+- Gate admin routes; minimal roles; per‑user isolation airtight.
+- Event schema + retention; export/delete tools for user data.
+- Abuse guards: IP/device heuristics and anomaly alerting.
+
+Observability & Metrics
+- Central event log: session timing, STT/TTS/eval durations, pick paths, content source.
+- KPIs: session count, median length, accuracy by phase, time‑to‑first‑byte for audio/STT, generator acceptance rate.
+- Dashboards + alerts for regressions.
+
+Milestones
+- 0–4 weeks: Mini Phase 2; feature‑aware grading reasons polish; selection blend default; Redis rate limit + job queue; DB indexes; TTS provider evaluation.
+- 1–2 months: Nightly generation with validation + review; Weak spots 1.0 and progress heatmap; PWA install + limited offline; admin gating + dashboards.
+- 3–6 months: Broader curated packs; robust family spacing across sessions; synonyms/near‑miss handling; scalable audio cache; streaming STT; improved TTS; optional light auth.

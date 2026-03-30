@@ -210,3 +210,7 @@ Operational notes (post‑deploy)
 - Re‑tag and apply CC family links:
   - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/tag_cc_families.ts --out cc_family_tags.json`
   - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/apply_cc_family_links.ts --in cc_family_tags.json`
+
+Selection blend default — SHIPPED (2026-03-30)
+- Server defaults `due=blend` when unspecified, attempting FeatureStat-driven picks first, then falling back to ItemStat due.
+- Where: Daber/app/api/sessions/[sessionId]/next-item/route.ts (dueMode default = 'blend').

@@ -47,9 +47,15 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const useRandom = url.searchParams.get('random') === '1' || url.searchParams.get('random') === 'true';
     const useLex = url.searchParams.get('mode') === 'lex';
     const focusWeak = url.searchParams.get('focus') === 'weak';
-    const dueParam = url.searchParams.get('due'); // 'feature' | 'item'
+    const dueParam = url.searchParams.get('due'); // 'feature' | 'item' | null
+    const dueMode: 'feature' | 'item' | 'blend' = ((): any => {
+      const d = (dueParam || '').toLowerCase();
+      if (d === 'feature' || d === 'item' || d === 'blend') return d as any;
+      // Default to blend (feature + item) when not specified
+      return 'blend';
+    })();
     if (debug) {
-      explain.query = { pacing: pacing || 'fixed', random: useRandom, mode: useLex ? 'lex' : 'db', focus: focusWeak ? 'weak' : undefined, due: dueParam || 'off' };
+      explain.query = { pacing: pacing || 'fixed', random: useRandom, mode: useLex ? 'lex' : 'db', focus: focusWeak ? 'weak' : undefined, due: dueMode };
       explain.attemptsCount = attemptsCount;
       explain.cap = { base: baseCap, hardMax };
     }
@@ -604,7 +610,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       // fall through to regular selection when no generated item is available
     }
     // Feature due selection: prioritize items whose features match due/weak FeatureStat rows
-    if (dueParam === 'feature' || dueParam === 'blend') {
+    if (dueMode === 'feature' || dueMode === 'blend') {
       const now = new Date();
       try {
         const dueFeatures = await prisma.featureStat.findMany({
@@ -672,7 +678,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           return NextResponse.json(resp);
         }
         // If blend: fall through to other due modes; if pure feature and none found, return done
-        if (dueParam === 'feature') {
+        if (dueMode === 'feature') {
           const total = cap > 0 ? cap : await prisma.lessonItem.count({ where: { lesson_id: { in: allowedLessonIds } } });
           return NextResponse.json({ done: true, index: attemptedIds.size, total });
         }
@@ -680,7 +686,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         // ignore and fall through
       }
     }
-    if (!dueParam || dueParam === 'item' || dueParam === 'blend') {
+    if (dueMode === 'item' || dueMode === 'blend') {
       // Pick an authored item from this lesson that is due in ItemStat
       const now = new Date();
       const dueItems = await prisma.itemStat.findMany({ where: { user_id: userId, next_due: { lte: now } } });

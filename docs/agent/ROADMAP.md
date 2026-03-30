@@ -31,6 +31,26 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
   - Add seed/script trio per expansion: `seed:mini` for new items, `simulate:mini` to walk the pool, `test:mini` to assert allowlist, feature completeness, and EN/HE hygiene.
   - Choose lexemes with clean inflection tables and minimal irregularities to reduce noise in early passes.
   - Track expansion in STATE/Dev Journal with explicit inventories and guard updates.
+
+## Milestones
+
+0–4 weeks
+- Mini Phase 2: fill remaining verb/adjective/noun matrix holes with 12–20 lexemes.
+- Feature‑aware grading reasons polish (tense/voice nuances).
+- Selection default: server `due=blend` when unspecified (SHIPPED); consider client hints next.
+- Infra: Redis‑backed rate limit + job queue; DB indexes for Attempts/FeatureStat hot paths.
+- TTS provider evaluation and acceptance criteria.
+
+1–2 months
+- Nightly generation with strict validation + review queues; promote only validated drills.
+- Progress heatmap and “Drill my weak spots” 1.0 UX.
+- PWA install + limited offline (recognition + cached audio).
+- Admin gating and event dashboards.
+
+3–6 months
+- Broader curated packs; robust family spacing across sessions; synonyms/near‑miss policy and tests.
+- Scalable audio cache; streaming STT; improved TTS.
+- Optional light auth if pilots demand it.
 - Family progression spacing — After infinitive intros, schedule present forms (3sg m → 3sg f → 1sg → 3pl m) and space follow‑ups across sessions; interleave familiar content.
 - Feature‑blend due selection — Blend `ItemStat` and `FeatureStat` so weak features (number/gender/person/tense) steer picks when requested.
 - Admin family tooling — Quick actions to set `family_base` and `family_id` on `/admin/lexicon/validate` to accelerate coverage.

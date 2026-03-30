@@ -152,8 +152,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
                 const lessonId = genLessonId; // place base items in the generated lesson alongside dynamic items
                 const created = await prisma.lesson.upsert({
                   where: { id: lessonId },
-                  update: { title: 'Dynamic Drills', language: session.lesson?.language || 'he', level: session.lesson?.level || 'mixed', type: 'vocab_generated', description: session.lesson?.description || null },
-                  create: { id: lessonId, title: 'Dynamic Drills', language: session.lesson?.language || 'he', level: session.lesson?.level || 'mixed', type: 'vocab_generated', description: session.lesson?.description || null }
+                  update: { title: 'Dynamic Drills', language: session?.lesson?.language || 'he', level: session?.lesson?.level || 'mixed', type: 'vocab_generated', description: session?.lesson?.description || null },
+                  create: { id: lessonId, title: 'Dynamic Drills', language: session?.lesson?.language || 'he', level: session?.lesson?.level || 'mixed', type: 'vocab_generated', description: session?.lesson?.description || null }
                 }).catch(() => null);
                 void created; // no-op; ensure lesson exists
 

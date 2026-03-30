@@ -238,10 +238,12 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         // English canonical
         let eng: string | undefined;
         const liEnglish = cleanEnglishBase(li.english_prompt || '');
+        // Helper: detect Hebrew text in gloss (avoid showing Hebrew as English)
+        const containsHebrew = (s: string) => /[\u0590-\u05FF]/.test(s);
         // Prefer curated gloss for green drill when available
         if (sessionLessonId === 'vocab_green' && lexId) {
           const entry = getGreenGlossEntry(lexId);
-          if (entry && typeof entry.gloss === 'string' && entry.gloss.trim()) {
+          if (entry && typeof entry.gloss === 'string' && entry.gloss.trim() && !containsHebrew(entry.gloss)) {
             const gloss = entry.gloss.trim();
             const isVerbPos = (pos === 'verb') || (typeof entry.pos === 'string' && (entry.pos.toLowerCase() === 'verb' || entry.pos === 'Q24905'));
             eng = isVerbPos && !/^to\s+/i.test(gloss) ? `to ${gloss}` : gloss;
@@ -259,9 +261,28 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           }
           if (!eng) eng = lowerFirst(liEnglish);
         } else if (!eng && pos === 'adjective') {
-          eng = lowerFirst(liEnglish.replace(/\([^)]*\)/g, '').trim());
+          // Try to derive adjective base from linked prompts (he/she/we/they are ...)
+          if (lexId) {
+            const linked = await prisma.lessonItem.findMany({ where: { lexeme_id: lexId }, select: { english_prompt: true }, take: 30 });
+            for (const r of linked) {
+              const t = cleanEnglishBase(r.english_prompt || '').toLowerCase();
+              const m = t.match(/\b(?:i|you|he|she|we|they)\s+(?:am|is|are|was|were|'m|'s|'re)\s+([a-z][a-z\-\s']*)$/i);
+              if (m && m[1]) { eng = m[1].replace(/\([^)]*\)/g, '').trim(); break; }
+            }
+          }
+          if (!eng) eng = lowerFirst(liEnglish.replace(/\([^)]*\)/g, '').trim());
         } else if (!eng && pos === 'noun') {
-          eng = dropLeadingThe(lowerFirst(liEnglish));
+          // Prefer a linked prompt cleaned to a base noun (singular/plural label removed)
+          if (lexId) {
+            const linked = await prisma.lessonItem.findMany({ where: { lexeme_id: lexId }, select: { english_prompt: true }, take: 30 });
+            for (const r of linked) {
+              let t = cleanEnglishBase(r.english_prompt || '');
+              t = t.replace(/\(plural\)/ig, '').replace(/\bplural\b/ig, '').replace(/\s+\?+$/g, '').trim();
+              t = dropLeadingThe(lowerFirst(t));
+              if (t && !/^how\s+do\s+i\s+say/i.test(t) && !containsHebrew(t)) { eng = t; break; }
+            }
+          }
+          if (!eng) eng = dropLeadingThe(lowerFirst(liEnglish));
         } else if (!eng) {
           eng = lowerFirst(liEnglish);
         }

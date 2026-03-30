@@ -106,6 +106,7 @@ export default async function DaberHome() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <StartOrContinueButton sessionId={null} lessonId={'vocab_green'} label={fallbackLesson ? 'start green drill' : (inProgress ? 'continue green drill' : 'start green drill')} />
           <StartOrContinueButton sessionId={null} lessonId={'vocab_all'} label={'start all-vocab drill'} />
+          <StartOrContinueButton sessionId={null} lessonId={'vocab_mini_morph'} label={'start mini morph drill'} />
         </div>
       </div>
 

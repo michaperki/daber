@@ -2,7 +2,7 @@
 
 Role: Live project state, architecture snapshot, and current focus. Update this file at the end of each work session.
 
-Last updated: 2026-03-30 (card-generation integrity)
+Last updated: 2026-03-30 (mini morphology drill + validation)
 
 ---
 
@@ -35,6 +35,7 @@ Last updated: 2026-03-30 (card-generation integrity)
 - **Doc alignment**: keeping SOUL, MEMORY, STATE, ROADMAP, and Dev Journal in sync with shipped code.
 - **Green vocab drill**: curated ~82 lexeme drill. Green generators now use gloss-based prompts ("How do I say …"); intros use `Lexeme.gloss`.
 - **Card-generation integrity**: completed alignment of pronoun fallbacks (EN/HE), generator gating on complete morphology, CC family lemma+POS links, plural adjective gender normalization, and validation gates to skip inconsistent items.
+ - **Mini Morph Drill (vocab_mini_morph)**: brand-new minimal drill with exactly 1 verb (לכתוב), 1 noun (ספר), 1 adjective (גדול). Intros are canonical (verb=infinitive, noun=sg base, adj=m.sg). Variants included (verb present/past/future subsets; noun definite/plural; adj m/f sg/pl). Mini-only validation guards skip malformed items and log why. Debug meta (lexeme_id, family_id, pos, features) returned on `?debug=1`.
 - Next: revisit intro-card polish and orthographic quality (do not change pedagogy until integrity gates are stable in prod).
 - **Song packs**: Ma Na'aseh chorus live; expand to verse chunks.
 - **Pilot feedback**: with anonymous identity shipped, observe `/admin/users` for activity and accuracy. Decide if optional names/labels are needed later.
@@ -148,6 +149,7 @@ Last updated: 2026-03-30 (card-generation integrity)
 - TTS volume boost: `Daber/lib/client/audio/useTTS.ts` (GainNode logic)
 - Oolpan schema ref: `Oolpan/README.md` (design artifact, not running code)
  - Green intros (2026-03-30): use `Lexeme.gloss` (single source); backfilled 82; generators updated to gloss-based "How do I say …" prompts; no JSON lookups at runtime.
+ - Mini drill (2026-03-30): explicit seed + items (no generators). Validation/picking hooks are gated strictly to `lesson_id === 'vocab_mini_morph'`. Home page has a “start mini morph drill” button.
 
 ## Ops / Dev Notes
 - Env:

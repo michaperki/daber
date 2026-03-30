@@ -20,6 +20,9 @@
     "import:vocab-folder": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/import_vocab_folder.ts --vocab-dir vocab",
     "simulate:session": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_vocab_session.ts",
     "simulate:green": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_green_session.ts",
+    "simulate:mini": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_mini_morph_session.ts",
+    "seed:mini": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/seed_mini_morph.ts",
+    "test:mini": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/test_mini_morph.ts",
     "normalize:english": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/scan_normalize_english.ts",
     "normalize:inflections": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/lexicon/normalize_inflections.ts"
   },

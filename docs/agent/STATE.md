@@ -64,6 +64,26 @@ New content assemblies
   - Bootstrap API creates lesson (`song_ma_naaseh_chorus_v1`, type `song`) + 12 items on first access.
   - Plan: expand to verse chunks.
 
+- Mini Morph Drill — SHIPPED (2026-03-30)
+  - Lesson id: `vocab_mini_morph`. UI home has a "start mini morph drill" button.
+  - Scope: exactly one verb (לכתוב), one noun (ספר), one adjective (גדול).
+  - Canonical intros (family_base items):
+    - verb → infinitive (לכתוב)
+    - noun → singular base (ספר)
+    - adjective → masculine singular (גדול)
+  - Variants included:
+    - verb: selected present/past/future forms with pronouns
+    - noun: definite singular (הספר), plural (ספרים)
+    - adjective: m/f sg/pl (הוא גדול, היא גדולה, הם גדולים, הן גדולות)
+  - Validation (mini only; selection-time):
+    - English must be clean Latin; Hebrew must be clean Hebrew.
+    - Item must link to a `lexeme_id` and the Hebrew surface (minus pronoun/ה) must exist in that lexeme's `Inflection` rows.
+    - If `features.pos` present, it must match Lexeme.pos.
+    - Verbs/adjectives must include a pronoun in `target_hebrew`.
+    - Invalid picks are skipped and logged as `mini_morph_validation_skip`.
+  - Debug: `?debug=1` adds `explain.meta` with `{ lexeme_id, family_id, pos, features }`.
+  - Seed/sim/test: `scripts/seed_mini_morph.ts`, `scripts/simulate_mini_morph_session.ts`, `scripts/test_mini_morph.ts`.
+
 Wikidata lexicon infrastructure
 - Bulk seeding pipeline: `scripts/lexicon/seed_wikidata_bulk.ts` queries Wikidata by token (with Hebrew prefix stripping), ingests Lexeme + Inflection rows.
 - Resumable via `scripts/out/wd_seed_state.json`; handles 429 rate limits with backoff.

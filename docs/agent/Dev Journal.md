@@ -344,3 +344,21 @@ Note: SOUL.md unchanged (requires approval).
     - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/tag_cc_families.ts --out cc_family_tags.json`
     - `npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/apply_cc_family_links.ts --in cc_family_tags.json`
 - Commit: “drill: align pronoun fallbacks; gate generators on complete morphology; CC families lemma+POS; plural adjective gender normalization; validate generated items”.
+
+## 2026-03-30 — Mini Morph Drill (vocab_mini_morph) + validation/debug
+
+- Added a minimal, isolated drill for debugging morphology + selection:
+  - Lexemes: verb לכתוב, noun ספר, adjective גדול.
+  - Family-base intro items seeded (infinitive / noun sg / adj m.sg); variants for present/past/future, noun definite/plural, adjective m/f sg/pl.
+- UI: Home page adds a “start mini morph drill” button (lesson `vocab_mini_morph`).
+- Validation (mini-only) in next-item selection:
+  - English must be Latin-only; Hebrew must be Hebrew-only; item must link to a lexeme.
+  - Stripped Hebrew form (without pronoun/ה) must exist in lexeme inflections.
+  - If `features.pos` exists, it must match Lexeme.pos.
+  - Verbs/adjectives require a pronoun present.
+  - Invalid picks are skipped; log `mini_morph_validation_skip` with reason.
+- Debug: `?debug=1` includes `explain.meta` (lexeme_id, family_id, pos, features) and `explain.validation.skippedInvalid` count.
+- Scripts:
+  - Seed: `npm run seed:mini`
+  - Simulate: `npm run simulate:mini`
+  - Tests: `npm run test:mini`

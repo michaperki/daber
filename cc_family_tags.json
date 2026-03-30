@@ -2,8 +2,20 @@
   "total_forms": 612,
   "items": [
     {
+      "form": "גבות",
+      "lemma": "גבה",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
       "form": "לא נכנסתי",
       "lemma": "לא נכנס",
+      "pos": "verb",
+      "confidence": 0.8
+    },
+    {
+      "form": "להזיז את",
+      "lemma": "להזיז",
       "pos": "verb",
       "confidence": 0.9
     },
@@ -14,22 +26,16 @@
       "confidence": 0.95
     },
     {
-      "form": "גבות",
-      "lemma": "גבה",
+      "form": "שותף",
+      "lemma": "שותף",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "להזיז את",
-      "lemma": "להזיז את",
-      "pos": "expression",
-      "confidence": 0.85
-    },
-    {
-      "form": "שותף",
-      "lemma": "שותף",
-      "pos": "noun",
-      "confidence": 0.95
+      "form": "נשארתי בחוץ",
+      "lemma": "נשאר בחוץ",
+      "pos": "verb",
+      "confidence": 0.8
     },
     {
       "form": "קופסה",
@@ -38,15 +44,21 @@
       "confidence": 0.95
     },
     {
-      "form": "נשארתי בחוץ",
-      "lemma": "נשאר בחוץ",
-      "pos": "verb",
+      "form": "חכם",
+      "lemma": "חכם",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "מזמן",
+      "lemma": "מזמן",
+      "pos": "adverb",
       "confidence": 0.85
     },
     {
-      "form": "עיר בירה",
-      "lemma": "עיר בירה",
-      "pos": "phrase",
+      "form": "טיפש",
+      "lemma": "טיפש",
+      "pos": "adjective",
       "confidence": 0.9
     },
     {
@@ -54,6 +66,18 @@
       "lemma": "להיזכר",
       "pos": "verb",
       "confidence": 0.9
+    },
+    {
+      "form": "להתלבט",
+      "lemma": "להתלבט",
+      "pos": "verb",
+      "confidence": 0.9
+    },
+    {
+      "form": "פעם",
+      "lemma": "פעם",
+      "pos": "noun",
+      "confidence": 0.85
     },
     {
       "form": "חדר כושר",
@@ -65,67 +89,7 @@
       "form": "גאון",
       "lemma": "גאון",
       "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "להתלבט",
-      "lemma": "להתלבט",
-      "pos": "verb",
       "confidence": 0.9
-    },
-    {
-      "form": "מזמן",
-      "lemma": "מזמן",
-      "pos": "adverb",
-      "confidence": 0.85
-    },
-    {
-      "form": "חכם",
-      "lemma": "חכם",
-      "pos": "adjective",
-      "confidence": 0.95
-    },
-    {
-      "form": "טיפש",
-      "lemma": "טיפש",
-      "pos": "adjective",
-      "confidence": 0.95
-    },
-    {
-      "form": "פעם",
-      "lemma": "פעם",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "תקשיב לעצמך",
-      "lemma": "תקשיב לעצמך",
-      "pos": "expression",
-      "confidence": 0.85
-    },
-    {
-      "form": "להעביר את",
-      "lemma": "להעביר את",
-      "pos": "expression",
-      "confidence": 0.85
-    },
-    {
-      "form": "הרוטב שרוף",
-      "lemma": "הרוטב שרוף",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "הקפה נשפך",
-      "lemma": "הקפה נשפך",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "לשפוך את",
-      "lemma": "לשפוך את",
-      "pos": "expression",
-      "confidence": 0.85
     },
     {
       "form": "מצלמה",
@@ -134,52 +98,88 @@
       "confidence": 0.95
     },
     {
+      "form": "תקשיב לעצמך",
+      "lemma": "תקשיב לעצמך",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "הרוטב שרוף",
+      "lemma": "הרוטב שרוף",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "להעביר את",
+      "lemma": "להעביר",
+      "pos": "verb",
+      "confidence": 0.9
+    },
+    {
+      "form": "הקפה נשפך",
+      "lemma": "הקפה נשפך",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
       "form": "שירות",
       "lemma": "שירות",
       "pos": "noun",
-      "confidence": 0.95
+      "confidence": 0.9
     },
     {
       "form": "מלצר",
       "lemma": "מלצר",
       "pos": "noun",
-      "confidence": 0.95
+      "confidence": 0.9
+    },
+    {
+      "form": "פירורים",
+      "lemma": "פירור",
+      "pos": "noun",
+      "confidence": 0.85
+    },
+    {
+      "form": "חור",
+      "lemma": "חור",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "קנקן",
+      "lemma": "קנקן",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "אל תדאג",
       "lemma": "אל תדאג",
       "pos": "expression",
-      "confidence": 0.85
-    },
-    {
-      "form": "לצעוק על",
-      "lemma": "לצעוק על",
-      "pos": "expression",
-      "confidence": 0.85
+      "confidence": 0.8
     },
     {
       "form": "התעוררתי מאוחר",
       "lemma": "התעורר מאוחר",
       "pos": "verb",
-      "confidence": 0.85
+      "confidence": 0.8
     },
     {
-      "form": "פירורי לחם",
-      "lemma": "פירורי לחם",
-      "pos": "phrase",
+      "form": "לצעוק על",
+      "lemma": "לצעוק על",
+      "pos": "verb",
       "confidence": 0.9
     },
     {
       "form": "תתכונני למבחן",
       "lemma": "תתכונן למבחן",
       "pos": "verb",
-      "confidence": 0.85
+      "confidence": 0.8
     },
     {
       "form": "מול",
       "lemma": "מול",
       "pos": "preposition",
-      "confidence": 0.8
+      "confidence": 0.85
     },
     {
       "form": "תקוע",
@@ -188,58 +188,10 @@
       "confidence": 0.9
     },
     {
-      "form": "קנקן",
-      "lemma": "קנקן",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
       "form": "זנב",
       "lemma": "זנב",
       "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "חור",
-      "lemma": "חור",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "פירורים",
-      "lemma": "פירור",
-      "pos": "noun",
       "confidence": 0.9
-    },
-    {
-      "form": "נסגר הסיפור",
-      "lemma": "נסגר הסיפור",
-      "pos": "phrase",
-      "confidence": 0.85
-    },
-    {
-      "form": "איזה באסה",
-      "lemma": "איזה באסה",
-      "pos": "expression",
-      "confidence": 0.85
-    },
-    {
-      "form": "אני בחוץ",
-      "lemma": "אני בחוץ",
-      "pos": "phrase",
-      "confidence": 0.85
-    },
-    {
-      "form": "מטומטם",
-      "lemma": "מטומטם",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
-      "form": "כתם",
-      "lemma": "כתם",
-      "pos": "noun",
-      "confidence": 0.95
     },
     {
       "form": "נשוי",
@@ -266,44 +218,32 @@
       "confidence": 0.9
     },
     {
-      "form": "איבדתי ריכוז",
-      "lemma": "איבדתי ריכוז",
+      "form": "נסגר הסיפור",
+      "lemma": "נסגר הסיפור",
       "pos": "expression",
       "confidence": 0.8
     },
     {
-      "form": "נתקעתי בעבודה",
-      "lemma": "נתקעתי בעבודה",
+      "form": "אני בחוץ",
+      "lemma": "אני בחוץ",
       "pos": "expression",
       "confidence": 0.8
     },
     {
-      "form": "תוך שניה",
-      "lemma": "תוך שניה",
-      "pos": "phrase",
-      "confidence": 0.8
+      "form": "מטומטם",
+      "lemma": "מטומטם",
+      "pos": "adjective",
+      "confidence": 0.9
     },
     {
-      "form": "אני בדיכאון",
-      "lemma": "אני בדיכאון",
-      "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "קש",
-      "lemma": "קש",
+      "form": "כתם",
+      "lemma": "כתם",
       "pos": "noun",
-      "confidence": 0.7
+      "confidence": 0.9
     },
     {
-      "form": "חשק",
-      "lemma": "חשק",
-      "pos": "noun",
-      "confidence": 0.8
-    },
-    {
-      "form": "דיכאון",
-      "lemma": "דיכאון",
+      "form": "קוקו",
+      "lemma": "קוקו",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -311,7 +251,7 @@
       "form": "ישר",
       "lemma": "ישר",
       "pos": "adjective",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "נבוך",
@@ -326,22 +266,46 @@
       "confidence": 0.9
     },
     {
-      "form": "קוקו",
-      "lemma": "קוקו",
-      "pos": "noun",
-      "confidence": 0.7
+      "form": "איבדתי ריכוז",
+      "lemma": "איבדתי ריכוז",
+      "pos": "expression",
+      "confidence": 0.9
     },
     {
-      "form": "הכוס נשברה",
-      "lemma": "הכוס נשברה",
+      "form": "תוך שניה",
+      "lemma": "תוך שניה",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "אני בדיכאון",
+      "lemma": "אני בדיכאון",
       "pos": "expression",
-      "confidence": 0.8
+      "confidence": 0.9
+    },
+    {
+      "form": "חשק",
+      "lemma": "חשק",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "דיכאון",
+      "lemma": "דיכאון",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "קש",
+      "lemma": "קש",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "היין נגמר",
       "lemma": "היין נגמר",
       "pos": "expression",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "מסמך",
@@ -352,54 +316,6 @@
     {
       "form": "גלגל",
       "lemma": "גלגל",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "תקרא לו",
-      "lemma": "תקרא לו",
-      "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "חסר",
-      "lemma": "חסר",
-      "pos": "adjective",
-      "confidence": 0.8
-    },
-    {
-      "form": "ליתר ביטחון",
-      "lemma": "ליתר ביטחון",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "לא בהכרח",
-      "lemma": "לא בהכרח",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "לקרוא את",
-      "lemma": "לקרוא את",
-      "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "מעניין למה",
-      "lemma": "מעניין למה",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "ביטחון",
-      "lemma": "ביטחון",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "חלק",
-      "lemma": "חלק",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -416,22 +332,58 @@
       "confidence": 0.9
     },
     {
-      "form": "בקטע טוב",
-      "lemma": "בקטע טוב",
+      "form": "תקרא לו",
+      "lemma": "תקרא לו",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "חסר",
+      "lemma": "חסר",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "ליתר ביטחון",
+      "lemma": "ליתר ביטחון",
       "pos": "phrase",
-      "confidence": 0.8
+      "confidence": 0.9
+    },
+    {
+      "form": "לא בהכרח",
+      "lemma": "לא בהכרח",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "מעניין למה",
+      "lemma": "מעניין למה",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "ביטחון",
+      "lemma": "ביטחון",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "חלק",
+      "lemma": "חלק",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "מבחינתי",
       "lemma": "מבחינתי",
       "pos": "phrase",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "דאגתי לך",
       "lemma": "דאגתי לך",
       "pos": "expression",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "ריח",
@@ -440,10 +392,28 @@
       "confidence": 0.9
     },
     {
+      "form": "בקטע טוב",
+      "lemma": "בקטע טוב",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "שטף",
+      "lemma": "שטף",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
       "form": "אני אשתדל",
       "lemma": "אני אשתדל",
       "pos": "expression",
-      "confidence": 0.8
+      "confidence": 0.9
+    },
+    {
+      "form": "מצב רוח",
+      "lemma": "מצב רוח",
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "תוצאה",
@@ -452,33 +422,15 @@
       "confidence": 0.9
     },
     {
-      "form": "מצב רוח",
-      "lemma": "מצב רוח",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "שטף",
-      "lemma": "שטף",
-      "pos": "noun",
-      "confidence": 0.7
-    },
-    {
-      "form": "להשתדל",
-      "lemma": "להשתדל",
-      "pos": "verb",
-      "confidence": 0.9
-    },
-    {
-      "form": "לב שבור",
-      "lemma": "לב שבור",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
       "form": "אני אשמח",
       "lemma": "אני אשמח",
       "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "מאז",
+      "lemma": "מאז",
+      "pos": "other",
       "confidence": 0.8
     },
     {
@@ -488,94 +440,58 @@
       "confidence": 0.9
     },
     {
-      "form": "מאז",
-      "lemma": "מאז",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "למרות",
-      "lemma": "למרות",
-      "pos": "preposition",
+      "form": "להשתדל",
+      "lemma": "להשתדל",
+      "pos": "verb",
       "confidence": 0.9
     },
     {
       "form": "עד",
       "lemma": "עד",
-      "pos": "preposition",
-      "confidence": 0.9
+      "pos": "other",
+      "confidence": 0.8
     },
     {
       "form": "מתאים לי",
       "lemma": "מתאים לי",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "לב שבור",
+      "lemma": "לב שבור",
       "pos": "phrase",
       "confidence": 0.9
     },
     {
-      "form": "אני ארגע",
-      "lemma": "אני ארגע",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "לאו דווקא",
-      "lemma": "לאו דווקא",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "תתעוררו תתעוררו",
-      "lemma": "תתעוררו",
-      "pos": "verb",
+      "form": "למרות",
+      "lemma": "למרות",
+      "pos": "other",
       "confidence": 0.8
-    },
-    {
-      "form": "עשרים אלף",
-      "lemma": "עשרים אלף",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "האוטובוס איחר",
-      "lemma": "האוטובוס איחר",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "שבעים ושלוש",
-      "lemma": "שבעים ושלוש",
-      "pos": "expression",
-      "confidence": 0.9
     },
     {
       "form": "חמש מאות",
       "lemma": "חמש מאות",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "חמישים אלף",
-      "lemma": "חמישים אלף",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "היא מאחרת",
       "lemma": "היא מאחרת",
-      "pos": "phrase",
+      "pos": "expression",
       "confidence": 0.9
     },
     {
-      "form": "מעניין מתי",
-      "lemma": "מעניין מתי",
-      "pos": "phrase",
+      "form": "כתובת",
+      "lemma": "כתובת",
+      "pos": "noun",
       "confidence": 0.9
     },
     {
       "form": "מעניין כמה",
       "lemma": "מעניין כמה",
       "pos": "phrase",
-      "confidence": 0.9
+      "confidence": 0.8
     },
     {
       "form": "לא משנה",
@@ -588,6 +504,12 @@
       "lemma": "סיסמה",
       "pos": "noun",
       "confidence": 0.9
+    },
+    {
+      "form": "מעניין מתי",
+      "lemma": "מעניין מתי",
+      "pos": "phrase",
+      "confidence": 0.8
     },
     {
       "form": "אני מקווה",
@@ -608,70 +530,40 @@
       "confidence": 0.9
     },
     {
-      "form": "לסמוך על",
-      "lemma": "לסמוך על",
-      "pos": "phrase",
-      "confidence": 0.9
+      "form": "לזרום",
+      "lemma": "לזרום",
+      "pos": "verb",
+      "confidence": 0.85
     },
     {
       "form": "להיפגש עם",
       "lemma": "להיפגש עם",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "לזרום",
-      "lemma": "לזרום",
       "pos": "verb",
-      "confidence": 0.9
-    },
-    {
-      "form": "להישאר",
-      "lemma": "להישאר",
-      "pos": "verb",
-      "confidence": 0.9
+      "confidence": 0.85
     },
     {
       "form": "להיזהר",
       "lemma": "להיזהר",
       "pos": "verb",
-      "confidence": 0.9
-    },
-    {
-      "form": "האוטובוס מאחר",
-      "lemma": "האוטובוס מאחר",
-      "pos": "phrase",
-      "confidence": 0.9
+      "confidence": 0.85
     },
     {
       "form": "לאחר",
       "lemma": "לאחר",
       "pos": "preposition",
-      "confidence": 0.9
+      "confidence": 0.7
     },
     {
-      "form": "אצלכם",
-      "lemma": "אצלכם",
-      "pos": "pronoun",
-      "confidence": 0.9
+      "form": "האוטובוס מאחר",
+      "lemma": "האוטובוס מאחר",
+      "pos": "phrase",
+      "confidence": 0.8
     },
     {
       "form": "אצלך",
       "lemma": "אצלך",
-      "pos": "pronoun",
-      "confidence": 0.9
-    },
-    {
-      "form": "תעדכנו אותי",
-      "lemma": "תעדכנו אותי",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "בריכה פרטית",
-      "lemma": "בריכה פרטית",
-      "pos": "expression",
-      "confidence": 0.9
+      "pos": "preposition",
+      "confidence": 0.7
     },
     {
       "form": "איחור",
@@ -686,26 +578,20 @@
       "confidence": 0.9
     },
     {
-      "form": "אני אחליט",
-      "lemma": "אני אחליט",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "החלטה שלך",
-      "lemma": "החלטה שלך",
-      "pos": "phrase",
+      "form": "בריכה פרטית",
+      "lemma": "בריכה פרטית",
+      "pos": "expression",
       "confidence": 0.9
     },
     {
       "form": "להחליט",
       "lemma": "להחליט",
       "pos": "verb",
-      "confidence": 0.9
+      "confidence": 0.85
     },
     {
-      "form": "תעזרי לי",
-      "lemma": "תעזרי לי",
+      "form": "אני אחליט",
+      "lemma": "אני אחליט",
       "pos": "phrase",
       "confidence": 0.9
     },
@@ -713,7 +599,7 @@
       "form": "המטבח מלוכלך",
       "lemma": "המטבח מלוכלך",
       "pos": "phrase",
-      "confidence": 0.9
+      "confidence": 0.8
     },
     {
       "form": "קשה",
@@ -722,20 +608,14 @@
       "confidence": 0.9
     },
     {
-      "form": "מבטא",
-      "lemma": "מבטא",
+      "form": "נר",
+      "lemma": "נר",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "אותו דבר",
-      "lemma": "אותו דבר",
-      "pos": "phrase",
-      "confidence": 0.95
-    },
-    {
-      "form": "נר",
-      "lemma": "נר",
+      "form": "יתרון",
+      "lemma": "יתרון",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -746,52 +626,10 @@
       "confidence": 0.9
     },
     {
-      "form": "סתם",
-      "lemma": "סתם",
-      "pos": "adjective",
-      "confidence": 0.8
-    },
-    {
-      "form": "יתרון",
-      "lemma": "יתרון",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "תפוז",
-      "lemma": "תפוז",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "להפריע",
-      "lemma": "להפריע",
-      "pos": "verb",
-      "confidence": 0.9
-    },
-    {
       "form": "התרגלתי אליה",
       "lemma": "התרגלתי אליה",
-      "pos": "verb",
-      "confidence": 0.9
-    },
-    {
-      "form": "על האש",
-      "lemma": "על האש",
       "pos": "phrase",
-      "confidence": 0.85
-    },
-    {
-      "form": "כמה שיותר",
-      "lemma": "כמה שיותר",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "כמה שפחות",
-      "lemma": "כמה שפחות",
-      "pos": "phrase",
-      "confidence": 0.9
+      "confidence": 0.8
     },
     {
       "form": "מזל",
@@ -800,10 +638,10 @@
       "confidence": 0.9
     },
     {
-      "form": "לעוף",
-      "lemma": "לעוף",
-      "pos": "verb",
-      "confidence": 0.9
+      "form": "כמה שפחות",
+      "lemma": "כמה שפחות",
+      "pos": "phrase",
+      "confidence": 0.8
     },
     {
       "form": "ציפור",
@@ -812,57 +650,21 @@
       "confidence": 0.9
     },
     {
-      "form": "ניפגש אצלם",
-      "lemma": "ניפגש אצלם",
-      "pos": "verb",
-      "confidence": 0.85
-    },
-    {
       "form": "החומוס מקולקל",
       "lemma": "החומוס מקולקל",
-      "pos": "expression",
-      "confidence": 0.9
+      "pos": "phrase",
+      "confidence": 0.8
     },
     {
       "form": "בואו נאכל",
       "lemma": "בואו נאכל",
-      "pos": "verb",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "טיילנו במדבר",
       "lemma": "טיילנו במדבר",
-      "pos": "verb",
-      "confidence": 0.9
-    },
-    {
-      "form": "תעדכן אותי",
-      "lemma": "תעדכן אותי",
-      "pos": "verb",
-      "confidence": 0.9
-    },
-    {
-      "form": "אל תאחר",
-      "lemma": "אל תאחר",
-      "pos": "verb",
-      "confidence": 0.9
-    },
-    {
-      "form": "פשוט אומנות",
-      "lemma": "פשוט אומנות",
       "pos": "phrase",
-      "confidence": 0.85
-    },
-    {
-      "form": "התגעגעתי אליך",
-      "lemma": "התגעגעתי אליך",
-      "pos": "verb",
-      "confidence": 0.9
-    },
-    {
-      "form": "כּדֵי",
-      "lemma": "כּדֵי",
-      "pos": "adjective",
       "confidence": 0.8
     },
     {
@@ -872,15 +674,33 @@
       "confidence": 0.9
     },
     {
-      "form": "נשנשתי אגוזים",
-      "lemma": "נשנשתי אגוזים",
-      "pos": "verb",
+      "form": "אל תאחר",
+      "lemma": "אל תאחר",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "פשוט אומנות",
+      "lemma": "פשוט אומנות",
+      "pos": "phrase",
+      "confidence": 0.8
+    },
+    {
+      "form": "כּדֵי",
+      "lemma": "כּדֵי",
+      "pos": "adverb",
+      "confidence": 0.7
+    },
+    {
+      "form": "תעדכן אותי",
+      "lemma": "תעדכן אותי",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "תנסה להתרכז",
       "lemma": "תנסה להתרכז",
-      "pos": "verb",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -890,93 +710,75 @@
       "confidence": 0.9
     },
     {
-      "form": "כּדָאי",
-      "lemma": "כּדָאי",
-      "pos": "adjective",
+      "form": "נשנשתי אגוזים",
+      "lemma": "נשנשתי אגוזים",
+      "pos": "phrase",
       "confidence": 0.8
-    },
-    {
-      "form": "אתה תלמד",
-      "lemma": "אתה תלמד",
-      "pos": "verb",
-      "confidence": 0.9
     },
     {
       "form": "תלוי בך",
       "lemma": "תלוי בך",
       "pos": "phrase",
-      "confidence": 0.85
+      "confidence": 0.9
     },
     {
       "form": "לא כדאי",
       "lemma": "לא כדאי",
       "pos": "phrase",
-      "confidence": 0.85
+      "confidence": 0.9
     },
     {
-      "form": "השארתי טיפ",
-      "lemma": "השארתי טיפ",
-      "pos": "verb",
+      "form": "אתה תלמד",
+      "lemma": "אתה תלמד",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "תני חיבוק",
       "lemma": "תני חיבוק",
-      "pos": "verb",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "חיבוק",
       "lemma": "חיבוק",
       "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "ביטול",
       "lemma": "ביטול",
       "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "הלכתי לאיבוד",
-      "lemma": "הלכתי לאיבוד",
-      "pos": "verb",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "נכנסנו לכיתה",
       "lemma": "נכנסנו לכיתה",
-      "pos": "verb",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "ממש נבהלתי",
       "lemma": "ממש נבהלתי",
-      "pos": "verb",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "ריכוז",
       "lemma": "ריכוז",
       "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
-      "form": "נכנסתי לפרטים",
-      "lemma": "נכנסתי לפרטים",
+      "form": "הלכתי לאיבוד",
+      "lemma": "הלכתי לאיבוד",
       "pos": "phrase",
       "confidence": 0.9
     },
     {
-      "form": "מרכז",
-      "lemma": "מרכז",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
       "form": "הן הבטיחו",
       "lemma": "הן הבטיחו",
-      "pos": "verb",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -987,37 +789,19 @@
     },
     {
       "form": "שטויות",
-      "lemma": "שטות",
+      "lemma": "שטויות",
       "pos": "noun",
-      "confidence": 0.85
+      "confidence": 0.95
     },
     {
-      "form": "הודו",
-      "lemma": "הודו",
+      "form": "מרכז",
+      "lemma": "מרכז",
       "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "לא נורא",
-      "lemma": "לא נורא",
-      "pos": "expression",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "נורא קר",
       "lemma": "נורא קר",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "לדעתי",
-      "lemma": "לדעתי",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "יורד גשם",
-      "lemma": "יורד גשם",
       "pos": "phrase",
       "confidence": 0.9
     },
@@ -1034,8 +818,8 @@
       "confidence": 0.9
     },
     {
-      "form": "בואו נשב",
-      "lemma": "בואו נשב",
+      "form": "איכשהו הסתדרתי",
+      "lemma": "איכשהו הסתדרתי",
       "pos": "phrase",
       "confidence": 0.9
     },
@@ -1046,38 +830,14 @@
       "confidence": 0.9
     },
     {
-      "form": "איכשהו הסתדרתי",
-      "lemma": "איכשהו הסתדרתי",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "הקפה עליי",
-      "lemma": "הקפה עליי",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "יכול להיות",
-      "lemma": "יכול להיות",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
       "form": "בדרך כלל",
       "lemma": "בדרך כלל",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "אני בפגישה",
-      "lemma": "אני בפגישה",
       "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "שתים עשרה",
-      "lemma": "שתיים עשרה",
+      "lemma": "שתים עשרה",
       "pos": "noun",
       "confidence": 0.95
     },
@@ -1100,34 +860,28 @@
       "confidence": 0.95
     },
     {
-      "form": "ארבע עשרה",
-      "lemma": "ארבע עשרה",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
       "form": "תשע עשרה",
       "lemma": "תשע עשרה",
       "pos": "noun",
       "confidence": 0.95
     },
     {
-      "form": "שש עשרה",
-      "lemma": "שש עשרה",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "שמונה עשרה",
-      "lemma": "שמונה עשרה",
-      "pos": "noun",
-      "confidence": 0.95
+      "form": "אני בפגישה",
+      "lemma": "אני בפגישה",
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "אחרי הצוהריים",
       "lemma": "אחרי הצוהריים",
       "pos": "phrase",
       "confidence": 0.9
+    },
+    {
+      "form": "שמונה עשרה",
+      "lemma": "שמונה עשרה",
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
       "form": "מטבח",
@@ -1142,44 +896,8 @@
       "confidence": 0.95
     },
     {
-      "form": "אחרי השיעור",
-      "lemma": "אחרי השיעור",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "ארבעים",
-      "lemma": "ארבעים",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
       "form": "שבעים",
       "lemma": "שבעים",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "שמונים",
-      "lemma": "שמונים",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "תשעים",
-      "lemma": "תשעים",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "בערך שישים",
-      "lemma": "בערך שישים",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "מספרים",
-      "lemma": "מספר",
       "pos": "noun",
       "confidence": 0.95
     },
@@ -1190,14 +908,38 @@
       "confidence": 0.95
     },
     {
-      "form": "שלושים",
-      "lemma": "שלושים",
+      "form": "תשעים",
+      "lemma": "תשעים",
       "pos": "noun",
       "confidence": 0.95
     },
     {
-      "form": "חמישים",
-      "lemma": "חמישים",
+      "form": "שמונים",
+      "lemma": "שמונים",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "בערך שישים",
+      "lemma": "בערך שישים",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "מספרים",
+      "lemma": "מספרים",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "ארבעים",
+      "lemma": "ארבעים",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "שמלה",
+      "lemma": "שמלה",
       "pos": "noun",
       "confidence": 0.95
     },
@@ -1206,6 +948,12 @@
       "lemma": "המחשב החדש",
       "pos": "phrase",
       "confidence": 0.9
+    },
+    {
+      "form": "חמישים",
+      "lemma": "חמישים",
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
       "form": "השמלה החדשה",
@@ -1226,21 +974,21 @@
       "confidence": 0.9
     },
     {
-      "form": "שמלה",
-      "lemma": "שמלה",
+      "form": "שלושים",
+      "lemma": "שלושים",
       "pos": "noun",
       "confidence": 0.95
-    },
-    {
-      "form": "הסמסטר הראשון",
-      "lemma": "הסמסטר הראשון",
-      "pos": "phrase",
-      "confidence": 0.9
     },
     {
       "form": "להיות",
       "lemma": "להיות",
       "pos": "verb",
+      "confidence": 0.95
+    },
+    {
+      "form": "מיץ",
+      "lemma": "מיץ",
+      "pos": "noun",
       "confidence": 0.95
     },
     {
@@ -1250,28 +998,22 @@
       "confidence": 0.9
     },
     {
-      "form": "מיץ",
-      "lemma": "מיץ",
-      "pos": "noun",
-      "confidence": 0.95
+      "form": "הסמסטר הראשון",
+      "lemma": "הסמסטר הראשון",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "יכול להיות",
+      "lemma": "יכול להיות",
+      "pos": "expression",
+      "confidence": 0.9
     },
     {
       "form": "סבתא",
       "lemma": "סבתא",
       "pos": "noun",
       "confidence": 0.95
-    },
-    {
-      "form": "הייתי חולה",
-      "lemma": "הייתי חולה",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "סבתא שלי",
-      "lemma": "סבתא שלי",
-      "pos": "phrase",
-      "confidence": 0.9
     },
     {
       "form": "סבא שלי",
@@ -1292,8 +1034,8 @@
       "confidence": 0.95
     },
     {
-      "form": "אבא שלי",
-      "lemma": "אבא שלי",
+      "form": "סבתא שלי",
+      "lemma": "סבתא שלי",
       "pos": "phrase",
       "confidence": 0.9
     },
@@ -1301,25 +1043,7 @@
       "form": "הייתי בהאיטי",
       "lemma": "הייתי בהאיטי",
       "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "מסובך",
-      "lemma": "מסובך",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
-      "form": "סבא",
-      "lemma": "סבא",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "שבעים ושמונה",
-      "lemma": "שבעים ושמונה",
-      "pos": "other",
-      "confidence": 0.8
+      "confidence": 0.85
     },
     {
       "form": "יום הולדת",
@@ -1328,34 +1052,46 @@
       "confidence": 0.9
     },
     {
-      "form": "שכחתי לגמרי",
-      "lemma": "שכחתי לגמרי",
-      "pos": "expression",
+      "form": "שבעים ושמונה",
+      "lemma": "שבעים ושמונה",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "סבא",
+      "lemma": "סבא",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "אבא שלי",
+      "lemma": "אבא שלי",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "עשרים ואחת",
       "lemma": "עשרים ואחת",
-      "pos": "other",
-      "confidence": 0.8
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
       "form": "שלושים ושלוש",
       "lemma": "שלושים ושלוש",
-      "pos": "other",
-      "confidence": 0.8
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "שכחתי לגמרי",
+      "lemma": "שכחתי לגמרי",
+      "pos": "expression",
+      "confidence": 0.85
     },
     {
       "form": "מאתיים",
       "lemma": "מאתיים",
-      "pos": "other",
-      "confidence": 0.8
-    },
-    {
-      "form": "חשוב",
-      "lemma": "חשוב",
-      "pos": "adjective",
-      "confidence": 0.9
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
       "form": "לקום",
@@ -1376,34 +1112,28 @@
       "confidence": 0.9
     },
     {
-      "form": "אחים ואחיות",
-      "lemma": "אחים ואחיות",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
       "form": "את צודקת",
       "lemma": "את צודקת",
       "pos": "expression",
       "confidence": 0.9
     },
     {
-      "form": "שלוש מאות",
-      "lemma": "שלוש מאות",
-      "pos": "other",
-      "confidence": 0.8
+      "form": "אחים ואחיות",
+      "lemma": "אחים ואחיות",
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "מאות",
       "lemma": "מאות",
-      "pos": "other",
-      "confidence": 0.8
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
-      "form": "שש מאות",
-      "lemma": "שש מאות",
-      "pos": "other",
-      "confidence": 0.8
+      "form": "שלוש מאות",
+      "lemma": "שלוש מאות",
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
       "form": "הוא צודק",
@@ -1412,10 +1142,10 @@
       "confidence": 0.9
     },
     {
-      "form": "האח הגדול",
-      "lemma": "האח הגדול",
-      "pos": "phrase",
-      "confidence": 0.9
+      "form": "שש מאות",
+      "lemma": "שש מאות",
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
       "form": "מתוק",
@@ -1424,28 +1154,10 @@
       "confidence": 0.9
     },
     {
-      "form": "אוכל",
-      "lemma": "אוכל",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "אחות",
-      "lemma": "אחות",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
       "form": "רעש",
       "lemma": "רעש",
       "pos": "noun",
       "confidence": 0.95
-    },
-    {
-      "form": "קל",
-      "lemma": "קל",
-      "pos": "adjective",
-      "confidence": 0.9
     },
     {
       "form": "אתמול",
@@ -1454,16 +1166,22 @@
       "confidence": 0.9
     },
     {
+      "form": "קל",
+      "lemma": "קל",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
       "form": "מתוק מדי",
       "lemma": "מתוק מדי",
       "pos": "expression",
-      "confidence": 0.9
+      "confidence": 0.85
     },
     {
       "form": "חריף מדי",
       "lemma": "חריף מדי",
       "pos": "expression",
-      "confidence": 0.9
+      "confidence": 0.85
     },
     {
       "form": "חריף",
@@ -1475,30 +1193,18 @@
       "form": "מכנסיים",
       "lemma": "מכנסיים",
       "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "דלת",
       "lemma": "דלת",
       "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "מילה",
-      "lemma": "מילה",
-      "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "חתול",
       "lemma": "חתול",
       "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "יותר מדי",
-      "lemma": "יותר מדי",
-      "pos": "expression",
       "confidence": 0.9
     },
     {
@@ -1508,26 +1214,14 @@
       "confidence": 0.8
     },
     {
+      "form": "יותר מדי",
+      "lemma": "יותר מדי",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
       "form": "לחם",
       "lemma": "לחם",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "אכלתי לחם",
-      "lemma": "אכלתי לחם",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "ארוחת ערב",
-      "lemma": "ארוחת ערב",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "דג",
-      "lemma": "דג",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -1538,39 +1232,51 @@
       "confidence": 0.9
     },
     {
-      "form": "מחר בצוהריים",
-      "lemma": "מחר בצוהריים",
+      "form": "ארוחת ערב",
+      "lemma": "ארוחת ערב",
       "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "אכלתי לחם",
+      "lemma": "אכלתי לחם",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "דג",
+      "lemma": "דג",
+      "pos": "noun",
       "confidence": 0.9
     },
     {
       "form": "מאה אחוז",
       "lemma": "מאה אחוז",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
-      "form": "עוד מעט",
-      "lemma": "עוד מעט",
-      "pos": "expression",
+      "form": "איטליה",
+      "lemma": "איטליה",
+      "pos": "noun",
       "confidence": 0.9
     },
     {
       "form": "בחוץ",
       "lemma": "בחוץ",
-      "pos": "adverb",
-      "confidence": 0.8
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "פעם אחת",
       "lemma": "פעם אחת",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "עוד פעם",
       "lemma": "עוד פעם",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -1582,19 +1288,19 @@
     {
       "form": "שלוש פעמים",
       "lemma": "שלוש פעמים",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
-      "form": "איטליה",
-      "lemma": "איטליה",
-      "pos": "noun",
+      "form": "עוד מעט",
+      "lemma": "עוד מעט",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "פעמיים בשנה",
       "lemma": "פעמיים בשנה",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -1607,13 +1313,7 @@
       "form": "לפעמים",
       "lemma": "לפעמים",
       "pos": "adverb",
-      "confidence": 0.9
-    },
-    {
-      "form": "ארצות הברית",
-      "lemma": "ארצות הברית",
-      "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.8
     },
     {
       "form": "טיסה",
@@ -1622,16 +1322,10 @@
       "confidence": 0.9
     },
     {
-      "form": "אני בלחץ",
-      "lemma": "אני בלחץ",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
       "form": "אנחנו בבית",
       "lemma": "אנחנו בבית",
-      "pos": "phrase",
-      "confidence": 0.9
+      "pos": "expression",
+      "confidence": 0.8
     },
     {
       "form": "ספרד",
@@ -1640,44 +1334,20 @@
       "confidence": 0.9
     },
     {
+      "form": "אני בלחץ",
+      "lemma": "אני בלחץ",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
       "form": "לפני שבוע",
       "lemma": "לפני שבוע",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "שבועיים",
-      "lemma": "שבועיים",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "יומיים",
-      "lemma": "יומיים",
-      "pos": "noun",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "שבועות",
       "lemma": "שבועות",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "הפתעה",
-      "lemma": "הפתעה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "סדרה",
-      "lemma": "סדרה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "סיפור",
-      "lemma": "סיפור",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -1694,16 +1364,22 @@
       "confidence": 0.9
     },
     {
-      "form": "התקשרתי למרטי",
-      "lemma": "התקשרתי למרטי",
-      "pos": "phrase",
-      "confidence": 0.8
+      "form": "הפתעה",
+      "lemma": "הפתעה",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "סדרה",
+      "lemma": "סדרה",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "שתי חתונות",
       "lemma": "שתי חתונות",
       "pos": "expression",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "עט",
@@ -1712,14 +1388,8 @@
       "confidence": 0.9
     },
     {
-      "form": "העונה החדשה",
-      "lemma": "העונה החדשה",
-      "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "העוגה הזאת",
-      "lemma": "העוגה הזאת",
+      "form": "התקשרתי למרטי",
+      "lemma": "התקשרתי למרטי",
       "pos": "expression",
       "confidence": 0.8
     },
@@ -1730,21 +1400,9 @@
       "confidence": 0.9
     },
     {
-      "form": "עשיתי טעות",
-      "lemma": "עשיתי טעות",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "רוח",
-      "lemma": "רוח",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "הופעה",
-      "lemma": "הופעה",
-      "pos": "noun",
+      "form": "העונה החדשה",
+      "lemma": "העונה החדשה",
+      "pos": "expression",
       "confidence": 0.9
     },
     {
@@ -1760,28 +1418,22 @@
       "confidence": 0.9
     },
     {
-      "form": "כדורגל",
-      "lemma": "כדורגל",
+      "form": "עשיתי טעות",
+      "lemma": "עשיתי טעות",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "רוח",
+      "lemma": "רוח",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "רק שנינו",
-      "lemma": "רק שנינו",
-      "pos": "expression",
-      "confidence": 0.7
-    },
-    {
-      "form": "בוא לכאן",
-      "lemma": "בוא לכאן",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "שיחקנו מונופול",
-      "lemma": "שיחקנו מונופול",
-      "pos": "phrase",
-      "confidence": 0.8
+      "form": "הופעה",
+      "lemma": "הופעה",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "זוג",
@@ -1790,34 +1442,52 @@
       "confidence": 0.9
     },
     {
+      "form": "שיחקנו מונופול",
+      "lemma": "שיחקנו מונופול",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "רק שנינו",
+      "lemma": "רק שנינו",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
       "form": "שמיים",
       "lemma": "שמיים",
       "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "מקום",
       "lemma": "מקום",
       "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "גשם",
       "lemma": "גשם",
       "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
+    },
+    {
+      "form": "חודש",
+      "lemma": "חודש",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "חודשים",
+      "lemma": "חודש",
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
       "form": "דרכון",
       "lemma": "דרכון",
       "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "אופניים",
-      "lemma": "אופניים",
-      "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "חודשיים",
@@ -1826,44 +1496,8 @@
       "confidence": 0.9
     },
     {
-      "form": "חודש",
-      "lemma": "חודש",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "חודשים",
-      "lemma": "חודשים",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "קיבלתי בונוס",
-      "lemma": "קיבלתי בונוס",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "הם משלמים",
-      "lemma": "הם משלמים",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "לפחות",
-      "lemma": "לפחות",
-      "pos": "other",
-      "confidence": 0.7
-    },
-    {
       "form": "פרחים",
-      "lemma": "פרחים",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "מגבת",
-      "lemma": "מגבת",
+      "lemma": "פרח",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -1871,25 +1505,43 @@
       "form": "דגל",
       "lemma": "דגל",
       "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "משחק",
       "lemma": "משחק",
       "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "הם משלמים",
+      "lemma": "הם משלמים",
+      "pos": "phrase",
       "confidence": 0.9
+    },
+    {
+      "form": "מגבת",
+      "lemma": "מגבת",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "לפחות",
+      "lemma": "לפחות",
+      "pos": "other",
+      "confidence": 0.85
+    },
+    {
+      "form": "מרק",
+      "lemma": "מרק",
+      "pos": "noun",
+      "confidence": 0.95
     },
     {
       "form": "עכשיו סיימנו",
       "lemma": "עכשיו סיימנו",
       "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "קיבלתי מייל",
-      "lemma": "קיבלתי מייל",
-      "pos": "phrase",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "ספרדית",
@@ -1898,14 +1550,20 @@
       "confidence": 0.9
     },
     {
+      "form": "קיבלתי מייל",
+      "lemma": "קיבלתי מייל",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
       "form": "שפות",
-      "lemma": "שפות",
+      "lemma": "שפה",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "מרק",
-      "lemma": "מרק",
+      "form": "אוזניות",
+      "lemma": "אוזנייה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -1913,31 +1571,7 @@
       "form": "במיוחד",
       "lemma": "במיוחד",
       "pos": "other",
-      "confidence": 0.7
-    },
-    {
-      "form": "אוזניות",
-      "lemma": "אוזניות",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "צרפתית",
-      "lemma": "צרפתית",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "הפסקה",
-      "lemma": "הפסקה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "שנתיים",
-      "lemma": "שנתיים",
-      "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.85
     },
     {
       "form": "שעתיים",
@@ -1952,16 +1586,22 @@
       "confidence": 0.9
     },
     {
-      "form": "אין מצב",
-      "lemma": "אין מצב",
-      "pos": "expression",
-      "confidence": 0.8
+      "form": "הפסקה",
+      "lemma": "הפסקה",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "צרפתית",
+      "lemma": "צרפתית",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "יש מצב",
       "lemma": "יש מצב",
-      "pos": "expression",
-      "confidence": 0.8
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "סרטון",
@@ -1970,21 +1610,27 @@
       "confidence": 0.9
     },
     {
-      "form": "משקפיים",
-      "lemma": "משקפיים",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "קראתי לך",
-      "lemma": "קראתי לך",
+      "form": "אין מצב",
+      "lemma": "אין מצב",
       "pos": "phrase",
-      "confidence": 0.7
+      "confidence": 0.9
     },
     {
       "form": "מחברת",
       "lemma": "מחברת",
       "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "חתונה",
+      "lemma": "חתונה",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "קראתי לך",
+      "lemma": "קראתי לך",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -1994,75 +1640,57 @@
       "confidence": 0.9
     },
     {
-      "form": "חתונה",
-      "lemma": "חתונה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
       "form": "יצאנו למסעדה",
       "lemma": "יצאנו למסעדה",
       "pos": "phrase",
-      "confidence": 0.7
-    },
-    {
-      "form": "שנה שעברה",
-      "lemma": "שנה שעברה",
-      "pos": "phrase",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "כיס",
       "lemma": "כיס",
       "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "שנה שעברה",
+      "lemma": "שנה שעברה",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "מתחת לשולחן",
       "lemma": "מתחת לשולחן",
       "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "דירה",
-      "lemma": "דירה",
-      "pos": "noun",
       "confidence": 0.9
     },
     {
       "form": "מוזיאון",
       "lemma": "מוזיאון",
       "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "ערב טוב",
-      "lemma": "ערב טוב",
-      "pos": "expression",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "לילה טוב",
       "lemma": "לילה טוב",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "בוקר טוב",
       "lemma": "בוקר טוב",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
-      "form": "לא ממש",
-      "lemma": "לא ממש",
-      "pos": "expression",
-      "confidence": 0.8
+      "form": "ערב טוב",
+      "lemma": "ערב טוב",
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "יום טוב",
       "lemma": "יום טוב",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -2072,16 +1700,10 @@
       "confidence": 0.8
     },
     {
-      "form": "שעה וחצי",
-      "lemma": "שעה וחצי",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "חצי שעה",
-      "lemma": "חצי שעה",
-      "pos": "phrase",
-      "confidence": 0.8
+      "form": "לא ממש",
+      "lemma": "לא ממש",
+      "pos": "expression",
+      "confidence": 0.85
     },
     {
       "form": "כולם",
@@ -2090,15 +1712,21 @@
       "confidence": 0.9
     },
     {
-      "form": "אני במשרד",
-      "lemma": "אני במשרד",
+      "form": "חצי שעה",
+      "lemma": "חצי שעה",
       "pos": "phrase",
-      "confidence": 0.7
+      "confidence": 0.9
     },
     {
       "form": "רחוב",
       "lemma": "רחוב",
       "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "אני במשרד",
+      "lemma": "אני במשרד",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -2108,28 +1736,22 @@
       "confidence": 0.9
     },
     {
-      "form": "מים קרים",
-      "lemma": "מים קרים",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
       "form": "מפתחות",
       "lemma": "מפתחות",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "חלב סויה",
-      "lemma": "חלב סויה",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
       "form": "הנה",
       "lemma": "הנה",
       "pos": "other",
-      "confidence": 0.6
+      "confidence": 0.7
+    },
+    {
+      "form": "חלב סויה",
+      "lemma": "חלב סויה",
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "חיים",
@@ -2138,22 +1760,22 @@
       "confidence": 0.9
     },
     {
-      "form": "מים חמים",
-      "lemma": "מים חמים",
+      "form": "מים קרים",
+      "lemma": "מים קרים",
       "pos": "phrase",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "מַשהו",
-      "lemma": "מַשהו",
-      "pos": "pronoun",
-      "confidence": 0.7
+      "lemma": "משהו",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
-      "form": "מישהו",
-      "lemma": "מישהו",
-      "pos": "pronoun",
-      "confidence": 0.7
+      "form": "מים חמים",
+      "lemma": "מים חמים",
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "יום חמישי",
@@ -2177,25 +1799,19 @@
       "form": "חלב",
       "lemma": "חלב",
       "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "יום שלישי",
-      "lemma": "יום שלישי",
-      "pos": "phrase",
       "confidence": 0.9
     },
     {
-      "form": "יום רביעי",
-      "lemma": "יום רביעי",
-      "pos": "phrase",
+      "form": "מישהו",
+      "lemma": "מישהו",
+      "pos": "noun",
       "confidence": 0.9
     },
     {
       "form": "הביתה",
       "lemma": "הביתה",
-      "pos": "adverb",
-      "confidence": 0.85
+      "pos": "other",
+      "confidence": 0.8
     },
     {
       "form": "יום שישי",
@@ -2213,11 +1829,11 @@
       "form": "תמיד",
       "lemma": "תמיד",
       "pos": "adverb",
-      "confidence": 0.95
+      "confidence": 0.85
     },
     {
-      "form": "לא תמיד",
-      "lemma": "לא תמיד",
+      "form": "יום שלישי",
+      "lemma": "יום שלישי",
       "pos": "phrase",
       "confidence": 0.9
     },
@@ -2225,67 +1841,61 @@
       "form": "זמן",
       "lemma": "זמן",
       "pos": "noun",
-      "confidence": 0.95
+      "confidence": 0.9
     },
     {
       "form": "עם",
       "lemma": "עם",
       "pos": "preposition",
-      "confidence": 0.9
-    },
-    {
-      "form": "סוכר",
-      "lemma": "סוכר",
-      "pos": "noun",
-      "confidence": 0.95
+      "confidence": 0.8
     },
     {
       "form": "בלי",
       "lemma": "בלי",
       "pos": "preposition",
-      "confidence": 0.9
+      "confidence": 0.8
     },
     {
-      "form": "עכשיו",
-      "lemma": "עכשיו",
-      "pos": "adverb",
-      "confidence": 0.95
-    },
-    {
-      "form": "לפני",
-      "lemma": "לפני",
-      "pos": "preposition",
+      "form": "סוכר",
+      "lemma": "סוכר",
+      "pos": "noun",
       "confidence": 0.9
     },
     {
       "form": "אחרי",
       "lemma": "אחרי",
       "pos": "preposition",
-      "confidence": 0.9
+      "confidence": 0.8
+    },
+    {
+      "form": "לפני",
+      "lemma": "לפני",
+      "pos": "preposition",
+      "confidence": 0.8
     },
     {
       "form": "ימים",
-      "lemma": "יום",
+      "lemma": "ימים",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "שנים",
-      "lemma": "שנה",
-      "pos": "noun",
+      "form": "עכשיו",
+      "lemma": "עכשיו",
+      "pos": "adverb",
       "confidence": 0.9
     },
     {
       "form": "לפני השיעור",
       "lemma": "לפני השיעור",
       "pos": "phrase",
-      "confidence": 0.85
+      "confidence": 0.9
     },
     {
       "form": "בסדר",
       "lemma": "בסדר",
       "pos": "expression",
-      "confidence": 0.9
+      "confidence": 0.85
     },
     {
       "form": "זה וזה",
@@ -2294,16 +1904,10 @@
       "confidence": 0.85
     },
     {
-      "form": "הכול טוב",
-      "lemma": "הכול טוב",
-      "pos": "expression",
-      "confidence": 0.85
-    },
-    {
       "form": "עוד לא",
       "lemma": "עוד לא",
-      "pos": "phrase",
-      "confidence": 0.9
+      "pos": "expression",
+      "confidence": 0.85
     },
     {
       "form": "מנגו",
@@ -2312,15 +1916,15 @@
       "confidence": 0.9
     },
     {
-      "form": "למעלה",
-      "lemma": "למעלה",
-      "pos": "adverb",
+      "form": "חדש",
+      "lemma": "חדש",
+      "pos": "adjective",
       "confidence": 0.9
     },
     {
       "form": "למטה",
       "lemma": "למטה",
-      "pos": "adverb",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -2336,34 +1940,28 @@
       "confidence": 0.9
     },
     {
-      "form": "חדש",
-      "lemma": "חדש",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
       "form": "סליחה",
       "lemma": "סליחה",
       "pos": "noun",
-      "confidence": 0.95
+      "confidence": 0.9
     },
     {
       "form": "כסף",
       "lemma": "כסף",
       "pos": "noun",
-      "confidence": 0.95
+      "confidence": 0.9
     },
     {
       "form": "עזרה",
       "lemma": "עזרה",
       "pos": "noun",
-      "confidence": 0.95
+      "confidence": 0.9
     },
     {
-      "form": "חם לי",
-      "lemma": "חם לי",
-      "pos": "expression",
-      "confidence": 0.85
+      "form": "בית",
+      "lemma": "בית",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "שם",
@@ -2372,22 +1970,10 @@
       "confidence": 0.9
     },
     {
-      "form": "פה",
-      "lemma": "פה",
-      "pos": "adverb",
-      "confidence": 0.9
-    },
-    {
-      "form": "אני בדרך",
-      "lemma": "אני בדרך",
-      "pos": "phrase",
-      "confidence": 0.85
-    },
-    {
-      "form": "אני בבית",
-      "lemma": "אני בבית",
-      "pos": "phrase",
-      "confidence": 0.85
+      "form": "חם לי",
+      "lemma": "חם לי",
+      "pos": "expression",
+      "confidence": 0.8
     },
     {
       "form": "שירותים",
@@ -2396,20 +1982,26 @@
       "confidence": 0.9
     },
     {
-      "form": "בית",
-      "lemma": "בית",
-      "pos": "noun",
-      "confidence": 0.95
-    },
-    {
-      "form": "משרד",
-      "lemma": "משרד",
+      "form": "פה",
+      "lemma": "פה",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "אם",
-      "lemma": "אם",
+      "form": "אני בדרך",
+      "lemma": "אני בדרך",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "אני בבית",
+      "lemma": "אני בבית",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "משרד",
+      "lemma": "משרד",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -2420,16 +2012,22 @@
       "confidence": 0.9
     },
     {
-      "form": "הוא פה",
-      "lemma": "הוא פה",
-      "pos": "phrase",
+      "form": "אם",
+      "lemma": "אם",
+      "pos": "conjunction",
       "confidence": 0.9
     },
     {
-      "form": "אחת וחצי",
-      "lemma": "אחת וחצי",
-      "pos": "expression",
+      "form": "חנות",
+      "lemma": "חנות",
+      "pos": "noun",
       "confidence": 0.9
+    },
+    {
+      "form": "הוא פה",
+      "lemma": "הוא פה",
+      "pos": "expression",
+      "confidence": 0.8
     },
     {
       "form": "חצי",
@@ -2444,40 +2042,28 @@
       "confidence": 0.9
     },
     {
-      "form": "חנות",
-      "lemma": "חנות",
+      "form": "קניון",
+      "lemma": "קניון",
       "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "רק שנייה",
-      "lemma": "רק שנייה",
-      "pos": "expression",
       "confidence": 0.9
     },
     {
       "form": "מוזר מאוד",
       "lemma": "מוזר מאוד",
-      "pos": "phrase",
-      "confidence": 0.9
+      "pos": "adjective",
+      "confidence": 0.8
     },
     {
       "form": "רק רגע",
       "lemma": "רק רגע",
       "pos": "expression",
-      "confidence": 0.9
+      "confidence": 0.8
     },
     {
       "form": "שתיים ורבע",
       "lemma": "שתיים ורבע",
       "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "קניון",
-      "lemma": "קניון",
-      "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.8
     },
     {
       "form": "גלידה",
@@ -2488,13 +2074,7 @@
     {
       "form": "בתיאבון",
       "lemma": "בתיאבון",
-      "pos": "expression",
-      "confidence": 0.9
-    },
-    {
-      "form": "שבוע",
-      "lemma": "שבוע",
-      "pos": "noun",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
@@ -2506,14 +2086,8 @@
     {
       "form": "גם אני",
       "lemma": "גם אני",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "גם וגם",
-      "lemma": "גם וגם",
-      "pos": "phrase",
-      "confidence": 0.9
+      "pos": "expression",
+      "confidence": 0.8
     },
     {
       "form": "מהר",
@@ -2524,8 +2098,8 @@
     {
       "form": "גם לך",
       "lemma": "גם לך",
-      "pos": "phrase",
-      "confidence": 0.9
+      "pos": "expression",
+      "confidence": 0.8
     },
     {
       "form": "יין",
@@ -2534,44 +2108,8 @@
       "confidence": 0.9
     },
     {
-      "form": "זה תלוי",
-      "lemma": "זה תלוי",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
       "form": "הרבה",
       "lemma": "הרבה",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
-      "form": "בכל מקרה",
-      "lemma": "בכל מקרה",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "כל מיני",
-      "lemma": "כל מיני",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "בוא אליי",
-      "lemma": "בוא אליי",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "דחוף",
-      "lemma": "דחוף",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
-      "form": "גבוה",
-      "lemma": "גבוה",
       "pos": "adjective",
       "confidence": 0.9
     },
@@ -2582,16 +2120,40 @@
       "confidence": 0.9
     },
     {
-      "form": "גבוה לשמים",
-      "lemma": "גבוה לשמים",
+      "form": "בוא אליי",
+      "lemma": "בוא אליי",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "דחוף",
+      "lemma": "דחוף",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "כל מיני",
+      "lemma": "כל מיני",
       "pos": "phrase",
       "confidence": 0.9
     },
     {
+      "form": "גבוה",
+      "lemma": "גבוה",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "גבוה לשמים",
+      "lemma": "גבוה לשמים",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
       "form": "התקשרתי אלייך",
       "lemma": "התקשרתי אלייך",
-      "pos": "phrase",
-      "confidence": 0.9
+      "pos": "expression",
+      "confidence": 0.8
     },
     {
       "form": "הסתדרתי",
@@ -2602,20 +2164,14 @@
     {
       "form": "ים המלח",
       "lemma": "ים המלח",
-      "pos": "expression",
+      "pos": "phrase",
       "confidence": 0.9
     },
     {
       "form": "קניתי פיצה",
-      "lemma": "קניתי פיצה",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "ממש התרגשתי",
-      "lemma": "ממש התרגשתי",
-      "pos": "phrase",
-      "confidence": 0.9
+      "lemma": "קנות",
+      "pos": "verb",
+      "confidence": 0.8
     },
     {
       "form": "גרון",
@@ -2624,27 +2180,27 @@
       "confidence": 0.9
     },
     {
-      "form": "הוא התרגש",
-      "lemma": "הוא התרגש",
-      "pos": "phrase",
-      "confidence": 0.9
+      "form": "ממש התרגשתי",
+      "lemma": "להתרגש",
+      "pos": "verb",
+      "confidence": 0.8
     },
     {
       "form": "הוא בכה",
-      "lemma": "הוא בכה",
-      "pos": "phrase",
+      "lemma": "לבכות",
+      "pos": "verb",
       "confidence": 0.9
     },
     {
       "form": "טוב לדעת",
       "lemma": "טוב לדעת",
-      "pos": "phrase",
-      "confidence": 0.9
+      "pos": "expression",
+      "confidence": 0.85
     },
     {
-      "form": "דוגמה",
-      "lemma": "דוגמה",
-      "pos": "noun",
+      "form": "הוא התרגש",
+      "lemma": "להתרגש",
+      "pos": "verb",
       "confidence": 0.9
     },
     {
@@ -2655,27 +2211,9 @@
     },
     {
       "form": "משעמם לי",
-      "lemma": "משעמם לי",
-      "pos": "expression",
+      "lemma": "משעמם",
+      "pos": "adjective",
       "confidence": 0.8
-    },
-    {
-      "form": "הזדמנות",
-      "lemma": "הזדמנות",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "תכלס",
-      "lemma": "תכלס",
-      "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "ראיון",
-      "lemma": "ראיון",
-      "pos": "noun",
-      "confidence": 0.9
     },
     {
       "form": "רעיון",
@@ -2690,46 +2228,34 @@
       "confidence": 0.9
     },
     {
-      "form": "אמצע הסמסטר",
-      "lemma": "אמצע הסמסטר",
-      "pos": "phrase",
-      "confidence": 0.8
+      "form": "ראיון",
+      "lemma": "ראיון",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "תאמינו לי",
-      "lemma": "תאמינו לי",
-      "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "מיקה הפסיקה",
-      "lemma": "מיקה הפסיקה",
-      "pos": "expression",
-      "confidence": 0.7
-    },
-    {
-      "form": "אל תזוז",
-      "lemma": "אל תזוז",
-      "pos": "expression",
+      "lemma": "להאמין",
+      "pos": "verb",
       "confidence": 0.8
     },
     {
       "form": "תחזרי אליי",
-      "lemma": "תחזרי אליי",
-      "pos": "expression",
+      "lemma": "לחזור",
+      "pos": "verb",
       "confidence": 0.8
     },
     {
       "form": "תגיד לי",
-      "lemma": "תגיד לי",
-      "pos": "expression",
+      "lemma": "לומר",
+      "pos": "verb",
       "confidence": 0.8
     },
     {
-      "form": "הסתפרתי אתמול",
-      "lemma": "הסתפרתי אתמול",
-      "pos": "expression",
-      "confidence": 0.7
+      "form": "אל תזוז",
+      "lemma": "לא לזוז",
+      "pos": "verb",
+      "confidence": 0.8
     },
     {
       "form": "סוד",
@@ -2738,135 +2264,111 @@
       "confidence": 0.9
     },
     {
+      "form": "הסתפרתי אתמול",
+      "lemma": "להסתפר",
+      "pos": "verb",
+      "confidence": 0.8
+    },
+    {
       "form": "חלאס",
       "lemma": "חלאס",
-      "pos": "expression",
+      "pos": "other",
       "confidence": 0.7
     },
     {
       "form": "בלתי אפשרי",
       "lemma": "בלתי אפשרי",
       "pos": "adjective",
-      "confidence": 0.8
+      "confidence": 0.85
     },
     {
-      "form": "אי אפשר",
-      "lemma": "אי אפשר",
+      "form": "זה תלוי",
+      "lemma": "תלוי",
       "pos": "expression",
       "confidence": 0.8
     },
     {
       "form": "חולצה צהובה",
       "lemma": "חולצה צהובה",
-      "pos": "noun",
-      "confidence": 0.8
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "סופיה הגיעה",
-      "lemma": "סופיה הגיעה",
+      "lemma": "להגיע",
+      "pos": "verb",
+      "confidence": 0.9
+    },
+    {
+      "form": "אי אפשר",
+      "lemma": "אי אפשר",
       "pos": "expression",
-      "confidence": 0.7
+      "confidence": 0.85
     },
     {
       "form": "קמילה התחילה",
-      "lemma": "קמילה התחילה",
-      "pos": "expression",
-      "confidence": 0.7
+      "lemma": "להתחיל",
+      "pos": "verb",
+      "confidence": 0.9
     },
     {
       "form": "פטרישה הרגישה",
-      "lemma": "פטרישה הרגישה",
-      "pos": "expression",
-      "confidence": 0.7
+      "lemma": "להרגיש",
+      "pos": "verb",
+      "confidence": 0.9
     },
     {
       "form": "נשמע טוב",
       "lemma": "נשמע טוב",
       "pos": "expression",
-      "confidence": 0.8
+      "confidence": 0.85
     },
     {
       "form": "נראה טוב",
       "lemma": "נראה טוב",
       "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "נשמע מעולה",
-      "lemma": "נשמע מעולה",
-      "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "היא הגזימה",
-      "lemma": "היא הגזימה",
-      "pos": "expression",
-      "confidence": 0.7
-    },
-    {
-      "form": "וילמה הגזימה",
-      "lemma": "וילמה הגזימה",
-      "pos": "expression",
-      "confidence": 0.7
+      "confidence": 0.85
     },
     {
       "form": "שלשום",
       "lemma": "שלשום",
-      "pos": "adverb",
-      "confidence": 0.8
+      "pos": "other",
+      "confidence": 0.7
     },
     {
       "form": "מנה ראשונה",
       "lemma": "מנה ראשונה",
-      "pos": "noun",
-      "confidence": 0.8
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "היא הגזימה",
+      "lemma": "להגזים",
+      "pos": "verb",
+      "confidence": 0.9
+    },
+    {
+      "form": "וילמה הגזימה",
+      "lemma": "להגזים",
+      "pos": "verb",
+      "confidence": 0.9
     },
     {
       "form": "בתי קפה",
-      "lemma": "בתי קפה",
-      "pos": "noun",
-      "confidence": 0.8
+      "lemma": "בית קפה",
+      "pos": "phrase",
+      "confidence": 0.9
     },
     {
       "form": "הזכרתי לך",
-      "lemma": "הזכרתי לך",
-      "pos": "expression",
-      "confidence": 0.7
+      "lemma": "להזכיר",
+      "pos": "verb",
+      "confidence": 0.9
     },
     {
       "form": "לא הספקתי",
-      "lemma": "לא הספקתי",
-      "pos": "expression",
-      "confidence": 0.7
-    },
-    {
-      "form": "הורים",
-      "lemma": "הורים",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "החיים ממשיכים",
-      "lemma": "החיים ממשיכים",
-      "pos": "expression",
-      "confidence": 0.7
-    },
-    {
-      "form": "גוף",
-      "lemma": "גוף",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "אוזניים",
-      "lemma": "אוזניים",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "שמש",
-      "lemma": "שמש",
-      "pos": "noun",
+      "lemma": "להספיק",
+      "pos": "verb",
       "confidence": 0.9
     },
     {
@@ -2882,6 +2384,30 @@
       "confidence": 0.9
     },
     {
+      "form": "גוף",
+      "lemma": "גוף",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "החיים ממשיכים",
+      "lemma": "להמשיך",
+      "pos": "verb",
+      "confidence": 0.8
+    },
+    {
+      "form": "שמש",
+      "lemma": "שמש",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "צמחוני",
+      "lemma": "צמחוני",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
       "form": "גב",
       "lemma": "גב",
       "pos": "noun",
@@ -2894,34 +2420,28 @@
       "confidence": 0.9
     },
     {
-      "form": "צמחוני",
-      "lemma": "צמחוני",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
-      "form": "נקודה טובה",
-      "lemma": "נקודה טובה",
-      "pos": "phrase",
-      "confidence": 0.8
-    },
-    {
-      "form": "חופש",
-      "lemma": "חופש",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
       "form": "יום חופש",
       "lemma": "יום חופש",
       "pos": "phrase",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "הוא צמחוני",
       "lemma": "הוא צמחוני",
       "pos": "expression",
-      "confidence": 0.7
+      "confidence": 0.9
+    },
+    {
+      "form": "תור",
+      "lemma": "תור",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "שמשיה",
+      "lemma": "שמשיה",
+      "pos": "noun",
+      "confidence": 0.9
     },
     {
       "form": "מיטה",
@@ -2936,20 +2456,8 @@
       "confidence": 0.9
     },
     {
-      "form": "שמשיה",
-      "lemma": "שמשיה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "תור",
-      "lemma": "תור",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "להקה",
-      "lemma": "להקה",
+      "form": "ספל",
+      "lemma": "ספל",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -2972,62 +2480,8 @@
       "confidence": 0.9
     },
     {
-      "form": "ספל",
-      "lemma": "ספל",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "חוּם",
-      "lemma": "חום",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
-      "form": "שיכור",
-      "lemma": "שיכור",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
-      "form": "קטע",
-      "lemma": "קטע",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "ציון",
-      "lemma": "ציון",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "פנוי",
-      "lemma": "פנוי",
-      "pos": "adjective",
-      "confidence": 0.9
-    },
-    {
-      "form": "אקס",
-      "lemma": "אקס",
-      "pos": "noun",
-      "confidence": 0.8
-    },
-    {
-      "form": "כתובת",
-      "lemma": "כתובת",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "תאריך",
-      "lemma": "תאריך",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "מישהי",
-      "lemma": "מישהי",
+      "form": "להקה",
+      "lemma": "להקה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3038,14 +2492,62 @@
       "confidence": 0.9
     },
     {
-      "form": "חשבון",
-      "lemma": "חשבון",
+      "form": "ציון",
+      "lemma": "ציון",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "חוּם",
+      "lemma": "חום",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "אירוע",
+      "lemma": "אירוע",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "תאריך",
+      "lemma": "תאריך",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "פנוי",
+      "lemma": "פנוי",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "תוכנית",
+      "lemma": "תוכנית",
       "pos": "noun",
       "confidence": 0.9
     },
     {
       "form": "מחיר",
       "lemma": "מחיר",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "חסרון",
+      "lemma": "חסרון",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "מישהי",
+      "lemma": "מישהי",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "קטע",
+      "lemma": "קטע",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3068,8 +2570,8 @@
       "confidence": 0.9
     },
     {
-      "form": "תוכנית",
-      "lemma": "תוכנית",
+      "form": "חשבון",
+      "lemma": "חשבון",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3080,32 +2582,20 @@
       "confidence": 0.9
     },
     {
-      "form": "חסרון",
-      "lemma": "חסרון",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "אירוע",
-      "lemma": "אירוע",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "נוף",
-      "lemma": "נוף",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
       "form": "תפוח",
       "lemma": "תפוח",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "עוגיות",
-      "lemma": "עוגיות",
+      "form": "אישור",
+      "lemma": "אישור",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "אגוזים",
+      "lemma": "אגוז",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3119,7 +2609,7 @@
       "form": "זמן מסך",
       "lemma": "זמן מסך",
       "pos": "phrase",
-      "confidence": 0.8
+      "confidence": 0.9
     },
     {
       "form": "רשימה",
@@ -3140,8 +2630,8 @@
       "confidence": 0.9
     },
     {
-      "form": "אגוזים",
-      "lemma": "אגוז",
+      "form": "בקשה",
+      "lemma": "בקשה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3152,14 +2642,8 @@
       "confidence": 0.9
     },
     {
-      "form": "אישור",
-      "lemma": "אישור",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "בקשה",
-      "lemma": "בקשה",
+      "form": "שולחן",
+      "lemma": "שולחן",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3173,7 +2657,7 @@
       "form": "ראש הממשלה",
       "lemma": "ראש הממשלה",
       "pos": "phrase",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "חשמל",
@@ -3188,32 +2672,8 @@
       "confidence": 0.9
     },
     {
-      "form": "שולחן",
-      "lemma": "שולחן",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "ארון",
-      "lemma": "ארון",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "מתנה",
-      "lemma": "מתנה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
       "form": "שיר",
       "lemma": "שיר",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "מחשב",
-      "lemma": "מחשב",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3224,8 +2684,20 @@
       "confidence": 0.9
     },
     {
+      "form": "נעליים",
+      "lemma": "נעל",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
       "form": "אהבה",
       "lemma": "אהבה",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "אח",
+      "lemma": "אח",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3233,7 +2705,7 @@
       "form": "מזג אוויר",
       "lemma": "מזג אוויר",
       "pos": "phrase",
-      "confidence": 0.9
+      "confidence": 0.95
     },
     {
       "form": "חולצה",
@@ -3257,19 +2729,7 @@
       "form": "סופ״ש",
       "lemma": "סוף שבוע",
       "pos": "expression",
-      "confidence": 0.8
-    },
-    {
-      "form": "נעליים",
-      "lemma": "נעל",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "אח",
-      "lemma": "אח",
-      "pos": "noun",
-      "confidence": 0.9
+      "confidence": 0.85
     },
     {
       "form": "אנגליה",
@@ -3296,15 +2756,21 @@
       "confidence": 0.9
     },
     {
+      "form": "מחשב",
+      "lemma": "מחשב",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
       "form": "פירות",
       "lemma": "פרי",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "ארוחת בוקר",
-      "lemma": "ארוחת בוקר",
-      "pos": "phrase",
+      "form": "מסעדה",
+      "lemma": "מסעדה",
+      "pos": "noun",
       "confidence": 0.9
     },
     {
@@ -3315,8 +2781,14 @@
     },
     {
       "form": "ארוחת צוהריים",
-      "lemma": "ארוחת צוהריים",
+      "lemma": "ארוחת צהריים",
       "pos": "phrase",
+      "confidence": 0.95
+    },
+    {
+      "form": "צרפת",
+      "lemma": "צרפת",
+      "pos": "noun",
       "confidence": 0.9
     },
     {
@@ -3332,32 +2804,14 @@
       "confidence": 0.9
     },
     {
-      "form": "צרפת",
-      "lemma": "צרפת",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "מסעדה",
-      "lemma": "מסעדה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "קינוח",
-      "lemma": "קינוח",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "גג",
-      "lemma": "גג",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
       "form": "מרחק",
       "lemma": "מרחק",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "עונה",
+      "lemma": "עונה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3374,8 +2828,8 @@
       "confidence": 0.9
     },
     {
-      "form": "עונה",
-      "lemma": "עונה",
+      "form": "מעלית",
+      "lemma": "מעלית",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3386,26 +2840,8 @@
       "confidence": 0.9
     },
     {
-      "form": "מעלית",
-      "lemma": "מעלית",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "תשובה",
-      "lemma": "תשובה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "בגד ים",
-      "lemma": "בגד ים",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "קורקינט",
-      "lemma": "קורקינט",
+      "form": "קינוח",
+      "lemma": "קינוח",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3416,26 +2852,38 @@
       "confidence": 0.9
     },
     {
-      "form": "מונית",
-      "lemma": "מונית",
+      "form": "תשובה",
+      "lemma": "תשובה",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "מכונית",
-      "lemma": "מכונית",
+      "form": "קורקינט",
+      "lemma": "קורקינט",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "תמונה",
-      "lemma": "תמונה",
+      "form": "אביב",
+      "lemma": "אביב",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "שעה",
-      "lemma": "שעה",
+      "form": "בגד ים",
+      "lemma": "בגד ים",
+      "pos": "phrase",
+      "confidence": 0.95
+    },
+    {
+      "form": "סופר",
+      "lemma": "סופר",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "חגיגה",
+      "lemma": "חגיגה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3452,8 +2900,14 @@
       "confidence": 0.9
     },
     {
-      "form": "סופר",
-      "lemma": "סופר",
+      "form": "שעה",
+      "lemma": "שעה",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "תמונה",
+      "lemma": "תמונה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3470,38 +2924,14 @@
       "confidence": 0.9
     },
     {
-      "form": "אביב",
-      "lemma": "אביב",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
       "form": "משפחה",
       "lemma": "משפחה",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "חגיגה",
-      "lemma": "חגיגה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "שנה",
-      "lemma": "שנה",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "כסף קטן",
-      "lemma": "כסף קטן",
-      "pos": "phrase",
-      "confidence": 0.9
-    },
-    {
-      "form": "שאלה",
-      "lemma": "שאלה",
+      "form": "מכונית",
+      "lemma": "מכונית",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3512,14 +2942,26 @@
       "confidence": 0.9
     },
     {
-      "form": "בעיה",
-      "lemma": "בעיה",
+      "form": "כסף קטן",
+      "lemma": "כסף קטן",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "אור",
+      "lemma": "אור",
       "pos": "noun",
       "confidence": 0.9
     },
     {
-      "form": "רבע",
-      "lemma": "רבע",
+      "form": "שאלה",
+      "lemma": "שאלה",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "בעיה",
+      "lemma": "בעיה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3527,23 +2969,11 @@
       "form": "מחר",
       "lemma": "מחר",
       "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "כלום",
-      "lemma": "כלום",
-      "pos": "unknown",
-      "confidence": 0.5
+      "confidence": 0.8
     },
     {
       "form": "סוף",
       "lemma": "סוף",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "עבודה",
-      "lemma": "עבודה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3560,14 +2990,20 @@
       "confidence": 0.9
     },
     {
+      "form": "רבע",
+      "lemma": "רבע",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
       "form": "מלוח",
       "lemma": "מלוח",
       "pos": "adjective",
       "confidence": 0.9
     },
     {
-      "form": "אור",
-      "lemma": "אור",
+      "form": "אמצע",
+      "lemma": "אמצע",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3584,8 +3020,14 @@
       "confidence": 0.9
     },
     {
-      "form": "אמצע",
-      "lemma": "אמצע",
+      "form": "עבודה",
+      "lemma": "עבודה",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "ספר",
+      "lemma": "ספר",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3596,8 +3038,14 @@
       "confidence": 0.9
     },
     {
-      "form": "ספר",
-      "lemma": "ספר",
+      "form": "שן",
+      "lemma": "שן",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "נקודה",
+      "lemma": "נקודה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3620,32 +3068,14 @@
       "confidence": 0.9
     },
     {
-      "form": "כיוון",
-      "lemma": "כיוון",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
       "form": "שדה תעופה",
       "lemma": "שדה תעופה",
       "pos": "phrase",
-      "confidence": 0.95
+      "confidence": 0.9
     },
     {
       "form": "תירוץ",
       "lemma": "תירוץ",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "שן",
-      "lemma": "שן",
-      "pos": "noun",
-      "confidence": 0.9
-    },
-    {
-      "form": "נקודה",
-      "lemma": "נקודה",
       "pos": "noun",
       "confidence": 0.9
     },
@@ -3662,16 +3092,586 @@
       "confidence": 0.9
     },
     {
+      "form": "פקקים",
+      "lemma": "פקק",
+      "pos": "noun",
+      "confidence": 0.8
+    },
+    {
       "form": "מלא",
       "lemma": "מלא",
       "pos": "adjective",
       "confidence": 0.9
     },
     {
-      "form": "פקקים",
-      "lemma": "פקק",
+      "form": "שבעים ושלוש",
+      "lemma": "שבעים ושלוש",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "לשפוך את",
+      "lemma": "לשפוך את",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "לקרוא את",
+      "lemma": "לקרוא את",
+      "pos": "expression",
+      "confidence": 0.8
+    },
+    {
+      "form": "עיר בירה",
+      "lemma": "עיר בירה",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "פירורי לחם",
+      "lemma": "פירורי לחם",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "איזה באסה",
+      "lemma": "איזה באסה",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "נתקעתי בעבודה",
+      "lemma": "נתקעתי בעבודה",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "הכוס נשברה",
+      "lemma": "הכוס נשברה",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "אני ארגע",
+      "lemma": "אני ארגע",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "לאו דווקא",
+      "lemma": "לאו דווקא",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "עשרים אלף",
+      "lemma": "עשרים אלף",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "האוטובוס איחר",
+      "lemma": "האוטובוס איחר",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "חמישים אלף",
+      "lemma": "חמישים אלף",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "לסמוך על",
+      "lemma": "לסמוך על",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "להישאר",
+      "lemma": "להישאר",
+      "pos": "verb",
+      "confidence": 0.9
+    },
+    {
+      "form": "תעדכנו אותי",
+      "lemma": "תעדכנו אותי",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "החלטה שלך",
+      "lemma": "החלטה שלך",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "תעזרי לי",
+      "lemma": "תעזרי לי",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "מבטא",
+      "lemma": "מבטא",
       "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "אותו דבר",
+      "lemma": "אותו דבר",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "סתם",
+      "lemma": "סתם",
+      "pos": "adjective",
+      "confidence": 0.8
+    },
+    {
+      "form": "תפוז",
+      "lemma": "תפוז",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "אצלכם",
+      "lemma": "אצלכם",
+      "pos": "other",
+      "confidence": 0.8
+    },
+    {
+      "form": "על האש",
+      "lemma": "על האש",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "להפריע",
+      "lemma": "להפריע",
+      "pos": "verb",
+      "confidence": 0.9
+    },
+    {
+      "form": "לדעתי",
+      "lemma": "לדעתי",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "לעוף",
+      "lemma": "לעוף",
+      "pos": "verb",
+      "confidence": 0.9
+    },
+    {
+      "form": "ניפגש אצלם",
+      "lemma": "ניפגש אצלם",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "התגעגעתי אליך",
+      "lemma": "התגעגעתי אליך",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "כּדָאי",
+      "lemma": "כדאי",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "השארתי טיפ",
+      "lemma": "השארתי טיפ",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "נכנסתי לפרטים",
+      "lemma": "נכנסתי לפרטים",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "הודו",
+      "lemma": "הודו",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "לא נורא",
+      "lemma": "לא נורא",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "יורד גשם",
+      "lemma": "יורד גשם",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "בואו נשב",
+      "lemma": "בואו נשב",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "הקפה עליי",
+      "lemma": "הקפה עליי",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "ארבע עשרה",
+      "lemma": "ארבע עשרה",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "שש עשרה",
+      "lemma": "שש עשרה",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "אחרי השיעור",
+      "lemma": "אחרי השיעור",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "אוכל",
+      "lemma": "אוכל",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "מסובך",
+      "lemma": "מסובך",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "מחר בצוהריים",
+      "lemma": "מחר בצוהריים",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "האח הגדול",
+      "lemma": "האח הגדול",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "סיפור",
+      "lemma": "סיפור",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "מילה",
+      "lemma": "מילה",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "ארצות הברית",
+      "lemma": "ארצות הברית",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "שבועיים",
+      "lemma": "שבועיים",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "יומיים",
+      "lemma": "יומיים",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "חשוב",
+      "lemma": "חשוב",
+      "pos": "adjective",
+      "confidence": 0.95
+    },
+    {
+      "form": "אחות",
+      "lemma": "אחות",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "העוגה הזאת",
+      "lemma": "העוגה הזאת",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "אופניים",
+      "lemma": "אופניים",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "שעה וחצי",
+      "lemma": "שעה וחצי",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "כדורגל",
+      "lemma": "כדורגל",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "בוא לכאן",
+      "lemma": "בוא לכאן",
+      "pos": "expression",
       "confidence": 0.85
+    },
+    {
+      "form": "משקפיים",
+      "lemma": "משקפיים",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "קיבלתי בונוס",
+      "lemma": "קיבלתי בונוס",
+      "pos": "expression",
+      "confidence": 0.85
+    },
+    {
+      "form": "שנים",
+      "lemma": "שנים",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "דירה",
+      "lemma": "דירה",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "שנתיים",
+      "lemma": "שנתיים",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "יום רביעי",
+      "lemma": "יום רביעי",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "לא תמיד",
+      "lemma": "לא תמיד",
+      "pos": "expression",
+      "confidence": 0.85
+    },
+    {
+      "form": "הכול טוב",
+      "lemma": "הכול טוב",
+      "pos": "expression",
+      "confidence": 0.85
+    },
+    {
+      "form": "למעלה",
+      "lemma": "למעלה",
+      "pos": "adverb",
+      "confidence": 0.8
+    },
+    {
+      "form": "אחת וחצי",
+      "lemma": "אחת וחצי",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "אוזניים",
+      "lemma": "אוזניים",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "אמצע הסמסטר",
+      "lemma": "אמצע הסמסטר",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "שבוע",
+      "lemma": "שבוע",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "גם וגם",
+      "lemma": "גם וגם",
+      "pos": "expression",
+      "confidence": 0.85
+    },
+    {
+      "form": "בכל מקרה",
+      "lemma": "בכל מקרה",
+      "pos": "expression",
+      "confidence": 0.85
+    },
+    {
+      "form": "דוגמה",
+      "lemma": "דוגמה",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "הזדמנות",
+      "lemma": "הזדמנות",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "תכלס",
+      "lemma": "תכלס",
+      "pos": "expression",
+      "confidence": 0.85
+    },
+    {
+      "form": "נשמע מעולה",
+      "lemma": "נשמע מעולה",
+      "pos": "expression",
+      "confidence": 0.85
+    },
+    {
+      "form": "הורים",
+      "lemma": "הורים",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "נקודה טובה",
+      "lemma": "נקודה טובה",
+      "pos": "phrase",
+      "confidence": 0.9
+    },
+    {
+      "form": "חופש",
+      "lemma": "חופש",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "שיכור",
+      "lemma": "שיכור",
+      "pos": "adjective",
+      "confidence": 0.9
+    },
+    {
+      "form": "אקס",
+      "lemma": "אקס",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "כיוון",
+      "lemma": "כיוון",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "ארון",
+      "lemma": "ארון",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "עוגיות",
+      "lemma": "עוגיות",
+      "pos": "noun",
+      "confidence": 0.95
+    },
+    {
+      "form": "שנה",
+      "lemma": "שנה",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "ארוחת בוקר",
+      "lemma": "ארוחת בוקר",
+      "pos": "expression",
+      "confidence": 0.95
+    },
+    {
+      "form": "נוף",
+      "lemma": "נוף",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "גג",
+      "lemma": "גג",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "מונית",
+      "lemma": "מונית",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "מיקה הפסיקה",
+      "lemma": "מיקה הפסיקה",
+      "pos": "phrase",
+      "confidence": 0.85
+    },
+    {
+      "form": "מתנה",
+      "lemma": "מתנה",
+      "pos": "noun",
+      "confidence": 0.9
+    },
+    {
+      "form": "תתעוררו תתעוררו",
+      "lemma": "תתעוררו",
+      "pos": "verb",
+      "confidence": 0.8
+    },
+    {
+      "form": "כמה שיותר",
+      "lemma": "כמה שיותר",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "הייתי חולה",
+      "lemma": "הייתי חולה",
+      "pos": "phrase",
+      "confidence": 0.85
+    },
+    {
+      "form": "רק שנייה",
+      "lemma": "רק שנייה",
+      "pos": "expression",
+      "confidence": 0.9
+    },
+    {
+      "form": "כלום",
+      "lemma": "כלום",
+      "pos": "noun",
+      "confidence": 0.9
     }
   ]
 }

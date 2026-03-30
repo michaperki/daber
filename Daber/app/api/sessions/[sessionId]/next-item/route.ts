@@ -80,6 +80,63 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     const userId = (session.user_id || 'anon');
     const sessionLessonId = session.lesson_id; // capture for inner closures to avoid nullable narrowing issues
+    const isMini = sessionLessonId === 'vocab_mini_morph';
+
+    // Mini-drill validation helpers (only used for vocab_mini_morph)
+    const englishOk = (s: string) => !!s && !/[\u0590-\u05FF]/.test(s || '') && /[A-Za-z]/.test(s || '');
+    const hebrewOk = (s: string) => !!s && /[\u0590-\u05FF]/.test(s || '') && !/[A-Za-z]/.test(s || '');
+    const stripPronoun = (s: string) => {
+      const pronouns = ['אני','אתה','את','הוא','היא','אנחנו','אתם','אתן','הם','הן'];
+      let out = (s || '').trim();
+      for (const p of pronouns) { if (out.startsWith(p + ' ')) { out = out.slice(p.length).trim(); break; } }
+      return out;
+    };
+    const stripHa = (s: string) => (s || '').replace(/^ה+/, '');
+    async function metaFor(id: string): Promise<{ lexeme_id: string | null; family_id: string | null; pos: string | null; features: Record<string,string|null>|null }> {
+      try {
+        const li = await prisma.lessonItem.findUnique({ where: { id }, select: { lexeme_id: true, family_id: true, features: true } });
+        if (!li) return { lexeme_id: null, family_id: null, pos: null, features: null };
+        const pos = ((li.features as any)?.pos as string | null) || null;
+        return { lexeme_id: li.lexeme_id || null, family_id: (li.family_id || (li.lexeme_id ? `lex:${li.lexeme_id}` : null)), pos, features: (li.features as any) || null };
+      } catch { return { lexeme_id: null, family_id: null, pos: null, features: null }; }
+    }
+    async function validateMiniItem(it: { id: string; english_prompt: string; target_hebrew: string; features?: Record<string,string|null>|null }): Promise<{ ok: true } | { ok: false; reason: string }> {
+      if (!isMini) return { ok: true };
+      const en = (it.english_prompt || '').trim();
+      const he = (it.target_hebrew || '').trim();
+      if (!englishOk(en)) return { ok: false, reason: 'english_not_clean' };
+      if (!hebrewOk(he)) return { ok: false, reason: 'hebrew_not_clean' };
+      const meta = await metaFor(it.id);
+      if (!meta.lexeme_id) return { ok: false, reason: 'missing_lexeme' };
+      // Ensure Hebrew surface (without pronoun/definite) exists among the lexeme's inflections
+      const core = stripHa(stripPronoun(he));
+      const infl = await prisma.inflection.findFirst({ where: { lexeme_id: meta.lexeme_id, form: core } });
+      if (!infl) return { ok: false, reason: 'surface_not_in_lexeme' };
+      // POS alignment when provided
+      const lex = await prisma.lexeme.findUnique({ where: { id: meta.lexeme_id }, select: { pos: true } });
+      const fpos = (it.features?.pos || '').toLowerCase();
+      const lpos = (lex?.pos || '').toLowerCase();
+      if (fpos && lpos && fpos !== lpos) return { ok: false, reason: 'pos_mismatch' };
+      // If adjective or verb, require a pronoun prefix
+      if (fpos === 'adjective' || fpos === 'verb') {
+        if (stripPronoun(he) === he) return { ok: false, reason: 'missing_pronoun' };
+      }
+      return { ok: true };
+    }
+    async function pickValidFromIds(ids: string[]): Promise<{ id: string; explain?: any } | null> {
+      if (!isMini) return { id: (ids[0] || null) } as any;
+      let skipped = 0;
+      for (const cid of ids) {
+        const raw = await prisma.lessonItem.findUnique({ where: { id: cid }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
+        if (!raw) continue;
+        const shaped = { id: raw.id, english_prompt: raw.english_prompt, target_hebrew: raw.target_hebrew, transliteration: raw.transliteration, features: (raw.features as any) || null } as any;
+        const ok = await validateMiniItem(shaped);
+        if (ok.ok) return { id: cid, explain: skipped ? { skippedInvalid: skipped } : undefined };
+        skipped++;
+        try { logEvent({ type: 'mini_morph_validation_skip', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: cid, reason: (!ok.ok ? ok.reason : 'unknown') } }); } catch {}
+      }
+      return null;
+    }
 
     const isCrossVocab = sessionLessonId === 'vocab_all';
     const genLessonId = `${sessionLessonId}_gen`;
@@ -643,7 +700,13 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     if (subset.length) {
       const remainingIds = subset.filter(id => !attemptedIds.has(id));
       const total = subset.length;
-      const pickId = useRandom ? remainingIds[Math.floor(Math.random() * remainingIds.length)] : remainingIds[0];
+      let chosen: { id: string; explain?: any } | null;
+      if (isMini) {
+        chosen = await pickValidFromIds(useRandom ? [...remainingIds].sort(() => Math.random() - 0.5) : remainingIds);
+      } else {
+        chosen = { id: (useRandom ? remainingIds[Math.floor(Math.random() * remainingIds.length)] : remainingIds[0]) } as any;
+      }
+      const pickId = chosen?.id || null;
       if (!pickId) return NextResponse.json({ done: true, index: attemptedIds.size, total });
       const item = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
       if (!item) return NextResponse.json({ done: true, index: attemptedIds.size, total });
@@ -658,11 +721,14 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         .catch(() => false);
       const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
       const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
+      const meta = await metaFor(adj.id);
       const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
       if (debug) {
         explain.path = 'subset';
         explain.candidates = { subsetRemaining: remainingIds.length };
         explain.pick = { id: item.id, source: useRandom ? 'random' : 'sequential' };
+        if (chosen?.explain) explain.validation = chosen.explain;
+        explain.meta = { ...meta };
         resp.explain = explain;
       }
       return NextResponse.json(resp);
@@ -684,11 +750,23 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         if (debug) explain.candidates.weakCount = weakIds.length;
         let pickId: string | null = null;
         if (weakIds.length) {
-          pickId = useRandom ? weakIds[Math.floor(Math.random() * weakIds.length)] : weakIds[0];
+          if (isMini) {
+            const picked = await pickValidFromIds(useRandom ? [...weakIds].sort(() => Math.random() - 0.5) : weakIds);
+            pickId = picked?.id || null;
+            if (picked?.explain) (explain.validation = picked.explain);
+          } else {
+            pickId = useRandom ? weakIds[Math.floor(Math.random() * weakIds.length)] : weakIds[0];
+          }
         }
         if (!pickId) {
           // No weak items — pick a new item
-          pickId = useRandom ? remainingIds[Math.floor(Math.random() * remainingIds.length)] : remainingIds[0];
+          if (isMini) {
+            const picked = await pickValidFromIds(useRandom ? [...remainingIds].sort(() => Math.random() - 0.5) : remainingIds);
+            pickId = picked?.id || null;
+            if (picked?.explain) (explain.validation = picked.explain);
+          } else {
+            pickId = useRandom ? remainingIds[Math.floor(Math.random() * remainingIds.length)] : remainingIds[0];
+          }
         }
         if (pickId) {
           const raw = await prisma.lessonItem.findUnique({ where: { id: pickId }, select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true } });
@@ -709,8 +787,9 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         .catch(() => false);
       const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
       const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
+      const meta = await metaFor(adj.id);
       const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
-      if (debug) resp.explain = explain;
+      if (debug) { explain.meta = { ...meta }; resp.explain = explain; }
       return NextResponse.json(resp);
     }
   } catch (e: any) {

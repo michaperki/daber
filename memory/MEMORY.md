@@ -2,7 +2,7 @@
 
 Role: Live project state, architecture snapshot, and current focus. Update this file at the end of each work session.
 
-Last updated: 2026-03-29 (post-identity rollout)
+Last updated: 2026-03-30 (Green gloss rollout)
 
 ---
 
@@ -33,13 +33,13 @@ Last updated: 2026-03-29 (post-identity rollout)
 
 ## Current Focus
 - **Doc alignment**: keeping SOUL, MEMORY, STATE, ROADMAP, and Dev Journal in sync with shipped code.
-- **Green vocab drill**: curated ~88 lexeme drill for daily practice during development. Listen-only prompts (no generated English).
+- **Green vocab drill**: curated ~82 lexeme drill. Green generators now use gloss-based prompts ("How do I say …"); intros use `Lexeme.gloss`.
 - **Song packs**: Ma Na'aseh chorus live; expand to verse chunks.
 - **Pilot feedback**: with anonymous identity shipped, observe `/admin/users` for activity and accuracy. Decide if optional names/labels are needed later.
 - Family coverage: intros once per family; broaden base‑form linking.
 - Validate guided phase and hints in real sessions; polish scaffolds.
 - Backlog: user auth/profiles, STT confidence guardrails, CC import pipeline docs.
- - Green intros: server prefers curated glosses and never shows instruction text as translation; UI renders English only when supplied.
+ - Green intros: server uses `Lexeme.gloss` as the source of truth; UI renders English only when provided (never instruction text).
 
 ## Near‑Term High‑Leverage
 - **Pilot flow polish**: Keep friction at zero; consider optional name label in settings that maps to the UUID for admin readability.
@@ -129,13 +129,13 @@ Last updated: 2026-03-29 (post-identity rollout)
 - CC imports: `Daber/data/imports/*`; scraper: `scraper/cc_scraper.js`; importer: `scripts/import_citizen_cafe.ts`
 - Families: `Daber/app/api/sessions/[sessionId]/next-item/route.ts` (phase logic), `Daber/app/api/sessions/[sessionId]/seen/route.ts` (intro seen)
 - Family scripts: `scripts/count_cc_standalone.ts`, `scripts/tag_cc_families.ts`, `scripts/apply_cc_family_links.ts`, `scripts/smoke_family_intro.ts`
-- Green drill data: `Daber/data/green_lexemes.json`, `Daber/data/green_glosses.json`
+- Green drill: targets in `Daber/data/green_lexemes.json`; glosses live in DB (`Lexeme.gloss`, backfilled for 82). `green_glosses.json` is historical (not used at runtime).
 - Song packs: `Daber/app/songs/ma-naaseh/page.tsx`, `Daber/app/api/song-packs/ma-naaseh/bootstrap/route.ts`
 - Dictionary: `Daber/app/dictionary/page.tsx`, `Daber/app/dictionary/[lexemeId]/page.tsx`
 - Wikidata seeding: `scripts/lexicon/seed_wikidata_bulk.ts`, `scripts/lexicon/run_wd_seed_forever.sh`
 - TTS volume boost: `Daber/lib/client/audio/useTTS.ts` (GainNode logic)
 - Oolpan schema ref: `Oolpan/README.md` (design artifact, not running code)
- - Green intros (2026-03-30): prefer `green_glosses.json` gloss; derive adj/noun English from linked prompts; suppress instruction text; generators link `lexeme_id`.
+ - Green intros (2026-03-30): use `Lexeme.gloss` (single source); backfilled 82; generators updated to gloss-based "How do I say …" prompts; no JSON lookups at runtime.
 
 ## Ops / Dev Notes
 - Env:

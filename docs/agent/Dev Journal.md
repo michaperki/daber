@@ -2,13 +2,14 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
-## 2026-03-30 — Green intros (gloss) + UI guard
+## 2026-03-30 — Green intros use Lexeme.gloss; UI guard
 
-- Intros for Green drill now prefer curated glosses (`Daber/data/green_glosses.json`).
-- If a gloss is missing or Hebrew-only, derive a reasonable English for adjectives/nouns from linked prompts; otherwise omit English on the intro card (do not show instruction text as translation).
-- Generators now set `LessonItem.lexeme_id` for all generated items; intro builder also parses legacy generated IDs when needed.
+- Schema: added optional `gloss` to `Lexeme`; applied via `prisma db push`.
+- Backfill: populated `Lexeme.gloss` for all 82 Green lexemes (one-time script at `scripts/backfill_green_glosses.ts`).
+- Server intros: `buildIntroFor()` now reads `lexeme.gloss` directly (single source of truth) — no JSON lookups or derivation chains.
+- Generators (Green): English prompt set to `How do I say: ${gloss || lemma}?` for verbs, nouns, adjectives.
 - UI: Intro card shows the English line only when `intro.english` is present; removed fallback to `english_prompt` to prevent instruction text appearing as a translation in Green.
-- Commits: 9962035, 63d0ae3, 76253aa, 3c023de, 08329c5.
+- Historical data: `Daber/data/green_glosses.json` kept for provenance; not referenced at runtime.
 
 ## 2026-03-29 — Optional user labels + TTS doc cleanup
 

@@ -138,5 +138,19 @@ Pointers (files)
 - LLM pipeline: Daber/lib/generation/pipeline.ts, Daber/app/api/generate-drills/route.ts
 - Voice I/O: Daber/app/api/stt/route.ts, Daber/app/api/tts/route.ts; client hooks under Daber/lib/client/audio/*
 - Session UI: Daber/app/session/[sessionId]/page.tsx
+
+Canonical intros — SHIPPED (2026-03-30)
+- Intro form resolution uses lexeme + inflections to render the pedagogical base form by POS:
+  - verbs: infinitive (`Inflection.tense='infinitive'` when present; fallback to lemma)
+  - adjectives: singular masculine (`Inflection(number='sg', gender='m')` when present)
+  - nouns: singular (indefinite); compounds use `features.definite_form` when necessary
+- For families without a stored base item, the API auto-creates a `family_base` LessonItem in the generated lesson (`<lesson>_gen`) on first intro, sets `family_id='lex:<lexeme_id>'`, and marks `family_base=true`. Selection prefers this base when `FamilyStat` is absent.
+- English prompts for lexicon-generated items align with the Hebrew slot (present/past/future/person/number/gender). Green items no longer mix lemma glosses with conjugated Hebrew.
+
+Simulator safety — SHIPPED (2026-03-30)
+- The green session simulator no longer submits attempts for `phase: 'intro'` (marks seen only), avoiding bogus `ambiguous_transcript` grades.
+
+Session end logging — SHIPPED (2026-03-30)
+- Attempts API no longer emits `session_ended` when the base lesson has zero items (common in lexicon mode with items under `<lesson>_gen`).
 - Admin tools: Daber/app/admin/*, Daber/app/api/admin/lexicon/*
  - Users dashboard: Daber/app/admin/users/page.tsx

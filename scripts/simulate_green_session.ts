@@ -107,15 +107,16 @@ async function main() {
     // Mark intro seen and auto-answer to advance
     const dir = phase === 'recognition' ? 'he_to_en' : 'en_to_he';
     if (phase === 'intro') {
+      // For intros, mark seen only; do not grade/submit attempts
       try { await postSeen(makeReq(`http://local/api/sessions/${sessionId}/seen`, { lessonItemId: item.id }, 'POST'), { params: { sessionId } } as any); } catch {}
+    } else {
+      try {
+        await postAttempt(makeReq('http://local/api/attempts', { sessionId, lessonItemId: item.id, rawTranscript: '', direction: dir, phase }, 'POST'));
+      } catch {}
     }
-    try {
-      await postAttempt(makeReq('http://local/api/attempts', { sessionId, lessonItemId: item.id, rawTranscript: '', direction: dir, phase }, 'POST'));
-    } catch {}
   }
 
   console.log(`\nWrote: ${outFile}`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
-

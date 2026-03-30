@@ -7,7 +7,7 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - Schema: added optional `gloss` to `Lexeme`; applied via `prisma db push`.
 - Backfill: populated `Lexeme.gloss` for all 82 Green lexemes (one-time script at `scripts/backfill_green_glosses.ts`).
 - Server intros: `buildIntroFor()` now reads `lexeme.gloss` directly (single source of truth) — no JSON lookups or derivation chains.
-- Generators (Green): English prompt set to `How do I say: ${gloss || lemma}?` for verbs, nouns, adjectives.
+- Generators (Green): English prompt aligns with the Hebrew slot (present/past/future/person/number/gender) derived from gloss.
 - UI: Intro card shows the English line only when `intro.english` is present; removed fallback to `english_prompt` to prevent instruction text appearing as a translation in Green.
 - Historical data: `Daber/data/green_glosses.json` kept for provenance; not referenced at runtime.
 
@@ -320,3 +320,13 @@ Note: SOUL.md unchanged (requires approval).
   - APIs: `Daber/app/api/admin/lexicon/{export, family, fix, sync}/route.ts`
 - Docs updated to drop references: `STATE.md`, `DEPLOY.md`, `SIMPLIFY.md`.
 - Rationale: single-user environment; prefer simplicity until real auth lands.
+## 2026-03-30 — Canonical intros, base item creation, simulator & logging guards
+
+- Intro base forms: `buildIntroFor()` now prefers canonical forms by POS
+  - verbs → `Inflection.tense='infinitive'` when present (fallback to lemma)
+  - adjectives → `Inflection(number='sg', gender='m')` when present
+  - nouns → singular (indefinite); compounds via `features.definite_form`
+- Family base items: when a lexeme family has no stored base, `next-item` auto-creates a `family_base` LessonItem in `<lesson>_gen` (`id=lexbase_<lexemeId>`) and selects it for first intro.
+- Allowed lessons: selection now includes the generated lesson (`<lesson>_gen`) in non-cross-vocab sessions to find/use base items.
+- Simulator: `scripts/simulate_green_session.ts` no longer posts attempts for `phase: 'intro'` (marks seen only).
+- Logging: `attempts` route skips `session_ended` when the base lesson has zero items, avoiding premature end logs in lex mode.

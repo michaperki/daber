@@ -265,7 +265,8 @@ export async function POST(req: Request) {
       } else {
         const totalItems = await prisma.lessonItem.count({ where: { lesson_id: session.lesson_id } });
         const attemptsCount = await prisma.attempt.count({ where: { session_id: sessionId } });
-        if (attemptsCount >= totalItems) {
+        // Guard: do not emit session_ended for open-ended or generator-backed lessons with no base items
+        if (totalItems > 0 && attemptsCount >= totalItems) {
           await prisma.session.update({ where: { id: sessionId }, data: { ended_at: new Date() } });
           logEvent({ type: 'session_ended', session_id: sessionId, lesson_id: session.lesson_id });
         }

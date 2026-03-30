@@ -52,6 +52,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const sessionLessonId = session.lesson_id; // capture for inner closures to avoid nullable narrowing issues
 
     const isCrossVocab = sessionLessonId === 'vocab_all';
+    const genLessonId = `${sessionLessonId}_gen`;
     const allowedLessonIds: string[] = isCrossVocab
       ? (
         [
@@ -59,7 +60,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           ...(await prisma.lesson.findMany({ where: { type: 'vocab_generated' }, select: { id: true } })).map(l => l.id),
         ]
       )
-      : [session.lesson_id];
+      : [session.lesson_id, genLessonId];
     if (debug) {
       explain.lesson = { id: session.lesson_id, cross: isCrossVocab, allowedLessonIds };
     }
@@ -106,6 +107,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         if (familyId) {
           const famIntro = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: familyId, user_id: userId } } });
           if (!famIntro) {
+            // Look for an existing base; if missing, synthesize and persist a canonical base for this family
             const base = await prisma.lessonItem.findFirst({
               where: { family_id: familyId, lesson_id: { in: allowedLessonIds }, family_base: true },
               select: { id: true, english_prompt: true, target_hebrew: true, transliteration: true, features: true },
@@ -115,6 +117,56 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
                 explain.familySwap = { from: item.id, to: base.id, reason: 'family_base' };
               }
               return { ...base, features: (base.features as any) || null } as any;
+            }
+
+            // Resolve lexeme ID
+            const lexId = li?.lexeme_id || (familyId.startsWith('lex:') ? familyId.slice(4) : null);
+            if (lexId) {
+              const lex = await prisma.lexeme.findUnique({ where: { id: lexId }, select: { id: true, lemma: true, pos: true, gloss: true } });
+              if (lex) {
+                const pos = (lex.pos || '').toLowerCase();
+                const stripN = (s: string) => (s || '').replace(/[\u0591-\u05C7]/g, '');
+                // Prefer canonical base by POS
+                let heb: string | null = null;
+                let feat: Record<string, string | null> = {};
+                if (pos === 'verb' || pos === 'q24905') {
+                  const inf = await prisma.inflection.findFirst({ where: { lexeme_id: lex.id, tense: 'infinitive' }, select: { form: true } });
+                  heb = stripN(inf?.form || lex.lemma || '');
+                  feat = { pos: 'verb', tense: 'infinitive' } as any;
+                } else if (pos === 'adjective' || pos === 'q34698') {
+                  const adj = await prisma.inflection.findFirst({ where: { lexeme_id: lex.id, number: 'sg', gender: 'm' }, select: { form: true, number: true, gender: true } });
+                  heb = stripN((adj?.form || lex.lemma || '').trim());
+                  feat = { pos: 'adjective', number: adj?.number || 'sg', gender: adj?.gender || 'm' } as any;
+                } else if (pos === 'noun' || pos === 'q1084') {
+                  const sg = await prisma.inflection.findFirst({ where: { lexeme_id: lex.id, number: 'sg' }, select: { form: true, number: true, gender: true } });
+                  heb = stripN(((sg?.form || lex.lemma || '').trim()).replace(/^ה+/, ''));
+                  feat = { pos: 'noun', number: 'sg', gender: (sg?.gender || null) as any } as any;
+                } else {
+                  heb = stripN(lex.lemma || '');
+                  feat = { pos: (lex.pos || 'unknown').toLowerCase() as any } as any;
+                }
+
+                const english = lex.gloss || undefined;
+                const englishPrompt = english ? `How do I say: ${english}?` : `How do I say: ${lex.lemma}?`;
+                const id = `lexbase_${lex.id}`;
+                const lessonId = genLessonId; // place base items in the generated lesson alongside dynamic items
+                const created = await prisma.lesson.upsert({
+                  where: { id: lessonId },
+                  update: { title: 'Dynamic Drills', language: session.lesson?.language || 'he', level: session.lesson?.level || 'mixed', type: 'vocab_generated', description: session.lesson?.description || null },
+                  create: { id: lessonId, title: 'Dynamic Drills', language: session.lesson?.language || 'he', level: session.lesson?.level || 'mixed', type: 'vocab_generated', description: session.lesson?.description || null }
+                }).catch(() => null);
+                void created; // no-op; ensure lesson exists
+
+                const up = await prisma.lessonItem.upsert({
+                  where: { id },
+                  update: { lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: heb || '', transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['base','family_base'], difficulty: 1, lexeme_id: lex.id, family_id: familyId, family_base: true, features: feat as any },
+                  create: { id, lesson_id: lessonId, english_prompt: englishPrompt, target_hebrew: heb || '', transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['base','family_base'], difficulty: 1, lexeme_id: lex.id, family_id: familyId, family_base: true, features: (feat as any) }
+                });
+                if (debug && item.id !== up.id) {
+                  explain.familySwap = { from: item.id, to: up.id, reason: 'family_base_created' };
+                }
+                return { id: up.id, english_prompt: up.english_prompt, target_hebrew: up.target_hebrew, transliteration: up.transliteration, features: (up.features as any) || null } as any;
+              }
             }
           }
         }
@@ -161,8 +213,9 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
 
         // Hebrew: canonical base form
         let heb: string | null = null;
-        if (pos === 'verb' && lex?.lemma) {
-          heb = stripHebNikkud(lex.lemma);
+        if (pos === 'verb' && lexId) {
+          const inf = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, tense: 'infinitive' }, select: { form: true } });
+          heb = stripHebNikkud((inf?.form || lex?.lemma || '').trim());
         } else if (pos === 'adjective' && lexId) {
           const adjBase = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, number: 'sg', gender: 'm' }, select: { form: true } });
           heb = stripHebNikkud((adjBase?.form || lex?.lemma || li.target_hebrew || '').trim());

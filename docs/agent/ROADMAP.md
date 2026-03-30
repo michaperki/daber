@@ -36,9 +36,9 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
 
 0–4 weeks
 - Mini Phase 2: fill remaining verb/adjective/noun matrix holes with 12–20 lexemes.
-- Feature‑aware grading reasons polish (tense/voice nuances).
+- Feature‑aware grading reasons polish (tense hints SHIPPED; evaluate safe voice cues next).
 - Selection default: server `due=blend` when unspecified (SHIPPED); consider client hints next.
-- Infra: Redis‑backed rate limit + job queue; DB indexes for Attempts/FeatureStat hot paths.
+- Infra: Scaffold Redis‑backed rate limit + job queue behind env flags (SHIPPED memory backend). Add DB indexes for Attempts/FeatureStat hot paths.
 - TTS provider evaluation and acceptance criteria.
 
 1–2 months

@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db';
 import { logEvent } from '@/lib/log';
 import { zCreateSessionRequest } from '@/lib/contracts';
 import { runGenerationJob } from '../../../lib/generation/pipeline';
+import { scheduleGenerationJob } from '@/lib/infra/queue';
 
 export async function POST(req: Request) {
   try {
@@ -51,7 +52,11 @@ export async function POST(req: Request) {
       if (pending === 0) {
         const undrilled = await prisma.lessonItem.count({ where: { lesson: { type: 'vocab_generated' }, attempts: { none: {} } } });
         if (undrilled < threshold) {
-          runGenerationJob({ userId }).catch(() => {});
+          await scheduleGenerationJob({ userId }, async (job) => {
+            if (job.type === 'generate_drills') {
+              await runGenerationJob({ userId: job.payload.userId });
+            }
+          });
         }
       }
     } catch {}

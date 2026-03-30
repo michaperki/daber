@@ -153,6 +153,31 @@ export function deterministicEvaluate(
       if (diffsMorph.length) {
         return { grade: 'flawed', reasons: diffsMorph };
       }
+
+      // Tense hint (conservative): if we can confidently infer tense from the verb form and it differs from target
+      try {
+        const fpos = (features as any).pos as string | undefined;
+        const ftense = (features as any).tense as string | undefined;
+        function detectVerbTenseByForm(form: string, pron?: Morph | null): 'past' | 'future' | null {
+          const s = (form || '').trim();
+          if (!s) return null;
+          // Strong past suffixes
+          if (/תי$/.test(s)) return 'past'; // 1sg past
+          if (/(נו|תם|תן)$/.test(s)) return 'past'; // 1pl/2pl past
+          if (pron && pron.person === '3' && pron.gender === 'f' && /ה$/.test(s)) return 'past'; // 3sg f past
+          if (pron && pron.number === 'pl' && /ו$/.test(s)) return 'past'; // 3pl past (conservative)
+          // Future common prefixes (avoid pronoun tokens)
+          const bad = new Set(['את', 'אתם', 'אתן']);
+          if (s.length >= 3 && !bad.has(s) && /^[אתיונ]/.test(s)) return 'future';
+          return null; // do not guess 'present' to avoid false positives
+        }
+        if (fpos && fpos.toLowerCase() === 'verb' && ftense) {
+          const heardTense = detectVerbTenseByForm(lastHeb, heardPronoun);
+          if (heardTense && heardTense !== ftense) {
+            return { grade: 'flawed', reasons: [{ code: 'wrong_tense', message: 'Close, wrong tense.' }] };
+          }
+        }
+      } catch {}
     }
     // Also, compare morphology against the target itself; if target morph available and contradicts features, skip
     // (No-op here; features are authoritative.)

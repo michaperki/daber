@@ -12,6 +12,11 @@ Temporary scaffolding and feature flags
   - What: In‑process per‑IP token bucket rate limits.
   - Why: Prevents accidental hammering during dev.
   - Keep or kill: Temporary for single-instance; replace with shared store if scaling.
+- RL_BACKEND
+  - Where: Daber/lib/rateLimit.ts
+  - What: Select rate limit backend. `redis` placeholder falls back to in‑memory until Redis client is wired.
+  - Why: Prepare for multi‑instance deployments.
+  - Keep or kill: Keep; wire to Redis when infra lands.
 - SESSION_DUE_CAP
   - Where: Daber/app/api/sessions/[sessionId]/next-item/route.ts
   - What: Session item cap (base). ‘adaptive’ pacing can extend up to a hard 25.
@@ -22,6 +27,11 @@ Temporary scaffolding and feature flags
   - What: Triggers background LLM generation when undrilled generated queue is low and no pending batch.
   - Why: Keeps a buffer of fresh content.
   - Keep or kill: Keep, but consider centralized job control when scaling.
+- GEN_QUEUE_BACKEND
+  - Where: Daber/lib/infra/queue.ts
+  - What: Selects job queue backend (`memory` default; `redis` placeholder). Session creation schedules generation via queue.
+  - Why: Prepare a path to externalize background jobs.
+  - Keep or kill: Keep; wire to Redis when infra lands.
 - SEED_LEXEMES / SEED_CC / SEED_CC_PREFIX
   - Where: Daber/prisma/seed.ts
   - What: Data seeding toggles (structured lexicon, Citizen Cafe imports).

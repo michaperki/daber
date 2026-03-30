@@ -81,6 +81,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const userId = (session.user_id || 'anon');
     const sessionLessonId = session.lesson_id; // capture for inner closures to avoid nullable narrowing issues
     const isMini = sessionLessonId === 'vocab_mini_morph';
+    const MINI_ALLOW = new Set<string>(['mini_lex_write', 'mini_lex_book', 'mini_lex_big']);
 
     // Mini-drill validation helpers (only used for vocab_mini_morph)
     // Reuse top-level englishOk; define only hebrewOk/strippers here
@@ -108,6 +109,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       if (!hebrewOk(he)) return { ok: false, reason: 'hebrew_not_clean' };
       const meta = await metaFor(it.id);
       if (!meta.lexeme_id) return { ok: false, reason: 'missing_lexeme' };
+      if (!MINI_ALLOW.has(meta.lexeme_id)) return { ok: false, reason: 'lexeme_not_allowed' };
       // Ensure Hebrew surface (without pronoun/definite) exists among the lexeme's inflections
       const core = stripHa(stripPronoun(he));
       const infl = await prisma.inflection.findFirst({ where: { lexeme_id: meta.lexeme_id, form: core } });
@@ -551,7 +553,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       }
     }
 
-    if ((useLex || dueParam === 'feature' || dueParam === 'blend') && session.lesson?.type === 'vocab') {
+    if (!isMini && (useLex || dueParam === 'feature' || dueParam === 'blend') && session.lesson?.type === 'vocab') {
       try {
         const gen = await generateNextFromLexicon(sessionId, attemptedIds, { focusWeakness: focusWeak });
         if (gen) {
@@ -583,7 +585,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
             .then(c => c > 0)
             .catch(() => false);
           const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
-          const resp: any = { done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
+          const resp: any = { done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: null, familyId: null, path: (explain as any)?.path || 'lex' } };
           if (debug) resp.explain = explain;
           return NextResponse.json(resp);
         }
@@ -688,7 +690,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           .catch(() => false);
         const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
         const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
-        const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
+        const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: null, familyId: null, path: (explain as any)?.path || 'due_item' } };
         if (debug) {
           explain.pick = { id: pick.id, source: useRandom ? 'random' : 'sequential' };
           resp.explain = explain;
@@ -722,7 +724,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
       const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
       const meta = await metaFor(adj.id);
-      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: (meta as any)?.lexeme_id || null, familyId: (meta as any)?.family_id || null, path: 'subset' } };
       if (debug) {
         explain.path = 'subset';
         explain.candidates = { subsetRemaining: remainingIds.length };
@@ -751,6 +753,12 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         let pickId: string | null = null;
         if (weakIds.length) {
           if (isMini) {
+            // Filter weakIds to allowed lexemes
+            const weakLis = await prisma.lessonItem.findMany({ where: { id: { in: weakIds } }, select: { id: true, lexeme_id: true } });
+            const filtered = weakLis.filter(w => w.lexeme_id && MINI_ALLOW.has(w.lexeme_id)).map(w => w.id);
+            weakIds.length = 0; weakIds.push(...filtered);
+          }
+          if (isMini) {
             const picked = await pickValidFromIds(useRandom ? [...weakIds].sort(() => Math.random() - 0.5) : weakIds);
             pickId = picked?.id || null;
             if (picked?.explain) (explain.validation = picked.explain);
@@ -761,7 +769,10 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         if (!pickId) {
           // No weak items — pick a new item
           if (isMini) {
-            const picked = await pickValidFromIds(useRandom ? [...remainingIds].sort(() => Math.random() - 0.5) : remainingIds);
+            // Filter remainingIds to allowed lexemes
+            const remLis = await prisma.lessonItem.findMany({ where: { id: { in: remainingIds } }, select: { id: true, lexeme_id: true } });
+            const allowedRem = remLis.filter(r => r.lexeme_id && MINI_ALLOW.has(r.lexeme_id)).map(r => r.id);
+            const picked = await pickValidFromIds(useRandom ? [...allowedRem].sort(() => Math.random() - 0.5) : allowedRem);
             pickId = picked?.id || null;
             if (picked?.explain) (explain.validation = picked.explain);
           } else {
@@ -788,7 +799,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
       const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
       const meta = await metaFor(adj.id);
-      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: (meta as any)?.lexeme_id || null, familyId: (meta as any)?.family_id || null, path: (explain as any)?.path || 'srs', pick: (explain as any)?.pick || null } };
       if (debug) { explain.meta = { ...meta }; resp.explain = explain; }
       return NextResponse.json(resp);
     }

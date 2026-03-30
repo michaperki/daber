@@ -14,7 +14,8 @@ async function createSession(lessonId: string): Promise<string> {
     return origResolve.call(this, request, parent, isMain, options);
   };
   const { POST: createSession } = await import('../Daber/app/api/sessions/route');
-  const res = await createSession(new Request('http://local/api/sessions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonId }) }) as any);
+  const userId = `test_mini_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,8)}`;
+  const res = await createSession(new Request('http://local/api/sessions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonId, userId }) }) as any);
   const data = await (res as Response).json();
   return data.session.id as string;
 }
@@ -103,4 +104,3 @@ async function run() {
 }
 
 run().catch((e) => { console.error('Mini morph tests failed:', e?.message || e); process.exit(1); });
-

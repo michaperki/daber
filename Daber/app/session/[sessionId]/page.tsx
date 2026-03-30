@@ -36,6 +36,7 @@ export default function DaberSessionPage() {
   const [drillPhase, setDrillPhase] = React.useState<'intro' | 'recognition' | 'guided' | 'free_recall' | null>(null);
   const [introHebrew, setIntroHebrew] = React.useState<string | null>(null);
   const [introEnglish, setIntroEnglish] = React.useState<string | null>(null);
+  const [debugMeta, setDebugMeta] = React.useState<{ sessionId: string; lessonId: string; itemId: string; lexemeId: string | null; familyId: string | null; path?: string | null } | null>(null);
   const [hints, setHints] = React.useState<{ baseForm?: string; firstLetter?: string; definiteness?: boolean } | null>(null);
   const [hintLevel, setHintLevel] = React.useState<number>(0);
 
@@ -164,6 +165,7 @@ export default function DaberSessionPage() {
     setIntroHebrew((data.intro && data.intro.hebrew) || null);
     setIntroEnglish((data.intro && data.intro.english) || null);
     setHints((data as any).hints || null);
+    setDebugMeta((data as any).meta || null);
     setHintLevel(0);
     setForcedDirection(mode);
     dispatch({
@@ -316,6 +318,13 @@ export default function DaberSessionPage() {
   return (
     <div className="drill-root">
       <PromptHeader index={progress.index} total={progress.total} onExit={() => router.push('/')} />
+
+      {debugMeta ? (
+        <div style={{ fontSize: 11, color: 'var(--color-text-tertiary)', margin: '6px 0', padding: '6px 10px', border: '1px dashed var(--color-border-tertiary)', borderRadius: 8 }}>
+          <div>sid: {debugMeta.sessionId} · lesson: {debugMeta.lessonId} · item: {debugMeta.itemId}</div>
+          <div>lexeme: {debugMeta.lexemeId || 'null'} · family: {debugMeta.familyId || 'null'} · path: {debugMeta.path || 'n/a'}</div>
+        </div>
+      ) : null}
 
       {showIntro ? (
         <div className="prompt-card" style={{ marginBottom: 12 }}>

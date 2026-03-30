@@ -47,7 +47,17 @@ export const zNextItemResponse = z.object({
     definiteness: z.boolean().optional(),
   }).optional(),
   // True if new generated content arrived since session start
-  newContentReady: z.boolean().optional()
+  newContentReady: z.boolean().optional(),
+  // Optional debug meta (enabled for mini drill)
+  meta: z.object({
+    sessionId: z.string(),
+    lessonId: z.string(),
+    itemId: z.string(),
+    lexemeId: z.string().nullable(),
+    familyId: z.string().nullable(),
+    path: z.any().optional(),
+    pick: z.any().optional()
+  }).optional()
 });
 export type NextItemResponse = z.infer<typeof zNextItemResponse>;
 

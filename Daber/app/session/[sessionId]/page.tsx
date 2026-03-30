@@ -329,10 +329,12 @@ export default function DaberSessionPage() {
               ) : null}
             </div>
           </div>
-          <div style={{ marginTop: 8, padding: '8px 16px', background: 'var(--color-background-secondary)', borderRadius: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>
-            <span style={{ color: 'var(--color-text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>english: </span>
-            {(introEnglish || stripHowDoISay(item.english_prompt))}
-          </div>
+          {introEnglish ? (
+            <div style={{ marginTop: 8, padding: '8px 16px', background: 'var(--color-background-secondary)', borderRadius: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>
+              <span style={{ color: 'var(--color-text-tertiary)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>english: </span>
+              {introEnglish}
+            </div>
+          ) : null}
           <div className="intro-hint">Listen and look — no pressure to answer</div>
           <div className="cta-row" style={{ marginTop: 10, gap: 8 }}>
             <button

@@ -270,7 +270,13 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
               if (m && m[1]) { eng = m[1].replace(/\([^)]*\)/g, '').trim(); break; }
             }
           }
-          if (!eng) eng = lowerFirst(liEnglish.replace(/\([^)]*\)/g, '').trim());
+          if (!eng) {
+            if (sessionLessonId === 'vocab_green') {
+              eng = undefined; // avoid generic fallback for green listen-only drill
+            } else {
+              eng = lowerFirst(liEnglish.replace(/\([^)]*\)/g, '').trim());
+            }
+          }
         } else if (!eng && pos === 'noun') {
           // Prefer a linked prompt cleaned to a base noun (singular/plural label removed)
           if (lexId) {
@@ -282,9 +288,18 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
               if (t && !/^how\s+do\s+i\s+say/i.test(t) && !containsHebrew(t)) { eng = t; break; }
             }
           }
-          if (!eng) eng = dropLeadingThe(lowerFirst(liEnglish));
+          if (!eng) {
+            if (sessionLessonId === 'vocab_green') {
+              eng = undefined;
+            } else {
+              eng = dropLeadingThe(lowerFirst(liEnglish));
+            }
+          }
         } else if (!eng) {
-          eng = lowerFirst(liEnglish);
+          if (sessionLessonId !== 'vocab_green') eng = lowerFirst(liEnglish);
+        }
+        if (sessionLessonId === 'vocab_green' && eng && /listen\s+and\s+type\s+what\s+you\s+hear\.?/i.test(eng)) {
+          eng = undefined;
         }
 
         return { hebrew: heb || '', english: eng || undefined };

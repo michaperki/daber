@@ -37,7 +37,7 @@ API debug (dev only): append `?debug=1` to `GET /api/sessions/:id/next-item` to 
 
 ### Mini Morph Drill (debugging)
 - Lesson: `vocab_mini_morph` (small allowlisted set; expanding):
-  - Current set: verbs — לכתוב, לדבר; nouns — ספר, גלידה; adjectives — גדול, חדש
+  - Current set (examples): verbs — לכתוב, לדבר, לקרוא, לשמוע; nouns — ספר, גלידה, שיר; adjectives — גדול, חדש, חכם
 - UI: on the home page, use "start mini morph drill".
 - Simulate: `npm run simulate:mini`
 - Tests: `npm run test:mini`

@@ -33,6 +33,13 @@ Chronological notes on meaningful work, decisions, and lessons. Keep entries con
 - API: expanded `MINI_ALLOW` in next-item route.
 - Tests: generalized mini tests to check canonical intro shapes by POS (infinitive verb, sg noun w/o ה, m.sg adjective) and to assert introduced families are a subset of the allowlist.
 
+## 2026-03-30 — Mini-drill Phase 2 expansion
+
+- Allowlist: added 4 lexemes — verbs: `mini_lex_read` (לקרוא), `mini_lex_hear` (לשמוע); noun: `mini_lex_song` (שיר); adjective: `mini_lex_smart` (חכם).
+- Seed: added lexemes + inflections; bases and variants matching Phase 1 patterns.
+- API: expanded `MINI_ALLOW` accordingly.
+- Docs: STATE/README/MEMORY updated.
+
 ## 2026-03-29 — Optional user labels + TTS doc cleanup
 
 - Settings: Added an optional “display name” field (admin-only use) that saves a label tied to the anonymous UUID.

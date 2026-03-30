@@ -78,6 +78,7 @@ New content assemblies
   - Lesson id: `vocab_mini_morph`. UI home has a "start mini morph drill" button.
   - Initial scope: exactly one verb (לכתוב), one noun (ספר), one adjective (גדול).
   - Phase 1 expansion (2026-03-30): added 3 lexemes — verb: לדבר; noun: גלידה; adjective: חדש. Hard allowlist expanded accordingly; validators unchanged.
+  - Phase 2 expansion (2026-03-30): added 4 lexemes — verbs: לקרוא, לשמוע; noun: שיר; adjective: חכם. Allowlist updated; seed includes inflections and base/variant items.
   - Canonical intros (family_base items):
     - verb → infinitive (לכתוב)
     - noun → singular base (ספר)

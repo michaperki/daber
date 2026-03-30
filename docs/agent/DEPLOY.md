@@ -8,6 +8,7 @@ Overview
 Requirements
 - GitHub repo connected to Heroku (or use CLI).
 - OpenAI API key with billing.
+- Optional Redis (future): set `GEN_QUEUE_BACKEND=redis` and `REDIS_URL=...` when Redis backend is wired; for now default is in‑memory.
 
 Steps
 1) Create app and Postgres
@@ -19,6 +20,9 @@ Steps
  - Optional:
      - RL_STT_PER_MIN=20
      - RL_TTS_PER_MIN=40
+     - GEN_QUEUE_THRESHOLD=20
+     - GEN_QUEUE_BACKEND=memory
+     - RL_BACKEND=memory
 
 3) Deploy
    - Connect GitHub in the Heroku dashboard and deploy main

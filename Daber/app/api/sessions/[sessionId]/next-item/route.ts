@@ -91,6 +91,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       'mini_lex_write', 'mini_lex_book', 'mini_lex_big',
       // Phase 1 expansion
       'mini_lex_speak', 'mini_lex_icecream', 'mini_lex_new',
+      // Phase 2 expansion
+      'mini_lex_read', 'mini_lex_hear', 'mini_lex_song', 'mini_lex_smart',
     ]);
 
     // Mini-drill validation helpers (only used for vocab_mini_morph)

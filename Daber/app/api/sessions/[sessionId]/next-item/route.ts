@@ -46,7 +46,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     if (!pacing && baseCap > 0 && attemptsCount >= baseCap) {
       return NextResponse.json({ done: true, index: attemptsCount, total: baseCap });
     }
-    const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { lesson: { select: { id: true, type: true } } } });
+    const session = await prisma.session.findUnique({ where: { id: sessionId }, include: { lesson: { select: { id: true, type: true, language: true, level: true, description: true } } } });
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     const userId = (session.user_id || 'anon');
     const sessionLessonId = session.lesson_id; // capture for inner closures to avoid nullable narrowing issues

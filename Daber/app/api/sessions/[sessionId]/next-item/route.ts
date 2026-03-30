@@ -2,23 +2,6 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { logEvent } from '@/lib/log';
 import { generateNextFromLexicon } from '@/lib/drill/generators';
-import fs from 'fs';
-import path from 'path';
-
-// Cache for green glosses (lexemeId -> { gloss, pos })
-let GREEN_GLOSS_MAP: Record<string, { gloss?: string | null; pos?: string | null }> | null = null;
-function getGreenGlossEntry(lexId: string): { gloss?: string | null; pos?: string | null } | null {
-  try {
-    if (!GREEN_GLOSS_MAP) {
-      const p = path.join(process.cwd(), 'data', 'green_glosses.json');
-      const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
-      GREEN_GLOSS_MAP = (raw && raw.items) ? raw.items : {};
-    }
-    return (GREEN_GLOSS_MAP as any)[lexId] || null;
-  } catch {
-    return null;
-  }
-}
 
 export async function GET(req: Request, { params }: { params: { sessionId: string } }) {
   const { sessionId } = params;
@@ -147,12 +130,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     }
 
     async function buildIntroFor(itemId: string): Promise<{ hebrew: string; english?: string } | null> {
-      function parseLexemeIdFromGenerated(itemId: string): string | null {
-        // Patterns: gen_adj_<lexId>_..., gen_noun_<lexId>_..., gen_vpr_<lexId>_..., gen_vpa_<lexId>_..., gen_vfu_<lexId>_...
-        const m = itemId.match(/^gen_(?:adj|noun|vpr|vpa|vfu)_([^_]+)_/);
-        return m ? m[1] : null;
-      }
       try {
+        function stripHebNikkud(s: string): string { return s.replace(/[\u0591-\u05C7]/g, ''); }
         function stripHebPronoun(s: string): string {
           const pronouns = ['אני','אתה','את','הוא','היא','אנחנו','אתם','אתן','הם','הן'];
           let out = s.trim();
@@ -161,148 +140,51 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           }
           return out.replace(/[\u2000-\u206F\s]+$/g, '').replace(/[!?,.;:]+$/g, '').trim();
         }
-        function stripHebNikkud(s: string): string { return s.replace(/[\u0591-\u05C7]/g, ''); }
-        function cleanEnglishBase(s: string): string {
-          const t = s.replace(/^\s*how\s+do\s+i\s+say[:\s-]*/i, '').replace(/\?+\s*$/i, '').trim();
-          return t;
-        }
-        function lowerFirst(s: string): string { return s ? s.charAt(0).toLowerCase() + s.slice(1) : s; }
-        function dropLeadingThe(s: string): string { return s.replace(/^\s*the\s+/i, '').trim(); }
-        function pickToVerb(cands: string[]): string | null {
-          for (const c of cands) {
-            const t = cleanEnglishBase(c);
-            if (/^to\s+[A-Za-z]/.test(t)) return 'to ' + t.slice(3).trim().toLowerCase();
-          }
-          return null;
-        }
-        function fromContinuousToInfinitive(s: string): string | null {
-          const t = cleanEnglishBase(s).toLowerCase();
-          if (/getting\s+ready/.test(t)) return 'to get ready';
-          const m = t.match(/\b(?:am|is|are|was|were|'m|'s|'re)\s+([a-z]+?ing)\b/);
-          if (!m) return null;
-          const ing = m[1];
-          let base = ing;
-          if (/ying$/.test(ing)) { base = ing.slice(0, -4) + 'y'; }
-          else if (/([b-df-hj-np-tv-z])\1ing$/.test(ing)) { base = ing.slice(0, -4); }
-          else if (/ing$/.test(ing)) { base = ing.slice(0, -3); }
-          if (/mak$/.test(base)) base = base + 'e';
-          if (/tak$/.test(base)) base = base + 'e';
-          return 'to ' + base;
-        }
 
-        const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { id: true, english_prompt: true, target_hebrew: true, features: true, lexeme_id: true } });
+        const li = await prisma.lessonItem.findUnique({ where: { id: itemId }, select: { id: true, target_hebrew: true, features: true, lexeme_id: true } });
         if (!li) return null;
-        let lexId = (li.lexeme_id as string | null) || parseLexemeIdFromGenerated(li.id);
-        let lexPos: string | null = null;
-        let lexLemma: string | null = null;
-        let lexFeat: Record<string, any> | null = null;
-        if (lexId) {
-          const lex = await prisma.lexeme.findUnique({ where: { id: lexId }, select: { id: true, pos: true, lemma: true, features: true } });
-          if (lex) { lexPos = lex.pos; lexLemma = lex.lemma; lexFeat = (lex.features as any) || null; }
+
+        // Resolve lexeme (direct link or parse from generated ID)
+        let lexId = li.lexeme_id as string | null;
+        if (!lexId) {
+          const m = li.id.match(/^gen_(?:adj|noun|vpr|vpa|vfu)_([^_]+)_/);
+          lexId = m ? m[1] : null;
         }
         if (!lexId) {
           const form = stripHebPronoun(li.target_hebrew || '');
           const inf = await prisma.inflection.findFirst({ where: { form } });
-          if (inf) {
-            lexId = inf.lexeme_id;
-            const lex = await prisma.lexeme.findUnique({ where: { id: lexId }, select: { id: true, pos: true, lemma: true, features: true } });
-            if (lex) { lexPos = lex.pos; lexLemma = lex.lemma; lexFeat = (lex.features as any) || null; }
-          }
+          if (inf) lexId = inf.lexeme_id;
         }
-        const pos = (lexPos || ((li.features as any)?.pos as string | null) || '').toLowerCase();
 
-        // Hebrew canonical
+        const lex = lexId ? await prisma.lexeme.findUnique({ where: { id: lexId }, select: { lemma: true, pos: true, gloss: true, features: true } }) : null;
+        const pos = (lex?.pos || ((li.features as any)?.pos as string | null) || '').toLowerCase();
+
+        // Hebrew: canonical base form
         let heb: string | null = null;
-        if (pos === 'verb' && lexLemma) {
-          heb = stripHebNikkud(lexLemma);
+        if (pos === 'verb' && lex?.lemma) {
+          heb = stripHebNikkud(lex.lemma);
         } else if (pos === 'adjective' && lexId) {
           const adjBase = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, number: 'sg', gender: 'm' }, select: { form: true } });
-          heb = stripHebNikkud((adjBase?.form || lexLemma || li.target_hebrew || '').trim());
+          heb = stripHebNikkud((adjBase?.form || lex?.lemma || li.target_hebrew || '').trim());
         } else if (pos === 'noun' && lexId) {
-          const isCompound = !!(lexLemma && lexLemma.includes(' ')) || !!(lexFeat && (lexFeat as any).definite_form);
+          const feat = (lex?.features as any) || null;
+          const isCompound = !!(lex?.lemma && lex.lemma.includes(' ')) || !!(feat?.definite_form);
           if (isCompound) {
-            const def = (lexFeat && (lexFeat as any).definite_form) || null;
-            heb = stripHebNikkud((def || lexLemma || '').trim());
+            heb = stripHebNikkud((feat?.definite_form || lex?.lemma || '').trim());
           } else {
             const sg = await prisma.inflection.findFirst({ where: { lexeme_id: lexId, number: 'sg' }, select: { form: true } });
-            const base = (sg?.form || lexLemma || '').trim();
-            heb = stripHebNikkud(base.replace(/^ה+/, ''));
+            heb = stripHebNikkud(((sg?.form || lex?.lemma || '').trim()).replace(/^ה+/, ''));
           }
-        } else if (lexLemma) {
-          heb = stripHebNikkud(lexLemma);
+        } else if (lex?.lemma) {
+          heb = stripHebNikkud(lex.lemma);
         } else {
-          const fallback = stripHebPronoun(li.target_hebrew || '');
-          heb = stripHebNikkud(fallback.replace(/^ה+/, ''));
+          heb = stripHebNikkud(stripHebPronoun(li.target_hebrew || '').replace(/^ה+/, ''));
         }
 
-        // English canonical
-        let eng: string | undefined;
-        const liEnglish = cleanEnglishBase(li.english_prompt || '');
-        // Helper: detect Hebrew text in gloss (avoid showing Hebrew as English)
-        const containsHebrew = (s: string) => /[\u0590-\u05FF]/.test(s);
-        // Prefer curated gloss for green drill when available
-        if (sessionLessonId === 'vocab_green' && lexId) {
-          const entry = getGreenGlossEntry(lexId);
-          if (entry && typeof entry.gloss === 'string' && entry.gloss.trim() && !containsHebrew(entry.gloss)) {
-            const gloss = entry.gloss.trim();
-            const isVerbPos = (pos === 'verb') || (typeof entry.pos === 'string' && (entry.pos.toLowerCase() === 'verb' || entry.pos === 'Q24905'));
-            eng = isVerbPos && !/^to\s+/i.test(gloss) ? `to ${gloss}` : gloss;
-          }
-        }
-        if (!eng && pos === 'verb') {
-          if (lexId) {
-            const linked = await prisma.lessonItem.findMany({ where: { lexeme_id: lexId }, select: { english_prompt: true }, take: 20 });
-            const byTo = pickToVerb(linked.map(r => r.english_prompt));
-            if (byTo) eng = byTo;
-          }
-          if (!eng) {
-            const naive = fromContinuousToInfinitive(liEnglish);
-            if (naive) eng = naive;
-          }
-          if (!eng) eng = lowerFirst(liEnglish);
-        } else if (!eng && pos === 'adjective') {
-          // Try to derive adjective base from linked prompts (he/she/we/they are ...)
-          if (lexId) {
-            const linked = await prisma.lessonItem.findMany({ where: { lexeme_id: lexId }, select: { english_prompt: true }, take: 30 });
-            for (const r of linked) {
-              const t = cleanEnglishBase(r.english_prompt || '').toLowerCase();
-              const m = t.match(/\b(?:i|you|he|she|we|they)\s+(?:am|is|are|was|were|'m|'s|'re)\s+([a-z][a-z\-\s']*)$/i);
-              if (m && m[1]) { eng = m[1].replace(/\([^)]*\)/g, '').trim(); break; }
-            }
-          }
-          if (!eng) {
-            if (sessionLessonId === 'vocab_green') {
-              eng = undefined; // avoid generic fallback for green listen-only drill
-            } else {
-              eng = lowerFirst(liEnglish.replace(/\([^)]*\)/g, '').trim());
-            }
-          }
-        } else if (!eng && pos === 'noun') {
-          // Prefer a linked prompt cleaned to a base noun (singular/plural label removed)
-          if (lexId) {
-            const linked = await prisma.lessonItem.findMany({ where: { lexeme_id: lexId }, select: { english_prompt: true }, take: 30 });
-            for (const r of linked) {
-              let t = cleanEnglishBase(r.english_prompt || '');
-              t = t.replace(/\(plural\)/ig, '').replace(/\bplural\b/ig, '').replace(/\s+\?+$/g, '').trim();
-              t = dropLeadingThe(lowerFirst(t));
-              if (t && !/^how\s+do\s+i\s+say/i.test(t) && !containsHebrew(t)) { eng = t; break; }
-            }
-          }
-          if (!eng) {
-            if (sessionLessonId === 'vocab_green') {
-              eng = undefined;
-            } else {
-              eng = dropLeadingThe(lowerFirst(liEnglish));
-            }
-          }
-        } else if (!eng) {
-          if (sessionLessonId !== 'vocab_green') eng = lowerFirst(liEnglish);
-        }
-        if (sessionLessonId === 'vocab_green' && eng && /listen\s+and\s+type\s+what\s+you\s+hear\.?/i.test(eng)) {
-          eng = undefined;
-        }
+        // English: use lexeme.gloss (single source of truth)
+        const eng = lex?.gloss || undefined;
 
-        return { hebrew: heb || '', english: eng || undefined };
+        return { hebrew: heb || '', english: eng };
       } catch {
         return null;
       }

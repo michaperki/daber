@@ -52,12 +52,13 @@ Per-user stats — SHIPPED (2026-03-29)
 
 New content assemblies
 - Green vocab drill
-  - Curated allowlist of ~88 Wikidata lexemes (`Daber/data/green_lexemes.json`).
-  - Session via lesson_id `vocab_green`; home page has "start green drill" button.
-  - Listen-only prompts — no auto-generated English during drills. Generator checks `isGreen` flag.
-  - Intros: English comes from curated glosses (`Daber/data/green_glosses.json`) when available. If missing, derive from linked prompts (adj/noun) or omit (never show instruction text as a “translation”).
-  - Generated items now link to lexemes (`LessonItem.lexeme_id`) for reliable intros/hints; older generated ids are parsed as a fallback.
+  - Curated allowlist of ~82 Wikidata lexemes (`Daber/data/green_lexemes.json`).
+  - Session via lesson_id `vocab_green`; home page has “start green drill” button.
+  - English glosses: `Lexeme.gloss` is the single source of truth. All 82 Green lexemes have a populated `gloss` field. `buildIntroFor()` reads `lexeme.gloss` directly — no JSON file lookups or derivation chains.
+  - Generators use `lexeme.gloss` for `english_prompt` on Green items (e.g., “How do I say: to love?”) instead of hardcoded “Listen and type what you hear.”
+  - Generated items link to lexemes (`LessonItem.lexeme_id`) for reliable intros/hints; older generated ids are parsed as a fallback.
   - Supports Wikidata POS Q-ids (e.g. `Q24905`) in addition to plain POS strings.
+  - `green_glosses.json` is no longer referenced by any code (kept on disk as historical data).
 - Song packs
   - Ma Na'aseh (Hadag Nahash) chorus lesson at `/songs/ma-naaseh`.
   - Bootstrap API creates lesson (`song_ma_naaseh_chorus_v1`, type `song`) + 12 items on first access.

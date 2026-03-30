@@ -122,6 +122,7 @@ model Lexeme {
   lemma       String
   language    String
   pos         String
+  gloss       String?
   features    Json?
   inflections Inflection[]
   lessonItems LessonItem[]

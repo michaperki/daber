@@ -193,7 +193,7 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
 }
 
 async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['adjective', 'Q34698'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['adjective', 'Q34698'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
@@ -212,7 +212,7 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
 
     let englishPrompt: string | null = null;
     if (isGreen) {
-      englishPrompt = 'Listen and type what you hear.';
+      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
     } else {
       const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
       const en = englishFromCard(card?.english_prompt || '');
@@ -233,7 +233,7 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
 }
 
 async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, features: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true, features: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
@@ -251,7 +251,7 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
     const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '3');
     let englishPrompt: string | null = null;
     if (isGreen) {
-      englishPrompt = 'Listen and type what you hear.';
+      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
     } else {
       const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
       const en = englishFromCard(card?.english_prompt || '');
@@ -275,7 +275,7 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
 }
 
 async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
@@ -292,7 +292,7 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
     const pron = pronounFrom({ person: inf.person, number: inf.number, gender: inf.gender });
     let englishPrompt: string | null = null;
     if (isGreen) {
-      englishPrompt = 'Listen and type what you hear.';
+      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
     } else {
       const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
       const en = englishFromCard(card?.english_prompt || '');
@@ -317,7 +317,7 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
 }
 
 async function generateNounItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['noun', 'Q1084'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, features: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['noun', 'Q1084'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true, features: true } });
   const usableLex = lex.filter(l => {
     const isMultiWord = l.lemma.includes(' ');
     if (!isMultiWord) return true;
@@ -354,10 +354,9 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
     let usedInf: typeof infls[0];
     let drillType: 'def' | 'pl';
 
-    // Green drill: avoid incorrect English generation until glossing is reliable.
     if (isGreen) {
       usedInf = pick(validInfls)!;
-      englishPrompt = 'Listen and type what you hear.';
+      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
       targetHebrew = usedInf.form;
       drillType = usedInf.number === 'pl' ? 'pl' : 'def';
     } else if (doDef && sgPool.length > 0) {
@@ -392,7 +391,7 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
 }
 
 async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean): Promise<LessonItemShape | null> {
-  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true } });
+  const lex = await prisma.lexeme.findMany({ where: { language: 'he', pos: { in: ['verb', 'Q24905'] }, ...(allowLexemeIds?.length ? { id: { in: allowLexemeIds } } : {}) }, select: { id: true, lemma: true, gloss: true } });
   if (!lex.length) return null;
   for (let tries = 0; tries < 10; tries++) {
     const chosen = pick(lex);
@@ -409,7 +408,7 @@ async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string
     const pron = pronounFrom({ person: inf.person, number: inf.number, gender: inf.gender });
     let englishPrompt: string | null = null;
     if (isGreen) {
-      englishPrompt = 'Listen and type what you hear.';
+      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
     } else {
       const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
       const en = englishFromCard(card?.english_prompt || '');

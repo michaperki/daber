@@ -212,7 +212,11 @@ async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>
 
     let englishPrompt: string | null = null;
     if (isGreen) {
-      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
+      // For Green, align the English phrase to the chosen inflection (avoid lemma/gloss vs conjugation mismatch)
+      const en = englishFromCard(chosen.gloss || '');
+      if (!en.base) continue; // require a real gloss; skip if missing
+      const enPhrase = en.base ? `${pron} ${beFor(pron)} ${en.base}${en.paren ? ' ' + en.paren : ''}` : pron;
+      englishPrompt = `How do I say: ${enPhrase}?`;
     } else {
       const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
       const en = englishFromCard(card?.english_prompt || '');
@@ -251,7 +255,13 @@ async function generateVerbPresentItem(lessonId: string, attemptedIds: Set<strin
     const hebPron = pronounHeb({ person: inf.person, number: inf.number, gender: inf.gender }, '3');
     let englishPrompt: string | null = null;
     if (isGreen) {
-      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
+      // Use gloss to derive an English phrase matching the selected present form
+      const en = englishFromCard(chosen.gloss || '');
+      if (!en.base) continue; // skip lexemes without gloss
+      const verb = en.base;
+      const vIng = ingForm(verb);
+      const enPhrase = verb ? `${pron} ${beFor(pron)} ${vIng}${en.paren ? ' ' + en.paren : ''}` : pron;
+      englishPrompt = `How do I say: ${enPhrase}?`;
     } else {
       const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
       const en = englishFromCard(card?.english_prompt || '');
@@ -292,7 +302,13 @@ async function generateVerbPastItem(lessonId: string, attemptedIds: Set<string>,
     const pron = pronounFrom({ person: inf.person, number: inf.number, gender: inf.gender });
     let englishPrompt: string | null = null;
     if (isGreen) {
-      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
+      // Align English to the selected past inflection
+      const en = englishFromCard(chosen.gloss || '');
+      if (!en.base) continue; // require a gloss; skip otherwise
+      const verb = en.base;
+      const vPast = pastForm(verb);
+      const enPhrase = verb ? `${pron} ${vPast}${en.paren ? ' ' + en.paren : ''}` : pron;
+      englishPrompt = `How do I say: ${enPhrase}?`;
     } else {
       const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
       const en = englishFromCard(card?.english_prompt || '');
@@ -356,7 +372,9 @@ async function generateNounItem(lessonId: string, attemptedIds: Set<string>, des
 
     if (isGreen) {
       usedInf = pick(validInfls)!;
-      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
+      // Require a proper English gloss; skip if missing to avoid Hebrew-in-English prompt
+      if (!chosen.gloss) continue;
+      englishPrompt = `How do I say: ${chosen.gloss}?`;
       targetHebrew = usedInf.form;
       drillType = usedInf.number === 'pl' ? 'pl' : 'def';
     } else if (doDef && sgPool.length > 0) {
@@ -408,7 +426,13 @@ async function generateVerbFutureItem(lessonId: string, attemptedIds: Set<string
     const pron = pronounFrom({ person: inf.person, number: inf.number, gender: inf.gender });
     let englishPrompt: string | null = null;
     if (isGreen) {
-      englishPrompt = `How do I say: ${chosen.gloss || chosen.lemma}?`;
+      // Align English to the selected future inflection
+      const en = englishFromCard(chosen.gloss || '');
+      if (!en.base) continue; // skip if no gloss
+      const verb = en.base;
+      const vFuture = futureForm(verb);
+      const enPhrase = verb ? `${pron} ${vFuture}${en.paren ? ' ' + en.paren : ''}` : pron;
+      englishPrompt = `How do I say: ${enPhrase}?`;
     } else {
       const card = await prisma.lessonItem.findFirst({ where: { lexeme_id: chosen.id }, select: { english_prompt: true } });
       const en = englishFromCard(card?.english_prompt || '');

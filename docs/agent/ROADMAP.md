@@ -21,6 +21,10 @@ Purpose: capture focused, high‑ROI enhancements for the drill loop, evaluator 
 8. **SRS drives drill type** — **PARTIALLY SHIPPED**. `correct_streak` now drives phase (intro/recognition/guided/free_recall). Wrong answers demote to recognition. FeatureStat not yet wired to phase selection.
 
 ## Near‑Term High‑Leverage
+- Drill integrity for debug lessons — SHIPPED (2026‑03‑30)
+  - Minimal drill (`vocab_mini_morph`) with a hard allowlist (3 lexemes) and selection‑time validation gates
+  - Lexicon generator path disabled for this lesson; server returns debug `meta` (session/lesson/item/lexeme/family/path)
+  - Loud logging on any blocked pick
 - Family progression spacing — After infinitive intros, schedule present forms (3sg m → 3sg f → 1sg → 3pl m) and space follow‑ups across sessions; interleave familiar content.
 - Feature‑blend due selection — Blend `ItemStat` and `FeatureStat` so weak features (number/gender/person/tense) steer picks when requested.
 - Admin family tooling — Quick actions to set `family_base` and `family_id` on `/admin/lexicon/validate` to accelerate coverage.

@@ -13,6 +13,7 @@ Single Next.js app for a spoken Hebrew drill loop. The canonical app and API liv
 - Database: set `DATABASE_URL` and `OPENAI_API_KEY` in `Daber/.env`
 - Push schema: `npm run db:push`
 - Seed lessons: `npm run seed` (also imports your `Mike_Hebrew_Vocab.md` as "My Vocab 01")
+- Seed Mini Morph Drill (debugging): `npm run seed:mini`
 - Dev server: `npm run dev` and open http://localhost:3000
 
 ## Simulation & Diagnostics
@@ -32,7 +33,15 @@ Output:
 - Console per-pick summary with phase and selection path.
 - JSONL at `scripts/out/drill_run_<timestamp>.jsonl` with an `explain` object (lesson scope, candidate pool sizes, selection path, pick source, family-base swap).
 
-API debug (dev only): append `?debug=1` to `GET /api/sessions/:id/next-item` to include `explain` in the response.
+API debug (dev only): append `?debug=1` to `GET /api/sessions/:id/next-item` to include `explain` in the response. For the mini drill, responses also include a `meta` block (session/lesson/item/lexeme/family/path).
+
+### Mini Morph Drill (debugging)
+- Lesson: `vocab_mini_morph` (exactly 3 lexemes):
+  - verb: לכתוב, noun: ספר, adjective: גדול
+- UI: on the home page, use "start mini morph drill".
+- Simulate: `npm run simulate:mini`
+- Tests: `npm run test:mini`
+- Integrity: server enforces a hard allowlist of the 3 lexemes and disables lexicon generation for this lesson.
 
 ## Commands
 - Dev: `npm run dev`

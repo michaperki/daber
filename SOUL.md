@@ -55,6 +55,11 @@ Remaining gaps:
 - Resource awareness: STT/TTS endpoints are rate‑limited; do not add network‑heavy loops or polling.
 - You are not done with a task until STATE.md reflects what you actually shipped. If you added a feature flag, stubbed something, or made an assumption — it goes in STATE.md before you call the work complete.
 
+### Debugging Drills — Durable Practice
+- Prefer isolated, minimal drills to debug selection/morphology. Use explicit seed data and a hard allowlist of lexemes to guarantee integrity.
+- Disable unrelated generators/paths for the debug lesson. Add temporary server‑side validation gates (skip + log) and client/server debug meta (session/lesson/item/lexeme/family/path).
+- Remove gates and debug UI only after integrity is proven in real sessions, and after updating STATE.md and Dev Journal.md.
+
 ## Collaboration Model
 - Mike is the product lead and primary tester.
 - Agents make focused code/doc changes and reason from artifacts (logs, screenshots, local runs).

@@ -74,37 +74,46 @@ function pastToBase(word: string): string {
   return w;
 }
 
-function canonicalPresentPair(s: string): string | null {
-  // Try to canonicalize patterns to "<pronoun> <baseVerb>" for present tense
-  // Accept both simple present and present progressive as the same canonical form
-  const pronRe = /(i|you|he|she|we|they)/i;
+function canonicalPresentCandidates(s: string): string[] {
+  // Returns 0+ candidates like "<pronoun> <baseVerb>" for present tense
+  // Progressive returns both stem and stem+"e" candidates to cover write/make/etc.
   let t = expandContractions(s);
   t = stripInstructionWrapper(t);
   t = t.replace(/[?!.]/g, ' ');
   const words = normalizeBasic(t).split(' ').filter(Boolean);
-  if (!words.length) return null;
-  // Find first pronoun position
-  let i = words.findIndex(w => /^(i|you|he|she|we|they)$/.test(w));
-  if (i < 0 || i >= words.length - 1) return null;
+  if (!words.length) return [];
+  const i = words.findIndex(w => /^(i|you|he|she|we|they)$/.test(w));
+  if (i < 0 || i >= words.length - 1) return [];
   const pron = words[i];
   const next = words[i + 1] || '';
   const third = words[i + 2] || '';
+  const out: string[] = [];
   // Progressive: pron + (am|are|is) + V-ing
-  if (/^(am|are|is)$/.test(next) && /[a-z]+ing$/.test(third)) {
-    const base = ingStem(third);
-    return `${pron} ${base}`;
+  if (/^(am|are|is)$/.test(next) && /^[a-z]+ing$/.test(third)) {
+    const w = third.toLowerCase();
+    if (/ying$/.test(w)) {
+      // lying -> lie, tying -> tie
+      const base = w.slice(0, -4) + 'ie';
+      out.push(`${pron} ${base}`);
+    } else {
+      const stem = w.slice(0, -3); // remove -ing
+      out.push(`${pron} ${stem}`);
+      out.push(`${pron} ${stem}e`); // cover write/make/have/etc.
+    }
+    return out;
   }
   // Simple present 3sg: he/she + V(s|es)
   if (/^(he|she)$/.test(pron) && /^[a-z]+(s|es|ies)$/.test(next)) {
     const base = sToBase(next);
-    return `${pron} ${base}`;
+    out.push(`${pron} ${base}`);
+    return out;
   }
   // Simple present others: pron + base (avoid be-verb only)
   if (!/^(am|are|is)$/.test(next)) {
-    const base = next; // assume already base or close
-    return `${pron} ${base}`;
+    out.push(`${pron} ${next}`);
+    return out;
   }
-  return null;
+  return out;
 }
 
 function getKeywords(s: string): Set<string> {
@@ -128,9 +137,9 @@ export function evaluateEnglishAnswer(userAnswer: string, expectedEnglish: strin
   }
 
   // Present equivalence: he writes ≈ he is writing (and analogous for I/you/we/they)
-  const canUser = canonicalPresentPair(userAnswer);
-  const canExp = canonicalPresentPair(expectedEnglish);
-  if (canUser && canExp && canUser === canExp) {
+  const canUser = canonicalPresentCandidates(userAnswer);
+  const canExp = canonicalPresentCandidates(expectedEnglish);
+  if (canUser.length && canExp.length && canUser.some(u => canExp.includes(u))) {
     return { grade: 'correct', reasons: [{ code: 'present_equivalence', message: 'Correct!' }] };
   }
 

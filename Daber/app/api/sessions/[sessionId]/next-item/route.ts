@@ -87,13 +87,24 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const userId = (session.user_id || 'anon');
     const sessionLessonId = session.lesson_id; // capture for inner closures to avoid nullable narrowing issues
     const isMini = sessionLessonId === 'vocab_mini_morph';
-    const MINI_ALLOW = new Set<string>([
-      'mini_lex_write', 'mini_lex_book', 'mini_lex_big',
-      // Phase 1 expansion
-      'mini_lex_speak', 'mini_lex_icecream', 'mini_lex_new',
-      // Phase 2 expansion
-      'mini_lex_read', 'mini_lex_hear', 'mini_lex_song', 'mini_lex_smart',
-    ]);
+    // Mini allowlist (load from data file; fallback to built-in defaults)
+    function getMiniAllow(): Set<string> {
+      try {
+        const p = path.join(process.cwd(), 'Daber', 'data', 'mini_allowlist.json');
+        const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
+        const ids = Array.isArray(raw?.lexemeIds) ? raw.lexemeIds.map(String) : [];
+        const set = new Set<string>();
+        for (const id of ids) if (id) set.add(id);
+        if (set.size > 0) return set;
+      } catch {}
+      // Fallback to the original small set to keep mini usable if file missing
+      return new Set<string>([
+        'mini_lex_write', 'mini_lex_book', 'mini_lex_big',
+        'mini_lex_speak', 'mini_lex_icecream', 'mini_lex_new',
+        'mini_lex_read', 'mini_lex_hear', 'mini_lex_song', 'mini_lex_smart',
+      ]);
+    }
+    const MINI_ALLOW = getMiniAllow();
 
     // Mini-drill validation helpers (only used for vocab_mini_morph)
     // Reuse top-level englishOk; define only hebrewOk/strippers here

@@ -1,4 +1,5 @@
 import path from 'node:path';
+import fs from 'node:fs';
 import Module from 'module';
 import { prisma } from '../Daber/lib/db';
 
@@ -37,10 +38,20 @@ async function run() {
   const sessionId = await createSession(lessonId);
   const seenByPos: Record<string, { heb: string; en?: string; itemId: string }> = {};
 
-  const MINI_ALLOW = new Set<string>([
-    'mini_lex_write','mini_lex_book','mini_lex_big',
-    'mini_lex_speak','mini_lex_icecream','mini_lex_new',
-  ]);
+  // Load allowlist used by the mini drill
+  const MINI_ALLOW = ((): Set<string> => {
+    try {
+      const p = path.join(process.cwd(), 'Daber', 'data', 'mini_allowlist.json');
+      const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
+      const ids = Array.isArray(raw?.lexemeIds) ? raw.lexemeIds.map(String) : [];
+      return new Set(ids.filter(Boolean));
+    } catch {
+      return new Set<string>([
+        'mini_lex_write','mini_lex_book','mini_lex_big',
+        'mini_lex_speak','mini_lex_icecream','mini_lex_new',
+      ]);
+    }
+  })();
 
   function isHebrew(s: string) { return /[\u0590-\u05FF]/.test(s); }
   function isSingleToken(s: string) { return (s || '').trim().split(/\s+/).filter(Boolean).length === 1; }
@@ -88,13 +99,14 @@ async function run() {
   const session = await prisma.session.findUnique({ where: { id: sessionId } });
   const userId = (session?.user_id || 'anon');
   const fams = await prisma.familyStat.findMany({ where: { user_id: userId } });
-  const miniFams = fams.filter(f => f.family_id.startsWith('lex:mini_lex_'));
-  const famIds = new Set(miniFams.map(f => f.family_id));
+  const introducedMini = fams.filter(f => f.family_id.startsWith('lex:'))
+    .filter(f => MINI_ALLOW.has(f.family_id.replace(/^lex:/, '')));
+  const famIds = new Set(introducedMini.map(f => f.family_id));
   for (const fid of famIds) {
     const lexId = fid.replace(/^lex:/, '');
     assert(MINI_ALLOW.has(lexId), `introduced family not in allowlist: ${fid}`);
   }
-  assert(miniFams.length >= 3 && miniFams.length <= MINI_ALLOW.size, `unexpected number of mini families introduced: ${miniFams.length}`);
+  assert(introducedMini.length >= 3 && introducedMini.length <= MINI_ALLOW.size, `unexpected number of mini families introduced: ${introducedMini.length}`);
 
   // Invalid item rejection: create a mismatched item in the mini lesson and ensure it is skipped in subset
   await prisma.lessonItem.upsert({

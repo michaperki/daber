@@ -23,6 +23,7 @@
     "simulate:mini": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/simulate_mini_morph_session.ts",
     "seed:mini": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/seed_mini_morph.ts",
     "test:mini": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/test_mini_morph.ts",
+    "expand:mini": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/expand_mini_from_green.ts",
     "normalize:english": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/scan_normalize_english.ts",
     "normalize:inflections": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/lexicon/normalize_inflections.ts"
   },

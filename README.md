@@ -44,6 +44,7 @@ English evaluator sanity: `ts-node -P scripts/tsconfig.scripts.json --transpile-
 - Simulate: `npm run simulate:mini`
 - Tests: `npm run test:mini`
 - Integrity: server enforces a hard allowlist (applied to all selection paths) and disables lexicon generation for this lesson; selection-time validation skips malformed picks and logs why.
+- Allowlist source: `Daber/data/mini_allowlist.json`. Expand via `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/expand_mini_from_green.ts` (pulls from Green lexemes, validates full morphology, seeds items, and updates the allowlist). A JSON report is written under `scripts/out/` listing added vs. skipped candidates and reasons.
 
 ## Commands
 - Dev: `npm run dev`

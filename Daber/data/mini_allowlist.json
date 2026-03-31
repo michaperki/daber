@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-03-31T00:00:00.000Z",
+  "note": "Allowlist for vocab_mini_morph. Expanded via scripts/expand_mini_from_green.ts.",
+  "lexemeIds": [
+    "mini_lex_write",
+    "mini_lex_book",
+    "mini_lex_big",
+    "mini_lex_speak",
+    "mini_lex_icecream",
+    "mini_lex_new",
+    "mini_lex_read",
+    "mini_lex_hear",
+    "mini_lex_song",
+    "mini_lex_smart"
+  ]
+}
+

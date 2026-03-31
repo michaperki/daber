@@ -1,4 +1,4 @@
-export type Job = { type: 'generate_drills'; payload: { userId?: string | null } };
+export type Job = { type: 'generate_drills'; payload: { userId?: string } };
 
 export interface JobQueue {
   enqueue(job: Job): Promise<void>;
@@ -35,9 +35,8 @@ export function getQueue(): { queue: JobQueue; register: (h: (job: Job) => Promi
   };
 }
 
-export async function scheduleGenerationJob(payload: { userId?: string | null }, handler: (job: Job) => Promise<void>): Promise<void> {
+export async function scheduleGenerationJob(payload: { userId?: string }, handler: (job: Job) => Promise<void>): Promise<void> {
   const { queue, register } = getQueue();
   register(handler);
   await queue.enqueue({ type: 'generate_drills', payload });
 }
-

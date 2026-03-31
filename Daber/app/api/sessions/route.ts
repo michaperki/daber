@@ -54,7 +54,7 @@ export async function POST(req: Request) {
         if (undrilled < threshold) {
           await scheduleGenerationJob({ userId }, async (job) => {
             if (job.type === 'generate_drills') {
-              await runGenerationJob({ userId: job.payload.userId });
+              await runGenerationJob({ userId: job.payload.userId ?? undefined });
             }
           });
         }

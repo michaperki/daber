@@ -205,6 +205,35 @@ export default function DaberSessionPage() {
     loadItem();
   }, [loadItem]);
 
+  /* ── Keyboard shortcuts ───────────────────────────────── */
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
+      const isTyping = tag === 'input' || tag === 'textarea' || (e as any).isComposing;
+      if (isTyping) return;
+      // Space: toggle mic
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (state.phase === 'listening') stopVoice();
+        else if (drillPhase === 'free_recall') startVoice();
+      }
+      // ArrowRight: next item when feedback visible
+      if (e.code === 'ArrowRight') {
+        if (feedback) nextItem();
+      }
+      // Enter: submit typed answer in recognition/guided
+      if (e.code === 'Enter') {
+        if (drillPhase === 'recognition') {
+          if (englishInput.trim()) submitAnswer(englishInput.trim());
+        } else if (drillPhase === 'guided') {
+          if (hebrewInput.trim()) submitAnswer(hebrewInput.trim());
+        }
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => { window.removeEventListener('keydown', onKey); };
+  }, [state.phase, drillPhase, feedback, englishInput, hebrewInput]);
+
   /* ── Voice capture ─────────────────────────────────────── */
   const startVoice = async () => {
     if (state.phase === 'listening' || state.phase === 'transcribing' || submittingRef.current) return;

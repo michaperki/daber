@@ -115,6 +115,7 @@ UI changes (since 2026-03-25)
 - iOS mic lifecycle: session page now cools down the mic on `visibilitychange` and `pagehide` to release iOS mic access when leaving.
 - Emoji: `deriveEmojiFromFeatures()` prefers item grammatical features over prompt-parsing heuristic.
  - Intro card: only renders the English line when `intro.english` is provided by the server; removes fallback to `english_prompt` to avoid showing instruction text as a translation in Green.
+ - Keyboard shortcuts: space toggles mic in free recall; Enter submits typed answers in recognition/guided; Right arrow advances after feedback.
 
 Actual happy path (today)
 - Start a drill

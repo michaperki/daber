@@ -4,7 +4,7 @@ import { logEvent } from '@/lib/log';
 import { zCreateSessionRequest } from '@/lib/contracts';
 import { runGenerationJob } from '../../../lib/generation/pipeline';
 import { scheduleGenerationJob } from '@/lib/infra/queue';
-import { prefetchLocalLLMForSession } from '@/lib/drill/generators';
+import { prefetchLocalLLMForMiniSession } from '@/lib/minimorph/local_llm_mini';
 
 export async function POST(req: Request) {
   try {
@@ -46,8 +46,12 @@ export async function POST(req: Request) {
     });
     logEvent({ type: 'session_started', session_id: session.id, lesson_id: lessonId, user_id: userId ?? undefined });
 
-    // Local LLM prefetch (non-blocking)
-    try { if ((process.env.LOCAL_LLM_ENABLED || '').toLowerCase() === 'true') { prefetchLocalLLMForSession(session.id).catch(() => {}); } } catch {}
+    // Local LLM prefetch — only for mini‑morph
+    try {
+      if ((process.env.LOCAL_LLM_ENABLED || '').toLowerCase() === 'true' && lessonId === 'vocab_mini_morph') {
+        prefetchLocalLLMForMiniSession(session.id).catch(() => {});
+      }
+    } catch {}
 
     // Background generation trigger: ensure we have a queue of undrilled generated items
     try {

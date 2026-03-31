@@ -60,6 +60,25 @@ export async function getUserVocabScope(userId: string): Promise<{ knownLemmas: 
   return { knownLemmas, allowedTenses: Array.from(allowed) };
 }
 
+// Mini‑morph specific: scope known vocabulary to a provided lexeme allowlist
+export async function getUserVocabScopeForLexemeSet(userId: string, allowedLexemeIds: string[]): Promise<{ knownLemmas: string[]; allowedTenses: string[] }> {
+  const uid = userId || 'anon';
+  const allow = Array.from(new Set((allowedLexemeIds || []).map(String).filter(Boolean)));
+  let knownLemmas: string[] = [];
+  if (allow.length) {
+    const stats = await prisma.itemStat.findMany({ where: { user_id: uid }, select: { lesson_item_id: true } });
+    const itemIds = stats.map(s => s.lesson_item_id);
+    const lis = itemIds.length ? await prisma.lessonItem.findMany({ where: { id: { in: itemIds }, lexeme_id: { in: allow } }, select: { lexeme_id: true } }) : [];
+    const lexemeIds = Array.from(new Set(lis.map(l => l.lexeme_id).filter(Boolean))) as string[];
+    const lexemes = lexemeIds.length ? await prisma.lexeme.findMany({ where: { id: { in: lexemeIds } }, select: { lemma: true } }) : [];
+    knownLemmas = Array.from(new Set(lexemes.map(l => stripNikkud(l.lemma).trim()).filter(Boolean)));
+  }
+  const allowed = new Set<string>(['present']);
+  const feats = await prisma.featureStat.findMany({ where: { user_id: uid, tense: { in: ['past','future'] } }, select: { tense: true } });
+  for (const f of feats) if (f.tense) allowed.add(f.tense);
+  return { knownLemmas, allowedTenses: Array.from(allowed) };
+}
+
 export function buildBatchPrompt(params: { targetLemmas: string[]; knownLemmas: string[]; allowedTenses: string[]; direction: 'he_to_en' | 'en_to_he' }): string {
   const targets = Array.from(new Set(params.targetLemmas.map(stripNikkud).map(s => s.trim()).filter(Boolean)));
   const known = Array.from(new Set(params.knownLemmas.map(stripNikkud).map(s => s.trim()).filter(Boolean)));

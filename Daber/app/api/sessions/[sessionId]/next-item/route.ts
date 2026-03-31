@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { logEvent } from '@/lib/log';
 import { generateNextFromLexicon } from '@/lib/drill/generators';
+import { popCachedLocalMiniItemForLexeme, maybeRefillMiniCache } from '@/lib/minimorph/local_llm_mini';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -191,6 +192,33 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
 
     const subsetRaw = (session as any).subset_item_ids as unknown;
     const subset = Array.isArray(subsetRaw) ? (subsetRaw as unknown[]).map(String) : [];
+
+    async function maybeSwapToMiniLLM(
+      item: { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null },
+      phase: 'intro' | 'recognition' | 'guided' | 'free_recall'
+    ): Promise<{ item: { id: string; english_prompt: string; target_hebrew: string; transliteration: string | null; features: Record<string, string | null> | null }; phase: 'intro' | 'recognition' | 'guided' | 'free_recall' }> {
+      try {
+        if (!isMini) return { item, phase };
+        if ((process.env.LOCAL_LLM_ENABLED || '').toLowerCase() !== 'true') return { item, phase };
+        if (phase === 'intro') return { item, phase };
+        const meta = await metaFor(item.id);
+        const lexId = meta.lexeme_id;
+        if (!lexId || !MINI_ALLOW.has(lexId)) return { item, phase };
+        const popped = await popCachedLocalMiniItemForLexeme(sessionId, sessionLessonId, lexId);
+        if (!popped) {
+          // Cache miss; opportunistically refill for future
+          maybeRefillMiniCache(sessionId, sessionLessonId, userId).catch(() => {});
+          return { item, phase };
+        }
+        const newPhase = await computePhaseFor(popped.id);
+        // Refill after serving
+        maybeRefillMiniCache(sessionId, sessionLessonId, userId).catch(() => {});
+        if (debug) explain.llm = { served: popped.id, forLexeme: lexId };
+        return { item: popped as any, phase: newPhase };
+      } catch {
+        return { item, phase };
+      }
+    }
 
     async function computePhaseFor(itemId: string): Promise<'intro' | 'recognition' | 'guided' | 'free_recall'> {
       try {
@@ -737,7 +765,10 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const adjBase = await maybeSwapToFamilyBase(pick as any, allowedLessonIds);
         let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
         adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
-        const phase = await computePhaseFor(adj.id);
+        let phase = await computePhaseFor(adj.id);
+        // Mini: opportunistic LLM swap for recognition/recall
+        const swapped = await maybeSwapToMiniLLM(adj, phase);
+        adj = swapped.item; phase = swapped.phase;
         logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: pick.id, source: 'due_item', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
         const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
           .then(c => c > 0)
@@ -770,7 +801,9 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const adjBase = await maybeSwapToFamilyBase(item as any, allowedLessonIds);
       let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
       adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
-      const phase = await computePhaseFor(adj.id);
+      let phase = await computePhaseFor(adj.id);
+      const swapped2 = await maybeSwapToMiniLLM(adj, phase);
+      adj = swapped2.item; phase = swapped2.phase;
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: item.id, source: 'subset', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
       const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
         .then(c => c > 0)
@@ -845,7 +878,9 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const adjBase = await maybeSwapToFamilyBase(nextItem as any, allowedLessonIds);
       let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
       adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
-      const phase = await computePhaseFor(adj.id);
+      let phase = await computePhaseFor(adj.id);
+      const swapped3 = await maybeSwapToMiniLLM(adj, phase);
+      adj = swapped3.item; phase = swapped3.phase;
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: nextItem.id, source: useRandom ? 'random' : 'sequential', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
       const newGenReady = await prisma.generatedDrill.count({ where: { created_at: { gt: session.started_at } } })
         .then(c => c > 0)

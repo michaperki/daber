@@ -173,7 +173,13 @@ Pointers (files)
 - Rule generators: Daber/lib/drill/generators.ts
 - LLM pipeline: Daber/lib/generation/pipeline.ts, Daber/app/api/generate-drills/route.ts
   - Fresh sentences button/route removed; background batch pipeline remains for OpenAI-backed generation.
-  - Local on-the-fly module: Daber/lib/generation/local_llm.ts; integrated into Daber/lib/drill/generators.ts with per-session cache and prefetch on session start.
+  - Local on-the-fly module: Daber/lib/generation/local_llm.ts.
+    - Scope: Only used inside the mini‑morph drill.
+    - Serving path: wired in Daber/app/api/sessions/[sessionId]/next-item/route.ts for `vocab_mini_morph`.
+      - On recognition/recall items, if a per‑session cache hit exists for the item’s lexeme, serve the LLM sentence instead of the static item.
+      - Cache miss: serve the static item and opportunistically queue background generation.
+    - Prefetch: Daber/app/api/sessions/route.ts triggers prefetch only for mini‑morph sessions via Daber/lib/minimorph/local_llm_mini.ts.
+    - Old drills: LLM hooks removed from Daber/lib/drill/generators.ts; legacy selection is unchanged.
 - Voice I/O: Daber/app/api/stt/route.ts, Daber/app/api/tts/route.ts; client hooks under Daber/lib/client/audio/*
 - Session UI: Daber/app/session/[sessionId]/page.tsx
 

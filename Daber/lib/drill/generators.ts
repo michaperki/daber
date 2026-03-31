@@ -95,6 +95,7 @@ function pronounHeb(inf: { person: string | null; number: string | null; gender:
   if (p === '2' && n === 'pl' && g === 'f') return 'אתן';
   if (p === '3' && n === 'sg' && g === 'm') return 'הוא';
   if (p === '3' && n === 'sg' && g === 'f') return 'היא';
+  if (p === '3' && n === 'pl' && g === 'f') return 'הן';
   if (p === '3' && n === 'pl') return 'הם';
   // Fallback aligned with neutral English 'they': default to third‑person plural masculine
   if (fallbackPerson === '1') return 'אני';

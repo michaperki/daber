@@ -16,6 +16,7 @@ type AdjGrid = { msg?: string; fsg?: string; mpl?: string; fpl?: string };
 function nowIso() { return new Date().toISOString(); }
 function isHebrew(s: string) { return /[\u0590-\u05FF]/.test(s || ''); }
 function isSingleToken(s: string) { return (s || '').trim().split(/\s+/).filter(Boolean).length === 1; }
+function isPossessiveSuffix(s: string): boolean { return /(?:יו|יה|יהם|יהן|יך|ייך|נו|כם|כן)$/.test((s || '').trim()); }
 
 function enPron(m: { person?: string|null, number?: string|null, gender?: string|null }): string {
   const p = (m.person || '').toString();
@@ -42,6 +43,7 @@ function hePron(m: { person?: string|null, number?: string|null, gender?: string
   if (p === '2' && n === 'pl' && g === 'f') return 'אתן';
   if (p === '3' && n === 'sg' && g === 'm') return 'הוא';
   if (p === '3' && n === 'sg' && g === 'f') return 'היא';
+  if (p === '3' && n === 'pl' && g === 'f') return 'הן';
   if (p === '3' && n === 'pl') return 'הם';
   return 'הם';
 }
@@ -110,17 +112,33 @@ async function buildVerbGrid(lexemeId: string) : Promise<{ ok: true, grid: VerbG
     ['1','pl',null], ['2','pl',null], ['3','pl',null],
   ] as const;
   const pastForms: Array<{ form: string; person: string; number: string; gender: string|null }> = [];
-  for (const [p, n, g] of reqTriples) {
-    const cand = past.find(i => (i.person||'') === p && (i.number||'') === n && ((i.gender||null) === g));
-    if (!cand || !isSingleToken(cand.form)) return { ok: false, reason: 'past_incomplete' };
-    pastForms.push({ form: cand.form, person: p, number: n, gender: g });
+  {
+    const missing: string[] = [];
+    for (const [p, n, g] of reqTriples) {
+      const cand = past.find(i => (i.person||'') === p && (i.number||'') === n && ((i.gender||null) === g));
+      if (!cand || !isSingleToken(cand.form)) {
+        const label = `${p}${n === 'sg' ? 'sg' : 'pl'}${g ? ` ${g}` : ''}`;
+        missing.push(label);
+      } else {
+        pastForms.push({ form: cand.form, person: p, number: n, gender: g });
+      }
+    }
+    if (missing.length) return { ok: false, reason: `past_incomplete: missing ${missing.join(', ')}` };
   }
 
   const futureForms: Array<{ form: string; person: string; number: string; gender: string|null }> = [];
-  for (const [p, n, g] of reqTriples) {
-    const cand = future.find(i => (i.person||'') === p && (i.number||'') === n && ((i.gender||null) === g));
-    if (!cand || !isSingleToken(cand.form)) return { ok: false, reason: 'future_incomplete' };
-    futureForms.push({ form: cand.form, person: p, number: n, gender: g });
+  {
+    const missing: string[] = [];
+    for (const [p, n, g] of reqTriples) {
+      const cand = future.find(i => (i.person||'') === p && (i.number||'') === n && ((i.gender||null) === g));
+      if (!cand || !isSingleToken(cand.form)) {
+        const label = `${p}${n === 'sg' ? 'sg' : 'pl'}${g ? ` ${g}` : ''}`;
+        missing.push(label);
+      } else {
+        futureForms.push({ form: cand.form, person: p, number: n, gender: g });
+      }
+    }
+    if (missing.length) return { ok: false, reason: `future_incomplete: missing ${missing.join(', ')}` };
   }
 
   return { ok: true, grid: { present: presForms, past: pastForms, future: futureForms } };
@@ -128,19 +146,31 @@ async function buildVerbGrid(lexemeId: string) : Promise<{ ok: true, grid: VerbG
 
 async function buildAdjGrid(lexemeId: string): Promise<{ ok: true, grid: AdjGrid } | { ok: false, reason: string }> {
   const infls = await prisma.inflection.findMany({ where: { lexeme_id: lexemeId } });
-  const msg = infls.find(i => (i.number||'') === 'sg' && (i.gender||'') === 'm');
+  const msgCandidates = infls.filter(i => (i.number||'') === 'sg' && (i.gender||'') === 'm');
   const fsg = infls.find(i => (i.number||'') === 'sg' && (i.gender||'') === 'f');
   const mpl = infls.find(i => (i.number||'') === 'pl' && (i.gender||'') === 'm');
   const fpl = infls.find(i => (i.number||'') === 'pl' && (i.gender||'') === 'f');
-  if (!msg || !fsg || !mpl || !fpl) return { ok: false, reason: 'adjective_incomplete' };
-  if (![msg.form,fsg.form,mpl.form,fpl.form].every(f => isSingleToken(f))) return { ok: false, reason: 'adjective_multiword' };
-  return { ok: true, grid: { msg: msg.form, fsg: fsg.form, mpl: mpl.form, fpl: fpl.form } };
+  if (!fsg || !mpl || !fpl || !msgCandidates.length) return { ok: false, reason: 'adjective_incomplete' };
+  const looksFeminineLike = (form: string) => /(ת|ה|ית)$/.test((form || '').trim());
+  const msgClean = msgCandidates.find(c => !looksFeminineLike(c.form)) || null;
+  if (!msgClean) {
+    // eslint-disable-next-line no-console
+    console.warn(`[mini-expand] adjective m.sg sanity failed for ${lexemeId}: candidates look feminine: ${msgCandidates.map(c => c.form).join(', ')}`);
+    return { ok: false, reason: 'adjective_incomplete_m_sg_sanity' };
+  }
+  if (![msgClean.form,fsg.form,mpl.form,fpl.form].every(f => isSingleToken(f))) return { ok: false, reason: 'adjective_multiword' };
+  if (msgClean.form !== (msgCandidates[0]?.form || '')) {
+    // eslint-disable-next-line no-console
+    console.warn(`[mini-expand] adjective m.sg normalized for ${lexemeId}: chose '${msgClean.form}' over '${msgCandidates[0]?.form}'`);
+  }
+  return { ok: true, grid: { msg: msgClean.form, fsg: fsg.form, mpl: mpl.form, fpl: fpl.form } };
 }
 
 async function buildNounGrid(lexemeId: string): Promise<{ ok: true, grid: NounGrid } | { ok: false, reason: string }> {
   const infls = await prisma.inflection.findMany({ where: { lexeme_id: lexemeId } });
-  const sg = infls.find(i => (i.number||'') === 'sg');
-  const pl = infls.find(i => (i.number||'') === 'pl');
+  const filtered = infls.filter(i => !isPossessiveSuffix(i.form));
+  const sg = filtered.find(i => (i.number||'') === 'sg');
+  const pl = filtered.find(i => (i.number||'') === 'pl');
   if (!sg || !pl) return { ok: false, reason: 'noun_missing_number' };
   if (![sg.form, pl.form].every(f => isSingleToken(f))) return { ok: false, reason: 'noun_multiword' };
   return { ok: true, grid: { sg: { form: sg.form, gender: sg.gender || null }, pl: { form: pl.form, gender: pl.gender || null } } };
@@ -295,4 +325,3 @@ async function main() {
 }
 
 main().catch(async (e) => { console.error('Expansion failed:', e?.message || e); try { await prisma.$disconnect(); } catch {} process.exit(1); });
-

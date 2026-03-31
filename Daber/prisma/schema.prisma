@@ -127,6 +127,7 @@ model Lexeme {
   pos         String
   gloss       String?
   features    Json?
+  verb_governance Json?
   inflections Inflection[]
   lessonItems LessonItem[]
   generatedDrills GeneratedDrill[]

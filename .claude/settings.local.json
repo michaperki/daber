@@ -38,7 +38,8 @@
       "Bash(git -C /mnt/c/Users/PerkD/documents/dev/hebrew_drills show 1b50953 --stat)",
       "Bash(git -C /mnt/c/Users/PerkD/documents/dev/hebrew_drills show 3f101d3 --stat)",
       "Bash(git -C /mnt/c/Users/PerkD/documents/dev/hebrew_drills show 5f6093e --stat)",
-      "Bash(git -C /mnt/c/Users/PerkD/documents/dev/hebrew_drills show 7f02c03 --stat)"
+      "Bash(git -C /mnt/c/Users/PerkD/documents/dev/hebrew_drills show 7f02c03 --stat)",
+      "Bash(git status:*)"
     ]
   }
 }

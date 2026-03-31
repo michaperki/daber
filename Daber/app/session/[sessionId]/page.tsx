@@ -674,6 +674,9 @@ function parseEmojiFromGeneratedId(id: string): string | '' {
 
 function deriveEmojiFromFeatures(feat?: Record<string, string | null> | null): string {
   if (!feat) return '';
+  const pos = (feat.pos || '').toLowerCase();
+  // Do not show person emojis for nouns or when POS is missing
+  if (!pos || pos === 'noun') return '';
   const number = feat.number || null;
   const gender = feat.gender || null;
   // We only use this when we have explicit features; otherwise we fall back to legacy heuristics.

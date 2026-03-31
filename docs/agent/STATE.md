@@ -2,7 +2,7 @@
 
 Role: Honest, always-current snapshot of the running codebase. Descriptive, not aspirational.
 
-Last reviewed: 2026-03-30 (card-generation integrity + mini hardening)
+Last reviewed: 2026-03-31 (verb governance design)
 
 —
 
@@ -218,6 +218,33 @@ Card-generation integrity — SHIPPED (2026-03-30)
   - Where: scripts/lexicon/normalize_inflections.ts.
 
 Operational notes (post‑deploy)
+
+Fixes — 2026-03-31
+- Hebrew 3pl feminine pronoun
+  - What: Present-tense 3pl feminine now uses ״הן״ (not ״הם״) when gender is known.
+  - Where: Daber/lib/drill/generators.ts (`pronounHeb`); scripts/expand_mini_from_green.ts (`hePron`).
+- Noun emoji guard
+  - What: Person emojis are suppressed for nouns and items without POS; verbs/adjectives unchanged.
+  - Where: Daber/app/session/[sessionId]/page.tsx (`deriveEmojiFromFeatures`).
+- Mini expansion noun possessive filter
+  - What: Filters possessive-suffixed forms from noun sg/pl selection.
+  - Where: scripts/expand_mini_from_green.ts (`isPossessiveSuffix`, `buildNounGrid`).
+- Adjective m.sg sanity
+  - What: Prefer m.sg forms that don’t look feminine; skip if only feminine-looking candidates exist; logs a warning.
+  - Where: scripts/expand_mini_from_green.ts (`buildAdjGrid`).
+- Verb grid diagnostics
+  - What: Skip reasons for past/future now include the specific missing cells.
+  - Where: scripts/expand_mini_from_green.ts (`buildVerbGrid`).
+
+Design docs added
+- Verb governance (verbs → complements)
+  - File: docs/VERB_GOVERNANCE_DESIGN.md
+  - Status: DESIGN ONLY — no code changes. Proposes `Lexeme.verb_governance Json?` with frames for את/ב/ל/על/עם/מ/אל/none, transitivity, and optional Hebrew frame strings (e.g., "חושב על ___"). Includes 10 sample verbs and a population strategy (manual first, LLM‑assist with validation later). UI proposal: show marker in parentheses on intro cards (e.g., "לאהוב (את)") and add a governance block to dictionary pages; add a one‑time hint for beginners that את marks definite direct objects.
+
+Verb governance — SHIPPED (2026-03-31)
+- Schema: added `Lexeme.verb_governance Json?` (Prisma). Migration created; apply with `npx prisma migrate dev --name add_verb_governance` and regenerate client.
+- Seed script: `scripts/seed_verb_governance.ts`; npm: `npm run seed:governance`. Hard‑codes 10 representative verbs; idempotent overwrite; logs updated vs missing lemmas.
+- Intro display: `buildIntroFor()` appends parenthetical primary marker for verbs with governance (e.g., "לאהוב (את)", "לחשוב (על)"). No beginner hint for את yet; dictionary UI unchanged.
 - Normalize inflections for existing data:
   - `DATABASE_URL=… npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/lexicon/normalize_inflections.ts`
 - Re‑tag and apply CC family links:

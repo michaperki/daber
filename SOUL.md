@@ -176,9 +176,11 @@ Content & Pedagogy
 - Families: formal spacing and readiness criteria; synonyms and near‑miss variants with tests.
 
 Generation & Integrity
-- Strict JSON schemas, dual‑pass validation, no nikkud, deterministic English, per‑feature checks.
-- Human‑in‑the‑loop review for new targets; promote only items that pass evaluators + hygiene.
+- Strict JSON schemas, dual-pass validation, no nikkud, deterministic English, per-feature checks.
+- Human-in-the-loop review for new targets; promote only items that pass evaluators + hygiene.
 - Background jobs with quotas and clear “new content ready” signals without UI thrash.
+
+Local LLM generation — under investigation. See docs/LOCAL_LLM_RESEARCH.md for model options (Dicta‑LM 3.0, Gemma 3, Tiny Aya), serving paths (llama.cpp/Ollama/vLLM), quality risks, and next steps. No code changes yet; research only.
 
 Audio & Latency
 - Better Hebrew TTS; keep browser fallback; pre‑generate/cache audio for popular items.

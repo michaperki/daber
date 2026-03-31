@@ -353,7 +353,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           if (inf) lexId = inf.lexeme_id;
         }
 
-        const lex = lexId ? await prisma.lexeme.findUnique({ where: { id: lexId }, select: { lemma: true, pos: true, gloss: true, features: true } }) : null;
+        const lex = lexId ? await prisma.lexeme.findUnique({ where: { id: lexId }, select: { lemma: true, pos: true, gloss: true, features: true, verb_governance: true } }) : null;
         const pos = (lex?.pos || ((li.features as any)?.pos as string | null) || '').toLowerCase();
 
         // Hebrew: canonical base form by POS
@@ -393,6 +393,22 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         } else {
           const base = stripHebPronoun(li.target_hebrew || '').replace(/^ה+/, '');
           heb = stripHebNikkud(base);
+        }
+
+        // If verb governance exists, append primary prep marker as parenthetical
+        if (heb && pos === 'verb' && lex?.verb_governance && typeof lex.verb_governance === 'object') {
+          try {
+            const gov: any = lex.verb_governance as any;
+            const frames: any[] = Array.isArray(gov?.frames) ? gov.frames : [];
+            const first = frames[0] || null;
+            const prep = first?.prep as string | undefined;
+            if (prep && prep !== 'none') {
+              // Import lazily to avoid circulars at build time
+              const { PREP_DISPLAY_MAP } = await import('@/lib/types/governance');
+              const mark = (PREP_DISPLAY_MAP as any)[prep] as string | undefined;
+              if (mark) heb = `${heb} (${mark})`;
+            }
+          } catch {}
         }
 
         if (!heb) return null; // cannot reliably resolve canonical — let caller skip

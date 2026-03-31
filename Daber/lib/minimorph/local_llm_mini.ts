@@ -127,3 +127,9 @@ export async function prefetchLocalLLMForMiniSession(sessionId: string) {
   if (session.lesson_id !== 'vocab_mini_morph') return;
   await generateMiniBatchIntoCache(sessionId, session.lesson_id, session.user_id || 'anon', 5).catch(() => {});
 }
+
+export function getMiniCacheSize(sessionId: string): number {
+  const m = MINI_CACHE.get(sessionId);
+  if (!m) return 0;
+  return Array.from(m.values()).reduce((s, arr) => s + arr.length, 0);
+}

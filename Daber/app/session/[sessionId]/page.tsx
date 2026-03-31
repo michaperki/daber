@@ -38,6 +38,7 @@ export default function DaberSessionPage() {
   const [introEnglish, setIntroEnglish] = React.useState<string | null>(null);
   const [debugMeta, setDebugMeta] = React.useState<{ sessionId: string; lessonId: string; itemId: string; lexemeId: string | null; familyId: string | null; path?: string | null } | null>(null);
   const [hints, setHints] = React.useState<{ baseForm?: string; firstLetter?: string; definiteness?: boolean } | null>(null);
+  const [llmDebug, setLlmDebug] = React.useState<any | null>(null);
   const [hintLevel, setHintLevel] = React.useState<number>(0);
 
   const lastPromptIdRef = React.useRef<string | null>(null);
@@ -131,9 +132,9 @@ export default function DaberSessionPage() {
     return null;
   }
 
-  const fetchNextRaw = React.useCallback(async (): Promise<NextItemResponse> => {
+  const fetchNextRaw = React.useCallback(async (forceLlm?: boolean): Promise<NextItemResponse> => {
     try {
-      const data = await apiNextItem(sessionId, { random: true, mode: useLex ? 'lex' : undefined, focus: useLex ? 'weak' : undefined, due: 'blend', pacing: 'adaptive' });
+      const data = await apiNextItem(sessionId, { random: true, mode: useLex ? 'lex' : undefined, focus: useLex ? 'weak' : undefined, due: 'blend', pacing: 'adaptive', forceLlm: !!forceLlm });
       if (data.offerEnd) setPacingOffer('end');
       else if (data.offerExtend) setPacingOffer('extend');
       else setPacingOffer(null);
@@ -148,10 +149,10 @@ export default function DaberSessionPage() {
     }
   }, [sessionId, useLex]);
 
-  const loadItem = React.useCallback(async () => {
+  const loadItem = React.useCallback(async (forceLlm?: boolean) => {
     if (loadingItemRef.current) return;
     loadingItemRef.current = true;
-    const data = await fetchNextRaw();
+    const data = await fetchNextRaw(!!forceLlm);
     if (data.done) {
       dispatch({ type: 'SESSION_DONE' });
       router.push(`/session/${sessionId}/summary`);
@@ -167,6 +168,7 @@ export default function DaberSessionPage() {
     setHints((data as any).hints || null);
     setDebugMeta((data as any).meta || null);
     setHintLevel(0);
+    setLlmDebug((data as any).llm_debug || null);
     setForcedDirection(mode);
     dispatch({
       type: 'ITEM_LOADED',
@@ -344,6 +346,9 @@ export default function DaberSessionPage() {
   const showFeedback = feedback && (phase === 'feedback' || phase === 'evaluating');
   const micDisabled = phase === 'evaluating' || phase === 'advancing';
 
+  const isDev = process.env.NODE_ENV !== 'production';
+  const showLlmBadge = isDev && !!llmDebug && (llmDebug.source === 'generated' || llmDebug.source === 'cache_hit');
+
   return (
     <div className="drill-root">
       <PromptHeader index={progress.index} total={progress.total} onExit={() => router.push('/')} />
@@ -411,13 +416,20 @@ export default function DaberSessionPage() {
 
       {!showIntro && (isRecognition ? (
         <>
-          <PromptCard
-            prompt="Listen and translate to English"
-            transliteration={showFeedback ? item.transliteration : null}
-            hintVisible={hintVisible}
-            onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
-            features={item.features || null}
-          />
+          <div style={{ position: 'relative' }}>
+            <PromptCard
+              prompt="Listen and translate to English"
+              transliteration={showFeedback ? item.transliteration : null}
+              hintVisible={hintVisible}
+              onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
+              features={item.features || null}
+            />
+            {showLlmBadge ? (
+              <span className="vocab-chip" style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(255,255,255,0.8)' }}>
+                ✨ generated
+              </span>
+            ) : null}
+          </div>
 
           <div className="audio-row">
             <AudioPlayButton playing={audio.ttsPlaying} onPlay={() => item && playTTS(item.target_hebrew)} />
@@ -442,20 +454,30 @@ export default function DaberSessionPage() {
             />
           </div>
 
-          <div className="cta-row" style={{ marginBottom: 12 }}>
+          <div className="cta-row" style={{ marginBottom: 12, gap: 8, alignItems: 'center' }}>
             <button className="btn-start" onClick={() => submitAnswer(englishInput)} disabled={!englishInput.trim() || phase === 'feedback' || phase === 'evaluating'}>submit</button>
             <button className="qs-btn" onClick={skip}>skip</button>
+            {isDev ? (
+              <button className="qs-btn" onClick={() => loadItem(true)}>Force LLM</button>
+            ) : null}
           </div>
         </>
       ) : isGuided ? (
         <>
-          <PromptCard
-            prompt={cleanedPrompt}
-            transliteration={item.transliteration}
-            hintVisible={hintVisible}
-            onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
-            features={item.features || null}
-          />
+          <div style={{ position: 'relative' }}>
+            <PromptCard
+              prompt={cleanedPrompt}
+              transliteration={item.transliteration}
+              hintVisible={hintVisible}
+              onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
+              features={item.features || null}
+            />
+            {showLlmBadge ? (
+              <span className="vocab-chip" style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(255,255,255,0.8)' }}>
+                ✨ generated
+              </span>
+            ) : null}
+          </div>
 
           <div className="editor-wrap" style={{ marginBottom: 8 }}>
             <input
@@ -510,9 +532,12 @@ export default function DaberSessionPage() {
             </div>
           ) : null}
 
-          <div className="cta-row" style={{ marginTop: 8, marginBottom: 12 }}>
+          <div className="cta-row" style={{ marginTop: 8, marginBottom: 12, gap: 8, alignItems: 'center' }}>
             <button className="btn-start" onClick={() => submitAnswer(hebrewInput)} disabled={!hebrewInput.trim() || phase === 'feedback' || phase === 'evaluating'}>submit</button>
             <button className="qs-btn" onClick={skip}>skip</button>
+            {isDev ? (
+              <button className="qs-btn" onClick={() => loadItem(true)}>Force LLM</button>
+            ) : null}
           </div>
         </>
       ) : (
@@ -544,10 +569,13 @@ export default function DaberSessionPage() {
               {showNativeKeyboard ? null : (
                 <HebrewKeyboard onInsert={(ch) => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript + ch })} onBackspace={() => dispatch({ type: 'EDIT_TRANSCRIPT', transcript: transcript.slice(0, -1) })} />
               )}
-              <div className="cta-row" style={{ marginTop: 8 }}>
+              <div className="cta-row" style={{ marginTop: 8, gap: 8, alignItems: 'center' }}>
                 <button className="btn-start" onClick={() => submitAnswer(transcript)} disabled={!transcript.trim()}>submit</button>
                 <button className="btn-resume" onClick={startVoice}>record again</button>
                 <button className="qs-btn" onClick={() => dispatch({ type: 'CLEAR_TRANSCRIPT' })}>clear</button>
+                {isDev ? (
+                  <button className="qs-btn" onClick={() => loadItem(true)}>Force LLM</button>
+                ) : null}
               </div>
             </>
           ) : (

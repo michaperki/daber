@@ -41,6 +41,7 @@ Temporary scaffolding and feature flags
 Debug/dev-only endpoints and tools
 - /api/sessions/[id]/next-item?debug=1
   - Adds explain payload (selection path, pools) in response; used by scripts/simulate_vocab_session.ts.
+  - Dev-only (mini morph): `?forceLlm=1` attempts on-the-fly local LLM generation for a known mini lexeme; on success serves it, else falls back. Response includes `llm_debug` in dev when `debug=1` or `forceLlm=1`.
 - Admin lexicon tools
   - /admin/lexicon/validate (page)
   - /api/admin/lexicon/{sync, family, export, fix}
@@ -180,6 +181,7 @@ Pointers (files)
       - Cache miss: serve the static item and opportunistically queue background generation.
     - Prefetch: Daber/app/api/sessions/route.ts triggers prefetch only for mini‑morph sessions via Daber/lib/minimorph/local_llm_mini.ts.
     - Old drills: LLM hooks removed from Daber/lib/drill/generators.ts; legacy selection is unchanged.
+    - Dev observability: session UI shows a small "✨ generated" badge and a "Force LLM" button in development only. API responds with `llm_debug` when `debug=1` or `forceLlm=1` (dev only).
 - Voice I/O: Daber/app/api/stt/route.ts, Daber/app/api/tts/route.ts; client hooks under Daber/lib/client/audio/*
 - Session UI: Daber/app/session/[sessionId]/page.tsx
 

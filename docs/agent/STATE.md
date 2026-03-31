@@ -2,7 +2,7 @@
 
 Role: Honest, always-current snapshot of the running codebase. Descriptive, not aspirational.
 
-Last reviewed: 2026-03-31 (verb governance design)
+Last reviewed: 2026-03-31 (local LLM on-the-fly + verb governance + mini fixes)
 
 —
 
@@ -172,6 +172,8 @@ Pointers (files)
 - Attempts (grading and stat updates): Daber/app/api/attempts/route.ts
 - Rule generators: Daber/lib/drill/generators.ts
 - LLM pipeline: Daber/lib/generation/pipeline.ts, Daber/app/api/generate-drills/route.ts
+  - Fresh sentences button/route removed; background batch pipeline remains for OpenAI-backed generation.
+  - Local on-the-fly module: Daber/lib/generation/local_llm.ts; integrated into Daber/lib/drill/generators.ts with per-session cache and prefetch on session start.
 - Voice I/O: Daber/app/api/stt/route.ts, Daber/app/api/tts/route.ts; client hooks under Daber/lib/client/audio/*
 - Session UI: Daber/app/session/[sessionId]/page.tsx
 
@@ -222,13 +224,13 @@ Operational notes (post‑deploy)
 Fixes — 2026-03-31
 - Hebrew 3pl feminine pronoun
   - What: Present-tense 3pl feminine now uses ״הן״ (not ״הם״) when gender is known.
-  - Where: Daber/lib/drill/generators.ts (`pronounHeb`); scripts/expand_mini_from_green.ts (`hePron`).
+  - Where: Daber/lib/drill/generators.ts (`pronounHeb`); scripts/expand_mini_from_green.ts (`hePron`); scripts/seed_mini_morph.ts (`hePron`).
 - Noun emoji guard
   - What: Person emojis are suppressed for nouns and items without POS; verbs/adjectives unchanged.
   - Where: Daber/app/session/[sessionId]/page.tsx (`deriveEmojiFromFeatures`).
 - Mini expansion noun possessive filter
-  - What: Filters possessive-suffixed forms from noun sg/pl selection.
-  - Where: scripts/expand_mini_from_green.ts (`isPossessiveSuffix`, `buildNounGrid`).
+  - What: Filters possessive-suffixed forms from noun sg/pl selection. Regex expanded to include bare ו ("his"). Added allowlist for rare nouns whose base ends with a bare ו; logs warnings for manual review.
+  - Where: scripts/expand_mini_from_green.ts (`isPossessiveSuffix`, `endsWithBareVav`, `NOUN_BARE_VAV_ALLOWLIST`, `buildNounGrid`).
 - Adjective m.sg sanity
   - What: Prefer m.sg forms that don’t look feminine; skip if only feminine-looking candidates exist; logs a warning.
   - Where: scripts/expand_mini_from_green.ts (`buildAdjGrid`).
@@ -243,7 +245,8 @@ Design docs added
 
 Verb governance — SHIPPED (2026-03-31)
 - Schema: added `Lexeme.verb_governance Json?` (Prisma). Migration created; apply with `npx prisma migrate dev --name add_verb_governance` and regenerate client.
-- Seed script: `scripts/seed_verb_governance.ts`; npm: `npm run seed:governance`. Hard‑codes 10 representative verbs; idempotent overwrite; logs updated vs missing lemmas.
+- Seed script: `scripts/seed_verb_governance.ts`; npm: `npm run seed:governance`. Hard‑codes representative verbs; idempotent overwrite; logs updated vs missing lemmas.
+  - Coverage expanded to include all lesson verbs in `Daber/data/lessons` (as of present_tense_basics_01): added `להשתפר`, `ללמוד`.
 - Intro display: `buildIntroFor()` appends parenthetical primary marker for verbs with governance (e.g., "לאהוב (את)", "לחשוב (על)"). No beginner hint for את yet; dictionary UI unchanged.
 - Normalize inflections for existing data:
   - `DATABASE_URL=… npx ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/lexicon/normalize_inflections.ts`
@@ -260,3 +263,8 @@ DB indexes — SHIPPED (2026-03-30)
 Selection blend default — SHIPPED (2026-03-30)
 - Server defaults `due=blend` when unspecified, attempting FeatureStat-driven picks first, then falling back to ItemStat due.
 - Where: Daber/app/api/sessions/[sessionId]/next-item/route.ts (dueMode default = 'blend').
+- LOCAL_LLM_ENABLED / LOCAL_LLM_URL / LOCAL_LLM_MODEL
+  - Where: Daber/lib/generation/local_llm.ts, Daber/lib/drill/generators.ts, Daber/app/api/sessions/route.ts
+  - What: Enables on-the-fly local LLM generation via Ollama. URL and model configurable (defaults: http://127.0.0.1:11434, dicta17-q4).
+  - Why: Offline, low-latency generation on RTX 4050 laptop.
+  - Keep or kill: Keep; kill switch defaults off.

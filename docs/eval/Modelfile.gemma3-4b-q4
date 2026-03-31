@@ -1,0 +1,13 @@
+# Gemma 3 4B IT QAT Q4_0 via GGUF
+FROM ./models/gemma-3-4b-it-q4_0.gguf
+PARAMETER temperature 0.2
+PARAMETER num_ctx 2048
+TEMPLATE << 'EOT'
+{{- if .System }}<|system|>
+{{ .System }}</s>{{ end }}
+{{- range .Messages }}
+<|{{ .Role }}|>
+{{ .Content }}</s>
+{{- end }}
+<|assistant|>
+EOT

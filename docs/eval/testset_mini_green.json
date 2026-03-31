@@ -1,0 +1,97 @@
+{
+  "name": "mini_green_v1",
+  "cases": [
+    {
+      "id": "v1_read_boy_present",
+      "description": "Present 3ms with ילד + לקרוא + definite object marking",
+      "target_lemma": "לקרוא",
+      "subject": "הילד",
+      "known_words": ["הילד", "ספר", "את"],
+      "required_forms": ["הילד", "קורא", "את הספר"],
+      "forbidden_forms": ["קרא", "אקרא", "יקרא"]
+    },
+    {
+      "id": "v2_read_girl_present",
+      "description": "Present 3fs with ילדה + לקרוא + definite object marking",
+      "target_lemma": "לקרוא",
+      "subject": "הילדה",
+      "known_words": ["הילדה", "ספר", "את"],
+      "required_forms": ["הילדה", "קוראת", "את הספר"],
+      "forbidden_forms": ["קרא", "יקרא", "אקרא"],
+      "agreement_checks": [
+        { "name": "girl+masc_verb", "must_not_coexist": ["הילדה", "קורא"] }
+      ]
+    },
+    {
+      "id": "v3_write_past_1s",
+      "description": "Past 1s with אני + לכתוב",
+      "target_lemma": "לכתוב",
+      "subject": "אני",
+      "known_words": ["אני", "מכתב"],
+      "required_forms": ["אני", "כתבתי"],
+      "forbidden_forms": ["כותב", "כותבת", "אכתוב"]
+    },
+    {
+      "id": "v4_hear_future_1p",
+      "description": "Future 1p with אנחנו + לשמוע + את השיר",
+      "target_lemma": "לשמוע",
+      "subject": "אנחנו",
+      "known_words": ["אנחנו", "שיר", "את"],
+      "required_forms": ["אנחנו", "נשמע", "את השיר"],
+      "forbidden_forms": ["שמענו", "שומעים", "אשמע", "ישמע"]
+    },
+    {
+      "id": "n1_defobj_book",
+      "description": "Definite direct object marking with ספר",
+      "target_lemma": "לקרוא",
+      "known_words": ["אני", "ספר", "את"],
+      "required_forms": ["את הספר"],
+      "forbidden_forms": []
+    },
+    {
+      "id": "a1_smart_boys",
+      "description": "Adj agreement: ילדים חכמים",
+      "target_lemma": "חכם",
+      "known_words": ["ילדים", "חכם"],
+      "required_forms": ["ילדים", "חכמים"],
+      "forbidden_forms": ["חכם", "חכמה", "חכמות"]
+    },
+    {
+      "id": "a2_new_icecream_f_sg",
+      "description": "Adj agreement: גלידה חדשה",
+      "target_lemma": "חדש",
+      "known_words": ["גלידה", "חדש"],
+      "required_forms": ["גלידה", "חדשה"],
+      "forbidden_forms": [" חדש", "חדשים", "חדשות"]
+    },
+    {
+      "id": "n2_def_plural_books",
+      "description": "Phrase constraint: הספרים החדשים appears",
+      "target_lemma": "חדש",
+      "known_words": ["ספר", "חדש"],
+      "required_forms": ["הספרים החדשים"],
+      "forbidden_forms": []
+    },
+    {
+      "id": "v5_speak_2ms_present",
+      "description": "Present 2ms with אתה + לדבר",
+      "target_lemma": "לדבר",
+      "subject": "אתה",
+      "known_words": ["אתה", "עברית"],
+      "required_forms": ["אתה", "מדבר"],
+      "forbidden_forms": ["מדברת", "דיברת", "תדבר"],
+      "agreement_checks": [
+        { "name": "2ms+fem_verb", "must_not_coexist": ["אתה", "מדברת"] }
+      ]
+    },
+    {
+      "id": "v6_read_past_3ms",
+      "description": "Past 3ms with הוא + לקרוא + את הספר",
+      "target_lemma": "לקרוא",
+      "subject": "הוא",
+      "known_words": ["הוא", "את", "ספר"],
+      "required_forms": ["הוא", "קרא", "את הספר"],
+      "forbidden_forms": ["קורא", "יקרא"]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+# Dicta-LM 3.0 1.7B Thinking Q4_K_M via GGUF
+FROM ./models/dictalm-3.0-1.7b-thinking-q4_k_m.gguf
+PARAMETER temperature 0.2
+PARAMETER num_ctx 2048
+TEMPLATE << 'EOT'
+{{- if .System }}system:
+{{ .System }}
+{{ end }}
+{{- range .Messages }}
+{{ .Role }}:
+{{ .Content }}
+{{- end }}
+assistant:
+EOT

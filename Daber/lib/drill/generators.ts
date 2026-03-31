@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/db';
+import { getUserVocabScope, buildVocabWhitelist, generateBatch } from '@/lib/generation/local_llm';
+import { logEvent } from '@/lib/log';
 import fs from 'fs';
 import path from 'path';
 
@@ -236,6 +238,16 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
 
   const userId = (session.user_id || 'anon');
 
+  // Local LLM: serve from per-session cache if available
+  const llmEnabled = (process.env.LOCAL_LLM_ENABLED || '').toLowerCase() === 'true';
+  if (llmEnabled) {
+    const served = await popCachedLocalItem(sessionId, baseLesson.id);
+    if (served) {
+      await maybeRefillLocalCache(sessionId, baseLesson.id, userId);
+      return served;
+    }
+  }
+
   const strategies: Array<() => Promise<LessonItemShape | null>> = [
     async () => generateAdjectiveItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen, userId),
     async () => generateVerbPresentItem(genLessonId, attemptedIds, desired, greenLexemeIds, isGreen, userId),
@@ -250,7 +262,120 @@ export async function generateNextFromLexicon(sessionId: string, attemptedIds: S
     const item = await strat();
     if (item) return item;
   }
+  // If no lexicon-generated item and local LLM enabled, try generating on-demand quickly (3s)
+  if (llmEnabled) {
+    try {
+      const got = await generateLocalBatchIntoCache(sessionId, baseLesson.id, userId, 1, 3000);
+      if (got) {
+        const served = await popCachedLocalItem(sessionId, baseLesson.id);
+        if (served) return served;
+      }
+    } catch {}
+  }
   return null;
+}
+
+// ---------- Local LLM per-session cache ----------
+type CachedItem = { lexeme_id: string; hebrew: string; english: string };
+const LOCAL_CACHE = new Map<string, Map<string, CachedItem[]>>(); // sessionId -> (lexemeId -> items)
+const LOCAL_WHITELIST = new Map<string, Set<string>>(); // sessionId -> whitelist
+
+async function maybeInitWhitelist(sessionId: string, userId: string) {
+  if (LOCAL_WHITELIST.has(sessionId)) return;
+  try {
+    // Build whitelist from user's known lexemes inferred via stats
+    const stats = await prisma.itemStat.findMany({ where: { user_id: userId }, select: { lesson_item_id: true } });
+    const lis = await prisma.lessonItem.findMany({ where: { id: { in: stats.map(s => s.lesson_item_id) }, lexeme_id: { not: null } }, select: { lexeme_id: true } });
+    const lexIds = Array.from(new Set(lis.map(l => l.lexeme_id as string)));
+    const wl = await buildVocabWhitelist(lexIds);
+    LOCAL_WHITELIST.set(sessionId, wl);
+  } catch {}
+}
+
+async function popCachedLocalItem(sessionId: string, lessonId: string): Promise<LessonItemShape | null> {
+  const m = LOCAL_CACHE.get(sessionId);
+  if (!m) return null;
+  // pop from any lexeme bucket with items
+  for (const [lexId, arr] of m) {
+    const next = arr.shift();
+    if (!next) continue;
+    if (!arr.length) m.delete(lexId);
+    // Persist a DB item under the session's dynamic lesson
+    const genLessonId = `${lessonId}_gen`;
+    const id = `llm_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+    const li = await prisma.lessonItem.create({
+      data: {
+        id,
+        lesson_id: genLessonId,
+        english_prompt: next.english,
+        target_hebrew: next.hebrew,
+        transliteration: null,
+        accepted_variants: [], near_miss_patterns: [], tags: ['generated','local_llm'], difficulty: 1,
+        lexeme_id: lexId,
+        features: { pos: 'sentence', source: 'local_llm' } as any
+      }
+    });
+    try { logEvent({ type: 'local_llm_served', payload: { target_lexeme_id: lexId, was_cached: true } }); } catch {}
+    return { id: li.id, english_prompt: li.english_prompt, target_hebrew: li.target_hebrew, transliteration: li.transliteration, features: (li as any).features as any };
+  }
+  return null;
+}
+
+async function maybeRefillLocalCache(sessionId: string, lessonId: string, userId: string) {
+  // If cache low (<2 items total), prefetch in background
+  const m = LOCAL_CACHE.get(sessionId);
+  const total = m ? Array.from(m.values()).reduce((s, a) => s + a.length, 0) : 0;
+  if (total >= 2) return;
+  generateLocalBatchIntoCache(sessionId, lessonId, userId, 3).catch(() => {});
+}
+
+async function chooseUpcomingLexemes(userId: string, lessonId: string, count: number): Promise<string[]> {
+  // Prefer due items; fall back to recent weak items
+  const now = new Date();
+  const dueStats = await prisma.itemStat.findMany({ where: { user_id: userId, next_due: { lte: now } }, orderBy: { next_due: 'asc' }, take: 200, select: { lesson_item_id: true } });
+  const dueItems = await prisma.lessonItem.findMany({ where: { id: { in: dueStats.map(s => s.lesson_item_id) }, lexeme_id: { not: null } }, select: { lexeme_id: true } });
+  const ids: string[] = [];
+  for (const r of dueItems) { const id = r.lexeme_id as string; if (id && !ids.includes(id)) ids.push(id); if (ids.length >= count) break; }
+  if (ids.length < count) {
+    const weak = await prisma.itemStat.findMany({ where: { user_id: userId }, orderBy: [{ incorrect_count: 'desc' }, { correct_streak: 'asc' }], take: 200, select: { lesson_item_id: true } });
+    const weakItems = await prisma.lessonItem.findMany({ where: { id: { in: weak.map(s => s.lesson_item_id) }, lexeme_id: { not: null } }, select: { lexeme_id: true } });
+    for (const r of weakItems) { const id = r.lexeme_id as string; if (id && !ids.includes(id)) ids.push(id); if (ids.length >= count) break; }
+  }
+  return ids.slice(0, count);
+}
+
+async function generateLocalBatchIntoCache(sessionId: string, lessonId: string, userId: string, targetCount: number, timeoutMs?: number): Promise<boolean> {
+  try {
+    await maybeInitWhitelist(sessionId, userId);
+    const { knownLemmas, allowedTenses } = await getUserVocabScope(userId);
+    const targets = await chooseUpcomingLexemes(userId, lessonId, Math.max(1, targetCount));
+    if (!targets.length) return false;
+    const lexRows = await prisma.lexeme.findMany({ where: { id: { in: targets } }, select: { id: true, lemma: true } });
+    const targetLemmas = lexRows.map(r => r.lemma);
+    const items = await generateBatch({ targetLemmas, knownLemmas, allowedTenses, direction: 'he_to_en', timeoutMs });
+    if (!items.length) { logEvent({ type: 'local_llm_batch', payload: { batch_size: targetLemmas.length, valid_count: 0 } }); return false; }
+    let m = LOCAL_CACHE.get(sessionId); if (!m) { m = new Map(); LOCAL_CACHE.set(sessionId, m); }
+    for (const it of items) {
+      const lexId = it.target_lexeme_id as string | undefined;
+      if (!lexId) continue;
+      const bucket = m.get(lexId) || [];
+      bucket.push({ lexeme_id: lexId, hebrew: it.hebrew, english: it.english });
+      m.set(lexId, bucket);
+    }
+    logEvent({ type: 'local_llm_batch', payload: { batch_size: targetLemmas.length, valid_count: items.length } });
+    return items.length > 0;
+  } catch (e) {
+    logEvent({ type: 'local_llm_batch', payload: { error: (e as any)?.message || 'error' } });
+    return false;
+  }
+}
+
+// Exported for session-start prefetch
+export async function prefetchLocalLLMForSession(sessionId: string) {
+  if ((process.env.LOCAL_LLM_ENABLED || '').toLowerCase() !== 'true') return;
+  const session = await prisma.session.findUnique({ where: { id: sessionId }, select: { lesson_id: true, user_id: true } });
+  if (!session) return;
+  await generateLocalBatchIntoCache(sessionId, session.lesson_id, session.user_id || 'anon', 5).catch(() => {});
 }
 
 async function generateAdjectiveItem(lessonId: string, attemptedIds: Set<string>, desired?: Desired | null, allowLexemeIds?: string[] | null, isGreen?: boolean, userId?: string): Promise<LessonItemShape | null> {

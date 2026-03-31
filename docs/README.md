@@ -11,7 +11,7 @@ This repo folder (historically named `hebrew_drills`) contains the **Daber** app
 - Roadmap: `agent/ROADMAP.md`
 - Current state: `agent/STATE.md`
 - Deploy: `agent/DEPLOY.md`
+- Infra: `agent/INFRA.md`
 - Simplify / architecture notes: `agent/SIMPLIFY.md`
 - Mic lifecycle notes: `agent/MIC_SENTINEL_NOTES.md`
 - Dev journal: `agent/Dev Journal.md`
-

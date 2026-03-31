@@ -34,6 +34,8 @@ Output:
 - JSONL at `scripts/out/drill_run_<timestamp>.jsonl` with an `explain` object (lesson scope, candidate pool sizes, selection path, pick source, family-base swap).
 
 API debug (dev only): append `?debug=1` to `GET /api/sessions/:id/next-item` to include `explain` in the response. For the mini drill, responses also include a `meta` block (session/lesson/item/lexeme/family/path).
+ 
+English evaluator sanity: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/test_english_evaluator.ts`
 
 ### Mini Morph Drill (debugging)
 - Lesson: `vocab_mini_morph` (small allowlisted set; expanding):
@@ -48,6 +50,7 @@ API debug (dev only): append `?debug=1` to `GET /api/sessions/:id/next-item` to 
 - Build/Start: `npm run build` / `npm run start`
 - Prisma: `npm run prisma:generate` / `npm run db:push` / `npm run seed`
 - Evaluator sanity: `npm run test:evaluator`
+ - English evaluator sanity: `ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/test_english_evaluator.ts`
 
 ## Structure
 - `Daber/app/*` — pages, components, API routes

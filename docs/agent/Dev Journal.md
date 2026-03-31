@@ -2,6 +2,16 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
+## 2026-03-31 — English evaluator present equivalence + mini present coverage
+
+- Bug: he→en misgrade where “he writes” marked incorrect vs expected “he is writing” for present Hebrew (e.g., הוא כותב).
+- Fix: `Daber/lib/evaluator/englishEvaluator.ts` now strips instruction wrappers, expands contractions, and canonicalizes present forms so present progressive ≈ simple present when pronoun + verb base match. Falls back to keyword overlap.
+- Tests: added `scripts/test_english_evaluator.ts` with cases across I/you/he/she/we/they; negative guard for past vs present.
+- Mini drill: seeded present 2nd‑person (sg/pl) and 1st‑person plural for write/speak/read/hear in `scripts/seed_mini_morph.ts` (new items after each verb’s present list).
+- Docs: Logged the strictness issue in `docs/agent/STATE.md` and added a task to `TODO.md`; updated `memory/MEMORY.md`.
+- Notes: We still prefer progressive in prompts/corrections; simple present answers are accepted as correct in he→en.
+- Next: consider tense‑aware acceptance via `features` for broader equivalence (optional), and extend irregular lists if needed.
+
 ## 2026-03-30 — Green intros use Lexeme.gloss; UI guard
 
 - Schema: added optional `gloss` to `Lexeme`; applied via `prisma db push`.

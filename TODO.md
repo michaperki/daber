@@ -10,6 +10,14 @@
 
 ---
 
+## English evaluator — present simple vs progressive
+- Bug: In he→en mode, answers like "he writes" are marked incorrect when the expected is "he is writing" (e.g., mini morph present verbs like "הוא כותב").
+- Cause: `Daber/lib/evaluator/englishEvaluator.ts` compares tokens without stemming; "writes" and "writing" do not overlap after stopword removal.
+- Proposed fix (low‑risk, incremental):
+  - Strip "How do I say:" wrapper from expected English before evaluation (mirror generators’ `englishFromCard`).
+  - Add light verb normalization: map be+V‑ing ⇄ V(/V‑s) for present tense; handle -ing/-ed/-s and a small irregular list.
+  - Optionally pass `LessonItem.features` into the English evaluator to allow tense‑aware equivalence (treat present progressive ⇄ simple present as correct; others as flawed or wrong).
+
 ## Beta user identity — research findings & proposal
 
 ### Current state

@@ -2,7 +2,7 @@
 
 Role: Live project state, architecture snapshot, and current focus. Update this file at the end of each work session.
 
-Last updated: 2026-03-30 (mini morphology drill + validation + hardening)
+Last updated: 2026-03-31 (he→en evaluator normalization + mini present expansion)
 
 ---
 
@@ -38,6 +38,8 @@ Last updated: 2026-03-30 (mini morphology drill + validation + hardening)
 - **Card-generation integrity**: completed alignment of pronoun fallbacks (EN/HE), generator gating on complete morphology, CC family lemma+POS links, plural adjective gender normalization, and validation gates to skip inconsistent items.
   - Follow-up: fixed English wrapper duplication (strip leading "How do I say:") and prefer `Lexeme.gloss` across generator paths; filtered possessive-suffix noun forms from pools.
  - **Mini Morph Drill (vocab_mini_morph)**: 3-lexeme sandbox expanded. Phase 1: 6 lexemes — verbs (לכתוב, לדבר), nouns (ספר, גלידה), adjectives (גדול, חדש). Phase 2: 10 lexemes — add verbs (לקרוא, לשמוע), noun (שיר), adjective (חכם). Intros are canonical (verb=infinitive, noun=sg base, adj=m.sg). Variants included (verb present/past/future subsets; noun definite/plural; adj m/f sg/pl). Mini-only validation guards skip malformed items and log why. Debug meta (lexeme_id, family_id, pos, features) returned on `?debug=1`.
+ - **English evaluator (he→en) normalization — SHIPPED (2026-03-31)**: treats present progressive and simple present as equivalent (e.g., “he writes” ≈ “he is writing”), strips instruction wrappers, expands contractions; keeps fallback keyword match.
+ - **Mini present coverage — SHIPPED (2026-03-31)**: seeded present 2nd‑person (sg/pl) and 1st‑person plural variants for write/speak/read/hear. Prompts remain progressive; evaluator accepts simple present as correct.
 - **Selection default**: server now defaults to `due=blend` (feature then item) when unspecified by client.
 - Next: revisit intro-card polish and orthographic quality (do not change pedagogy until integrity gates are stable in prod).
 - **Song packs**: Ma Na'aseh chorus live; expand to verse chunks.

@@ -153,6 +153,7 @@ Known debt
 - React Strict Mode dev double-invoke is mitigated via guards; revisit if more effects are added.
 - "I said it right" override button appears even when grade is `correct` (should only show for incorrect/flawed).
 - Volume gain slider removed. The useTTS.ts GainNode boost remains available via `localStorage.ttsGain`.
+- English evaluator strictness (he→en): present progressive vs simple present. Example: user typed "he writes" for "הוא כותב" but expected English was "he is writing" → graded incorrect. Root cause: `englishEvaluator.ts` lacks morphological normalization (no stemming; "writing" ≠ "writes"). Plan: strip "How do I say" wrappers for he→en comparisons and add light verb normalization (ing/ed/s), or accept tense‑compatible variants when `features.tense==='present'`.
 
 Assumptions made
 - Family-first intros: prefer introducing lemmas via family_base (infinitive/adjective m.sg./noun sg); then progress within family.

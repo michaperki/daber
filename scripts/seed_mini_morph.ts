@@ -300,6 +300,21 @@ async function main() {
     const he = `${hePron(m)} ${m.form}`;
     await upsertItem(`mini_v_pr_${i}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB, F_VERB, false);
   }
+  // Add present 2nd-person (sg/pl) and 1st-person plural
+  const presentExtras: Array<Morph & { form: string }> = [
+    { person: '2', number: 'sg', gender: 'm', form: 'כותב' },
+    { person: '2', number: 'sg', gender: 'f', form: 'כותבת' },
+    { person: '1', number: 'pl', gender: 'm', form: 'כותבים' },
+    { person: '1', number: 'pl', gender: 'f', form: 'כותבות' },
+    { person: '2', number: 'pl', gender: 'm', form: 'כותבים' },
+    { person: '2', number: 'pl', gender: 'f', form: 'כותבות' },
+  ];
+  for (let j = 0; j < presentExtras.length; j++) {
+    const m = presentExtras[j];
+    const en = `How do I say: ${enPron(m)} ${(['he','she'].includes(enPron(m)) ? 'is' : (enPron(m) === 'I' ? 'am' : 'are'))} ${ing(vBase)}?`;
+    const he = `${hePron(m)} ${m.form}`;
+    await upsertItem(`mini_v_pr_${presentSet.length + j}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB, F_VERB, false);
+  }
 
   // Past (1sg, 3sg m/f, 1pl, 3pl)
   const pastSet: Array<Morph & { form: string }> = [
@@ -349,6 +364,21 @@ async function main() {
     const he = `${hePron(m)} ${m.form}`;
     await upsertItem(`mini_v2_pr_${i}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB2, F_VERB2, false);
   }
+  // Extras for לדבר
+  const present2Extras: Array<Morph & { form: string }> = [
+    { person: '2', number: 'sg', gender: 'm', form: 'מדבר' },
+    { person: '2', number: 'sg', gender: 'f', form: 'מדברת' },
+    { person: '1', number: 'pl', gender: 'm', form: 'מדברים' },
+    { person: '1', number: 'pl', gender: 'f', form: 'מדברות' },
+    { person: '2', number: 'pl', gender: 'm', form: 'מדברים' },
+    { person: '2', number: 'pl', gender: 'f', form: 'מדברות' },
+  ];
+  for (let j = 0; j < present2Extras.length; j++) {
+    const m = present2Extras[j];
+    const en = `How do I say: ${enPron(m)} ${(['he','she'].includes(enPron(m)) ? 'is' : (enPron(m) === 'I' ? 'am' : 'are'))} ${ing(v2Base)}?`;
+    const he = `${hePron(m)} ${m.form}`;
+    await upsertItem(`mini_v2_pr_${present2.length + j}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB2, F_VERB2, false);
+  }
   const past2: Array<Morph & { form: string }> = [
     { person: '1', number: 'sg', gender: null, form: 'דיברתי' },
     { person: '3', number: 'sg', gender: 'm', form: 'דיבר' },
@@ -393,6 +423,20 @@ async function main() {
     const he = `${hePron(m)} ${m.form}`;
     await upsertItem(`mini_v3_pr_${i}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB3, F_VERB3, false);
   }
+  const present3Extras: Array<Morph & { form: string }> = [
+    { person: '2', number: 'sg', gender: 'm', form: 'קורא' },
+    { person: '2', number: 'sg', gender: 'f', form: 'קוראת' },
+    { person: '1', number: 'pl', gender: 'm', form: 'קוראים' },
+    { person: '1', number: 'pl', gender: 'f', form: 'קוראות' },
+    { person: '2', number: 'pl', gender: 'm', form: 'קוראים' },
+    { person: '2', number: 'pl', gender: 'f', form: 'קוראות' },
+  ];
+  for (let j = 0; j < present3Extras.length; j++) {
+    const m = present3Extras[j];
+    const en = `How do I say: ${enPron(m)} ${(['he','she'].includes(enPron(m)) ? 'is' : (enPron(m) === 'I' ? 'am' : 'are'))} ${ing(v3Base)}?`;
+    const he = `${hePron(m)} ${m.form}`;
+    await upsertItem(`mini_v3_pr_${present3.length + j}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB3, F_VERB3, false);
+  }
   const past3: Array<Morph & { form: string }> = [
     { person: '1', number: 'sg', gender: null, form: 'קראתי' },
     { person: '3', number: 'sg', gender: 'm', form: 'קרא' },
@@ -436,6 +480,20 @@ async function main() {
     const en = `How do I say: ${enPron(m)} ${(['he','she'].includes(enPron(m)) ? 'is' : (enPron(m) === 'I' ? 'am' : 'are'))} ${ing(v4Base)}?`;
     const he = `${hePron(m)} ${m.form}`;
     await upsertItem(`mini_v4_pr_${i}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB4, F_VERB4, false);
+  }
+  const present4Extras: Array<Morph & { form: string }> = [
+    { person: '2', number: 'sg', gender: 'm', form: 'שומע' },
+    { person: '2', number: 'sg', gender: 'f', form: 'שומעת' },
+    { person: '1', number: 'pl', gender: 'm', form: 'שומעים' },
+    { person: '1', number: 'pl', gender: 'f', form: 'שומעות' },
+    { person: '2', number: 'pl', gender: 'm', form: 'שומעים' },
+    { person: '2', number: 'pl', gender: 'f', form: 'שומעות' },
+  ];
+  for (let j = 0; j < present4Extras.length; j++) {
+    const m = present4Extras[j];
+    const en = `How do I say: ${enPron(m)} ${(['he','she'].includes(enPron(m)) ? 'is' : (enPron(m) === 'I' ? 'am' : 'are'))} ${ing(v4Base)}?`;
+    const he = `${hePron(m)} ${m.form}`;
+    await upsertItem(`mini_v4_pr_${present4.length + j}`, en, he, ['mini','verb','present'], { pos: 'verb', tense: 'present', person: m.person || null, number: m.number || null, gender: m.gender || null }, L_VERB4, F_VERB4, false);
   }
   const past4: Array<Morph & { form: string }> = [
     { person: '1', number: 'sg', gender: null, form: 'שמעתי' },

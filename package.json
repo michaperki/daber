@@ -27,7 +27,8 @@
     "report:mini": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/format_mini_report.ts",
     "normalize:english": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/scan_normalize_english.ts",
     "normalize:inflections": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/lexicon/normalize_inflections.ts",
-    "seed:governance": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/seed_verb_governance.ts"
+    "seed:governance": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/seed_verb_governance.ts",
+    "eval:local": "ts-node -P scripts/tsconfig.scripts.json --transpile-only scripts/eval_local_llm.ts --provider ollama --models gemma3-4b-q4 --in docs/eval/testset_mini_green.json"
   },
   "engines": {
     "node": "24.x"

@@ -16,7 +16,7 @@ type AdjGrid = { msg?: string; fsg?: string; mpl?: string; fpl?: string };
 function nowIso() { return new Date().toISOString(); }
 function isHebrew(s: string) { return /[\u0590-\u05FF]/.test(s || ''); }
 function isSingleToken(s: string) { return (s || '').trim().split(/\s+/).filter(Boolean).length === 1; }
-function isPossessiveSuffix(s: string): boolean { return /(?:יו|יה|יהם|יהן|יך|ייך|נו|כם|כן)$/.test((s || '').trim()); }
+function isPossessiveSuffix(s: string): boolean { return /(?:יו|יה|יהם|יהן|יך|ייך|נו|כם|כן|ו)$/.test((s || '').trim()); }
 
 function enPron(m: { person?: string|null, number?: string|null, gender?: string|null }): string {
   const p = (m.person || '').toString();
@@ -284,6 +284,14 @@ async function main() {
       if (pos === 'noun') {
         const grid = await buildNounGrid(id);
         if (!grid.ok || !grid.grid.sg || !grid.grid.pl) { skipped.push({ id, lemma: lex.lemma, reason: (grid.ok ? 'noun_incomplete' : (grid as any).reason) }); continue; }
+        // Warn if bare yod endings make it through selection (manual review)
+        const nounWarnings: string[] = [];
+        if (/י$/.test(grid.grid.sg.form) && !isPossessiveSuffix(grid.grid.sg.form)) nounWarnings.push('sg_bare_yod');
+        if (/י$/.test(grid.grid.pl.form) && !isPossessiveSuffix(grid.grid.pl.form)) nounWarnings.push('pl_bare_yod');
+        if (nounWarnings.length) {
+          // eslint-disable-next-line no-console
+          console.warn(`[mini-expand] noun bare yod warning for ${id}: ${nounWarnings.join(', ')} (sg='${grid.grid.sg.form}', pl='${grid.grid.pl.form}')`);
+        }
         // Base singular (no ה-)
         await prisma.lessonItem.upsert({
           where: { id: `mini_${id.replace(/[:]/g,'_')}_base` },
@@ -302,7 +310,7 @@ async function main() {
           create: { id: `mini_${id.replace(/[:]/g,'_')}_pl`, lesson_id: 'vocab_mini_morph', english_prompt: `How do I say: ${lex.gloss}s (plural)?`, target_hebrew: grid.grid.pl.form, transliteration: null, accepted_variants: [], near_miss_patterns: [], tags: ['mini','noun','plural'], difficulty: 1, lexeme_id: id, family_id: `lex:${id}`, family_base: false, features: { pos: 'noun', number: 'pl', gender: grid.grid.pl.gender || null } as any }
         });
         allow.add(id);
-        added.push({ id, lemma: lex.lemma, pos, gloss: lex.gloss, noun: grid.grid });
+        added.push({ id, lemma: lex.lemma, pos, gloss: lex.gloss, noun: grid.grid, warnings: nounWarnings.length ? nounWarnings : undefined });
         continue;
       }
     } catch (e: any) {

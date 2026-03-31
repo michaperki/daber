@@ -28,6 +28,7 @@ function hePron(m: Morph): string {
   if (p === '2' && n === 'pl' && g === 'f') return 'אתן';
   if (p === '3' && n === 'sg' && g === 'm') return 'הוא';
   if (p === '3' && n === 'sg' && g === 'f') return 'היא';
+  if (p === '3' && n === 'pl' && g === 'f') return 'הן';
   if (p === '3' && n === 'pl') return 'הם';
   return 'הם';
 }

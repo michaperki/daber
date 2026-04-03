@@ -50,7 +50,81 @@ async function buildWhitelist(prisma: PrismaClient, lemmaIds: string[]): Promise
   return set;
 }
 
+function extractJson(raw: string): any {
+  const tryParse = (s: string) => { try { return JSON.parse(s); } catch { return null; } };
+  let obj = tryParse(raw);
+  if (obj) return obj;
+  const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fenced) {
+    obj = tryParse(fenced[1].trim());
+    if (obj) return obj;
+  }
+  const braceMatch = raw.match(/\{[\s\S]*\}/);
+  if (braceMatch) {
+    obj = tryParse(braceMatch[0]);
+    if (obj) return obj;
+  }
+  return null;
+}
+
+type Provider = 'ollama' | 'openai';
+
+async function callOllama(prompt: string, ollamaUrl: string, model: string): Promise<string> {
+  const body = {
+    model,
+    prompt,
+    format: 'json',
+    options: { temperature: 0.2, num_ctx: 1024, num_predict: 300 },
+    stream: false,
+  };
+  const resp = await fetch(`${ollamaUrl}/api/generate`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!resp.ok) throw new Error(`Ollama HTTP ${resp.status}: ${await resp.text()}`);
+  const data: any = await resp.json();
+  return data?.response || '';
+}
+
+async function callOpenAI(prompt: string, baseUrl: string, apiKey: string, model: string): Promise<string> {
+  const resp = await fetch(baseUrl + '/chat/completions', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      ...(apiKey ? { 'authorization': `Bearer ${apiKey}` } : {}),
+    },
+    body: JSON.stringify({
+      model,
+      temperature: 0.2,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: '' },
+        { role: 'user', content: prompt },
+      ],
+    }),
+  });
+  const data: any = await resp.json();
+  const content = data?.choices?.[0]?.message?.content || '';
+  if (!content && data?.error) return JSON.stringify(data);
+  return content;
+}
+
 async function main() {
+  const isDryRun = process.argv.includes('--dry-run');
+  const provider: Provider = (process.env.SMOKE_PROVIDER || 'ollama') as Provider;
+
+  const ollamaUrl = (process.env.LOCAL_LLM_URL || 'http://127.0.0.1:11434').replace(/\/$/, '');
+  const ollamaModel = process.env.LOCAL_LLM_MODEL || 'dicta17-q4';
+
+  const openaiBaseUrl = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
+  const openaiKey = process.env.OPENAI_API_KEY || '';
+  const openaiModel = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+
+  if (provider === 'openai' && !openaiKey && openaiBaseUrl.includes('api.openai.com')) {
+    throw new Error('OPENAI_API_KEY required when SMOKE_PROVIDER=openai');
+  }
+
   const prisma = new PrismaClient();
   const outDir = path.join('scripts', 'out');
   fs.mkdirSync(outDir, { recursive: true });
@@ -99,47 +173,44 @@ async function main() {
     formsByLex.set(row.lexeme_id, rec);
   }
 
-  // OpenAI setup
-  const baseUrl = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '');
-  const apiKey = process.env.OPENAI_API_KEY || '';
-  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
-  if (!apiKey && baseUrl.includes('api.openai.com')) throw new Error('OPENAI_API_KEY required');
+  // --dry-run: print first prompt and exit
+  if (isDryRun) {
+    const prompt = buildBatchPrompt({ targetLemmas: [targetLemmas[0]], knownLemmas: CORE_PROMPT_LEMMAS, allowedTenses: ['present','past','future'], direction: 'he_to_en' });
+    console.log(`Provider: ${provider} | Model: ${provider === 'ollama' ? ollamaModel : openaiModel}`);
+    console.log(`Targets: ${targetLemmas.length} lemmas (showing first)`);
+    console.log('---');
+    console.log(prompt);
+    await prisma.$disconnect();
+    return;
+  }
 
-  // Iterate targets in small batches (for prompt construction reusing core and sample)
-  const results: Array<{ target: string; ok: boolean; failures: Failure[]; hebrew?: string; english?: string; raw?: string } > = [];
-  for (const targetLemma of targetLemmas) {
+  console.log(`Provider: ${provider} | Model: ${provider === 'ollama' ? ollamaModel : openaiModel} | Targets: ${targetLemmas.length}`);
+
+  // Iterate targets one at a time
+  const results: Array<{ target: string; ok: boolean; failures: Failure[]; hebrew?: string; english?: string; raw?: string }> = [];
+  for (let i = 0; i < targetLemmas.length; i++) {
+    const targetLemma = targetLemmas[i];
     const prompt = buildBatchPrompt({ targetLemmas: [targetLemma], knownLemmas: CORE_PROMPT_LEMMAS, allowedTenses: ['present','past','future'], direction: 'he_to_en' });
-    // Call OpenAI chat completion
-    let content = '';
+    let raw = '';
     try {
-      const resp = await fetch(baseUrl + '/chat/completions', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          ...(apiKey ? { 'authorization': `Bearer ${apiKey}` } : {})
-        },
-        body: JSON.stringify({
-          model,
-          temperature: 0.2,
-          response_format: { type: 'json_object' },
-          messages: [
-            { role: 'system', content: '' },
-            { role: 'user', content: prompt }
-          ]
-        })
-      });
-      const data: any = await resp.json();
-      content = data?.choices?.[0]?.message?.content || '';
-      if (!content && data?.error) content = JSON.stringify(data);
+      if (provider === 'ollama') {
+        raw = await callOllama(prompt, ollamaUrl, ollamaModel);
+      } else {
+        raw = await callOpenAI(prompt, openaiBaseUrl, openaiKey, openaiModel);
+      }
     } catch (e: any) {
       results.push({ target: targetLemma, ok: false, failures: ['http_error'], raw: String(e?.message || e) });
+      process.stdout.write(`[${i + 1}/${targetLemmas.length}] ${targetLemma} -> HTTP_ERROR\n`);
       continue;
     }
-    // Parse
-    let obj: any = null;
-    try { obj = JSON.parse(content); } catch {}
+    // Parse JSON (handle raw text, markdown fences, preamble)
+    const obj = extractJson(raw);
     const items = (obj && Array.isArray(obj.items)) ? obj.items : [];
-    if (!items.length) { results.push({ target: targetLemma, ok: false, failures: ['json_format'], raw: content }); continue; }
+    if (!items.length) {
+      results.push({ target: targetLemma, ok: false, failures: ['json_format'], raw });
+      process.stdout.write(`[${i + 1}/${targetLemmas.length}] ${targetLemma} -> json_format\n`);
+      continue;
+    }
     const it = items[0] as any;
     const heb = stripNikkud(String(it?.hebrew || ''));
     const eng = String(it?.english || '');
@@ -147,7 +218,7 @@ async function main() {
     const failures: Failure[] = [];
     if (!hebrewOk(heb) || !englishOk(eng)) failures.push('script_mismatch');
     const lexId = idByLemma.get(tw);
-    if (!lexId) { failures.push('missing_target'); results.push({ target: targetLemma, ok: false, failures, raw: content }); continue; }
+    if (!lexId) { failures.push('missing_target'); results.push({ target: targetLemma, ok: false, failures, raw }); process.stdout.write(`[${i + 1}/${targetLemmas.length}] ${targetLemma} -> missing_target\n`); continue; }
     const rec = formsByLex.get(lexId) || { forms: [], tenses: {} };
     const present = rec.forms.some(f => heb.replace(/\s+/g,'').includes(stripNikkud(f).replace(/\s+/g,'')));
     if (!present) failures.push('missing_target');
@@ -168,6 +239,7 @@ async function main() {
     if (!passesWhitelist(heb, whitelist)) failures.push('whitelist');
     const ok = failures.length === 0;
     results.push({ target: targetLemma, ok, failures, hebrew: heb, english: eng });
+    process.stdout.write(`[${i + 1}/${targetLemmas.length}] ${targetLemma} -> ${ok ? 'OK' : failures.join(',')}\n`);
   }
 
   // Summarize
@@ -175,8 +247,17 @@ async function main() {
   for (const f of ['http_error','json_format','script_mismatch','missing_target','governance','tense_violation','whitelist'] as Failure[]) {
     totals[f] = results.filter(r => r.failures.includes(f)).length;
   }
-  const out = { generatedAt: new Date().toISOString(), totals, results };
+  // Find dominant failure reason
+  const failureCounts: Record<string, number> = {};
+  for (const r of results) { for (const f of r.failures) { failureCounts[f] = (failureCounts[f] || 0) + 1; } }
+  const dominantFailure = Object.entries(failureCounts).sort((a, b) => b[1] - a[1])[0];
+  const summary = totals.accepted === totals.attempted
+    ? `All ${totals.attempted} accepted.`
+    : `Accepted ${totals.accepted}/${totals.attempted}. Dominant failure: ${dominantFailure ? `${dominantFailure[0]} (${dominantFailure[1]})` : 'none'}.`;
+
+  const out = { generatedAt: new Date().toISOString(), provider, model: provider === 'ollama' ? ollamaModel : openaiModel, summary, totals, results };
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2), 'utf8');
+  console.log(`\n${summary}`);
   console.log(`Mini smoke: accepted ${totals.accepted}/${totals.attempted} | json ${totals.json_format} | script ${totals.script_mismatch} | tgt ${totals.missing_target} | gov ${totals.governance} | whitelist ${totals.whitelist}`);
   console.log(`Wrote ${outPath}`);
 

@@ -39,6 +39,7 @@ export default function DaberSessionPage() {
   const [debugMeta, setDebugMeta] = React.useState<{ sessionId: string; lessonId: string; itemId: string; lexemeId: string | null; familyId: string | null; path?: string | null } | null>(null);
   const [hints, setHints] = React.useState<{ baseForm?: string; firstLetter?: string; definiteness?: boolean } | null>(null);
   const [llmDebug, setLlmDebug] = React.useState<any | null>(null);
+  const [textOnly, setTextOnly] = React.useState<boolean>(false);
   const [hintLevel, setHintLevel] = React.useState<number>(0);
   // Track server TTS availability for server-side phase selection only
   const [ttsAvailable, setTtsAvailable] = React.useState<boolean>(true);
@@ -72,6 +73,7 @@ export default function DaberSessionPage() {
 
   /* ── Warm up mic; pause on hide; cleanup ─────────── */
   React.useEffect(() => {
+    if (textOnly) return; // no audio in text-only drills
     audio.warmUp().catch(() => {});
     const onVis = () => {
       try {
@@ -92,7 +94,7 @@ export default function DaberSessionPage() {
       try { document.removeEventListener('visibilitychange', onVis); } catch {}
       try { window.removeEventListener('pagehide', onHide); } catch {}
     };
-  }, []);
+  }, [textOnly]);
 
   /* ── Fetch next item ───────────────────────────────────── */
   const [pacingOffer, setPacingOffer] = React.useState<'end' | 'extend' | null>(null);
@@ -137,7 +139,7 @@ export default function DaberSessionPage() {
 
   const fetchNextRaw = React.useCallback(async (forceLlm?: boolean): Promise<NextItemResponse> => {
     try {
-      const data = await apiNextItem(sessionId, { random: true, mode: useLex ? 'lex' : undefined, focus: useLex ? 'weak' : undefined, due: 'blend', pacing: 'adaptive', forceLlm: !!forceLlm, tts: ttsUpRef.current !== false });
+      const data = await apiNextItem(sessionId, { random: true, mode: useLex ? 'lex' : undefined, focus: useLex ? 'weak' : undefined, due: 'blend', pacing: 'adaptive', forceLlm: !!forceLlm, tts: textOnly ? true : (ttsUpRef.current !== false) });
       if (data.offerEnd) setPacingOffer('end');
       else if (data.offerExtend) setPacingOffer('extend');
       else setPacingOffer(null);
@@ -150,12 +152,13 @@ export default function DaberSessionPage() {
       toast.error('Failed to fetch next item');
       return { done: true } as NextItemResponse;
     }
-  }, [sessionId, useLex]);
+  }, [sessionId, useLex, textOnly]);
 
   const loadItem = React.useCallback(async (forceLlm?: boolean) => {
     if (loadingItemRef.current) return;
     loadingItemRef.current = true;
-    if (ttsUpRef.current === null) {
+    if (textOnly) { ttsUpRef.current = false; setTtsAvailable(false); }
+    else if (ttsUpRef.current === null) {
       try {
         const ok = await audio.prefetchTTS('שלום');
         ttsUpRef.current = !!ok;
@@ -182,6 +185,7 @@ export default function DaberSessionPage() {
     setDebugMeta((data as any).meta || null);
     setHintLevel(0);
     setLlmDebug((data as any).llm_debug || null);
+    setTextOnly(!!(data as any).textOnly);
     setForcedDirection(mode);
     dispatch({
       type: 'ITEM_LOADED',
@@ -213,7 +217,7 @@ export default function DaberSessionPage() {
       }
     } catch {}
     loadingItemRef.current = false;
-  }, [fetchNextRaw, dispatch, router, sessionId, settings.showTransliteration, settings.speakPrompt]);
+  }, [fetchNextRaw, dispatch, router, sessionId, settings.showTransliteration, settings.speakPrompt, textOnly]);
 
   // Initial load
   React.useEffect(() => {
@@ -230,6 +234,7 @@ export default function DaberSessionPage() {
       if (isTyping) return;
       // Space: toggle mic
       if (e.code === 'Space') {
+        if (textOnly) return;
         e.preventDefault();
         if (state.phase === 'listening') stopVoice();
         else if (drillPhase === 'free_recall') startVoice();
@@ -249,7 +254,7 @@ export default function DaberSessionPage() {
     };
     window.addEventListener('keydown', onKey);
     return () => { window.removeEventListener('keydown', onKey); };
-  }, [state.phase, drillPhase, feedback, englishInput, hebrewInput]);
+  }, [state.phase, drillPhase, feedback, englishInput, hebrewInput, textOnly]);
 
   /* ── Voice capture ─────────────────────────────────────── */
   const startVoice = async () => {
@@ -285,7 +290,7 @@ export default function DaberSessionPage() {
       dispatch({ type: 'FEEDBACK_RECEIVED', feedback: data });
       // No auto TTS on feedback; play simple SFX only
       try { (data.grade === 'correct') ? audio.sfxGradeCorrect() : audio.sfxGradeIncorrect(); } catch {}
-      if (data.grade !== 'correct' && !autoResumeRef.current) {
+      if (!textOnly && data.grade !== 'correct' && !autoResumeRef.current) {
         autoResumeRef.current = true;
         try { await startVoice(); } catch {}
         autoResumeRef.current = false;
@@ -438,7 +443,7 @@ export default function DaberSessionPage() {
         <>
           <div style={{ position: 'relative' }}>
             <PromptCard
-              prompt={'Listen and translate to English'}
+              prompt={textOnly ? 'Translate to English' : 'Listen and translate to English'}
               transliteration={showFeedback ? item.transliteration : null}
               hintVisible={hintVisible}
               onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
@@ -451,13 +456,19 @@ export default function DaberSessionPage() {
             ) : null}
           </div>
 
-          <div className="audio-row">
-            <AudioPlayButton
-              playing={audio.ttsPlaying}
-              onPlay={() => item && playTTS(item.target_hebrew)}
-            />
-            <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={false} level={0} />
-          </div>
+          {textOnly ? (
+            <div className="prompt-card" dir="rtl" style={{ marginTop: 8 }}>
+              <div className="prompt-text" dir="rtl">{item.target_hebrew}</div>
+            </div>
+          ) : (
+            <div className="audio-row">
+              <AudioPlayButton
+                playing={audio.ttsPlaying}
+                onPlay={() => item && playTTS(item.target_hebrew)}
+              />
+              <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={false} level={0} />
+            </div>
+          )}
 
           
 
@@ -576,17 +587,20 @@ export default function DaberSessionPage() {
             features={item.features || null}
           />
 
-          <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={status.waveActive} level={audio.micLevel} />
-
-          <MicControls
-            canReplayPrompt={settings.speakPrompt}
-            onReplayPrompt={() => playTTS(cleanedPrompt)}
-            listening={audio.micListening}
-            onStart={startVoice}
-            onStop={stopVoice}
-            onSkip={skip}
-            disabled={micDisabled}
-          />
+          {textOnly ? null : (
+            <>
+              <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={status.waveActive} level={audio.micLevel} />
+              <MicControls
+                canReplayPrompt={settings.speakPrompt}
+                onReplayPrompt={() => playTTS(cleanedPrompt)}
+                listening={audio.micListening}
+                onStart={startVoice}
+                onStop={stopVoice}
+                onSkip={skip}
+                disabled={micDisabled}
+              />
+            </>
+          )}
 
           {showReviewUI ? (
             <>
@@ -653,7 +667,7 @@ export default function DaberSessionPage() {
       {showFeedback && feedback ? (
         settings.stayOnFlawed && feedback.grade === 'flawed' ? (
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className="next-btn" onClick={startVoice}>
+            <button className="next-btn" onClick={startVoice} disabled={textOnly}>
               try again
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M2 7a5 5 0 1 0 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>

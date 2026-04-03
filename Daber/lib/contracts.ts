@@ -38,6 +38,8 @@ export const zNextItemResponse = z.object({
   offerEnd: z.boolean().optional(),
   offerExtend: z.boolean().optional(),
   phase: zDrillPhase.optional(),
+  // Text-only session mode (no TTS/mic UI)
+  textOnly: z.boolean().optional(),
   // Canonicalized surfaces for intro card
   intro: z.object({ hebrew: z.string(), english: z.string().optional() }).optional(),
   // Optional guided production hints

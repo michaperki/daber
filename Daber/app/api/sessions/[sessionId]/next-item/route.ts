@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { logEvent } from '@/lib/log';
 import { generateNextFromLexicon } from '@/lib/drill/generators';
-import { generateBatch, getUserVocabScopeForLexemeSet } from '@/lib/generation/local_llm';
+import { generateBatch, getUserVocabScope, getUserVocabScopeForLexemeSet } from '@/lib/generation/local_llm';
 import { popCachedLocalMiniItemForLexeme, maybeRefillMiniCache, getMiniCacheSize } from '@/lib/minimorph/local_llm_mini';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -94,6 +94,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
     const userId = (session.user_id || 'anon');
     const sessionLessonId = session.lesson_id; // capture for inner closures to avoid nullable narrowing issues
     const isMini = sessionLessonId === 'vocab_mini_morph';
+    const isTextOnly = (session.lesson?.type || '') === 'vocab_llm_flashcards';
     // Mini allowlist (load from data file; fallback to built-in defaults)
     function getMiniAllow(): Set<string> {
       try {
@@ -186,7 +187,65 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       )
       : [session.lesson_id, genLessonId];
     if (debug) {
-      explain.lesson = { id: session.lesson_id, cross: isCrossVocab, allowedLessonIds };
+      explain.lesson = { id: session.lesson_id, cross: isCrossVocab, allowedLessonIds, textOnly: isTextOnly };
+    }
+
+    // For text-only sessions, prefill the LLM flashcards pool early
+    await ensureLLMFlashcardsPool();
+
+    // Ensure a small pool of local LLM flashcards for text-only drills
+    async function ensureLLMFlashcardsPool(): Promise<void> {
+      if (!isTextOnly) return;
+      try {
+        await prisma.lesson.upsert({
+          where: { id: genLessonId },
+          update: { title: 'LLM Flashcards · Generated', language: 'he', level: 'mixed', type: 'vocab_llm_flashcards', description: session.lesson?.description || 'Text-only LLM flashcards' },
+          create: { id: genLessonId, title: 'LLM Flashcards · Generated', language: 'he', level: 'mixed', type: 'vocab_llm_flashcards', description: session.lesson?.description || 'Text-only LLM flashcards' }
+        });
+      } catch {}
+      const undrilled = await prisma.lessonItem.count({ where: { lesson_id: genLessonId, attempts: { none: {} } } });
+      const threshold = 12;
+      if (undrilled >= threshold) return;
+      // Pick 3–4 targets and generate items
+      try {
+        const { knownLemmas, allowedTenses } = await getUserVocabScope(userId);
+        // Candidate lexemes: common POS only
+        const candidates = await prisma.lexeme.findMany({
+          where: { language: 'he', pos: { in: ['verb','noun','adjective','Q24905','Q1084','Q34698'] } },
+          select: { id: true, lemma: true },
+          take: 200,
+        });
+        const shuffled = [...candidates].sort(() => Math.random() - 0.5);
+        const pick = (n: number) => Array.from(new Set(shuffled.map(r => r.lemma).filter(Boolean))).slice(0, n);
+        const targetLemmas = pick(4);
+        if (!targetLemmas.length) return;
+        const items = await generateBatch({ targetLemmas, knownLemmas, allowedTenses, direction: 'he_to_en', skipWhitelist: true });
+        if (!items.length) return;
+        for (const it of items) {
+          const id = `llm_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+          const familyId = it.target_lexeme_id ? `lex:${it.target_lexeme_id}` : null;
+          const isBase = familyId && (it.hebrew || '').trim() === (it.target_word || '').trim();
+          try {
+            await prisma.lessonItem.create({
+              data: {
+                id,
+                lesson_id: genLessonId,
+                english_prompt: it.english,
+                target_hebrew: it.hebrew,
+                transliteration: null,
+                accepted_variants: [],
+                near_miss_patterns: [],
+                tags: ['generated','local_llm'],
+                difficulty: it.difficulty === 'medium' ? 2 : (it.difficulty === 'hard' ? 3 : 1),
+                lexeme_id: it.target_lexeme_id || null,
+                family_id: familyId,
+                family_base: !!isBase,
+                features: { pos: 'sentence', source: 'local_llm' } as any,
+              }
+            });
+          } catch { /* ignore dup or validation errors */ }
+        }
+      } catch { /* ignore pool generation failures */ }
     }
 
     const attempted = await prisma.attempt.findMany({
@@ -663,7 +722,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
             .then(c => c > 0)
             .catch(() => false);
           const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
-          const resp: any = { done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: null, familyId: null, path: (explain as any)?.path || 'lex' } };
+          const resp: any = { done: false, item: adj, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, textOnly: isTextOnly || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: null, familyId: null, path: (explain as any)?.path || 'lex' } };
           if (debug) resp.explain = explain;
           return NextResponse.json(resp);
         }
@@ -713,7 +772,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
                 const index = attemptedIds.size + 1;
                 const phase = await computePhaseFor(li.id);
                 const hints = phase === 'guided' ? await buildHintsFor(li.id).catch(() => null) : null;
-                const resp: any = { done: false, item: { id: li.id, english_prompt: li.english_prompt, target_hebrew: li.target_hebrew, transliteration: li.transliteration, features: (li.features as any) || null }, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, hints: hints || undefined, newContentReady: undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: li.id, lexemeId: lex.id, familyId: `lex:${lex.id}`, path: 'force_llm' } };
+                const resp: any = { done: false, item: { id: li.id, english_prompt: li.english_prompt, target_hebrew: li.target_hebrew, transliteration: li.transliteration, features: (li.features as any) || null }, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, hints: hints || undefined, newContentReady: undefined, textOnly: isTextOnly || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: li.id, lexemeId: lex.id, familyId: `lex:${lex.id}`, path: 'force_llm' } };
                 if (isDev && (debug || forceLlm)) resp.llm_debug = { enabled: true, cache_size: cacheSize, source: 'generated', latency_ms: (Date.now() - reqStart) };
                 return NextResponse.json(resp);
               } else {
@@ -794,7 +853,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
             .catch(() => false);
           const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
           const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
-          const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined };
+        const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, textOnly: isTextOnly || undefined };
           if (debug) resp.explain = explain;
           return NextResponse.json(resp);
         }
@@ -839,7 +898,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
           .catch(() => false);
         const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
         const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
-        const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: null, familyId: null, path: (explain as any)?.path || 'due_item' } };
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, textOnly: isTextOnly || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: null, familyId: null, path: (explain as any)?.path || 'due_item' } };
         if (isDev && (debug || forceLlm) && isMini) {
           const servedFromLLM = (adj.id || '').startsWith('llm_') || String((adj.features as any)?.source || '').toLowerCase() === 'local_llm';
           const llmEnabled = (process.env.LOCAL_LLM_ENABLED || '').toLowerCase() === 'true';
@@ -880,7 +939,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
       const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
       const meta = await metaFor(adj.id);
-      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: (meta as any)?.lexeme_id || null, familyId: (meta as any)?.family_id || null, path: 'subset' } };
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, textOnly: isTextOnly || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: (meta as any)?.lexeme_id || null, familyId: (meta as any)?.family_id || null, path: 'subset' } };
       if (isDev && (debug || forceLlm) && isMini) {
         const servedFromLLM = (adj.id || '').startsWith('llm_') || String((adj.features as any)?.source || '').toLowerCase() === 'local_llm';
         const llmEnabled = (process.env.LOCAL_LLM_ENABLED || '').toLowerCase() === 'true';
@@ -953,6 +1012,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       let adj = await maybePromoteFamilyProgress(adjBase, attemptedIds, allowedLessonIds);
       adj = await maybeApplyFamilySpacing(adj, attemptedIds, allowedLessonIds, useRandom);
       let phase = await computePhaseFor(adj.id);
+      if (isTextOnly && phase === 'free_recall') phase = 'guided';
       const swapped3 = await maybeSwapToMiniLLM(adj, phase);
       adj = swapped3.item; phase = swapped3.phase;
       logEvent({ type: 'next_item_pick', session_id: sessionId, lesson_id: session.lesson_id, payload: { item_id: nextItem.id, source: useRandom ? 'random' : 'sequential', cross: isCrossVocab, phase, random: useRandom } }).catch(() => {});
@@ -962,7 +1022,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
       const intro = phase === 'intro' ? await buildIntroFor(adj.id).catch(() => null) : null;
       const hints = phase === 'guided' ? await buildHintsFor(adj.id).catch(() => null) : null;
       const meta = await metaFor(adj.id);
-      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: (meta as any)?.lexeme_id || null, familyId: (meta as any)?.family_id || null, path: (explain as any)?.path || 'srs', pick: (explain as any)?.pick || null } };
+      const resp: any = { done: false, item: adj, index, total, offerEnd: offerEnd || undefined, offerExtend: offerExtend || undefined, phase, intro: intro || undefined, hints: hints || undefined, newContentReady: newGenReady || undefined, textOnly: isTextOnly || undefined, meta: { sessionId, lessonId: sessionLessonId, itemId: adj.id, lexemeId: (meta as any)?.lexeme_id || null, familyId: (meta as any)?.family_id || null, path: (explain as any)?.path || 'srs', pick: (explain as any)?.pick || null } };
       if (isDev && (debug || forceLlm) && isMini) {
         const servedFromLLM = (adj.id || '').startsWith('llm_') || String((adj.features as any)?.source || '').toLowerCase() === 'local_llm';
         const llmEnabled = (process.env.LOCAL_LLM_ENABLED || '').toLowerCase() === 'true';

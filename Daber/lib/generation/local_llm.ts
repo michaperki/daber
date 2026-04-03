@@ -90,41 +90,44 @@ export async function getUserVocabScopeForLexemeSet(userId: string, allowedLexem
   return { knownLemmas, allowedTenses: Array.from(allowed) };
 }
 
-export function buildBatchPrompt(params: { targetLemmas: string[]; knownLemmas: string[]; allowedTenses: string[]; direction: 'he_to_en' | 'en_to_he' }): string {
-  const targets = Array.from(new Set(params.targetLemmas.map(stripNikkud).map(s => s.trim()).filter(Boolean)));
-  const known = Array.from(new Set(params.knownLemmas.map(stripNikkud).map(s => s.trim()).filter(Boolean)));
-  const pool = known.filter(k => !targets.includes(k));
-  // Fill to ~45 total (targets + core pack + sample from pool)
-  const max = 45;
-  // Add a subset of core lemmas (prefer those not already targets)
-  const core = CORE_PROMPT_LEMMAS.filter(l => !targets.includes(l));
-  const coreBudget = Math.max(0, Math.min(25, max - targets.length));
-  const corePick = core.slice(0, coreBudget);
-  // Sample the remainder from known pool
-  const rem = Math.max(0, max - targets.length - corePick.length);
-  const sample: string[] = [];
-  const seen = new Set<string>();
-  for (let i = 0; i < pool.length && sample.length < rem; i++) {
-    const idx = Math.floor(Math.random() * pool.length);
-    const v = pool[idx];
-    if (seen.has(v) || targets.includes(v) || corePick.includes(v)) continue;
-    seen.add(v);
-    sample.push(v);
-  }
-  const vocabList = Array.from(new Set([...targets, ...corePick, ...sample])).slice(0, max);
-  const vocabStr = vocabList.join(', ');
-  const tenseList = (params.allowedTenses && params.allowedTenses.length) ? params.allowedTenses : ['present'];
+export function buildBatchPrompt(params: { targetLemmas: string[]; knownLemmas: string[]; allowedTenses: string[]; direction: 'he_to_en' | 'en_to_he'; glossByLemma?: Map<string, string> | Record<string, string> }): string {
+  // Target-centric: focus on the first target only; callers typically loop per target
+  const targets = Array.from(new Set((params.targetLemmas || []).map(stripNikkud).map(s => s.trim()).filter(Boolean)));
+  const target = targets[0] || '';
+  const known = Array.from(new Set((params.knownLemmas || []).map(stripNikkud).map(s => s.trim()).filter(Boolean)));
 
-  // One JSON object with items: one per target lemma
-  return [
-    'You are a Hebrew drill author. Return STRICT JSON only. One item per target lemma. Use normal spaces between words. No nikkud.',
-    `Direction: ${params.direction}.`,
-    `Allowed tenses: ${tenseList.join(', ')}.`,
-    'Vocabulary: use only from the provided lemmas plus basic function words.',
-    `Provided lemmas (targets + context): ${vocabStr}.`,
-    'For each target lemma: make a short (4–8 words), natural sentence; include an inflected form of the target; mark definite direct objects with את; provide a literal English translation; use only allowed tenses.',
-    'Return JSON: {"items":[{"hebrew":"...","english":"...","target_word":"...","difficulty":"easy","drill_type":"he_to_en","grammar_focus":"present"}, ...] }'
-  ].join('\n');
+  // Build a small context word list (10–15) from CORE + known, excluding target
+  const contextPool = Array.from(new Set([
+    ...CORE_PROMPT_LEMMAS.filter(l => l !== target),
+    ...known.filter(k => k !== target)
+  ]));
+  const maxContext = 14;
+  const contextList = contextPool.slice(0, maxContext);
+  const tenseList = (params.allowedTenses && params.allowedTenses.length) ? params.allowedTenses : ['present'];
+  const grammarFocus = tenseList.includes('present') ? 'present' : (tenseList[0] || 'present');
+
+  // Inline gloss only for the target when available
+  let targetLabel = target;
+  const glossMap = params.glossByLemma instanceof Map
+    ? params.glossByLemma
+    : (params.glossByLemma ? new Map(Object.entries(params.glossByLemma)) : undefined);
+  const gloss = target && glossMap ? (glossMap.get(target) || (glossMap as any)[target]) : undefined;
+  if (target && gloss && typeof gloss === 'string') targetLabel = `${target} (${gloss})`;
+
+  // Keep prompt concise and target-first
+  // Example uses a DIFFERENT word so the model learns the pattern without copying
+  const example = `{"hebrew":"הכלב אוכל את האוכל","english":"The dog eats the food","target_word":"כלב","difficulty":"easy","drill_type":"${params.direction}","grammar_focus":"present"}`;
+
+  const lines: string[] = [];
+  lines.push('You are a Hebrew sentence writer. Return JSON only, no nikkud.');
+  lines.push(`TARGET WORD: ${targetLabel}`);
+  lines.push(`Write ONE short Hebrew sentence (4-8 words) that uses the word "${target}". Include את before definite direct objects.`);
+  lines.push(`Use only these tenses: ${tenseList.join(', ')}.`);
+  if (contextList.length) lines.push(`Allowed context words (optional): ${contextList.join(', ')}.`);
+  lines.push(`Example for a different word: ${example}`);
+  lines.push(`Now write for "${target}":`);
+  lines.push(`Return a single object {"hebrew":"...","english":"...","target_word":"${target}","difficulty":"easy","drill_type":"${params.direction}","grammar_focus":"${grammarFocus}"}`);
+  return lines.join('\n');
 }
 
 type RawItem = { hebrew: string; english: string; target_word: string; difficulty?: string; drill_type?: 'he_to_en'|'en_to_he'; grammar_focus?: string | null };
@@ -139,6 +142,7 @@ export async function generateBatch(params: {
   ollamaUrl?: string;
   model?: string;
   timeoutMs?: number; // default 5000
+  skipWhitelist?: boolean; // when true, do not enforce vocab whitelist
 }): Promise<ValidatedItem[]> {
   const ollamaUrl = (params.ollamaUrl || process.env.LOCAL_LLM_URL || 'http://127.0.0.1:11434').replace(/\/$/, '');
   const model = params.model || process.env.LOCAL_LLM_MODEL || 'dicta17-q4';
@@ -153,7 +157,14 @@ export async function generateBatch(params: {
     const data = await resp.json();
     content = data?.response || '';
   } finally { clearTimeout(t); }
+  // Debug: raw model response (preview)
+  try {
+    logEvent({ type: 'local_llm_raw', payload: { model, preview: (content || '').slice(0, 300), length: (content || '').length } });
+  } catch {}
   const parsed = parseItems(content);
+  try {
+    logEvent({ type: 'local_llm_parse', payload: { parsed_count: parsed.length } });
+  } catch {}
   if (!parsed.length) return [];
 
   // Resolve lexeme ids and inflections for target presence + governance
@@ -172,30 +183,33 @@ export async function generateBatch(params: {
   }
 
   const allowedTenses = new Set((params.allowedTenses && params.allowedTenses.length) ? params.allowedTenses : ['present']);
+  // Always allow non-finite/unknown categories
+  allowedTenses.add('infinitive');
+  allowedTenses.add('unknown');
 
   // Allow both user-known lemmas and current batch targets to pass whitelist
   const whitelist = await buildVocabWhitelistByLemmas(Array.from(new Set([...(params.knownLemmas || []), ...(params.targetLemmas || [])])));
 
   const out: ValidatedItem[] = [];
   for (const it of parsed) {
+    let rejectReason: { step: string; detail?: any } | null = null;
     const h = stripNikkud(it.hebrew || '');
     const e = it.english || '';
-    if (!hebrewOk(h) || !englishOk(e)) continue;
+    if (!hebrewOk(h) || !englishOk(e)) { rejectReason = { step: 'script_check', detail: { heb_ok: hebrewOk(h), eng_ok: englishOk(e) } }; }
     const lex = lexByLemma.get(stripNikkud(it.target_word).trim());
-    if (!lex) continue;
+    if (!rejectReason && !lex) { rejectReason = { step: 'target_lexeme_lookup', detail: { target_word: it.target_word } }; }
     const byLex = formsByLex.get(lex.id) || { forms: [], tenses: {} };
     // Target presence: requires any inflection present (space-insensitive)
-    const hNS = h.replace(/\s+/g, '');
-    const present = byLex.forms.some(f => hNS.includes(stripNikkud(f).replace(/\s+/g, '')));
-    if (!present) continue;
+    const present = byLex.forms.some(f => includesWholeForm(h, stripNikkud(f)) || h.replace(/\s+/g, '').includes(stripNikkud(f).replace(/\s+/g, '')));
+    if (!rejectReason && !present) { rejectReason = { step: 'target_presence', detail: { target_word: it.target_word } }; }
     // Governance: if frames require a preposition, ensure marker exists
     try {
       const gov: any = lex.verb_governance as any;
-      if (gov && Array.isArray(gov.frames) && gov.frames.length) {
+      if (!rejectReason && gov && Array.isArray(gov.frames) && gov.frames.length) {
         const prep = gov.frames[0]?.prep;
         if (prep && prep !== 'none') {
           const mark = (PREP_DISPLAY_MAP as any)[prep] as string | undefined;
-          if (mark && !h.includes(mark)) continue;
+          if (mark && !h.includes(mark)) { rejectReason = { step: 'governance', detail: { required_prep: mark } }; }
         }
       }
     } catch {}
@@ -207,10 +221,15 @@ export async function generateBatch(params: {
         tenseViolation = true; break;
       }
     }
-    if (tenseViolation) continue;
-    // Vocab whitelist: token-level check with simple prefix handling
-    if (!passesWhitelist(h, whitelist)) continue;
-    out.push({ ...it, target_lexeme_id: lex.id, hebrew: h });
+    if (!rejectReason && tenseViolation) { rejectReason = { step: 'tense', detail: { allowed: Array.from(allowedTenses) } }; }
+    // Vocab whitelist: token-level check with simple prefix handling (can be skipped for flashcards)
+    if (!rejectReason && !params.skipWhitelist && !passesWhitelist(h, whitelist)) { rejectReason = { step: 'whitelist' }; }
+    if (!rejectReason) {
+      out.push({ ...it, target_lexeme_id: lex.id, hebrew: h });
+      try { logEvent({ type: 'local_llm_item_accept', payload: { target_lexeme_id: lex.id } }); } catch {}
+    } else {
+      try { logEvent({ type: 'local_llm_item_reject', payload: { reason: rejectReason, item: { hebrew: h, english: e, target_word: it.target_word } } }); } catch {}
+    }
   }
   // Log batch telemetry
   try {
@@ -234,12 +253,25 @@ async function buildVocabWhitelistByLemmas(lemmas: string[]): Promise<Set<string
 
 function parseItems(content: string): RawItem[] {
   const tryParse = (s: string) => { try { return JSON.parse(s); } catch { return null; } };
-  const obj = tryParse(content) || (content.match(/\{[\s\S]*\}/) ? tryParse(content.match(/\{[\s\S]*\}/)![0]) : null);
-  const items = (obj && Array.isArray(obj.items)) ? obj.items : [];
+  let obj = tryParse(content);
+  if (!obj) {
+    // Try fenced JSON blocks
+    const fenced = content.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (fenced) obj = tryParse(fenced[1].trim());
+  }
+  if (!obj) {
+    const m = content.match(/\{[\s\S]*\}/);
+    if (m) obj = tryParse(m[0]);
+  }
+  if (!obj) return [];
+  let items: any[] = [];
+  if (Array.isArray(obj)) items = obj as any[];
+  else if (Array.isArray((obj as any).items)) items = (obj as any).items as any[];
+  else if ((obj as any).hebrew || (obj as any).english) items = [obj];
   return items.map((i: any) => ({
     hebrew: stripNikkud(String(i?.hebrew || '')),
     english: String(i?.english || ''),
-    target_word: stripNikkud(String(i?.target_word || '')),
+    target_word: stripNikkud(String(i?.target_word || i?.target || i?.target_lemma || '')),
     difficulty: i?.difficulty || 'easy',
     drill_type: (i?.drill_type === 'en_to_he' ? 'en_to_he' : 'he_to_en'),
     grammar_focus: i?.grammar_focus || null,

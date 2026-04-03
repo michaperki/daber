@@ -33,6 +33,14 @@ export async function POST(req: Request) {
           create: { id: lessonId, title: 'Green Vocab', language: 'he', level: 'green', type: 'vocab', description: 'Foundational drill: Green lexeme set (base forms + conjugations later)' }
         });
       }
+      if (lessonId === 'vocab_llm_flashcards') {
+        // Text-only LLM flashcards (local Ollama-backed)
+        return prisma.lesson.upsert({
+          where: { id: lessonId },
+          update: { title: 'LLM Flashcards', language: 'he', level: 'mixed', type: 'vocab_llm_flashcards', description: 'Text-only flashcards generated locally' },
+          create: { id: lessonId, title: 'LLM Flashcards', language: 'he', level: 'mixed', type: 'vocab_llm_flashcards', description: 'Text-only flashcards generated locally' }
+        });
+      }
       const found = await prisma.lesson.findUnique({ where: { id: lessonId } });
       return found;
     };

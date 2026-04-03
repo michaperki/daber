@@ -2,7 +2,7 @@
 
 Role: Honest, always-current snapshot of the running codebase. Descriptive, not aspirational.
 
-Last reviewed: 2026-04-01 (local LLM prompt core-pack + whitelist target inclusion; Mini seeded on RDS)
+Last reviewed: 2026-04-03 (text-only LLM flashcards + prompt comparison harness scaffolding)
 
 —
 
@@ -295,3 +295,10 @@ Selection blend default — SHIPPED (2026-03-30)
   - What: Enables on-the-fly local LLM generation via Ollama. URL and model configurable (defaults: http://127.0.0.1:11434, dicta17-q4).
   - Why: Offline, low-latency generation on RTX 4050 laptop.
   - Keep or kill: Keep; kill switch defaults off.
+
+Text-only LLM flashcards — SHIPPED (2026-04-03)
+- Lesson id: `vocab_llm_flashcards`; type: `vocab_llm_flashcards`.
+- Launch: Home quick-start button “LLM flashcards”.
+- Behavior: no mic or TTS; phases restricted to typed only (recognition + guided; free recall coerced to guided).
+- Source: Items generated on-the-fly via local Ollama using `Daber/lib/generation/local_llm.generateBatch()` and persisted under `vocab_llm_flashcards_gen`.
+- Selection: Reuses next-item route with family spacing, intros/hints, and evaluators. Next-item response includes `textOnly: true` to drive UI.

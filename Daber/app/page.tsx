@@ -8,6 +8,7 @@ import StartOrContinueButton from './StartOrContinueButton';
 import StartDueButton from './StartDueButton';
 import StartWeakSpotsButton from './StartWeakSpotsButton';
 import StartDynamicDrillButton from './StartDynamicDrillButton';
+import StartTextFlashcardsButton from './StartTextFlashcardsButton';
 // Fresh sentences feature removed; local LLM on-the-fly is session-driven
 
 function formatDate(d: Date) {
@@ -191,6 +192,7 @@ export default async function DaberHome() {
             <StartDynamicDrillButton lessonId={fallbackLesson.id} />
           </>
         ) : null}
+        <StartTextFlashcardsButton />
       </div>
     </div>
   );

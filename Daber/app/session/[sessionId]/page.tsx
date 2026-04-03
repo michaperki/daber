@@ -40,7 +40,9 @@ export default function DaberSessionPage() {
   const [hints, setHints] = React.useState<{ baseForm?: string; firstLetter?: string; definiteness?: boolean } | null>(null);
   const [llmDebug, setLlmDebug] = React.useState<any | null>(null);
   const [hintLevel, setHintLevel] = React.useState<number>(0);
+  // Track server TTS availability for server-side phase selection only
   const [ttsAvailable, setTtsAvailable] = React.useState<boolean>(true);
+  const ttsUpRef = React.useRef<boolean | null>(null);
 
   const lastPromptIdRef = React.useRef<string | null>(null);
   const newContentToastShownRef = React.useRef<boolean>(false);
@@ -135,7 +137,7 @@ export default function DaberSessionPage() {
 
   const fetchNextRaw = React.useCallback(async (forceLlm?: boolean): Promise<NextItemResponse> => {
     try {
-      const data = await apiNextItem(sessionId, { random: true, mode: useLex ? 'lex' : undefined, focus: useLex ? 'weak' : undefined, due: 'blend', pacing: 'adaptive', forceLlm: !!forceLlm });
+      const data = await apiNextItem(sessionId, { random: true, mode: useLex ? 'lex' : undefined, focus: useLex ? 'weak' : undefined, due: 'blend', pacing: 'adaptive', forceLlm: !!forceLlm, tts: ttsUpRef.current !== false });
       if (data.offerEnd) setPacingOffer('end');
       else if (data.offerExtend) setPacingOffer('extend');
       else setPacingOffer(null);
@@ -153,6 +155,16 @@ export default function DaberSessionPage() {
   const loadItem = React.useCallback(async (forceLlm?: boolean) => {
     if (loadingItemRef.current) return;
     loadingItemRef.current = true;
+    if (ttsUpRef.current === null) {
+      try {
+        const ok = await audio.prefetchTTS('שלום');
+        ttsUpRef.current = !!ok;
+        setTtsAvailable(!!ok);
+      } catch {
+        ttsUpRef.current = false;
+        setTtsAvailable(false);
+      }
+    }
     const data = await fetchNextRaw(!!forceLlm);
     if (data.done) {
       dispatch({ type: 'SESSION_DONE' });
@@ -193,14 +205,13 @@ export default function DaberSessionPage() {
     }
     
     try {
-      const ok = await audio.prefetchTTS(data.item.target_hebrew);
-      setTtsAvailable(!!ok);
-      if (settings.speakPrompt) {
-        await audio.prefetchTTS(stripHowDoISay(stripEmoji(data.item.english_prompt)));
+      if (ttsUpRef.current !== false) {
+        await audio.prefetchTTS(data.item.target_hebrew);
+        if (settings.speakPrompt) {
+          await audio.prefetchTTS(stripHowDoISay(stripEmoji(data.item.english_prompt)));
+        }
       }
-    } catch {
-      setTtsAvailable(false);
-    }
+    } catch {}
     loadingItemRef.current = false;
   }, [fetchNextRaw, dispatch, router, sessionId, settings.showTransliteration, settings.speakPrompt]);
 
@@ -326,7 +337,7 @@ export default function DaberSessionPage() {
         return {
           dotClass: fb.grade === 'incorrect' ? 'error' : '',
           dotActive: false,
-          label: fb.grade === 'correct' ? 'correct' : fb.grade === 'flawed' ? 'close' : 'not quite',
+          label: '',
           waveActive: false,
           micRecording: false,
         };
@@ -427,7 +438,7 @@ export default function DaberSessionPage() {
         <>
           <div style={{ position: 'relative' }}>
             <PromptCard
-              prompt={ttsAvailable ? 'Listen and translate to English' : 'Translate to English'}
+              prompt={'Listen and translate to English'}
               transliteration={showFeedback ? item.transliteration : null}
               hintVisible={hintVisible}
               onToggleHint={() => dispatch({ type: 'TOGGLE_HINT' })}
@@ -444,23 +455,11 @@ export default function DaberSessionPage() {
             <AudioPlayButton
               playing={audio.ttsPlaying}
               onPlay={() => item && playTTS(item.target_hebrew)}
-              disabled={!ttsAvailable}
-              title={!ttsAvailable ? 'Audio unavailable' : undefined}
             />
             <StatusStrip dotClass={status.dotClass} active={status.dotActive} label={status.label} waveActive={false} level={0} />
-            {!ttsAvailable ? (
-              <span className="vocab-chip" title="Audio unavailable">Audio unavailable</span>
-            ) : null}
           </div>
 
-          {!ttsAvailable ? (
-            <div style={{ marginBottom: 8, padding: '8px 16px', background: 'var(--color-background-secondary)', borderRadius: 12 }}>
-              <div className="intro-hero-hebrew">{item.target_hebrew}</div>
-              {item.transliteration ? (
-                <div className="correct-transliteration" style={{ marginTop: 2 }}>{item.transliteration}</div>
-              ) : null}
-            </div>
-          ) : null}
+          
 
           <div className="editor-wrap" style={{ marginBottom: 12 }}>
             <input
@@ -639,8 +638,6 @@ export default function DaberSessionPage() {
               <AudioPlayButton
                 playing={audio.ttsPlaying}
                 onPlay={() => playTTS(feedback.correct_hebrew)}
-                disabled={!ttsAvailable}
-                title={!ttsAvailable ? 'Audio unavailable' : undefined}
               />
             </div>
           )}

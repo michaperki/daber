@@ -49,7 +49,7 @@ export function getUserId(): string {
   }
 }
 
-export async function apiNextItem(sessionId: string, opts?: { random?: boolean; mode?: 'lex'|'db'; focus?: 'weak'; due?: 'feature'|'item'|'blend'; pacing?: 'fixed'|'adaptive'; forceLlm?: boolean }) {
+export async function apiNextItem(sessionId: string, opts?: { random?: boolean; mode?: 'lex'|'db'; focus?: 'weak'; due?: 'feature'|'item'|'blend'; pacing?: 'fixed'|'adaptive'; forceLlm?: boolean; tts?: boolean }) {
   const params = new URLSearchParams();
   if (opts?.random) params.set('random', '1');
   if (opts?.mode === 'lex') params.set('mode', 'lex');
@@ -57,6 +57,7 @@ export async function apiNextItem(sessionId: string, opts?: { random?: boolean; 
   if (opts?.due) params.set('due', opts.due);
   if (opts?.pacing === 'adaptive') params.set('pacing', 'adaptive');
   if (opts?.forceLlm) params.set('forceLlm', '1');
+  if (typeof opts?.tts === 'boolean') params.set('tts', opts.tts ? '1' : '0');
   const q = params.toString();
   const res = await fetch(`/api/sessions/${sessionId}/next-item${q ? `?${q}` : ''}`);
   if (!res.ok) throw new Error('Failed to fetch next item');

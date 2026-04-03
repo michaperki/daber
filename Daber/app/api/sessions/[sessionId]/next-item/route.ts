@@ -40,6 +40,8 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
 
     const url = new URL(req.url);
     const debug = url.searchParams.get('debug') === '1' || url.searchParams.get('debug') === 'true';
+    const ttsParam = url.searchParams.get('tts');
+    const ttsAvailable = (ttsParam === '1' || ttsParam === 'true');
     const forceLlm = url.searchParams.get('forceLlm') === '1' || url.searchParams.get('forceLlm') === 'true';
     const isDev = (process.env.NODE_ENV !== 'production');
     const reqStart = Date.now();
@@ -229,7 +231,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const stat = await prisma.itemStat.findUnique({ where: { lesson_item_id_user_id: { lesson_item_id: itemId, user_id: userId } } });
         if (stat) {
           const streak = stat.correct_streak || 0;
-          if (streak === 0) return 'recognition';
+          if (streak === 0) return ttsAvailable ? 'recognition' : 'guided';
           if (streak === 1) return 'guided';
           return 'free_recall';
         }
@@ -238,7 +240,7 @@ export async function GET(req: Request, { params }: { params: { sessionId: strin
         const familyId = li?.family_id || (li?.lexeme_id ? `lex:${li.lexeme_id}` : null);
         if (!familyId) return 'intro';
         const fam = await prisma.familyStat.findUnique({ where: { family_id_user_id: { family_id: familyId, user_id: userId } } });
-        if (fam) return 'recognition';
+        if (fam) return ttsAvailable ? 'recognition' : 'guided';
         return 'intro';
       } catch {
         return 'free_recall';

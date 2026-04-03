@@ -251,8 +251,8 @@ Local LLM prompt/whitelist — 2026-04-01
 - Prompt context now includes a fixed core pack of high‑value lemmas (verbs/nouns/adjectives Mike knows) alongside targets and a small random sample of user‑known lemmas, capped ~45. Where: Daber/lib/generation/local_llm.ts (`CORE_PROMPT_LEMMAS`, `buildBatchPrompt`).
 - Whitelist now includes current batch targets in addition to user‑known lemmas so new targets don’t self‑block validation. Where: Daber/lib/generation/local_llm.ts (`generateBatch`).
 
-DB snapshot (RDS) — 2026-04-01
-- Top lessons (items): `vocab_green_gen` (194), `vocab_mini_morph` (153), `vocab_all_gen` (140), `user_vocab_01` (110), CC lessons ~23–30.
+- DB snapshot (RDS) — 2026-04-01
+- Top lessons (items): `vocab_green_gen` (194), `vocab_mini_morph` (250), `vocab_all_gen` (140), `user_vocab_01` (110), CC lessons ~23–30.
 - Lexeme total: 468.
 
 Design docs added

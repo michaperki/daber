@@ -46,7 +46,7 @@ Updated: 2026-04-01
   - Green lexemes: ~82 curated Wikidata lexemes with glosses. Source of truth: `Daber/data/green_lexemes.json` (IDs), `Daber/data/green_glosses.json` (pos + gloss); noted in `docs/agent/STATE.md`.
   - Lesson item scale: prior audit shows 2,936 LessonItems total; only 78 are lexeme‑linked (majority are phrases). Source: `docs/DB_AUDIT.md`.
   - RDS (prod) counts — 2026‑04‑01:
-    - Top lessons: `vocab_green_gen` (194), `vocab_mini_morph` (153), `vocab_all_gen` (140), `user_vocab_01` (110), CC lessons ~23–30.
+    - Top lessons: `vocab_green_gen` (194), `vocab_mini_morph` (250), `vocab_all_gen` (140), `user_vocab_01` (110), CC lessons ~23–30.
     - Total `Lexeme`: 468.
     - Mini lexemes present: 10 (mini_lex_write/book/big/speak/icecream/new/read/hear/song/smart).
 

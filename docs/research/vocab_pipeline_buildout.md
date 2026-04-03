@@ -125,6 +125,57 @@ Appendix — Raw Query Results (highlights)
 
 —
 
+Phase 2 — Implementation Plan (past levels only; Green is current)
+
+Light Blue dataset (provided locally; not yet in DB)
+- File: vocab/light_blue.json
+- Structure: array of items with fields
+  - id (number), lesson (string), level="Light Blue", english_text, hebrew_text, subject, segment, audio_text
+- Quick inventory (local parse)
+  - Items: 308 total
+  - Single-token hebrew_text (no spaces): 14 unique
+  - Single-token forms matching existing DB Inflection by exact form: ~1 (סודות)
+  - Implication: most items are phrases; lexeme extraction requires tokenization + reconciliation
+
+Light Blue import plan
+- Stage A: direct single-token items
+  - Normalize hebrew_text (trim, strip nikud if present)
+  - For the 14 single-token candidates:
+    - Attempt Lexeme match by exact lemma; else Inflection match by form
+    - On hit: collect lexeme_id; on miss: enqueue for Wikidata lookup
+  - Seed any missing Lexeme rows and 1+ Inflections via Wikidata
+- Stage B: phrase token extraction (expand coverage)
+  - Tokenize phrases on whitespace and modest punctuation; strip common prefixes (ו/ה/ב/ל/מ/כ/ש)
+  - Filter tokens to likely vocabulary (length≥3, not pronouns/prepositions/particles already allowed by function-word list)
+  - Attempt DB match (Inflection.form or Lexeme.lemma)
+  - For misses, run Wikidata lexeme search; manually curate ambiguous cases
+- Stage C: link + allowlist + known-stats
+  - For every resolved lexeme_id:
+    - Ensure Lexeme.gloss/POS populated; seed Inflection rows from Wikidata
+    - Add to Mini allowlist (merge once per lexeme_id; keep custom mini lexemes)
+    - Seed FamilyStat(family_id = `lex:<lexeme_id>`, user_id=Mike’s UUID)
+    - Seed ItemStat per resolved family base and forms (correct_streak high enough for recall; next_due spaced)
+  - Do NOT seed Green — keep as current level with normal intros
+
+Early import order across past levels
+- Start with Blue → Orange → Red based on token coverage and existing matches observed in DB (cleaner)
+- Then Pink → Yellow → Lime (lower direct coverage; expect more reconciliation)
+- Weave in Light Blue (this file) alongside Pink/Yellow after Stage A (single tokens) lands, then proceed with phrase token extraction for broader coverage.
+
+Seeding details (per-user; no code yet)
+- FamilyStat
+  - family_id: `lex:<lexeme_id>`; user_id: Mike’s UUID (from `daber.uid` on device)
+- ItemStat
+  - For each linked LessonItem (when present) or for generated base+forms in `<lesson>_gen`:
+    - Set `correct_streak` to threshold that maps to recall; set `next_due` into the future to avoid immediate re-intros
+  - Alternative: add a server-side skip-intro guard when FamilyStat exists (already supported by current intro logic)
+
+Allowlist growth notes
+- `Daber/data/mini_allowlist.json` will grow substantially. Keep it deterministic and idempotent (merge + sort). The validator whitelist already includes targets to avoid self-blocking.
+
+
+—
+
 Phase 1 — Inventory (per-level classification and counts)
 
 Clarification on scope

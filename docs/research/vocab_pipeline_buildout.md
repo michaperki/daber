@@ -11,7 +11,7 @@ Summary
 
 —
 
-A. Current Vocab Inventory
+A. Current Vocab Inventory (updated with Phase 1 scope)
 
 - Counts (RDS, prod snapshot)
   - Lessons by size (top): `vocab_mini_morph` (250 items), `vocab_green_gen` (194), `vocab_all_gen` (140), `user_vocab_01` (110). Source: DB query.
@@ -123,3 +123,50 @@ Appendix — Raw Query Results (highlights)
 - Complete-data lexemes by level: Red 9 | Orange 3 | Green 52 | Mini lesson 50.
 - Overlap: Mini∩Red 4 | Mini∩Orange 3 | Mini∩Green 23.
 
+—
+
+Phase 1 — Inventory (per-level classification and counts)
+
+Clarification on scope
+- Current level: Green — include in Mini allowlist, but do NOT seed stats as known. Green items should follow normal intro → SRS flow.
+- Past levels: Blue, Yellow, Pink, Orange, Lime, Red (no Light Blue IDs found in DB) — treat as “already known”: import lexemes + inflections, add to Mini allowlist, seed FamilyStat/ItemStat.
+
+Lesson IDs by classification (from DB)
+- Past
+  - Blue: cc_vocab_blue_l0, l1, l2, l3, l4, l5, l6, l7, l9, l10, l11, l13, l14, l15, l16, l17, l18, l19, l20
+  - Yellow: cc_vocab_yellow_l0, l1, l2, l3, l4, l5, l6, l7, l8, l10, l11, l13, l14, l15, l16, l17, l18, l19, l20
+  - Pink: cc_vocab_pink_l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20
+  - Orange: cc_vocab_orange_l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20
+  - Lime: cc_vocab_lime_l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l13, l14, l15, l16, l17, l18, l19, l20
+  - Red: cc_vocab_red_l0, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19, l20
+- Current
+  - Green: cc_flashcards_l0, l1, l2, l3, l4, l5, l6, l7, l9, l10, l11, l13, l14, l15, l16, l17, l18; cc_practicetogo_green_l1, l2, l3, l4, l5, l6, l7, l9, l10, l11, l13, l14, l15, l16, l17, l18; vocab_green_gen
+- Other (not in color pipeline)
+  - minimal_pairs_01, present_tense_basics_01, song_ma_naaseh_chorus_v1, user_vocab_01, user_vocab_01_gen, vocab_all_gen, vocab_mini_morph
+
+Per-level counts (DB snapshot)
+- Distinct linked lexemes per level (LessonItems with `lexeme_id`), and those with inflections
+  - Blue: 24 linked (24 with inflections)
+  - Yellow: 14 linked (14 with inflections)
+  - Pink: 22 linked (22 with inflections)
+  - Orange: 25 linked (25 with inflections)
+  - Lime: 5 linked (5 with inflections)
+  - Red: 27 linked (27 with inflections)
+  - Green (current): 74 linked (74 with inflections)
+
+- Single‑token candidate forms observed in items (rough estimate of “vocab words” embedded in phrase‑only lessons)
+  - Method: distinct `target_hebrew` with no spaces per color; compared to `Inflection.form` presence.
+  - Blue: 43 tokens | 20 present in Inflection | 23 need lookup
+  - Yellow: 55 tokens | 12 present | 43 need lookup
+  - Pink: 64 tokens | 21 present | 43 need lookup
+  - Orange: 72 tokens | 27 present | 45 need lookup
+  - Lime: 27 tokens | 5 present | 22 need lookup
+  - Red: 75 tokens | 27 present | 48 need lookup
+  - Green (current): 99 tokens | 64 present | 35 need lookup
+
+- Overlap with Mini (distinct lexeme_id intersections)
+  - Mini∩Blue: 2 | Mini∩Yellow: 3 | Mini∩Pink: 2 | Mini∩Orange: 3 | Mini∩Lime: 1 | Mini∩Red: 4 | Mini∩Green: 23
+
+Implications for Phase 2 sequencing (past levels only)
+- Cleanest among past by coverage ratio (tokens_with_inflections / tokens): Blue (~47%), Orange (~38%), Red (~36%) → import these first.
+- Pink/Yellow/Lime show lower coverage (≤33%) → expect more Wikidata reconciliation/manual curation.

@@ -230,6 +230,16 @@ Card-generation integrity — SHIPPED (2026-03-30)
 
 Operational notes (post‑deploy)
 
+Fixes — 2026-04-03
+- Mini Morph TTS fallback
+  - What: When `/api/tts` fails (any error), the UI disables the play button, shows a small “Audio unavailable” indicator, and renders the Hebrew text so the card remains usable. Recognition prompt copies update to “Translate to English” to avoid implying audio.
+  - Where: Daber/app/session/[sessionId]/page.tsx (prefetch-based `ttsAvailable` state; disabled `AudioPlayButton`). Daber/lib/client/audio/useTTS.ts (`prefetch` returns boolean). Daber/lib/client/audio/useAudioCoordinator.ts (propagates `prefetch` boolean). Daber/app/components/AudioPlayButton.tsx (disabled state + muted icon).
+  - Why: OpenAI TTS outages/credits caused silent failures with a clickable play button. Now failure is explicit and cards are still dismissible.
+- Redundant audio visualizer removed
+  - What: Recognition view no longer shows a second, separate waveform beside the play button. Only the play button morphs into the single AV while playing.
+  - Where: Daber/app/session/[sessionId]/page.tsx (StatusStrip in recognition no longer mirrors TTS waveform).
+  - Why: Avoid duplicate AV elements and confusing UX.
+
 Fixes — 2026-03-31
 - Hebrew 3pl feminine pronoun
   - What: Present-tense 3pl feminine now uses ״הן״ (not ״הם״) when gender is known.

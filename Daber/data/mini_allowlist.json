@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-31T08:40:53.415Z",
+  "generatedAt": "2026-03-31T13:45:32.438Z",
   "note": "Allowlist for vocab_mini_morph. Expanded via scripts/expand_mini_from_green.ts.",
   "lexemeIds": [
     "mini_lex_write",

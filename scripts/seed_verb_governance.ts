@@ -100,6 +100,28 @@ const DATA: Entry[] = [
       ],
     },
   },
+  {
+    lemma: 'להשתפר',
+    gov: {
+      transitivity: 'intransitive',
+      frames: [
+        { prep: 'none', role: 'comp', frame_he: 'להשתפר', sense_en: 'improve' },
+        { prep: 'b', role: 'comp', frame_he: 'להשתפר ב___', sense_en: 'improve at/in' },
+      ],
+    },
+  },
+  {
+    lemma: 'ללמוד',
+    gov: {
+      transitivity: 'both',
+      frames: [
+        { prep: 'et', role: 'do', frame_he: 'ללמוד את ___', sense_en: 'learn (a subject/thing)' },
+        { prep: 'al', role: 'comp', frame_he: 'ללמוד על ___', sense_en: 'learn about' },
+        { prep: 'b', role: 'comp', frame_he: 'ללמוד ב___', sense_en: 'study at (a place)' },
+        { prep: 'min', role: 'comp', frame_he: 'ללמוד מ___', sense_en: 'learn from' },
+      ],
+    },
+  },
 ];
 
 async function main() {

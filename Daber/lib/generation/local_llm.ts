@@ -11,6 +11,17 @@ import { prisma } from '@/lib/db';
 import { logEvent } from '@/lib/log';
 import { PREP_DISPLAY_MAP } from '@/lib/types/governance';
 
+// High-value content lemmas to improve prompt context (Mike-known anchors)
+// Keep single-token, unpointed forms.
+export const CORE_PROMPT_LEMMAS: string[] = [
+  // Verbs
+  'לכתוב','לדבר','לקרוא','לשמוע','לאהוב','ללכת','לעשות','לרצות','לראות','לקנות',
+  // Nouns
+  'ספר','גלידה','שיר','בית','זמן','כסף','מים','עבודה','חנות','עיר','רחוב','חבר',
+  // Adjectives
+  'גדול','חדש','חכם','יפה','קטן','טוב','קשה','יקר',
+];
+
 export const FUNCTION_WORD_ALLOWLIST: Set<string> = new Set([
   // Pronouns
   'אני','אתה','את','הוא','היא','אנחנו','אתם','אתן','הם','הן',
@@ -83,15 +94,24 @@ export function buildBatchPrompt(params: { targetLemmas: string[]; knownLemmas: 
   const targets = Array.from(new Set(params.targetLemmas.map(stripNikkud).map(s => s.trim()).filter(Boolean)));
   const known = Array.from(new Set(params.knownLemmas.map(stripNikkud).map(s => s.trim()).filter(Boolean)));
   const pool = known.filter(k => !targets.includes(k));
-  // Fill to ~45 total (targets + sample from pool)
+  // Fill to ~45 total (targets + core pack + sample from pool)
   const max = 45;
-  const need = Math.max(0, max - targets.length);
+  // Add a subset of core lemmas (prefer those not already targets)
+  const core = CORE_PROMPT_LEMMAS.filter(l => !targets.includes(l));
+  const coreBudget = Math.max(0, Math.min(25, max - targets.length));
+  const corePick = core.slice(0, coreBudget);
+  // Sample the remainder from known pool
+  const rem = Math.max(0, max - targets.length - corePick.length);
   const sample: string[] = [];
-  for (let i = 0; i < pool.length && sample.length < need; i++) {
+  const seen = new Set<string>();
+  for (let i = 0; i < pool.length && sample.length < rem; i++) {
     const idx = Math.floor(Math.random() * pool.length);
-    sample.push(pool[idx]);
+    const v = pool[idx];
+    if (seen.has(v) || targets.includes(v) || corePick.includes(v)) continue;
+    seen.add(v);
+    sample.push(v);
   }
-  const vocabList = Array.from(new Set([...targets, ...sample])).slice(0, max);
+  const vocabList = Array.from(new Set([...targets, ...corePick, ...sample])).slice(0, max);
   const vocabStr = vocabList.join(', ');
   const tenseList = (params.allowedTenses && params.allowedTenses.length) ? params.allowedTenses : ['present'];
 
@@ -153,7 +173,8 @@ export async function generateBatch(params: {
 
   const allowedTenses = new Set((params.allowedTenses && params.allowedTenses.length) ? params.allowedTenses : ['present']);
 
-  const whitelist = await buildVocabWhitelistByLemmas(params.knownLemmas);
+  // Allow both user-known lemmas and current batch targets to pass whitelist
+  const whitelist = await buildVocabWhitelistByLemmas(Array.from(new Set([...(params.knownLemmas || []), ...(params.targetLemmas || [])])));
 
   const out: ValidatedItem[] = [];
   for (const it of parsed) {

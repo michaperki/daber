@@ -17,6 +17,18 @@ function nowIso() { return new Date().toISOString(); }
 function isHebrew(s: string) { return /[\u0590-\u05FF]/.test(s || ''); }
 function isSingleToken(s: string) { return (s || '').trim().split(/\s+/).filter(Boolean).length === 1; }
 function isPossessiveSuffix(s: string): boolean { return /(?:יו|יה|יהם|יהן|יך|ייך|נו|כם|כן|ו)$/.test((s || '').trim()); }
+// Bare ו (vav) can be a possessive suffix "his" but extremely rarely a base form ending.
+// Maintain an allowlist of noun lemmas that legitimately end with a bare vav to bypass the filter.
+const NOUN_BARE_VAV_ALLOWLIST: string[] = [
+  // e.g., 'תיקו' (draw), 'לוטו' (lotto) — add if encountered during expansion after manual review
+];
+function endsWithBareVav(s: string): boolean {
+  const t = (s || '').trim();
+  if (!/ו$/.test(t)) return false;
+  // Exclude multi-letter possessive suffixes that also end with ו
+  if (/(?:יו|יה|יהם|יהן|יך|ייך|נו|כם|כן)$/.test(t)) return false;
+  return true;
+}
 
 function enPron(m: { person?: string|null, number?: string|null, gender?: string|null }): string {
   const p = (m.person || '').toString();
@@ -168,7 +180,14 @@ async function buildAdjGrid(lexemeId: string): Promise<{ ok: true, grid: AdjGrid
 
 async function buildNounGrid(lexemeId: string): Promise<{ ok: true, grid: NounGrid } | { ok: false, reason: string }> {
   const infls = await prisma.inflection.findMany({ where: { lexeme_id: lexemeId } });
-  const filtered = infls.filter(i => !isPossessiveSuffix(i.form));
+  const lex = await prisma.lexeme.findUnique({ where: { id: lexemeId }, select: { lemma: true } });
+  const lemma = (lex?.lemma || '').trim();
+  const filtered = infls.filter(i => {
+    if (!isPossessiveSuffix(i.form)) return true;
+    // If it's a bare-vav ending and lemma is allowlisted, keep it (likely a true base form)
+    if (lemma && NOUN_BARE_VAV_ALLOWLIST.includes(lemma) && endsWithBareVav(i.form)) return true;
+    return false;
+  });
   const sg = filtered.find(i => (i.number||'') === 'sg');
   const pl = filtered.find(i => (i.number||'') === 'pl');
   if (!sg || !pl) return { ok: false, reason: 'noun_missing_number' };
@@ -284,13 +303,19 @@ async function main() {
       if (pos === 'noun') {
         const grid = await buildNounGrid(id);
         if (!grid.ok || !grid.grid.sg || !grid.grid.pl) { skipped.push({ id, lemma: lex.lemma, reason: (grid.ok ? 'noun_incomplete' : (grid as any).reason) }); continue; }
-        // Warn if bare yod endings make it through selection (manual review)
+        // Warn if bare yod/vav endings make it through selection (manual review)
         const nounWarnings: string[] = [];
         if (/י$/.test(grid.grid.sg.form) && !isPossessiveSuffix(grid.grid.sg.form)) nounWarnings.push('sg_bare_yod');
         if (/י$/.test(grid.grid.pl.form) && !isPossessiveSuffix(grid.grid.pl.form)) nounWarnings.push('pl_bare_yod');
+        if (endsWithBareVav(grid.grid.sg.form) && !NOUN_BARE_VAV_ALLOWLIST.includes(lex.lemma)) nounWarnings.push('sg_bare_vav');
+        if (endsWithBareVav(grid.grid.pl.form) && !NOUN_BARE_VAV_ALLOWLIST.includes(lex.lemma)) nounWarnings.push('pl_bare_vav');
+        if ((endsWithBareVav(grid.grid.sg.form) || endsWithBareVav(grid.grid.pl.form)) && NOUN_BARE_VAV_ALLOWLIST.includes(lex.lemma)) {
+          // eslint-disable-next-line no-console
+          console.warn(`[mini-expand] noun bare vav allowlist used for ${id} (${lex.lemma}). sg='${grid.grid.sg.form}', pl='${grid.grid.pl.form}'`);
+        }
         if (nounWarnings.length) {
           // eslint-disable-next-line no-console
-          console.warn(`[mini-expand] noun bare yod warning for ${id}: ${nounWarnings.join(', ')} (sg='${grid.grid.sg.form}', pl='${grid.grid.pl.form}')`);
+          console.warn(`[mini-expand] noun bare ending warning for ${id}: ${nounWarnings.join(', ')} (sg='${grid.grid.sg.form}', pl='${grid.grid.pl.form}')`);
         }
         // Base singular (no ה-)
         await prisma.lessonItem.upsert({

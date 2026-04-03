@@ -6,7 +6,7 @@ import { apiTTS } from '@/lib/client/api';
 export type UseTTS = {
   playing: boolean;
   play: (text: string, rate?: number) => Promise<void>;
-  prefetch: (text?: string | null) => Promise<void>;
+  prefetch: (text?: string | null) => Promise<boolean>;
   cancel: () => void;
 };
 
@@ -134,12 +134,16 @@ export function useTTS(maxEntries = 40, maxBytes = 10 * 1024 * 1024): UseTTS {
   }, [playing, get, put]);
 
   const prefetch = React.useCallback(async (text?: string | null) => {
-    if (!text) return;
-    if (cacheRef.current.has(text)) return;
+    if (!text) return false;
+    if (cacheRef.current.has(text)) return true;
     try {
       const blob = await apiTTS(text);
       put(text, blob);
-    } catch {}
+      return true;
+    } catch {
+      // Server TTS unavailable; report failure so UI can degrade gracefully
+      return false;
+    }
   }, [put]);
 
   React.useEffect(() => cancel, [cancel]);

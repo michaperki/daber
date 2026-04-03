@@ -28,7 +28,7 @@ export type UseAudioCoordinator = {
   stopRecording: () => void;
   playTTS: (text: string, rate?: number) => Promise<void>;
   cancelTTS: () => void;
-  prefetchTTS: (text?: string | null) => Promise<void>;
+  prefetchTTS: (text?: string | null) => Promise<boolean>;
 
   // SFX (fire-and-forget)
   sfxMicStart: () => void;
@@ -63,7 +63,7 @@ export function useAudioCoordinator(micOpts?: { deviceId?: string; threshold?: n
   }, [tts]);
 
   const prefetchTTS = React.useCallback(async (text?: string | null) => {
-    await tts.prefetch(text);
+    return tts.prefetch(text);
   }, [tts]);
 
   return {

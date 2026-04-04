@@ -2,6 +2,45 @@
 
 Chronological notes on meaningful work, decisions, and lessons. Keep entries concise and practical.
 
+## 2026-04-04 — Rebuild checkpoint
+
+The app was rebuilt from scratch as a lean MVP. ~40 old files deleted, replaced with 10 source files.
+
+**What was built:**
+- Level-based drill selection (home page with colored CC level buttons)
+- Core drill flow: prompt → type → evaluate → feedback → next → summary
+- Phonetic Hebrew keyboard with shift-for-sofit (a=א, b=ב, l=ל, etc.)
+- Skip/give-up button for "I don't know"
+- 5 API routes (levels, start, next, answer, summary)
+- SM-2 spaced repetition with streak-based direction (he_to_en for low streak, en_to_he for high)
+
+**What was removed:**
+- Voice I/O (STT/TTS) — OpenAI quota exceeded
+- Admin pages, dictionary, library, progress, retry, profile, vocab pages
+- Song packs, mini morph drill, LLM flashcards
+- Dynamic sentence generation, local LLM pipeline
+- Session state machine, audio coordinator, settings system
+- Rate limiting, Redis infrastructure, background queues
+
+**Fixes applied during rebuild:**
+- Prisma connection pool limited to 5 (`?connection_limit=5` on DATABASE_URL)
+- N+1 query in `/api/levels` replaced with 2-query approach
+- `getSentence()` wrapped in try/catch, then disabled entirely
+- SentenceBank error no longer crashes drill requests
+
+**Known bugs documented in TODO.md:**
+- English prompt data quality: "iam" instead of "i am", uncapitalized "i"
+- Hebrew evaluation false-negatives: correct Hebrew answers graded incorrect (likely invisible Unicode in CC import data)
+- SentenceBank table missing on remote DB
+
+**Docs updated:** SOUL.md, README.md, TODO.md, STATE.md, MEMORY.md — all rewritten for the rebuilt app.
+
+---
+
+## Pre-rebuild history (2026-03-15 through 2026-04-03)
+
+The entries below document the original app's development before the rebuild.
+
 ## 2026-03-31 — English evaluator present equivalence + mini present coverage
 
 - Bug: he→en misgrade where “he writes” marked incorrect vs expected “he is writing” for present Hebrew (e.g., הוא כותב).

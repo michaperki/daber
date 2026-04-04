@@ -131,6 +131,7 @@ model Lexeme {
   inflections Inflection[]
   lessonItems LessonItem[]
   generatedDrills GeneratedDrill[]
+  sentences   SentenceBank[]
 }
 
 model Inflection {
@@ -178,6 +179,19 @@ model GeneratedDrill {
 
   @@index([batch_id], map: "idx_gen_drill_batch")
   @@index([target_lexeme_id], map: "idx_gen_drill_lexeme")
+}
+
+model SentenceBank {
+  id         String   @id @default(cuid())
+  lexeme_id  String
+  lexeme     Lexeme   @relation(fields: [lexeme_id], references: [id])
+  hebrew     String
+  english    String
+  direction  String
+  quality    Int      @default(0)
+  created_at DateTime @default(now())
+
+  @@index([lexeme_id], map: "idx_sentencebank_lexeme")
 }
 
 // Family-level introduction state (global; per-user not needed yet)

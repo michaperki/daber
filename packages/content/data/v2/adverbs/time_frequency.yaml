@@ -1,0 +1,52 @@
+pos: adverb
+entries:
+  - lemma: מזמן
+    gloss: long ago
+    examples:
+      - he: לא ראיתי אותך מזמן
+        en: I have not seen you in a long time.
+      - he: הם גרים כאן מזמן
+        en: They have lived here for a long time.
+  - lemma: מאז
+    gloss: since
+    examples:
+      - he: מאז עבר הרבה זמן
+        en: Since then, a lot of time has passed.
+      - he: אני כאן מאז אתמול
+        en: I have been here since yesterday.
+  - lemma: אתמול
+    gloss: yesterday
+    examples:
+      - he: הוא הגיע אתמול
+        en: He arrived yesterday.
+      - he: אתמול היה חם
+        en: Yesterday was hot.
+      - he: אתמול היא נפגשה איתו
+        en: Yesterday she met up with him
+      - he: אתמול הוא נשאר בבית
+        en: Yesterday he stayed home
+      - he: אתמול חשבתי עליך
+        en: Yesterday I thought about you👩‍🦰
+  - lemma: מיד
+    gloss: immediately
+    examples:
+      - he: תבוא מיד
+        en: Come immediately.
+      - he: אני חוזר מיד
+        en: I will be back immediately.
+  - lemma: עכשיו
+    gloss: now
+    examples:
+      - he: אני עכשיו בעבודה
+        en: I am at work now.
+      - he: בוא עכשיו
+        en: Come now.
+      - he: תתקשר אליו עכשיו
+        en: Call🧔‍♂️ him now
+  - lemma: תמיד
+    gloss: always
+    examples:
+      - he: אני תמיד שותה קפה בבוקר
+        en: I always drink coffee in the morning.
+      - he: היא תמיד מאחרת
+        en: She is always late.

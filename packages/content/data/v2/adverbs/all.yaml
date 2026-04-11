@@ -1,0 +1,30 @@
+pos: adverb
+entries:
+  - lemma: תכלס
+    gloss: actually, bottom line
+    examples:
+      - he: תכלס, אין לי זמן
+        en: Basically, I have no time.
+      - he: תכלס, זה לא חשוב
+        en: Honestly, it is not important.
+  - lemma: כמעט
+    gloss: almost
+    examples:
+      - he: זה כמעט מוכן
+        en: It is almost ready.
+      - he: אני כמעט שם
+        en: I am almost there.
+  - lemma: למטה
+    gloss: down, below
+    examples:
+      - he: הילד למטה בחצר
+        en: The child is down in the yard.
+      - he: תסתכל למטה
+        en: Look down.
+  - lemma: למעלה
+    gloss: up, above
+    examples:
+      - he: הספר למעלה על המדף
+        en: The book is up on the shelf.
+      - he: היא גרה למעלה
+        en: She lives upstairs.

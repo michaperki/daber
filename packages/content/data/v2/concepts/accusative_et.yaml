@@ -1,0 +1,46 @@
+type: concept
+entries:
+  - key: def_do_et
+    label: Definite Direct Object את
+    description: Use of את to mark definite direct objects (often with ה or pronoun
+      objects).
+    examples:
+      - he: הוא פותח את החלון
+        en: he is opening the window
+        anchor_lemma: לפתוח
+      - he: הוא ינקה את המקרר
+        en: He will clean the refrigerator
+        anchor_lemma: ניקה
+      - he: מי ניקה את החלון?
+        en: Who cleaned the window?
+        anchor_lemma: ניקה
+      - he: הביטלס שינו את העולם
+        en: The Beatles changed the world
+        anchor_lemma: שן
+      - he: היא ניקתה את הבית
+        en: She cleaned the house
+        anchor_lemma: ניקה
+      - he: אל תשאיר את זה פה
+        en: Don't leave🧔‍♂️ it here
+        anchor_lemma: השאיר
+      - he: הוא יאהב את זה
+        en: He will like it
+        anchor_lemma: אהב
+      - he: אל תאכלי את זה
+        en: Don't 👩‍🦰 eat it
+        anchor_lemma: איכל
+      - he: עשיתי את זה בעצמי
+        en: I did it by myself 👩‍🦰
+        anchor_lemma: לעשות
+      - he: היא אוהבת את זה
+        en: She likes it
+        anchor_lemma: אהב
+      - he: אני ראיתי את זה
+        en: I saw it
+        anchor_lemma: לראות
+      - he: אני אהבתי את זה
+        en: I liked it
+        anchor_lemma: אהב
+      - he: אני לא מוצאת את זה
+        en: I 👩‍🦰 can't find it
+        anchor_lemma: מצא

@@ -1,0 +1,261 @@
+type: concept
+entries:
+  - key: simile_kmo
+    label: Simile — כמו
+    description: Use of כמו to express similarity (like/as).
+    examples: []
+  - key: concessive_lamrot
+    label: Concessive — למרות
+    description: Concessive preposition למרות (despite/in spite of).
+    examples: []
+  - key: causal_ki
+    label: Causal — כי (because)
+    description: Causal subordinator כי.
+    examples: []
+  - key: causal_biglal
+    label: Causal — בגלל
+    description: Causal preposition בגלל (because of).
+    examples:
+      - he: זה בגלל האהבה 😍
+        en: It's because of the love 😍
+        anchor_lemma: בגלל
+      - he: הוא בלחץ בגלל הבוס
+        en: He's stressed out because of the boss
+        anchor_lemma: בגלל
+  - key: result_markers
+    label: Result — לכן/אז
+    description: Result/connective markers לכן / אז.
+    examples: []
+  - key: focus_particles
+    label: Focus/Polarity — גם/רק/דווקא/בכלל/אפילו
+    description: Frequent focus and polarity particles.
+    examples: []
+  - key: negative_polarity_never
+    label: Negative Polarity — אף פעם/לעולם לא
+    description: Never/at no time expressions.
+    examples: []
+  - key: ditransitive_et_l
+    label: Ditransitive marking — את … ל־
+    description: Sentences that contain both את-marked DO and ל‑marked IO.
+    examples:
+      - he: מצאתי את הארנק מתחת לספה
+        en: I found the wallet under the sofa
+        anchor_lemma: מצא
+  - key: modal_infinitive_l
+    label: Modal + infinitive — צריך/אפשר/כדאי/מותר/אסור + ל־
+    description: Infinitival complements after common modals.
+    examples: []
+  - key: possession_shel
+    label: Possession — של
+    description: Possessive with של, including pronominal possessives (שלי/שלך/שלו…).
+    examples: []
+  - key: same_oto
+    label: “Same” — אותו/אותה/אותם/אותן
+    description: Use of “the same” demonstrative forms with agreement.
+    examples: []
+  - key: negation_lo_el
+    label: Negation — לא / אל
+    description: Declarative negation לא and prohibitive אל + imperative.
+    examples:
+      - he: אל תצעק עליי
+        en: Don't shout at me.
+        anchor_lemma: לצעוק
+  - key: conditional_im
+    label: Conditionals — אם
+    description: Conditional clauses introduced by אם.
+    examples: []
+  - key: purpose_kdei_bishvil
+    label: Purpose — כדי/בשביל
+    description: Purpose clauses introduced by כדי or בשביל.
+    examples:
+      - he: קניתי פרחים בשביל אמא
+        en: I bought flowers for Mom.
+        anchor_lemma: בשביל
+  - key: complementizer_she
+    label: Subordination — ש‑
+    description: Complementizer ש‑ introducing embedded clauses.
+    examples:
+      - he: למרות שאני מתכונן אני אגיע בזמן
+        en: despite preparing, I will arrive on time.
+        anchor_lemma: להתכונן
+  - key: temporal_keshe
+    label: Temporal — כש‑
+    description: Temporal subordinator כש‑.
+    examples:
+      - he: איפה גרת כשהיית ילדה?
+        en: where did you live when you were a kid
+        anchor_lemma: ילד
+      - he: איפה גרת כשהיית ילדה?
+        en: where did you live when you were a kid
+        anchor_lemma: ילדה
+  - key: interrogatives_wh
+    label: Interrogatives — WH
+    description: WH-words (למה/איך/מתי/איפה/מי/מה/כמה).
+    examples:
+      - he: כמה זמן זה לוקח?
+        en: how long does it take
+        anchor_lemma: לקח
+      - he: למה אתה בלחץ?
+        en: why are you stressed
+        anchor_lemma: לחץ
+      - he: מה אתה עושה?
+        en: What are you doing?
+        anchor_lemma: לעשות
+  - key: comparison_degree
+    label: Comparison — יותר/פחות/הכי
+    description: Comparative and superlative degree markers.
+    examples: []
+  - key: time_aspect
+    label: Time/Aspect — עכשיו/אתמול/כבר/עוד
+    description: Common time/aspectual adverbs.
+    examples:
+      - he: נפגשתי עם יעל אתמול
+        en: I met with Yael yesterday.
+        anchor_lemma: להיפגש
+      - he: אתמול היא נפגשה איתו
+        en: Yesterday she met up with him
+        anchor_lemma: אתמול
+      - he: אתמול הוא נשאר בבית
+        en: Yesterday he stayed home
+        anchor_lemma: אתמול
+      - he: אתמול חשבתי עליך
+        en: Yesterday I thought about you👩‍🦰
+        anchor_lemma: אתמול
+      - he: תתקשר אליו עכשיו
+        en: Call🧔‍♂️ him now
+        anchor_lemma: עכשיו
+  - key: preps_frames_core
+    label: Prep frames — על/עם/ל/ב
+    description: Core preposition use (surface heuristic).
+    examples:
+      - he: הילד למטה בחצר
+        en: The child is down in the yard.
+        anchor_lemma: למטה
+      - he: תסתכל למטה
+        en: Look down.
+        anchor_lemma: למטה
+      - he: הספר למעלה על המדף
+        en: The book is up on the shelf.
+        anchor_lemma: למעלה
+  - key: pronominal_suffix_preps
+    label: Pronominal suffixes on preps
+    description: Prepositions with pronominal suffixes
+      (אליו/אליה/עליה/איתך/איתו/בך/לך/לו/לה/לנו/לכם/לכן/להם/להן).
+    examples:
+      - he: אני סומך עליך
+        en: I rely on you.
+        anchor_lemma: לסמוך
+      - he: תתקשר אליי!
+        en: Call🧔‍♂️ me!
+        anchor_lemma: אל
+      - he: היא מתגעגעת אליך
+        en: She misses you 👩‍🦰
+        anchor_lemma: אל
+      - he: התגעגעתי אליך!
+        en: I missed you🧔‍♂️
+        anchor_lemma: אל
+      - he: היא התגעגעה אליו
+        en: She missed him
+        anchor_lemma: אל
+      - he: הם התגעגעו אליי
+        en: They missed me
+        anchor_lemma: אל
+      - he: היא דיברה עליי
+        en: She talked about me
+        anchor_lemma: על
+      - he: היום הבירה עליי
+        en: Today the beer is on me
+        anchor_lemma: על
+      - he: הוא מסתכל עליה
+        en: He is looking at her
+        anchor_lemma: על
+      - he: היא מסתכלת עליו
+        en: She is looking at him
+        anchor_lemma: על
+      - he: הוא מת עליה!
+        en: He's crazy about her!
+        anchor_lemma: על
+  - key: locatives_core
+    label: Locatives — לפני/אחרי/בין/ליד/אצל/מעל/מתחת/בתוך
+    description: Frequent locative prepositions and complex preps.
+    examples:
+      - he: אני אצל הרופא
+        en: I am at the doctor.
+        anchor_lemma: אצל
+      - he: הם אצל סבתא
+        en: They are at Grandma's.
+        anchor_lemma: אצל
+      - he: אחרי העבודה אני נח
+        en: After work I rest.
+        anchor_lemma: אחרי
+      - he: לפני שהמחיר יעלה
+        en: Before the price goes up
+        anchor_lemma: לפני
+      - he: המבחן הסתיים לפני שעתיים
+        en: The exam ended two hours ago
+        anchor_lemma: לפני
+      - he: תתקשרי אליי אחרי שתדברי איתו
+        en: Call me after you👩‍🦰 talk to him
+        anchor_lemma: אחרי
+      - he: לפני שתתחיל
+        en: before you start
+        anchor_lemma: לפני
+      - he: הוא יבוא אחרי שהוא יבוא
+        en: He'll come after he will come
+        anchor_lemma: אחרי
+      - he: תתקשרי אליי אחרי שתסיימי
+        en: Call 👩‍🦰me after you finish
+        anchor_lemma: אחרי
+      - he: לפני שיהיה מאוחר מדי!
+        en: Before it's too late!
+        anchor_lemma: לפני
+      - he: אני אצל הספר
+        en: I'm at the hairdresser's
+        anchor_lemma: אצל
+      - he: ניפגש אצל הרופא
+        en: We'll meet at the doctor's
+        anchor_lemma: אצל
+  - key: demonstratives
+    label: Demonstratives — זה/זאת/אלה
+    description: Pronouns and demonstratives used as subjects/objects.
+    examples:
+      - he: זה טוב
+        en: This is good.
+        anchor_lemma: זה
+      - he: זה היה מבאס!
+        en: It was a bummer!
+        anchor_lemma: זה
+      - he: זה משהו אחר לגמרי
+        en: " it’s something completely different"
+        anchor_lemma: זה
+      - he: תיזהר, זה מסוכן!
+        en: Be careful 🧔‍♂️it's dangerous!
+        anchor_lemma: זה
+      - he: תיזהרי, זה ממש מסוכן!
+        en: Be careful 👩‍🦰it's really dangerous!
+        anchor_lemma: זה
+      - he: תחשוב על זה
+        en: Think🧔‍♂️ about it
+        anchor_lemma: זה
+      - he: זה הפריע לך?
+        en: Did it bother you🧔‍♂️?
+        anchor_lemma: זה
+      - he: זה מפריע לי!
+        en: It's disturbing me!
+        anchor_lemma: זה
+  - key: idiom_ba_li
+    label: Desire idiom — בא לי
+    description: Colloquial “I feel like…” construction.
+    examples: []
+  - key: stance_nire_li
+    label: Stance — נראה לי
+    description: Epistemic/evaluative stance marker.
+    examples: []
+  - key: permission_prohibition
+    label: Permission/Prohibition — מותר/אסור
+    description: Modal permission and prohibition markers.
+    examples: []
+  - key: gendered_numbers
+    label: Gendered numerals — שני/שתי/שלוש/שלושה…
+    description: Gender agreement in cardinal numerals.
+    examples: []

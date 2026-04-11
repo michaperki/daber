@@ -1,0 +1,188 @@
+pos: preposition
+entries:
+  - lemma: עד
+    gloss: until
+    examples:
+      - he: החנות פתוחה עד חמש
+        en: The store is open until five.
+      - he: אנחנו מחכים עד מחר
+        en: We are waiting until tomorrow.
+  - lemma: למרות
+    gloss: despite
+    examples:
+      - he: הוא הגיע למרות הגשם
+        en: He arrived despite the rain.
+      - he: למרות העייפות, היא עובדת
+        en: Despite the fatigue, she works.
+  - lemma: מול
+    gloss: across from, opposite
+    suffixes:
+      1sg: מולי
+      2sg_m: מולך
+      2sg_f: מולך
+      3sg_m: מולו
+      3sg_f: מולה
+      1pl: מולנו
+      2pl_m: מולכם
+      2pl_f: מולכן
+      3pl_m: מולם
+      3pl_f: מולן
+    examples:
+      - he: הבית מול התחנה
+        en: The house is opposite the station.
+      - he: אני יושב מול הים
+        en: I sit facing the sea.
+  - lemma: בשביל
+    gloss: for
+    suffixes:
+      1sg: בשבילי
+      2sg_m: בשבילך
+      2sg_f: בשבילך
+      3sg_m: בשבילו
+      3sg_f: בשבילה
+      1pl: בשבילנו
+      2pl_m: בשבילכם
+      2pl_f: בשבילכן
+      3pl_m: בשבילם
+      3pl_f: בשבילן
+    examples:
+      - he: זה בשבילך
+        en: This is for you.
+      - he: קניתי פרחים בשביל אמא
+        en: I bought flowers for Mom.
+      - he: זה בשבילי.
+        en: This is for me.
+      - he: הבאתי מתנה בשבילך.
+        en: I brought a gift for you.
+      - he: קניתי פרחים בשבילה.
+        en: I bought flowers for her.
+      - he: הוא הכין קפה בשבילו.
+        en: He made coffee for him.
+      - he: שמרנו מקום בשבילכם.
+        en: We saved a seat for you.
+      - he: אל תעשו את זה בשבילם.
+        en: Don't do it for them.
+  - lemma: בגלל
+    gloss: because of
+    suffixes:
+      1sg: בגללי
+      2sg_m: בגללך
+      2sg_f: בגללך
+      3sg_m: בגללו
+      3sg_f: בגללה
+      1pl: בגללנו
+      2pl_m: בגללכם
+      2pl_f: בגללכן
+      3pl_m: בגללם
+      3pl_f: בגללן
+    examples:
+      - he: זה בגלל האהבה 😍
+        en: It's because of the love 😍
+      - he: הוא בלחץ בגלל הבוס
+        en: He's stressed out because of the boss
+      - he: איחרתי בגלל הפקקים
+        en: I was late because of the traffic.
+      - he: הוא עזב בגלל מזג האוויר
+        en: He left because of the weather.
+      - he: איחרתי בגללי.
+        en: I was late because of me.
+      - he: זה קרה בגללך.
+        en: It happened because of you.
+      - he: היא נעלבה בגללה.
+        en: She was offended because of her.
+      - he: אנחנו נשארנו בגללנו.
+        en: We stayed because of us.
+      - he: הם חיכו בגללכם.
+        en: They waited because of you.
+      - he: המשחק בוטל בגללם.
+        en: The game was canceled because of them.
+  - lemma: בלי
+    gloss: without
+    suffixes:
+      1sg: בלעדי
+      2sg_m: בלעדיך
+      2sg_f: בלעדייך
+      3sg_m: בלעדיו
+      3sg_f: בלעדיה
+      1pl: בלעדינו
+      2pl_m: בלעדיכם
+      2pl_f: בלעדיכן
+      3pl_m: בלעדיהם
+      3pl_f: בלעדיהן
+    examples:
+      - he: אני לא יוצא בלי מפתח
+        en: I don't go out without a key.
+      - he: היא שותה קפה בלי סוכר
+        en: She drinks coffee without sugar.
+      - he: אל תלך בלעדי.
+        en: Don't go without me.
+      - he: אי אפשר בלעדיך.
+        en: It's impossible without you.
+      - he: הוא יצא בלעדיה.
+        en: He left without her.
+      - he: הם נסעו בלעדינו.
+        en: They traveled without us.
+      - he: אל תאכלו את זה בלעדיהם.
+        en: Don't eat it without them.
+      - he: זה לא יעבוד בלעדייך.
+        en: It won't work without you.
+  - lemma: מעל
+    gloss: above
+    suffixes:
+      1sg: מעליי
+      2sg_m: מעליך
+      2sg_f: מעלייך
+      3sg_m: מעליו
+      3sg_f: מעליה
+      1pl: מעלינו
+      2pl_m: מעליכם
+      2pl_f: מעליכן
+      3pl_m: מעליהם
+      3pl_f: מעליהן
+    examples:
+      - he: המנורה מעל השולחן
+        en: The lamp is above the table.
+      - he: המטוס מעל העיר
+        en: The plane is over the city.
+      - he: השלט מעליי.
+        en: The sign is above me.
+      - he: הענן מעליך.
+        en: The cloud is above you.
+      - he: השמש מעליה.
+        en: The sun is above her.
+      - he: הגג מעלינו.
+        en: The roof is above us.
+      - he: המטוסים מעליכם.
+        en: The planes are above you.
+      - he: הכוכבים מעליהם.
+        en: The stars are above them.
+  - lemma: מתחת
+    gloss: below
+    suffixes:
+      1sg: מתחתיי
+      2sg_m: מתחתיך
+      2sg_f: מתחתייך
+      3sg_m: מתחתיו
+      3sg_f: מתחתיה
+      1pl: מתחתינו
+      2pl_m: מתחתיכם
+      2pl_f: מתחתיכן
+      3pl_m: מתחתיהם
+      3pl_f: מתחתיהן
+    examples:
+      - he: הכלב מתחת לשולחן
+        en: The dog is under the table.
+      - he: הספר מתחת למיטה
+        en: The book is under the bed.
+      - he: אל תעמוד מתחתיי.
+        en: Don't stand under me.
+      - he: אני עומד מתחתיך.
+        en: I am standing under you.
+      - he: הצל מתחתיה.
+        en: The shadow is under her.
+      - he: הכדור מתחתינו.
+        en: The ball is under us.
+      - he: אל תעברו מתחתיהם.
+        en: Do not pass under them.
+      - he: החוטים מתחתיכם.
+        en: The wires are under you.

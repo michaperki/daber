@@ -1,0 +1,98 @@
+pos: adjective
+entries:
+  - lemma: טוב
+    gloss: good
+    forms:
+      m_sg: טוב
+      f_sg: טובה
+      m_pl: טובים
+      f_pl: טובות
+    examples:
+      - he: הבית טוב
+        en: The house is good.
+      - he: הדירה טובה
+        en: The apartment is good.
+  - lemma: יפה
+    gloss: beautiful
+    forms:
+      m_sg: יפה
+      f_sg: יפה
+      m_pl: יפים
+      f_pl: יפות
+    examples:
+      - he: הבית יפה
+        en: The house is beautiful.
+      - he: הדירה יפה
+        en: The apartment is beautiful.
+  - lemma: קטן
+    gloss: small
+    forms:
+      m_sg: קטן
+      f_sg: קטנה
+      m_pl: קטנים
+      f_pl: קטנות
+    examples:
+      - he: הבית קטן
+        en: The house is small.
+      - he: הדירה קטנה
+        en: The apartment is small.
+  - lemma: נוח
+    gloss: comfortable
+    forms:
+      m_sg: נוח
+      f_sg: נוחה
+      m_pl: נוחים
+      f_pl: נוחות
+    examples:
+      - he: הבית נוח
+        en: The house is comfortable.
+      - he: הדירה נוחה
+        en: The apartment is comfortable.
+  - lemma: קל
+    gloss: easy, light
+    forms:
+      m_sg: קל
+      f_sg: קלה
+      m_pl: קלים
+      f_pl: קלות
+    examples:
+      - he: הבית קל
+        en: The house is easy, light.
+      - he: הדירה קלה
+        en: The apartment is easy, light.
+  - lemma: קשה
+    gloss: hard, difficult
+    forms:
+      m_sg: קשה
+      f_sg: קשה
+      m_pl: קשים
+      f_pl: קשות
+    examples:
+      - he: הבית קשה
+        en: The house is hard, difficult.
+      - he: הדירה קשה
+        en: The apartment is hard, difficult.
+  - lemma: גדול
+    gloss: big
+    forms:
+      m_sg: גדול
+      f_sg: גדולה
+      m_pl: גדולים
+      f_pl: גדולות
+    examples:
+      - he: הבית גדול
+        en: The house is big.
+      - he: הדירה גדולה
+        en: The apartment is big.
+  - lemma: חדש
+    gloss: new
+    forms:
+      m_sg: חדש
+      f_sg: חדשה
+      m_pl: חדשים
+      f_pl: חדשות
+    examples:
+      - he: הבית חדש
+        en: The house is new.
+      - he: הדירה חדשה
+        en: The apartment is new.

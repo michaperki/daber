@@ -1,0 +1,346 @@
+pos: preposition
+entries:
+  - lemma: אחרי
+    gloss: after
+    suffixes:
+      1sg: אחריי
+      2sg_m: אחריך
+      2sg_f: אחרייך
+      3sg_m: אחריו
+      3sg_f: אחריה
+      1pl: אחרינו
+      2pl_m: אחריכם
+      2pl_f: אחריכן
+      3pl_m: אחריהם
+      3pl_f: אחריהן
+    examples:
+      - he: אחרי העבודה אני נח
+        en: After work I rest.
+      - he: הוא בא אחרי השיעור
+        en: He comes after the lesson.
+      - he: הכלב רץ אחריי.
+        en: The dog runs after me.
+      - he: אני אבוא אחריך.
+        en: I will come after you.
+      - he: הילדים הלכו אחריה.
+        en: The children went after her.
+      - he: אל תלכו אחריהם.
+        en: Don't go after them.
+      - he: המורה נכנסה אחרינו.
+        en: The teacher came in after us.
+      - he: אני עומד אחריכם בתור.
+        en: I'm standing behind you in line.
+      - he: תתקשרי אליי אחרי שתדברי איתו
+        en: Call me after you👩‍🦰 talk to him
+      - he: הוא יבוא אחרי שהוא יבוא
+        en: He'll come after he will come
+      - he: תתקשרי אליי אחרי שתסיימי
+        en: Call 👩‍🦰me after you finish
+  - lemma: של
+    gloss: of
+    suffixes:
+      1sg: שלי
+      2sg_m: שלך
+      2sg_f: שלך
+      3sg_m: שלו
+      3sg_f: שלה
+      1pl: שלנו
+      2pl_m: שלכם
+      2pl_f: שלכן
+      3pl_m: שלהם
+      3pl_f: שלהן
+    examples:
+      - he: הספר של דני
+        en: Danny's book
+      - he: הבית של ההורים שלי
+        en: My parents' house
+  - lemma: על
+    gloss: on/about
+    suffixes:
+      1sg: עליי
+      2sg_m: עליך
+      2sg_f: עלייך
+      3sg_m: עליו
+      3sg_f: עליה
+      1pl: עלינו
+      2pl_m: עליכם
+      2pl_f: עליכן
+      3pl_m: עליהם
+      3pl_f: עליהן
+    examples:
+      - he: הספר על השולחן
+        en: The book is on the table.
+      - he: אנחנו מדברים על העבודה
+        en: We are talking about work.
+      - he: הוא חושב עליי.
+        en: He is thinking about me.
+      - he: אני מדברת עליך.
+        en: I am talking about you.
+      - he: אל תכעסו עליהם.
+        en: Don't be angry at them.
+      - he: דיברנו עלינו.
+        en: We talked about us.
+      - he: היא דיברה עליי
+        en: She talked about me
+      - he: היום הבירה עליי
+        en: Today the beer is on me
+      - he: הוא מסתכל עליה
+        en: He is looking at her
+      - he: היא מסתכלת עליו
+        en: She is looking at him
+      - he: הוא מת עליה!
+        en: He's crazy about her!
+  - lemma: ל
+    gloss: to/for
+    suffixes:
+      1sg: לי
+      2sg_m: לך
+      2sg_f: לך
+      3sg_m: לו
+      3sg_f: לה
+      1pl: לנו
+      2pl_m: לכם
+      2pl_f: לכן
+      3pl_m: להם
+      3pl_f: להן
+    examples:
+      - he: תכתבי לי בבקשה
+        en: Please write to me.
+      - he: אנחנו נוסעים לו
+        en: We are heading to him.
+  - lemma: ב
+    gloss: in/at
+    suffixes:
+      1sg: בי
+      2sg_m: בך
+      2sg_f: בך
+      3sg_m: בו
+      3sg_f: בה
+      1pl: בנו
+      2pl_m: בכם
+      2pl_f: בכן
+      3pl_m: בהם
+      3pl_f: בהן
+    examples:
+      - he: אני עובד בבית
+        en: I work at home.
+      - he: היא לומדת בבית ספר
+        en: She studies at school.
+  - lemma: מ
+    gloss: from
+    suffixes:
+      1sg: ממני
+      2sg_m: ממך
+      2sg_f: ממך
+      3sg_m: ממנו
+      3sg_f: ממנה
+      1pl: מאיתנו
+      2pl_m: מכם
+      2pl_f: מכן
+      3pl_m: מהם
+      3pl_f: מהן
+    examples:
+      - he: אני בא מהעבודה
+        en: I come from work.
+      - he: הם חזרו מהים
+        en: They came back from the sea.
+  - lemma: אצל
+    gloss: at (someone's place)
+    suffixes:
+      1sg: אצלי
+      2sg_m: אצלך
+      2sg_f: אצלך
+      3sg_m: אצלו
+      3sg_f: אצלה
+      1pl: אצלנו
+      2pl_m: אצלכם
+      2pl_f: אצלכן
+      3pl_m: אצלם
+      3pl_f: אצלן
+    examples:
+      - he: היום אנחנו אצל ההורים
+        en: Today we are at the parents' place.
+      - he: פגשתי אותו אצל דני
+        en: I met him at Dani's place.
+  - lemma: ליד
+    gloss: beside
+    suffixes:
+      1sg: לידי
+      2sg_m: לידך
+      2sg_f: לידך
+      3sg_m: לידו
+      3sg_f: לידה
+      1pl: לידנו
+      2pl_m: לידכם
+      2pl_f: לידכן
+      3pl_m: לידם
+      3pl_f: לידן
+    examples:
+      - he: החנות ליד הבית
+        en: The shop is near the house.
+      - he: הוא עומד ליד הדלת
+        en: He is standing by the door.
+      - he: הוא עומד לידי.
+        en: He is standing next to me.
+      - he: היא ישבה לידו.
+        en: She sat next to him.
+      - he: נפגש לידכם.
+        en: We will meet next to you.
+      - he: תשבי לידה.
+        en: Sit next to her.
+  - lemma: בין
+    gloss: between
+    suffixes:
+      1sg: ביני
+      2sg_m: בינך
+      2sg_f: בינך
+      3sg_m: בינו
+      3sg_f: בינה
+      1pl: בינינו
+      2pl_m: ביניכם
+      2pl_f: ביניכן
+      3pl_m: ביניהם
+      3pl_f: ביניהן
+    examples:
+      - he: הכדור בין הכיסאות
+        en: The ball is between the chairs.
+      - he: יש גשר בין שתי הערים
+        en: There is a bridge between the two cities.
+      - he: זה ביני לבינך.
+        en: This is between me and you.
+      - he: יש הבדל בינינו.
+        en: There is a difference between us.
+      - he: אל תשווה ביניהם.
+        en: Don't compare them.
+      - he: הקשר ביניכם חזק.
+        en: The connection between you is strong.
+  - lemma: בתוך
+    gloss: inside
+    suffixes:
+      1sg: בתוכי
+      2sg_m: בתוכך
+      2sg_f: בתוכך
+      3sg_m: בתוכו
+      3sg_f: בתוכה
+      1pl: בתוכנו
+      2pl_m: בתוככם
+      2pl_f: בתוככן
+      3pl_m: בתוכם
+      3pl_f: בתוכן
+    examples:
+      - he: החתול בתוך הקופסה
+        en: The cat is inside the box.
+      - he: המים בתוך הבקבוק
+        en: The water is inside the bottle.
+      - he: הסוד בתוכי.
+        en: The secret is inside me.
+      - he: האומץ בתוכך.
+        en: The courage is within you.
+      - he: השקט בתוכה.
+        en: The calm is within her.
+      - he: התקווה בתוכנו.
+        en: The hope is within us.
+      - he: האור בתוככם.
+        en: The light is within you.
+      - he: הכוח בתוכם.
+        en: The strength is within them.
+  - lemma: לפני
+    gloss: before
+    suffixes:
+      1sg: לפניי
+      2sg_m: לפניך
+      2sg_f: לפנייך
+      3sg_m: לפניו
+      3sg_f: לפניה
+      1pl: לפנינו
+      2pl_m: לפניכם
+      2pl_f: לפניכן
+      3pl_m: לפניהם
+      3pl_f: לפניהן
+    examples:
+      - he: אני מגיע לפני הפגישה
+        en: I arrive before the meeting.
+      - he: היא התקשרה לפני השיעור
+        en: She called before the class.
+      - he: אל תעמוד לפניי.
+        en: Don't stand in front of me.
+      - he: אני עומד לפניך בתור.
+        en: I'm standing in front of you in line.
+      - he: היא הגיעה לפניה.
+        en: She arrived before her.
+      - he: הם הולכים לפנינו.
+        en: They are walking ahead of us.
+      - he: המכונית נוסעת לפניהם.
+        en: The car is going ahead of them.
+      - he: אל תיכנסו לפניהם.
+        en: Don't cut in ahead of them.
+      - he: לפני שהמחיר יעלה
+        en: Before the price goes up
+      - he: המבחן הסתיים לפני שעתיים
+        en: The exam ended two hours ago
+      - he: לפני שתתחיל
+        en: before you start
+      - he: לפני שיהיה מאוחר מדי!
+        en: Before it's too late!
+  - lemma: אל
+    gloss: to, toward; God
+    suffixes:
+      1sg: אליי
+      2sg_m: אליך
+      2sg_f: אלייך
+      3sg_m: אליו
+      3sg_f: אליה
+      1pl: אלינו
+      2pl_m: אליכם
+      2pl_f: אליכן
+      3pl_m: אליהם
+      3pl_f: אליהן
+    examples:
+      - he: הוא הולך אל התחנה
+        en: He is going to the station.
+      - he: ניסע אל העיר מחר
+        en: We will travel to the city tomorrow.
+      - he: תתקשר אליי.
+        en: Call me.
+      - he: הוא רץ אליה.
+        en: He is running to her.
+      - he: אנחנו באים אליכם.
+        en: We are coming to you.
+      - he: אל תלכו אליו.
+        en: Don't go to him.
+      - he: תתקשר אליי!
+        en: Call🧔‍♂️ me!
+      - he: היא מתגעגעת אליך
+        en: She misses you 👩‍🦰
+      - he: התגעגעתי אליך!
+        en: I missed you🧔‍♂️
+      - he: היא התגעגעה אליו
+        en: She missed him
+      - he: הם התגעגעו אליי
+        en: They missed me
+  - lemma: עם
+    gloss: people, nation
+    suffixes:
+      1sg: איתי
+      2sg_m: איתך
+      2sg_f: איתך
+      3sg_m: איתו
+      3sg_f: איתה
+      1pl: איתנו
+      2pl_m: איתכם
+      2pl_f: איתכן
+      3pl_m: איתם
+      3pl_f: איתן
+    examples:
+      - he: אני בא עם חבר
+        en: I am coming with a friend.
+      - he: היא מדברת עם אמא שלה
+        en: She is talking with her mother.
+      - he: תבוא איתי.
+        en: Come with me.
+      - he: אני מדבר איתך.
+        en: I am speaking with you.
+      - he: היא הולכת איתו.
+        en: She is going with him.
+      - he: אל תלכו איתם.
+        en: Don't go with them.

@@ -1,0 +1,101 @@
+pos: noun
+entries:
+  - lemma: אי
+    gloss: island
+    forms:
+      sg: אי
+      pl: איים
+    examples:
+      - he: אנחנו מטיילים באי קטן
+        en: We are traveling on a small island.
+      - he: יש לי אי
+        en: I have a island.
+    gender: m
+  - lemma: תחנה
+    gloss: station
+    forms:
+      sg: תחנה
+      pl: תחנות
+    examples:
+      - he: נפגש בתחנה המרכזית
+        en: Let's meet at the central station.
+      - he: האוטובוס מגיע לתחנה
+        en: The bus arrives at the station.
+    gender: f
+  - lemma: אוטובוס
+    gloss: bus
+    forms:
+      sg: אוטובוס
+      pl: אוטובוסים
+    examples:
+      - he: אני נוסע באוטובוס לעבודה
+        en: I take the bus to work.
+      - he: האוטובוס מאחר היום
+        en: The bus is late today.
+    gender: m
+  - lemma: רכבת
+    gloss: train
+    forms:
+      sg: רכבת
+      pl: רכבות
+    examples:
+      - he: הרכבת יוצאת בזמן
+        en: The train departs on time.
+      - he: אנחנו נוסעים ברכבת
+        en: We are traveling by train.
+    gender: f
+  - lemma: מונית
+    gloss: taxi
+    forms:
+      sg: מונית
+      pl: מוניות
+    examples:
+      - he: לקחנו מונית לשדה התעופה
+        en: We took a taxi to the airport.
+      - he: הנהג של המונית נחמד
+        en: The taxi driver is nice.
+    gender: f
+  - lemma: עיר
+    gloss: city
+    forms:
+      sg: עיר
+      pl: ערים
+    examples:
+      - he: הם גרים באותה עיר
+        en: they live in the same city
+      - he: עיר בירה
+        en: capital city
+    gender: f
+  - lemma: מסעדה
+    gloss: restaurant
+    forms:
+      sg: מסעדה
+      pl: מסעדות
+    examples:
+      - he: אנחנו אוכלים במסעדה
+        en: We eat at the restaurant.
+      - he: המסעדה פתוחה בערב
+        en: The restaurant is open in the evening.
+    gender: f
+  - lemma: קניון
+    gloss: mall
+    forms:
+      sg: קניון
+      pl: קניונים
+    examples:
+      - he: ניפגש בקניון
+        en: We will meet at the mall.
+      - he: יש לי קניון
+        en: I have a mall.
+    gender: m
+  - lemma: שכונה
+    gloss: neighborhood
+    forms:
+      sg: שכונה
+      pl: שכונות
+    examples:
+      - he: אני גר בשכונה שקטה
+        en: I live in a quiet neighborhood.
+      - he: יש לי שכונה
+        en: I have a neighborhood.
+    gender: f

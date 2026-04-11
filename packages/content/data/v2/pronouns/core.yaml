@@ -1,0 +1,95 @@
+pos: pronoun
+entries:
+  - lemma: אתה
+    gloss: you (m sg)
+    examples:
+      - he: אתה בסדר?
+        en: Are you okay?
+  - lemma: היא
+    gloss: she
+    examples:
+      - he: היא שותה קפה
+        en: She is drinking coffee.
+  - lemma: אנחנו
+    gloss: we
+    examples:
+      - he: אנחנו הולכים לים
+        en: We are going to the beach.
+  - lemma: אתם
+    gloss: you (m pl)
+    examples:
+      - he: אתם גרים בתל אביב?
+        en: Do you (pl) live in Tel Aviv?
+  - lemma: אתן
+    gloss: you (f pl)
+    examples:
+      - he: אתן מוכנות?
+        en: Are you (f pl) ready?
+  - lemma: הן
+    gloss: they (f)
+    examples:
+      - he: הן לומדות עברית
+        en: They (f) study Hebrew.
+  - lemma: זאת
+    gloss: this/that (f)
+    examples:
+      - he: זאת בעיה
+        en: This is a problem.
+  - lemma: אלה
+    gloss: these
+    examples:
+      - he: אלה החברים שלי
+        en: These are my friends.
+  - lemma: אנו
+    gloss: we
+    examples:
+      - he: אנו כאן
+        en: We are here.
+      - he: אנו מודים לכם
+        en: We thank you (pl).
+  - lemma: הנה
+    gloss: here (behold)
+    examples:
+      - he: הנה הספר
+        en: Here is the book.
+      - he: הנה היא
+        en: Here she is.
+  - lemma: הם
+    gloss: they (m.)
+    examples:
+      - he: הם עובדים היום
+        en: They (m) are working today.
+  - lemma: הוא
+    gloss: he
+    examples:
+      - he: הוא קורא ספר
+        en: He is reading a book.
+  - lemma: אני
+    gloss: I
+    examples:
+      - he: אני בבית
+        en: I am at home.
+  - lemma: זה
+    gloss: this, that
+    examples:
+      - he: זה טוב
+        en: This is good.
+      - he: זה היה מבאס!
+        en: It was a bummer!
+      - he: זה משהו אחר לגמרי
+        en: " it’s something completely different"
+      - he: תיזהר, זה מסוכן!
+        en: Be careful 🧔‍♂️it's dangerous!
+      - he: תיזהרי, זה ממש מסוכן!
+        en: Be careful 👩‍🦰it's really dangerous!
+      - he: תחשוב על זה
+        en: Think🧔‍♂️ about it
+      - he: זה הפריע לך?
+        en: Did it bother you🧔‍♂️?
+      - he: זה מפריע לי!
+        en: It's disturbing me!
+  - lemma: את
+    gloss: you (f.sg.)
+    examples:
+      - he: את יפה
+        en: You are beautiful.

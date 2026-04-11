@@ -1,0 +1,366 @@
+pos: verb
+entries:
+  - lemma: לשרוף
+    gloss: to burn
+    primary_prep: et
+    present:
+      m_sg: שורף
+      f_sg: שורפת
+      m_pl: שורפים
+      f_pl: שורפות
+    past:
+      2sg_f: שרפת…
+      1sg: נשרפתי
+      2sg_m: נשרפת
+      3sg_m: נשרף
+      3sg_f: נשרפה
+      1pl: נשרפנו
+      2pl_m: נשרפתם
+      2pl_f: נשרפתן
+      3pl: שרפו
+    future:
+      1sg: אשרוף
+      2sg_m: תשרוף
+      2sg_f: תשרפי
+      3sg_m: ישרוף
+      3sg_f: תשרוף
+      1pl: נשרוף
+      2pl_m: תשרפו
+      2pl_f: תשרפו
+      3pl: ישרפו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לשרוף את ___
+          sense_en: burn (something)
+      transitivity: transitive
+    examples:
+      - he: לשרוף
+        en: to burn
+      - he: אאוץ זה שורף
+        en: ouch! It burns!
+    imperative:
+      sg_m: שרוף
+      sg_f: שרפי
+      pl_m: שרפו
+      pl_f: שרפו
+  - lemma: להתעורר
+    gloss: to wake up
+    primary_prep: none
+    present:
+      m_sg: מתעורר
+      f_sg: מתעוררת..
+      m_pl: מתעוררים
+      f_pl: מתעוררות
+    past:
+      1sg: התעוררתי
+      2sg_m: התעוררת
+      2sg_f: התעוררת
+      3sg_m: התעורר
+      3sg_f: התעוררה
+      1pl: התעוררנו
+      2pl_m: התעוררתם
+      2pl_f: התעוררתן
+      3pl: התעוררו
+    future:
+      1sg: אתעורר
+      2sg_m: תתעורר
+      2sg_f: תתעוררי
+      3sg_m: יתעורר
+      3sg_f: תתעורר
+      1pl: נתעורר
+      2pl_m: תתעוררו
+      2pl_f: תתעוררו
+      3pl: יתעוררו
+    imperative:
+      sg_m: התעורר
+      sg_f: התעוררי
+      pl_m: התעוררו
+      pl_f: התעוררו
+    governance:
+      frames:
+        - prep: none
+          role: comp
+          frame_he: להתעורר
+          sense_en: wake up
+      transitivity: intransitive
+    examples:
+      - he: להתעורר
+        en: to wake up
+      - he: היא מתעוררת
+        en: they are waking up
+  - lemma: לסמוך
+    gloss: to rely
+    primary_prep: al
+    present:
+      m_sg: סומך
+      f_sg: סומכת
+      m_pl: סומכים
+      f_pl: סומכות
+    past:
+      1sg: סמכתי
+      2sg_m: סמכת
+      2sg_f: סמכת
+      3sg_m: סמך
+      3sg_f: סמכה
+      1pl: סמכנו
+      2pl_m: סמכתם
+      2pl_f: סמכתן
+      3pl: סמכו
+    future:
+      1sg: אסמוך
+      2sg_m: תסמוך
+      2sg_f: תסמכי
+      3sg_m: יסמוך
+      3sg_f: תסמוך
+      1pl: נסמוך
+      2pl_m: תסמכו
+      2pl_f: תסמכו
+      3pl: יסמכו
+    imperative:
+      sg_m: סמוך
+      sg_f: סמכי
+      pl_m: סמכו
+      pl_f: סמכו
+    governance:
+      frames:
+        - prep: al
+          role: comp
+          frame_he: לסמוך על ___
+          sense_en: rely on
+      transitivity: intransitive
+    examples:
+      - he: אני סומך עליך
+        en: I rely on you.
+      - he: אפשר לסמוך עליהם
+        en: You can rely on them.
+  - lemma: להיפגש
+    gloss: to meet
+    primary_prep: im
+    present:
+      m_sg: נפגש
+      f_sg: נפגשת
+      m_pl: נפגשים
+      f_pl: נפגשות
+    past:
+      1sg: נפגשתי
+      2sg_m: נפגשת
+      2sg_f: נפגשת
+      3sg_m: נפגש
+      3sg_f: נפגשה
+      1pl: נפגשנו
+      2pl_m: נפגשתם
+      2pl_f: נפגשתן
+      3pl: נפגשו
+    future:
+      1sg: אפגש
+      2sg_m: תפגש
+      2sg_f: תפגשי
+      3sg_m: יפגש
+      3sg_f: תפגש
+      1pl: נפגש
+      2pl_m: תפגשו
+      2pl_f: תפגשו
+      3pl: יפגשו
+    imperative:
+      sg_m: היפגש
+      sg_f: היפגשי
+      pl_m: היפגשו
+      pl_f: היפגשו
+    governance:
+      frames:
+        - prep: im
+          role: comp
+          frame_he: להיפגש עם ___
+          sense_en: meet with
+      transitivity: intransitive
+    examples:
+      - he: נפגשתי עם יעל אתמול
+        en: I met with Yael yesterday.
+      - he: ניפגש מחר בבוקר
+        en: We'll meet tomorrow morning.
+  - lemma: לחכות
+    gloss: to wait
+    primary_prep: l
+    present:
+      m_sg: מחכה
+      f_sg: מחכה
+      m_pl: מחכים
+      f_pl: מחכות
+    past:
+      1sg: חיכיתי
+      2sg_m: חיכית
+      2sg_f: חיכית
+      3sg_m: חיכה
+      3sg_f: חיכתה
+      1pl: חיכינו
+      2pl_m: חיכיתם
+      2pl_f: חיכיתן
+      3pl: חיכו
+    future:
+      1sg: אחכה
+      2sg_m: תחכה
+      2sg_f: תחכי
+      3sg_m: יחכה
+      3sg_f: תחכה
+      1pl: נחכה
+      2pl_m: תחכו
+      2pl_f: תחכו
+      3pl: יחכו
+    imperative:
+      sg_m: חכה
+      sg_f: חכי
+      pl_m: חכו
+      pl_f: חכו
+    governance:
+      frames:
+        - prep: l
+          role: comp
+          frame_he: לחכות ל___
+          sense_en: wait for
+      transitivity: intransitive
+    examples:
+      - he: אנחנו מחכים לך
+        en: We are waiting for you.
+      - he: תחכה לי כאן
+        en: Wait for me here.
+      - he: אני מחכה לאוטובוס
+        en: I am waiting for the bus.
+      - he: חיכינו הרבה זמן
+        en: We waited a long time.
+  - lemma: להיזהר
+    gloss: to be careful
+    primary_prep: min
+    present:
+      m_sg: נזהר
+      f_sg: נזהרת
+      m_pl: נזהרים
+      f_pl: נזהרות
+    past:
+      1sg: נזהרתי
+      2sg_m: נזהרת
+      2sg_f: נזהרת
+      3sg_m: נזהר
+      3sg_f: נזהרה
+      1pl: נזהרנו
+      2pl_m: נזהרתם
+      2pl_f: נזהרתן
+      3pl: נזהרו
+    future:
+      1sg: אזהר
+      2sg_m: תזהר
+      2sg_f: תזהרי
+      3sg_m: יזהר
+      3sg_f: תזהר
+      1pl: נזהר
+      2pl_m: תזהרו
+      2pl_f: תזהרו
+      3pl: יזהרו
+    imperative:
+      sg_m: היזהר
+      sg_f: היזהרי
+      pl_m: היזהרו
+      pl_f: היזהרו
+    governance:
+      frames:
+        - prep: min
+          role: comp
+          frame_he: להיזהר מ___
+          sense_en: be careful of
+      transitivity: intransitive
+    examples:
+      - he: תיזהר מהמדרגה
+        en: Be careful of the step.
+      - he: אנחנו נזהרים מהגשם
+        en: We are careful about the rain.
+  - lemma: לקח
+    gloss: to take
+    primary_prep: et
+    present:
+      m_sg: לוקח
+      f_sg: לוקחת
+      m_pl: לוקחים
+      f_pl: לוקחות
+    past:
+      1sg: לקחתי
+      2sg_m: לקחת
+      2sg_f: לקחת
+      3sg_m: לקח
+      3sg_f: לקחה
+      1pl: לקחנו
+      2pl_m: לקחתם
+      2pl_f: לקחתן
+      3pl: לקחו
+    future:
+      1sg: אקח
+      2sg_m: תיקח
+      2sg_f: תיקחי
+      3sg_m: ייקח
+      3sg_f: תיקח
+      1pl: ניקח
+      2pl_m: תיקחו
+      2pl_f: תיקחו
+      3pl: ייקחו
+    imperative:
+      sg_m: קח
+      sg_f: קחי
+      pl_m: קחו
+      pl_f: קחו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לקחת את ___
+          sense_en: take (something)
+      transitivity: transitive
+    examples:
+      - he: זה לוקח ארבע שעות
+        en: it takes 4 hours
+      - he: כמה זמן זה לוקח?
+        en: how long does it take
+  - lemma: לחץ
+    gloss: to press
+    primary_prep: al
+    present:
+      m_sg: לוחץ
+      f_sg: לוחצת
+      m_pl: לוחצים
+      f_pl: לוחצות
+    past:
+      1sg: לחצתי
+      2sg_m: לחצת
+      2sg_f: לחצת
+      3sg_m: לחץ
+      3sg_f: לחצה
+      1pl: לחצנו
+      2pl_m: לחצתם
+      2pl_f: לחצתן
+      3pl: לחצו
+    future:
+      1sg: אלחץ
+      2sg_m: תלחץ
+      2sg_f: תלחצי
+      3sg_m: ילחץ
+      3sg_f: תלחץ
+      1pl: נלחץ
+      2pl_m: תלחצו
+      2pl_f: תלחצו
+      3pl: ילחצו
+    imperative:
+      sg_m: לחץ
+      sg_f: לחצי
+      pl_m: לחצו
+      pl_f: לחצו
+    governance:
+      frames:
+        - prep: al
+          role: comp
+          frame_he: ללחוץ על ___
+          sense_en: press (a button)
+      transitivity: intransitive
+    examples:
+      - he: אל תלחץ על הכפתור
+        en: Don't press the button.
+      - he: למה אתה בלחץ?
+        en: Why are you stressed?

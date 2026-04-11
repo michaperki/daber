@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Hebrew Handwriting Web</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Hebrew Handwriting</h1>
+      <nav>
+        <button id="tab-calibrate" class="tab active">Calibrate</button>
+        <button id="tab-recognize" class="tab">Recognize</button>
+        <button id="tab-practice" class="tab">Practice</button>
+        <button id="tab-vocab" class="tab">Vocab</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="left">
+        <div class="canvas-wrap">
+          <canvas id="drawCanvas"></canvas>
+        </div>
+        <div class="controls-row">
+          <button id="btn-clear">Clear</button>
+          <button id="btn-undo">Undo</button>
+        </div>
+
+        <div id="calibrate-controls" class="panel">
+          <div class="prompt">
+            <span>Draw letter:</span>
+            <span id="target-letter" class="letter"></span>
+          </div>
+          <div class="controls-row">
+            <button id="btn-save-sample">Save Sample</button>
+            <button id="btn-next-letter">Next Letter</button>
+            <button id="btn-delete-last" title="Remove the last saved sample for the current letter">Delete Last</button>
+            <button id="btn-clear-letter" title="Remove all saved samples for the current letter">Clear Letter</button>
+            <label class="inline">
+              Samples/letter
+              <input id="samples-per-letter" type="number" min="1" max="20" value="5" />
+            </label>
+          </div>
+          <div class="controls-row">
+            <button id="btn-export">Export Calibration</button>
+            <label class="file-input">
+              Import
+              <input id="file-import" type="file" accept="application/json" />
+            </label>
+            <button id="btn-reset">Reset</button>
+          </div>
+          <div class="shortcuts">
+            <small>Shortcuts: Enter = save · Space = clear · ← → = prev/next letter · Ctrl+Z = undo. Click a tile on the right to jump.</small>
+          </div>
+          <div id="calibration-progress" class="progress"></div>
+          <div id="pilot-progress" class="progress"></div>
+        </div>
+
+        <div id="recognize-controls" class="panel hidden">
+          <div class="controls-row">
+            <label class="inline">
+              Live
+              <input id="live-toggle" type="checkbox" checked />
+            </label>
+            <button id="btn-predict-once">Predict Once</button>
+          </div>
+          <div class="controls-row">
+            <label class="inline">
+              Mode
+              <select id="rec-mode" title="Centroid = average per class; KNN = vote over k most similar samples">
+                <option value="knn">KNN</option>
+                <option value="centroid">Centroid</option>
+              </select>
+            </label>
+            <label class="inline">
+              k
+              <input id="rec-k" type="number" min="1" max="25" value="5" />
+            </label>
+            <label class="inline" title="Shift-augment each stored sample for recognition (helps with pen position variance)">
+              Augment
+              <input id="rec-augment" type="checkbox" checked />
+            </label>
+          </div>
+          <div id="predictions-margin" class="margin"></div>
+          <div id="predictions" class="predictions"></div>
+          <div class="shortcuts">
+            <small>Shortcuts: Enter = predict · Space = clear · Ctrl+Z = undo</small>
+          </div>
+        </div>
+
+        <div id="practice-controls" class="panel hidden">
+          <div class="prompt">
+            <span>Draw:</span>
+            <span id="practice-target" class="letter">—</span>
+          </div>
+          <div class="controls-row">
+            <button id="btn-practice-skip" title="Give up on this letter and pick a new one">Skip</button>
+            <button id="btn-practice-reset">Reset Score</button>
+            <label class="inline" title="Top-1 minus top-2 probability required to accept">
+              Threshold
+              <input id="practice-threshold" type="number" min="0" max="1" step="0.01" value="0.10" />
+            </label>
+          </div>
+          <div id="practice-feedback" class="practice-feedback"></div>
+          <div id="practice-stats" class="practice-stats"></div>
+          <div class="shortcuts">
+            <small>Draw the prompted letter. Lift pen to submit. Space = retry · Enter = skip · Ctrl+Z = undo stroke</small>
+          </div>
+        </div>
+
+        <div id="vocab-controls" class="panel hidden">
+          <div class="prompt">
+            <span>English:</span>
+            <span id="vocab-english" class="letter" style="font-size:24px">—</span>
+          </div>
+          <div class="controls-row">
+            <button id="btn-vocab-idk" title="Reveal the Hebrew spelling">I don't know</button>
+            <button id="btn-vocab-backspace" title="Remove the last accepted letter">Backspace</button>
+            <button id="btn-vocab-skip" title="Skip to a new word">Skip</button>
+          </div>
+          <div class="prompt">
+            <span>Hebrew:</span>
+            <span id="vocab-output" class="letter"></span>
+          </div>
+          <div id="vocab-feedback" class="practice-feedback"></div>
+          <div id="vocab-answer" class="practice-feedback"></div>
+          <div class="shortcuts">
+            <small>Draw each letter; lift to submit. Space = clear · Enter = skip</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="right">
+        <div class="letters-grid" id="letters-grid"></div>
+        <div id="prototypes" class="prototypes"></div>
+      </section>
+    </main>
+
+    <footer>
+      <small>Local KNN based on your calibration. No data leaves your browser.</small>
+    </footer>
+
+    <!-- Optional large vocab dataset (generated from YAML). Safe to omit. -->
+    <script src="data/vocab-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+  </html>

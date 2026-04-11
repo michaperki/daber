@@ -1,0 +1,62 @@
+pos: adjective
+entries:
+  - lemma: אדום
+    gloss: red
+    forms:
+      m_sg: אדום
+      f_sg: אדומה
+      m_pl: אדומים
+      f_pl: אדומות
+    examples:
+      - he: הבית אדום
+        en: The house is red.
+      - he: הדירה אדומה
+        en: The apartment is red.
+  - lemma: ירוק
+    gloss: green
+    forms:
+      m_sg: ירוק
+      f_sg: ירוקה
+      m_pl: ירוקים
+      f_pl: ירוקות
+    examples:
+      - he: הבית ירוק
+        en: The house is green.
+      - he: הדירה ירוקה
+        en: The apartment is green.
+  - lemma: צהוב
+    gloss: yellow
+    forms:
+      m_sg: צהוב
+      f_sg: צהובה
+      m_pl: צהובים
+      f_pl: צהובות
+    examples:
+      - he: הבית צהוב
+        en: The house is yellow.
+      - he: הדירה צהובה
+        en: The apartment is yellow.
+  - lemma: כחול
+    gloss: blue
+    forms:
+      m_sg: כחול
+      f_sg: כחולה
+      m_pl: כחולים
+      f_pl: כחולות
+    examples:
+      - he: הבית כחול
+        en: The house is blue.
+      - he: הדירה כחולה
+        en: The apartment is blue.
+  - lemma: שחור
+    gloss: black
+    forms:
+      m_sg: שחור
+      f_sg: שחורה
+      m_pl: שחורים
+      f_pl: שחורות
+    examples:
+      - he: הבית שחור
+        en: The house is black.
+      - he: הדירה שחורה
+        en: The apartment is black.

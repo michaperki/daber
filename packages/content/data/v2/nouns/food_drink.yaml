@@ -1,0 +1,119 @@
+pos: noun
+entries:
+  - lemma: גלידה
+    gloss: ice cream
+    forms:
+      sg: גלידה
+      pl: גלידות
+    examples:
+      - he: אני אוהב גלידה
+        en: I like ice cream.
+      - he: יש לי גלידה
+        en: I have a ice cream.
+    gender: f
+  - lemma: ספל
+    gloss: mug, cup
+    forms:
+      sg: ספל
+      pl: ספלים
+    examples:
+      - he: בספל יש תה חם
+        en: There is hot tea in the mug.
+      - he: יש לי ספל
+        en: I have a mug, cup.
+    gender: m
+  - lemma: לחם
+    gloss: bread
+    forms:
+      sg: לחם
+    examples:
+      - he: אני קונה לחם טרי
+        en: I buy fresh bread.
+      - he: יש לחם במטבח
+        en: There is bread in the kitchen.
+    gender: m
+  - lemma: קפה
+    gloss: coffee
+    forms:
+      sg: קפה
+    examples:
+      - he: אני שותה קפה בבוקר
+        en: I drink coffee in the morning.
+      - he: אתה רוצה קפה?
+        en: Do you want coffee?
+    gender: m
+  - lemma: תה
+    gloss: tea
+    forms:
+      sg: תה
+    examples:
+      - he: היא שותה תה חם
+        en: She drinks hot tea.
+      - he: יש לך תה?
+        en: Do you have tea?
+    gender: m
+  - lemma: פרי
+    gloss: fruit
+    forms:
+      sg: פרי
+      pl: פירות
+    examples:
+      - he: אני אוהב פירות
+        en: I like fruits.
+      - he: יש פירות על השולחן
+        en: There are fruits on the table.
+    gender: m
+  - lemma: ירק
+    gloss: vegetable
+    forms:
+      sg: ירק
+      pl: ירקות
+    examples:
+      - he: אנחנו קונים ירקות בשוק
+        en: We buy vegetables at the market.
+      - he: אני מכין סלט ירקות
+        en: I'm making a vegetable salad.
+    gender: m
+  - lemma: חלב
+    gloss: milk
+    forms:
+      sg: חלב
+    examples:
+      - he: אין חלב במקרר
+        en: There is no milk in the fridge.
+      - he: אני שותה חלב
+        en: I drink milk.
+    gender: m
+  - lemma: עוגה
+    gloss: cake
+    forms:
+      sg: עוגה
+      pl: עוגות
+    examples:
+      - he: העוגה טעימה
+        en: The cake is tasty.
+      - he: קניתי שתי עוגות
+        en: I bought two cakes.
+    gender: f
+  - lemma: קינוח
+    gloss: dessert
+    forms:
+      sg: קינוח
+      pl: קינוחים
+    examples:
+      - he: איזה קינוח אתה רוצה?
+        en: Which dessert do you want?
+      - he: הקינוח מתוק מדי
+        en: The dessert is too sweet.
+    gender: m
+  - lemma: קנקן
+    gloss: pitcher, jug
+    forms:
+      sg: קנקן
+      pl: קנקנים
+    examples:
+      - he: הביאו קנקן מים
+        en: They brought a pitcher of water.
+      - he: יש לי קנקן
+        en: I have a pitcher, jug.
+    gender: m

@@ -1,0 +1,145 @@
+pos: verb
+entries:
+  - lemma: לצעוק
+    gloss: to shout
+    primary_prep: al
+    present:
+      m_sg: צועק
+      f_sg: צועקת
+      m_pl: צועקים
+      f_pl: צועקות
+    past:
+      1sg: צעקתי
+      2sg_m: צעקת
+      2sg_f: צעקת
+      3sg_m: צעק
+      3sg_f: צעקה
+      1pl: צעקנו
+      2pl_m: צעקתם
+      2pl_f: צעקתן
+      3pl: צעקו
+    future:
+      1sg: אצעק
+      2sg_m: תצעק
+      2sg_f: תצעקי
+      3sg_m: יצעק
+      3sg_f: תצעק
+      1pl: נצעק
+      2pl_m: תצעקו
+      2pl_f: תצעקו
+      3pl: יצעקו
+    imperative:
+      sg_m: צעק
+      sg_f: צעקי
+      pl_m: צעקו
+      pl_f: צעקו
+    governance:
+      frames:
+        - prep: al
+          role: comp
+          frame_he: לצעוק על ___
+          sense_en: shout at
+      transitivity: intransitive
+    examples:
+      - he: הוא צועק על הכלב
+        en: He shouts at the dog.
+      - he: אל תצעק עליי
+        en: Don't shout at me.
+  - lemma: לפגוש
+    gloss: to meet
+    primary_prep: et
+    present:
+      m_sg: פוגש
+      f_sg: פוגשת
+      m_pl: פוגשים
+      f_pl: פוגשות
+    past:
+      1sg: פגשתי
+      2sg_m: פגשת
+      2sg_f: פגשת
+      3sg_m: פגש
+      3sg_f: פגשה
+      1pl: פגשנו
+      2pl_m: פגשתם
+      2pl_f: פגשתן
+      3pl: פגשו
+    future:
+      1sg: אפגוש
+      2sg_m: תפגוש
+      2sg_f: תפגשי
+      3sg_m: יפגוש
+      3sg_f: תפגוש
+      1pl: נפגוש
+      2pl_m: תפגשו
+      2pl_f: תפגשו
+      3pl: יפגשו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לפגוש את ___
+          sense_en: meet (someone)
+      transitivity: transitive
+    examples:
+      - he: אני פוגש את דני
+        en: I am meeting Dani.
+      - he: הם פוגשים את המורה
+        en: They are meeting the teacher.
+      - he: אני פוגש חבר
+        en: I am meeting a friend.
+      - he: פגשתי אותה אתמול
+        en: I met her yesterday.
+    imperative:
+      sg_m: פגוש
+      sg_f: פגשי
+      pl_m: פגשו
+      pl_f: פגשו
+  - lemma: לדבר
+    gloss: to speak
+    primary_prep: im
+    present:
+      m_sg: מדבר
+      f_sg: מדברת
+      m_pl: מדברים
+      f_pl: מדברות
+    past:
+      1sg: דיברתי
+      3sg_m: דיבר
+      3sg_f: דיברה
+      1pl: דיברנו
+      3pl: דיברו
+      2sg_m: דיברת
+      2sg_f: דיברת
+      2pl_m: דיברתם
+      2pl_f: דיברתן
+    future:
+      1sg: אדבר
+      2sg_m: תדבר
+      2sg_f: תדברי
+      3sg_m: ידבר
+      1pl: נדבר
+      2pl_m: תדברו
+      3pl: ידברו
+      3sg_f: תדבר
+      2pl_f: תדברו
+    imperative:
+      sg_m: דבר
+      sg_f: דברי
+      pl_m: דברו
+      pl_f: דברו
+    governance:
+      frames:
+        - prep: im
+          role: comp
+          frame_he: לדבר עם ___
+          sense_en: talk with
+        - prep: al
+          role: comp
+          frame_he: לדבר על ___
+          sense_en: talk about
+      transitivity: intransitive
+    examples:
+      - he: אני מדבר עם דני
+        en: I am speaking with Dani.
+      - he: דיברנו על העבודה
+        en: We talked about work.

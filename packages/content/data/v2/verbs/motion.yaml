@@ -1,0 +1,136 @@
+pos: verb
+entries:
+  - lemma: להיכנס
+    gloss: to enter
+    primary_prep: l
+    present:
+      m_sg: נכנס
+      f_sg: נכנסת
+      m_pl: נכנסים
+      f_pl: נכנסות
+    past:
+      1sg: נכנסתי
+      2sg_m: נכנסת
+      2sg_f: נכנסת
+      3sg_m: נכנס
+      3sg_f: נכנסה
+      1pl: נכנסנו
+      2pl_m: נכנסתם
+      2pl_f: נכנסתן
+      3pl: נכנסו
+    future:
+      1sg: אכנס
+      2sg_m: תכנס
+      2sg_f: תכנסי
+      3sg_m: יכנס
+      3sg_f: תכנס
+      1pl: נכנס
+      2pl_m: תכנסו
+      2pl_f: תכנסו
+      3pl: יכנסו
+    imperative:
+      sg_m: היכנס
+      sg_f: היכנסי
+      pl_m: היכנסו
+      pl_f: היכנסו
+    governance:
+      frames:
+        - prep: l
+          role: comp
+          frame_he: להיכנס ל___
+          sense_en: enter
+      transitivity: intransitive
+    examples:
+      - he: אנא כנס לחדר
+        en: Please enter the room.
+      - he: היא נכנסת לבית
+        en: She enters the house.
+  - lemma: לרוץ
+    gloss: to run
+    primary_prep: none
+    present:
+      m_sg: רץ
+      f_sg: רצה
+      m_pl: רצים
+      f_pl: רצות
+    past:
+      1sg: רצתי
+      2sg_m: רצת
+      2sg_f: רצת
+      3sg_m: רץ
+      3sg_f: רצה
+      1pl: רצנו
+      2pl_m: רצתם
+      2pl_f: רצתן
+      3pl: רצו
+    future:
+      1sg: ארוץ
+      2sg_m: תרוץ
+      2sg_f: תרוצי
+      3sg_m: ירוץ
+      3sg_f: תרוץ
+      1pl: נרוץ
+      2pl_m: תרוצו
+      2pl_f: תרוצו
+      3pl: ירוצו
+    imperative:
+      sg_m: רוץ
+      sg_f: רוצי
+      pl_m: רוצו
+      pl_f: רוצו
+    governance:
+      frames:
+        - prep: none
+          frame_he: לרוץ
+          sense_en: run
+      transitivity: intransitive
+    examples:
+      - he: אני רץ בפארק
+        en: I run in the park.
+      - he: היא רצה כל בוקר
+        en: She runs every morning.
+  - lemma: לצאת
+    gloss: to go out
+    primary_prep: min
+    present:
+      m_sg: יוצא
+      f_sg: יוצאת
+      m_pl: יוצאים
+      f_pl: יוצאות
+    past:
+      1sg: יצאתי
+      2sg_m: יצאת
+      2sg_f: יצאת
+      3sg_m: יצא
+      3sg_f: יצאה
+      1pl: יצאנו
+      2pl_m: יצאתם
+      2pl_f: יצאתן
+      3pl: יצאו
+    future:
+      1sg: אצא
+      2sg_m: תצא
+      2sg_f: תצאי
+      3sg_m: יצא
+      3sg_f: תצא
+      1pl: נצא
+      2pl_m: תצאו
+      2pl_f: תצאו
+      3pl: יצאו
+    imperative:
+      sg_m: צא
+      sg_f: צאי
+      pl_m: צאו
+      pl_f: צאו
+    governance:
+      frames:
+        - prep: min
+          role: comp
+          frame_he: לצאת מ___
+          sense_en: go out of
+      transitivity: intransitive
+    examples:
+      - he: אנחנו יוצאים מהבית
+        en: We are leaving the house.
+      - he: היא יוצאת מהעבודה בשש
+        en: She leaves work at six.

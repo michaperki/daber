@@ -1,0 +1,79 @@
+pos: noun
+entries:
+  - lemma: בוקר
+    gloss: morning
+    forms:
+      sg: בוקר
+      pl: בקרים
+    examples:
+      - he: אני קם מוקדם בבוקר
+        en: I wake up early in the morning.
+      - he: בוקר טוב!
+        en: Good morning!
+    gender: m
+  - lemma: הפסקה
+    gloss: break, recess
+    forms:
+      sg: הפסקה
+      pl: הפסקות
+    examples:
+      - he: נעשה הפסקה קצרה
+        en: Let’s take a short break.
+      - he: יש לי הפסקה
+        en: I have a break, recess.
+    gender: f
+  - lemma: שנה
+    gloss: year
+    forms:
+      sg: שנה
+      pl: שנים
+    examples:
+      - he: זו השנה הראשונה שלי פה
+        en: This is my first year here.
+      - he: הוא גר שם שנה
+        en: He has lived there a year.
+    gender: f
+  - lemma: זמן
+    gloss: time
+    forms:
+      sg: זמן
+      pl: זמנים
+    examples:
+      - he: אין לי זמן
+        en: I have no time.
+      - he: יש לנו זמן מחר
+        en: We have time tomorrow.
+    gender: m
+  - lemma: פעם
+    gloss: time, once
+    forms:
+      sg: פעם
+      pl: פעמים
+    examples:
+      - he: פעם אחת
+        en: Once.
+      - he: זה קרה כמה פעמים
+        en: It happened several times.
+    gender: f
+  - lemma: יום
+    gloss: day
+    forms:
+      sg: יום
+      pl: ימים
+    examples:
+      - he: יש לי יום חופשי
+        en: I have a day off.
+      - he: יש ימים קרים בחורף
+        en: There are cold days in winter.
+    gender: m
+  - lemma: שבוע
+    gloss: week
+    forms:
+      sg: שבוע
+      pl: שבועות
+    examples:
+      - he: ניפגש בשבוע הבא
+        en: We will meet next week.
+      - he: יש לנו שבוע קשה
+        en: We have a tough week.
+    gender: m

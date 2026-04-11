@@ -1,0 +1,90 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Minimal schema for V2 curation and runtime content
+model Lexeme {
+  id              String        @id
+  lemma           String
+  language        String
+  pos             String
+  gloss           String?
+  features        Json?
+  verb_governance Json?
+  inflections     Inflection[]
+  examples        Example[]
+  v2              V2Lexeme?
+}
+
+model Inflection {
+  id              String  @id @default(cuid())
+  lexeme_id       String
+  lexeme          Lexeme  @relation(fields: [lexeme_id], references: [id])
+  form            String
+  transliteration String?
+  tense           String?
+  aspect          String?
+  person          String?
+  number          String?
+  gender          String?
+  binyan          String?
+  features        Json?
+
+  @@index([lexeme_id, tense, person, number, gender, form], map: "idx_inflection_lex_tense_person_number_gender_form")
+}
+
+model Example {
+  id            String   @id @default(cuid())
+  language      String
+  hebrew        String
+  hebrew_canon  String
+  english       String
+  quality       Int      @default(0)
+  source        String?
+
+  lexeme_id     String?
+  lexeme        Lexeme?  @relation(fields: [lexeme_id], references: [id])
+  concepts      ConceptExample[]
+
+  @@index([lexeme_id], map: "idx_example_lexeme")
+  @@index([hebrew_canon], map: "idx_example_hebrew_canon")
+}
+
+model GrammarConcept {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  label       String
+  description String
+  created_at  DateTime @default(now())
+  examples    ConceptExample[]
+}
+
+model ConceptExample {
+  concept_id String
+  concept    GrammarConcept @relation(fields: [concept_id], references: [id])
+  example_id String
+  example    Example        @relation(fields: [example_id], references: [id])
+
+  @@id([concept_id, example_id])
+  @@index([example_id], map: "idx_conceptex_example")
+}
+
+model V2Lexeme {
+  id           String   @id @default(cuid())
+  lexeme_id    String   @unique
+  lexeme       Lexeme   @relation(fields: [lexeme_id], references: [id])
+  kind         String
+  primary_prep String?
+  status       String   @default("active")
+  source       String?
+  notes        String?
+  created_at   DateTime @default(now())
+
+  @@index([status], map: "idx_v2lexeme_status")
+}

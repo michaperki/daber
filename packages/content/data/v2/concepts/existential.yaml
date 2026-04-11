@@ -1,0 +1,15 @@
+type: concept
+entries:
+  - key: existential_yesh_ein
+    label: Existential יש/אין
+    description: Existential clauses with יש/אין (often with ל‑ possessors).
+    examples:
+      - he: יש גשר בין שתי הערים
+        en: There is a bridge between the two cities.
+        anchor_lemma: בין
+      - he: יש לי מצלמה חדשה
+        en: I have a new camera.
+        anchor_lemma: מצלמה
+      - he: יש לך כרטיס?
+        en: Do you have a ticket?
+        anchor_lemma: כרטיס

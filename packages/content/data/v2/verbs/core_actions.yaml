@@ -1,0 +1,343 @@
+pos: verb
+entries:
+  - lemma: לפתוח
+    gloss: to open
+    primary_prep: et
+    present:
+      m_sg: פותח
+      f_sg: פותחת
+      m_pl: פותחים
+      f_pl: פותחות
+    past:
+      1sg: פתחתי
+      2sg_m: פתחת
+      2sg_f: פתחת
+      3sg_m: פתח
+      3sg_f: פתחה
+      1pl: פתחנו
+      2pl_m: פתחתם
+      2pl_f: פתחתן
+      3pl: פתחו
+    future:
+      1sg: אפתח
+      2sg_m: תפתח
+      2sg_f: תפתחי
+      3sg_m: יפתח
+      3sg_f: תפתח
+      1pl: נפתח
+      2pl_m: תפתחו
+      2pl_f: תפתחו
+      3pl: יפתחו
+    imperative:
+      sg_m: פתח
+      sg_f: פתחי
+      pl_m: פתחו
+      pl_f: פתחו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לפתוח את ___
+          sense_en: open (something)
+      transitivity: transitive
+    examples:
+      - he: לפתוח
+        en: to open
+      - he: הוא פותח את החלון
+        en: he is opening the window
+  - lemma: להחזיק
+    gloss: to hold
+    primary_prep: et
+    present:
+      m_sg: מחזיק
+      f_sg: מחזיקה…
+      m_pl: מחזיקים
+      f_pl: מחזיקות
+    past:
+      1sg: החזקתי
+      2sg_m: החזקת
+      2sg_f: החזקת
+      3sg_m: החזיק
+      3sg_f: החזיקה
+      1pl: החזקנו
+      2pl_m: החזקתם
+      2pl_f: החזקתן
+      3pl: החזיקו
+    future:
+      1sg: אחזיק
+      2sg_m: תחזיק
+      2sg_f: תחזיקי
+      3sg_m: יחזיק
+      3sg_f: תחזיק
+      1pl: נחזיק
+      2pl_m: תחזיקו
+      2pl_f: תחזיקו
+      3pl: יחזיקו
+    imperative:
+      sg_m: החזק
+      sg_f: החזיקי
+      pl_m: החזיקו
+      pl_f: החזיקו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: להחזיק את ___
+          sense_en: hold (something)
+        - prep: b
+          role: comp
+          frame_he: להחזיק ב___
+          sense_en: hold onto; adhere to
+      transitivity: both
+    examples:
+      - he: הוא מחזיק את התיק
+        en: He is holding the bag.
+      - he: הוא מחזיק בידית
+        en: He is holding the handle.
+  - lemma: לעזור
+    gloss: to help
+    primary_prep: l
+    present:
+      m_sg: עוזר
+      f_sg: עוזרת
+      m_pl: עוזרים
+      f_pl: עוזרות
+    past:
+      1sg: עזרתי
+      2sg_m: עזרת
+      2sg_f: עזרת
+      3sg_m: עזר
+      3sg_f: עזרה
+      1pl: עזרנו
+      2pl_m: עזרתם
+      2pl_f: עזרתן
+      3pl: עזרו
+    future:
+      1sg: אעזור
+      2sg_m: תעזור
+      2sg_f: תעזרי
+      3sg_m: יעזור
+      3sg_f: תעזור
+      1pl: נעזור
+      2pl_m: תעזרו
+      2pl_f: תעזרו
+      3pl: יעזרו
+    imperative:
+      sg_m: עזור
+      sg_f: עזרי
+      pl_m: עזרו
+      pl_f: עזרו
+    governance:
+      frames:
+        - prep: l
+          role: io
+          frame_he: לעזור ל___
+          sense_en: help (someone)
+      transitivity: intransitive
+    examples:
+      - he: אני עוזר לחבר שלי
+        en: I help my friend.
+      - he: את יכולה לעזור לי?
+        en: Can you help me?
+      - he: הוא עוזר לי
+        en: He helps me.
+      - he: עזרתי לה אתמול
+        en: I helped her yesterday.
+  - lemma: לעשות
+    gloss: to do
+    primary_prep: et
+    present:
+      m_sg: עושה
+      f_sg: עושה
+      m_pl: עושים
+      f_pl: עושות
+    past:
+      1sg: עשיתי
+      2sg_m: עשית
+      2sg_f: עשית
+      3sg_m: עשה
+      3sg_f: עשתה
+      1pl: עשינו
+      2pl_m: עשיתם
+      2pl_f: עשיתן
+      3pl: עשו
+    future:
+      1sg: אעשה
+      2sg_m: תעשה
+      2sg_f: תעשי
+      3sg_m: יעשה
+      3sg_f: תעשה
+      1pl: נעשה
+      2pl_m: תעשו
+      2pl_f: תעשו
+      3pl: יעשו
+    imperative:
+      sg_m: עשה
+      sg_f: עשי
+      pl_m: עשו
+      pl_f: עשו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לעשות את ___
+          sense_en: do (something)
+      transitivity: transitive
+    examples:
+      - he: מה אתה עושה?
+        en: What are you doing?
+      - he: אנחנו עושים שיעורים
+        en: We are doing homework.
+      - he: עשיתי את זה בעצמי
+        en: I did it by myself 👩‍🦰
+  - lemma: לקנות
+    gloss: to buy
+    primary_prep: et
+    present:
+      m_sg: קונה
+      f_sg: קונה
+      m_pl: קונים
+      f_pl: קונות
+    past:
+      1sg: קניתי
+      2sg_m: קנית
+      2sg_f: קנית
+      3sg_m: קנה
+      3sg_f: קנתה
+      1pl: קנינו
+      2pl_m: קניתם
+      2pl_f: קניתן
+      3pl: קנו
+    future:
+      1sg: אקנה
+      2sg_m: תקנה
+      2sg_f: תקני
+      3sg_m: יקנה
+      3sg_f: תקנה
+      1pl: נקנה
+      2pl_m: תקנו
+      2pl_f: תקנו
+      3pl: יקנו
+    imperative:
+      sg_m: קנה
+      sg_f: קני
+      pl_m: קנו
+      pl_f: קנו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לקנות את ___
+          sense_en: buy (something)
+      transitivity: transitive
+    examples:
+      - he: אני קונה את הספר
+        en: I am buying the book.
+      - he: הם קונים ירקות בשוק
+        en: They buy vegetables at the market.
+      - he: אני קונה חולצה
+        en: I am buying a shirt.
+      - he: קניתי ספר חדש
+        en: I bought a new book.
+  - lemma: לשלוח
+    gloss: to send
+    primary_prep: et
+    present:
+      m_sg: שולח
+      f_sg: שולחת
+      m_pl: שולחים
+      f_pl: שולחות
+    past:
+      1sg: שלחתי
+      2sg_m: שלחת
+      2sg_f: שלחת
+      3sg_m: שלח
+      3sg_f: שלחה
+      1pl: שלחנו
+      2pl_m: שלחתם
+      2pl_f: שלחתן
+      3pl: שלחו
+    future:
+      1sg: אשלח
+      2sg_m: תשלח
+      2sg_f: תשלחי
+      3sg_m: ישלח
+      3sg_f: תשלח
+      1pl: נשלח
+      2pl_m: תשלחו
+      2pl_f: תשלחו
+      3pl: ישלחו
+    imperative:
+      sg_m: שלח
+      sg_f: שלחי
+      pl_m: שלחו
+      pl_f: שלחו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לשלוח את ___
+          sense_en: send (something)
+        - prep: l
+          role: io
+          frame_he: לשלוח ל___
+          sense_en: send to (someone)
+      transitivity: both
+    examples:
+      - he: אני שולח את המכתב
+        en: I am sending the letter.
+      - he: היא שולחת הודעה לחבר
+        en: She sends a message to a friend.
+      - he: אני שולח הודעה עכשיו
+        en: I am sending a message now.
+      - he: תשלחי לי את המסמך בבקשה
+        en: Please send me the document.
+  - lemma: לכתוב
+    gloss: to write
+    primary_prep: et
+    present:
+      m_sg: כותב
+      f_sg: כותבת
+      m_pl: כותבים
+      f_pl: כותבות
+    past:
+      1sg: כתבתי
+      3sg_m: כתב
+      3sg_f: כתבה
+      1pl: כתבנו
+      3pl: כתבו
+      2sg_m: כתבת
+      2sg_f: כתבת
+      2pl_m: כתבתם
+      2pl_f: כתבתן
+    future:
+      1sg: אכתוב
+      2sg_m: תכתוב
+      2sg_f: תכתבי
+      3sg_m: יכתוב
+      1pl: נכתוב
+      2pl_m: תכתבו
+      3pl: יכתבו
+      3sg_f: תכתוב
+      2pl_f: תכתבו
+    imperative:
+      sg_m: כתוב
+      sg_f: כתבי
+      pl_m: כתבו
+      pl_f: כתבו
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לכתוב את ___
+          sense_en: write (the letter)
+        - prep: l
+          role: io
+          frame_he: לכתוב ל___
+          sense_en: write to (someone)
+      transitivity: both
+    examples:
+      - he: אני כותב את המכתב
+        en: I am writing the letter.
+      - he: הוא כותב לחבר
+        en: He is writing to a friend.

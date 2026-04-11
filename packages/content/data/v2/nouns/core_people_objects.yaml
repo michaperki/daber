@@ -1,0 +1,211 @@
+pos: noun
+entries:
+  - lemma: כרטיס
+    gloss: ticket, card
+    forms:
+      sg: כרטיס
+      pl: כרטיסים
+    examples:
+      - he: יש לך כרטיס?
+        en: Do you have a ticket?
+      - he: אני צריך כרטיס לרכבת
+        en: I need a ticket for the train.
+    gender: m
+  - lemma: בקבוק
+    gloss: bottle
+    forms:
+      sg: בקבוק
+      pl: בקבוקים
+    examples:
+      - he: יש בקבוק על השולחן
+        en: There is a bottle on the table.
+      - he: אני רואה את הבקבוק
+        en: I see the bottle.
+    gender: m
+  - lemma: ילד
+    gloss: boy
+    forms:
+      sg: ילד
+      pl: ילדים
+    examples:
+      - he: הילד משחק בפארק
+        en: The boy is playing in the park.
+      - he: יש לי שני ילדים
+        en: I have two children.
+    gender: m
+  - lemma: ילדה
+    gloss: girl
+    forms:
+      sg: ילדה
+      pl: ילדות
+    examples:
+      - he: הילדה קוראת ספר
+        en: The girl is reading a book.
+      - he: יש לי בת אחת
+        en: I have one daughter.
+    gender: f
+  - lemma: ספר
+    gloss: book
+    forms:
+      sg: ספר
+      pl: ספרים
+    examples:
+      - he: אני קורא ספר חדש
+        en: I'm reading a new book.
+      - he: יש הרבה ספרים בספריה
+        en: There are many books in the library.
+    gender: m
+  - lemma: אישור
+    gloss: confirmation
+    forms:
+      sg: אישור
+      pl: אישורים
+    examples:
+      - he: אני צריך אישור
+        en: I need a confirmation.
+      - he: יש לי אישור
+        en: I have a confirmation.
+    gender: m
+  - lemma: טלפון
+    gloss: phone
+    forms:
+      sg: טלפון
+      pl: טלפונים
+    examples:
+      - he: יש לי טלפון חדש
+        en: I have a new phone.
+      - he: הטלפון על השולחן
+        en: The phone is on the table.
+    gender: m
+  - lemma: הודעה
+    gloss: message
+    forms:
+      sg: הודעה
+      pl: הודעות
+    examples:
+      - he: שלחתי לך הודעה
+        en: I sent you a message.
+      - he: קיבלתי הודעה ממנו
+        en: I received a message from him.
+    gender: f
+  - lemma: קופסה
+    gloss: box
+    forms:
+      sg: קופסה
+      pl: קופסאות
+    examples:
+      - he: העוגיות בקופסה
+        en: The cookies are in the box.
+      - he: יש לי קופסה
+        en: I have a box.
+    gender: f
+  - lemma: אחות
+    gloss: sister; nurse
+    forms:
+      sg: אחות
+      pl: אחיות
+    examples:
+      - he: יש לי אחות קטנה
+        en: I have a little sister.
+      - he: יש לי אחות
+        en: I have a sister; nurse.
+    gender: f
+  - lemma: אמא
+    gloss: mom
+    forms:
+      sg: אמא
+      pl: אמהות
+    examples:
+      - he: אמא שלי בעבודה
+        en: My mom is at work.
+      - he: יש לי אמא
+        en: I have a mom.
+    gender: f
+  - lemma: גיטרה
+    gloss: guitar
+    forms:
+      sg: גיטרה
+      pl: גיטרות
+    examples:
+      - he: יש לי גיטרה חדשה
+        en: I have a new guitar.
+      - he: יש לי גיטרה
+        en: I have a guitar.
+    gender: f
+  - lemma: בית
+    gloss: house
+    forms:
+      sg: בית
+      pl: בתים
+    examples:
+      - he: הבית שלי קרוב לים
+        en: My house is near the sea.
+      - he: יש לי בית
+        en: I have a house.
+    gender: m
+  - lemma: כיסא
+    gloss: chair
+    forms:
+      sg: כיסא
+      pl: כיסאות
+    examples:
+      - he: למה לא תיקנת את הכיסא?
+        en: why didn't you fix the chair
+      - he: הכיסא הזה צר מידי
+        en: this chair is too narrow
+    gender: m
+  - lemma: מצלמה
+    gloss: camera
+    forms:
+      sg: מצלמה
+      pl: מצלמות
+    examples:
+      - he: יש לי מצלמה חדשה
+        en: I have a new camera.
+      - he: היא קנתה מצלמה יקרה
+        en: She bought an expensive camera.
+    gender: f
+  - lemma: מחשב
+    gloss: computer
+    forms:
+      sg: מחשב
+      pl: מחשבים
+    examples:
+      - he: יש לי מחשב חדש
+        en: I have a new computer.
+      - he: המחשבים יקרים
+        en: The computers are expensive.
+    gender: m
+  - lemma: שולחן
+    gloss: table
+    forms:
+      sg: שולחן
+      pl: שולחנות
+    examples:
+      - he: שולחן
+        en: table
+      - he: יש לי שולחן
+        en: I have a table.
+    gender: m
+  - lemma: חבר
+    gloss: friend, partner
+    forms:
+      sg: חבר
+      pl: חברים
+    examples:
+      - he: הוא חבר טוב שלי
+        en: He is my good friend.
+      - he: יש לי הרבה חברים
+        en: I have many friends.
+    gender: m
+  - lemma: מסמך
+    gloss: document
+    forms:
+      sg: מסמך
+      pl: מסמכים
+    examples:
+      - he: תחתום על המסמך
+        en: Sign the document.
+      - he: יש לי מסמך
+        en: I have a document.
+    gender: m

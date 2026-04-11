@@ -1,0 +1,389 @@
+pos: noun
+entries:
+  - lemma: שלט
+    gloss: sign
+    gender: m
+    forms:
+      sg: שלט
+      pl: שלטים
+    examples:
+      - he: השלט על הקיר
+        en: The sign is on the wall.
+  - lemma: חור
+    gloss: hole
+    gender: m
+    forms:
+      sg: חור
+      pl: חורים
+    examples:
+      - he: יש חור בגרב
+        en: There is a hole in the sock.
+  - lemma: כתם
+    gloss: stain
+    gender: m
+    forms:
+      sg: כתם
+      pl: כתמים
+    examples:
+      - he: יש כתם על החולצה
+        en: There is a stain on the shirt.
+  - lemma: מטריה
+    gloss: umbrella
+    gender: f
+    forms:
+      sg: מטריה
+      pl: מטריות
+    examples:
+      - he: קח מטריה, יורד גשם
+        en: Take an umbrella, it is raining.
+      - he: אין לי מטריה
+        en: I do not have an umbrella.
+  - lemma: ריח
+    gloss: smell, scent
+    gender: m
+    forms:
+      sg: ריח
+      pl: ריחות
+    examples:
+      - he: יש ריח טוב במטבח
+        en: There is a good smell in the kitchen.
+  - lemma: כובע
+    gloss: hat
+    gender: m
+    forms:
+      sg: כובע
+      pl: כובעים
+    examples:
+      - he: הוא לובש כובע כחול
+        en: He is wearing a blue hat.
+  - lemma: עכבר
+    gloss: mouse
+    gender: m
+    forms:
+      sg: עכבר
+      pl: עכברים
+    examples:
+      - he: החתול רודף אחרי העכבר
+        en: The cat is chasing the mouse.
+  - lemma: סיבה
+    gloss: reason
+    forms:
+      sg: סיבה
+      pl: סיבות
+    examples:
+      - he: מה הסיבה לאחרה?
+        en: What is the reason for the delay?
+    gender: f
+  - lemma: אהבה
+    gloss: love
+    forms:
+      sg: אהבה
+      pl: אהבות
+    examples:
+      - he: אהבה היא דבר חשוב
+        en: Love is an important thing.
+      - he: הם מדברים על אהבה
+        en: They are talking about love.
+    gender: f
+  - lemma: כלב
+    gloss: dog
+    forms:
+      sg: כלב
+      pl: כלבים
+    examples:
+      - he: " לא היה לי כלב"
+        en: i did'nt have a dog
+      - he: הכלב הלך לאיבוד
+        en: dog got lost
+    gender: m
+  - lemma: נוף
+    gloss: view, scenery
+    forms:
+      sg: נוף
+      pl: נופים
+    examples:
+      - he: יש כאן נוף יפה
+        en: There is a beautiful view here.
+      - he: אנחנו אוהבים את הנוף מהחלון
+        en: We like the view from the window.
+    gender: m
+  - lemma: ראש
+    gloss: head
+    forms:
+      sg: ראש
+      pl: ראשים
+    examples:
+      - he: כואב לי הראש
+        en: I have a headache.
+      - he: תרים את הראש
+        en: Lift your head.
+    gender: m
+  - lemma: שיר
+    gloss: song
+    forms:
+      sg: שיר
+      pl: שירים
+    examples:
+      - he: אני אוהב את השיר הזה
+        en: I like this song.
+      - he: הם שרים שירים יפים
+        en: They sing beautiful songs.
+    gender: m
+  - lemma: גאון
+    gloss: genius
+    forms:
+      sg: גאון
+      pl: גאונים
+    examples:
+      - he: הוא גאון במתמטיקה
+        en: He is a genius at math.
+    gender: m
+  - lemma: גבה
+    gloss: eyebrow
+    forms:
+      sg: גבה
+      pl: גבות
+    examples:
+      - he: יש לו גבות עבות
+        en: He has thick eyebrows.
+    gender: f
+  - lemma: זנב
+    gloss: tail
+    forms:
+      sg: זנב
+      pl: זנבות
+    examples:
+      - he: לכלב יש זנב ארוך
+        en: The dog has a long tail.
+    gender: m
+  - lemma: מלצר
+    gloss: waiter
+    forms:
+      sg: מלצר
+      pl: מלצרים
+    examples:
+      - he: המלצר הביא את התפריט
+        en: The waiter brought the menu.
+    gender: m
+  - lemma: ציון
+    gloss: grade, mark
+    forms:
+      sg: ציון
+      pl: ציונים
+    examples:
+      - he: קיבלתי ציון גבוה
+        en: I got a high grade.
+    gender: m
+  - lemma: אביב
+    gloss: spring
+    forms:
+      sg: אביב
+      pl: אביבים
+    examples:
+      - he: האביב יפה בישראל
+        en: Spring is beautiful in Israel.
+    gender: m
+  - lemma: אימייל
+    gloss: email
+    forms:
+      sg: אימייל
+      pl: אימיילים
+    examples:
+      - he: שלחתי לך אימייל
+        en: I sent you an email.
+    gender: m
+  - lemma: אף
+    gloss: nose; even
+    forms:
+      sg: אף
+      pl: אפים
+    examples:
+      - he: כואב לי האף
+        en: My nose hurts.
+    gender: m
+  - lemma: בקשה
+    gloss: request
+    forms:
+      sg: בקשה
+      pl: בקשות
+    examples:
+      - he: יש לי בקשה קטנה
+        en: I have a small request.
+    gender: f
+  - lemma: דרך
+    gloss: road, way
+    forms:
+      sg: דרך
+      pl: דרכים
+    examples:
+      - he: זו דרך ארוכה
+        en: This is a long way.
+      - he: אנחנו מחפשים דרך חדשה
+        en: We are looking for a new way.
+    gender: f
+  - lemma: מים
+    gloss: water
+    forms:
+      pl: מים
+    examples:
+      - he: אני שותה מים
+        en: I drink water.
+      - he: המים קרים
+        en: The water is cold.
+    gender: m
+  - lemma: מכונית
+    gloss: car
+    forms:
+      sg: מכונית
+      pl: מכוניות
+    examples:
+      - he: מכונית
+        en: car
+      - he: היא קנתה מכונית שנה שעברה
+        en: she bought a car last year
+    gender: f
+  - lemma: מצב
+    gloss: situation
+    forms:
+      sg: מצב
+      pl: מצבים
+    examples:
+      - he: המצב קשה
+        en: The situation is difficult.
+      - he: זה מצב זמני
+        en: It is a temporary situation.
+    gender: m
+  - lemma: עבודה
+    gloss: work, job
+    forms:
+      sg: עבודה
+      pl: עבודות
+    examples:
+      - he: יש לי הרבה עבודה
+        en: I have a lot of work.
+      - he: אני מחפש עבודה
+        en: I am looking for a job.
+    gender: f
+  - lemma: פירור
+    gloss: crumb
+    forms:
+      sg: פירור
+      pl: פירורים
+    examples:
+      - he: יש פירורים על השולחן
+        en: There are crumbs on the table.
+    gender: m
+  - lemma: קטע
+    gloss: segment, passage
+    forms:
+      sg: קטע
+      pl: קטעים
+    examples:
+      - he: זה קטע מצחיק
+        en: It’s a funny bit.
+    gender: m
+  - lemma: עדכון
+    gloss: update
+    forms:
+      sg: עדכון
+      pl: עדכונים
+    examples:
+      - he: קיבלנו עדכון מהצוות
+        en: We received an update from the team.
+    gender: m
+  - lemma: פרח
+    gloss: flower
+    forms:
+      sg: פרח
+      pl: פרחים
+    examples:
+      - he: הפרח יפה
+        en: The flower is beautiful.
+    gender: m
+  - lemma: שירות
+    gloss: service, restroom
+    forms:
+      sg: שירות
+      pl: שירותים
+    examples:
+      - he: השירות מצוין כאן
+        en: The service here is excellent.
+    gender: m
+  - lemma: תוצאה
+    gloss: result, outcome
+    forms:
+      sg: תוצאה
+      pl: תוצאות
+    examples:
+      - he: התוצאה ברורה
+        en: The result is clear.
+    gender: f
+  - lemma: תמונה
+    gloss: picture, image
+    forms:
+      sg: תמונה
+      pl: תמונות
+    examples:
+      - he: היא שולחת תמונה
+        en: She is sending a picture.
+    gender: f
+  - lemma: זוג
+    gloss: couple, pair
+    forms:
+      sg: זוג
+      pl: זוגות
+    examples:
+      - he: הם זוג נחמד
+        en: They are a nice couple.
+    gender: m
+  - lemma: רעיון
+    gloss: idea
+    forms:
+      sg: רעיון
+      pl: רעיונות
+    examples:
+      - he: יש לי רעיון טוב
+        en: I have a good idea.
+      - he: הרעיון שלך מצוין
+        en: Your idea is excellent.
+    gender: m
+  - lemma: סיפור
+    gloss: story
+    forms:
+      sg: סיפור
+      pl: סיפורים
+    examples:
+      - he: ספר לי סיפור
+        en: Tell me a story.
+      - he: הסיפור מעניין
+        en: The story is interesting.
+    gender: m
+  - lemma: סבא
+    gloss: grandfather
+    forms:
+      sg: סבא
+      pl: סבים
+    examples:
+      - he: סבא שלי גר בירושלים
+        en: My grandfather lives in Jerusalem.
+    gender: m
+  - lemma: סבתא
+    gloss: grandmother
+    forms:
+      sg: סבתא
+      pl: סבתות
+    examples:
+      - he: הסבתא שלי גרה בתל אביב
+        en: My grandmother lives in Tel Aviv.
+      - he: אני מבקר את סבתא בשבת
+        en: I visit grandma on Saturday.
+    gender: f
+  - lemma: סליחה
+    gloss: sorry, excuse me
+    forms:
+      sg: סליחה
+      pl: סליחות
+    examples:
+      - he: סליחה, לא שמעתי
+        en: Sorry, I did not hear.
+    gender: f

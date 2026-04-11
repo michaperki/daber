@@ -1,0 +1,338 @@
+pos: adjective
+entries:
+  - lemma: סגור
+    gloss: closed
+    forms:
+      m_sg: סגור
+      f_sg: סגורה
+      m_pl: סגורים
+      f_pl: סגורות
+    examples:
+      - he: הבית סגור
+        en: The house is closed.
+      - he: הדירה סגורה
+        en: The apartment is closed.
+  - lemma: מטומטם
+    gloss: stupid, dumb
+    forms:
+      m_sg: מטומטם
+      f_sg: מטומטמת
+      m_pl: מטומטמים
+      f_pl: מטומטמות
+    examples:
+      - he: הבית מטומטם
+        en: The house is stupid (slang).
+      - he: הדירה מטומטמת
+        en: The apartment is stupid (slang).
+  - lemma: כתוב
+    gloss: written
+    forms:
+      m_sg: כתוב
+      f_sg: כתובה
+      m_pl: כתובים
+      f_pl: כתובות
+    examples:
+      - he: הבית כתוב
+        en: The house is written.
+      - he: הדירה כתובה
+        en: The apartment is written.
+  - lemma: עמוס
+    gloss: loaded, busy
+    forms:
+      m_sg: עמוס
+      f_sg: עמוסה
+      m_pl: עמוסים
+      f_pl: עמוסות
+    examples:
+      - he: הבית עמוס
+        en: The house is busy, loaded.
+      - he: הדירה עמוסה
+        en: The apartment is busy, loaded.
+  - lemma: עצבני
+    gloss: nervous, irritable
+    forms:
+      m_sg: עצבני
+      f_sg: עצבנית
+      m_pl: עצבניים
+      f_pl: עצבניות
+    examples:
+      - he: הבית עצבני
+        en: The house is nervous, irritable.
+      - he: הדירה עצבנית
+        en: The apartment is nervous, irritable.
+  - lemma: פתוח
+    gloss: open
+    forms:
+      m_sg: פתוח
+      f_sg: פתוחה
+      m_pl: פתוחים
+      f_pl: פתוחות
+    examples:
+      - he: הבית פתוח
+        en: The house is open.
+      - he: הדירה פתוחה
+        en: The apartment is open.
+  - lemma: שכוח
+    gloss: forgetful
+    forms:
+      m_sg: שכוח
+      f_sg: שכוחה
+      m_pl: שכוחים
+      f_pl: שכוחות
+    examples:
+      - he: הבית שכוח
+        en: The house is forgotten.
+      - he: הדירה שכוחה
+        en: The apartment is forgotten.
+  - lemma: נשוי
+    gloss: married
+    forms:
+      m_sg: נשוי
+      f_sg: נשואה
+      m_pl: נשואים
+      f_pl: נשואות
+    examples:
+      - he: הבית נשוי
+        en: The house is married.
+      - he: הדירה נשואה
+        en: The apartment is married.
+  - lemma: טיפש
+    gloss: stupid, foolish
+    forms:
+      m_sg: טיפש
+      f_sg: טיפשה
+      m_pl: טיפשים
+      f_pl: טיפשות
+    examples:
+      - he: הבית טיפש
+        en: The house is stupid, dumb.
+      - he: הדירה טיפשה
+        en: The apartment is stupid, dumb.
+  - lemma: שבור
+    gloss: broken
+    forms:
+      m_sg: שבור
+      f_sg: שבורה
+      m_pl: שבורים
+      f_pl: שבורות
+    examples:
+      - he: הבית שבור
+        en: The house is broken.
+      - he: הדירה שבורה
+        en: The apartment is broken.
+  - lemma: אחר
+    gloss: other, different
+    forms:
+      m_sg: אחר
+      f_sg: אחרת
+      m_pl: אחרים
+      f_pl: אחרות
+    examples:
+      - he: הבית אחר
+        en: The house is other.
+      - he: הדירה אחרת
+        en: The apartment is other.
+  - lemma: אלרגי
+    gloss: allergic
+    forms:
+      m_sg: אלרגי
+      f_sg: אלרגית
+      m_pl: אלרגיים
+      f_pl: אלרגיות
+    examples:
+      - he: הבית אלרגי
+        en: The house is allergic.
+      - he: הדירה אלרגית
+        en: The apartment is allergic.
+  - lemma: פנוי
+    gloss: available, free
+    forms:
+      m_sg: פנוי
+      f_sg: פנויה
+      m_pl: פנויים
+      f_pl: פנויות
+    examples:
+      - he: הבית פנוי
+        en: The house is available, free.
+      - he: הדירה פנויה
+        en: The apartment is available, free.
+  - lemma: אפשרי
+    gloss: possible
+    forms:
+      m_sg: אפשרי
+      f_sg: אפשרית
+      m_pl: אפשריים
+      f_pl: אפשריות
+    examples:
+      - he: הבית אפשרי
+        en: The house is possible.
+      - he: הדירה אפשרית
+        en: The apartment is possible.
+  - lemma: ארוך
+    gloss: long
+    forms:
+      m_sg: ארוך
+      f_sg: ארוכה
+      m_pl: ארוכים
+      f_pl: ארוכות
+    examples:
+      - he: הבית ארוך
+        en: The house is long.
+      - he: הדירה ארוכה
+        en: The apartment is long.
+  - lemma: מהיר
+    gloss: fast
+    forms:
+      m_sg: מהיר
+      f_sg: מהירה
+      m_pl: מהירים
+      f_pl: מהירות
+    examples:
+      - he: הבית מהיר
+        en: The house is fast.
+      - he: הדירה מהירה
+        en: The apartment is fast.
+  - lemma: חמוד
+    gloss: cute
+    forms:
+      m_sg: חמוד
+      f_sg: חמודה
+      m_pl: חמודים
+      f_pl: חמודות
+    examples:
+      - he: הבית חמוד
+        en: The house is cute.
+      - he: הדירה חמודה
+        en: The apartment is cute.
+  - lemma: חם
+    gloss: hot
+    forms:
+      m_sg: חם
+      f_sg: חמה
+      m_pl: חמים
+      f_pl: חמות
+    examples:
+      - he: הבית חם
+        en: The house is hot.
+      - he: הדירה חמה
+        en: The apartment is hot.
+  - lemma: קר
+    gloss: cold
+    forms:
+      m_sg: קר
+      f_sg: קרה
+      m_pl: קרים
+      f_pl: קרות
+    examples:
+      - he: הבית קר
+        en: The house is cold.
+      - he: הדירה קרה
+        en: The apartment is cold.
+  - lemma: הפוך
+    gloss: opposite, reversed
+    forms:
+      m_sg: הפוך
+      f_sg: הפוכה
+      m_pl: הפוכים
+      f_pl: הפוכות
+    examples:
+      - he: הבית הפוך
+        en: The house is upside down, reverse.
+      - he: התמונה הפוכה
+        en: The picture is upside down, reverse.
+  - lemma: ראשון
+    gloss: first
+    forms:
+      m_sg: ראשון
+      f_sg: ראשונה
+      m_pl: ראשונים
+      f_pl: ראשונות
+    examples:
+      - he: הבית ראשון
+        en: The house is first.
+      - he: הדירה ראשונה
+        en: The apartment is first.
+  - lemma: מסטול
+    gloss: stoned, high
+    forms:
+      m_sg: מסטול
+      f_sg: מסטולה
+      m_pl: מסטולים
+      f_pl: מסטולות
+    examples:
+      - he: הבית מסטול
+        en: The house is stoned (slang).
+      - he: הדירה מסטולה
+        en: The apartment is stoned (slang).
+  - lemma: עקום
+    gloss: crooked, bent
+    forms:
+      m_sg: עקום
+      f_sg: עקומה
+      m_pl: עקומים
+      f_pl: עקומות
+    examples:
+      - he: הבית עקום
+        en: The house is crooked, bent.
+      - he: הדירה עקומה
+        en: The apartment is crooked, bent.
+  - lemma: חריף
+    gloss: spicy, sharp
+    forms:
+      m_sg: חריף
+      f_sg: חריפה
+      m_pl: חריפים
+      f_pl: חריפות
+    examples:
+      - he: הבית חריף
+        en: The house is spicy, sharp.
+      - he: הדירה חריפה
+        en: The apartment is spicy, sharp.
+  - lemma: מתוק
+    gloss: sweet
+    forms:
+      m_sg: מתוק
+      f_sg: מתוקה
+      m_pl: מתוקים
+      f_pl: מתוקות
+    examples:
+      - he: הבית מתוק
+        en: The house is sweet.
+      - he: הדירה מתוקה
+        en: The apartment is sweet.
+  - lemma: חכם
+    gloss: smart
+    forms:
+      m_sg: חכם
+      f_sg: חכמה
+      m_pl: חכמים
+      f_pl: חכמות
+    examples:
+      - he: הבית חכם
+        en: The house is smart.
+      - he: הדירה חכמה
+        en: The apartment is smart.
+  - lemma: רציני
+    gloss: serious
+    forms:
+      m_sg: רציני
+      f_sg: רצינית
+      m_pl: רציניים
+      f_pl: רציניות
+    examples:
+      - he: הבית רציני
+        en: The house is serious.
+      - he: הדירה רצינית
+        en: The apartment is serious.
+  - lemma: עדיף
+    gloss: preferable
+    forms:
+      m_sg: עדיף
+      f_sg: עדיפה
+      m_pl: עדיפים
+      f_pl: עדיפות
+    examples:
+      - he: הבית עדיף
+        en: The house is preferable.
+      - he: הדירה עדיפה
+        en: The apartment is preferable.

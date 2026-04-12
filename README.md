@@ -32,6 +32,9 @@ Daber/
       data/v2/        # Curated YAML lexicon (copied from HebrewHandwritingWeb)
   docs/               # Product, architecture, plan — read these first
   reference/          # Read-only snapshots from the prior prototypes
+  scripts/
+    cnn_hhd/          # Train small CNN on HHD and export TFJS
+    export_calibration_png.cjs  # Export saved samples to PNGs
 ```
 
 ## Read the docs
@@ -43,7 +46,7 @@ In suggested order:
 3. `docs/USER_FLOW.md` — onboarding and the daily steady-state loop
 4. `docs/ARCHITECTURE.md` — monorepo layout, stack, module boundaries
 5. `docs/DATA_MODEL.md` — YAML schema, sync blob schemas, Postgres tables
-6. `docs/RECOGNIZER.md` — how the KNN recognizer works
+6. `docs/RECOGNIZER.md` — how the recognizer works (KNN/Centroid, Hybrid, features)
 7. `docs/ROADMAP.md` — phased plan from MVP to sentence writing
 8. `docs/PLAN.md` — Phase 0 implementation checklist (the concrete next actions)
 9. `docs/DEPLOYMENT.md` — Heroku setup and local dev DB

@@ -73,6 +73,7 @@ export function PracticeTab() {
       augment: prefs.augment,
       prototypes,
       topN: 10,
+      expectedLetter: target,
     });
     if (!top.length) return;
     const top1 = top[0];

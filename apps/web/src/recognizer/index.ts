@@ -1,4 +1,4 @@
-import type { Ranked } from './types';
+import type { Ranked, LetterGlyph } from './types';
 import { predictByKnn, type KnnDb } from './knn';
 import { predictByCentroid, type Prototypes } from './centroid';
 import { predictByHybrid } from './hybrid';
@@ -11,6 +11,9 @@ export type PredictOpts = {
   augment?: boolean;
   prototypes: Prototypes; // per-letter calibration samples
   topN?: number;
+  // Optional expected-letter prior (Hybrid mode uses this to bias toward the
+  // expected glyph in Practice/Vocab flows). Ignored by KNN/Centroid.
+  expectedLetter?: LetterGlyph;
 };
 
 export function predictTop(vec: Float32Array, opts: PredictOpts): Ranked[] {
@@ -24,6 +27,7 @@ export function predictTop(vec: Float32Array, opts: PredictOpts): Ranked[] {
     return predictByHybrid(vec, opts.prototypes, {
       augment: opts.augment,
       topN: opts.topN ?? 5,
+      expectedLetter: opts.expectedLetter,
     });
   }
   return predictByKnn(vec, opts.prototypes as KnnDb, {

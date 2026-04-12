@@ -46,7 +46,7 @@ async function getCnnProbs(vec64x64: Float32Array): Promise<Record<LetterGlyph, 
 export async function predictByHybridAsync(
   vec: Float32Array,
   db: Prototypes,
-  opts: { augment?: boolean; topN?: number } = {},
+  opts: { augment?: boolean; topN?: number; expectedLetter?: LetterGlyph } = {},
 ): Promise<Ranked[]> {
   // 1) Prototype score from centroids
   const centroids = computeCentroids(db, opts.augment ?? false);
@@ -61,13 +61,15 @@ export async function predictByHybridAsync(
   // 2) CNN probabilities (optional)
   const cnnProbs = await getCnnProbs(vec.subarray(0, 64 * 64));
 
-  // 3) Combine: logp(cnn) + alpha(count)*proto
+  // 3) Combine: logp(cnn) + alpha(count)*proto + prior(expected)
   const combined: { letter: LetterGlyph; raw: number }[] = [];
+  const beta = opts.expectedLetter ? 0.15 : 0;
   for (const L of LETTERS) {
     const p = Math.max(1e-8, cnnProbs[L] ?? 1e-8);
     const logp = Math.log(p);
     const a = alphaFor(calibCounts[L] || 0);
-    combined.push({ letter: L, raw: logp + a * (protoRaw[L] || 0) });
+    const prior = opts.expectedLetter && L === opts.expectedLetter ? beta : 0;
+    combined.push({ letter: L, raw: logp + a * (protoRaw[L] || 0) + prior });
   }
   combined.sort((a, b) => b.raw - a.raw);
   const top = combined.slice(0, opts.topN ?? 5);
@@ -85,14 +87,19 @@ export async function predictByHybridAsync(
 export function predictByHybrid(
   vec: Float32Array,
   db: Prototypes,
-  opts: { augment?: boolean; topN?: number } = {},
+  opts: { augment?: boolean; topN?: number; expectedLetter?: LetterGlyph } = {},
 ): Ranked[] {
-  // Always return centroid-only scores synchronously. If a model is present,
+  // Always return centroid + prior scores synchronously. If a model is present,
   // callers can use predictByHybridAsync for CNN+KNN fusion.
   const centroids = computeCentroids(db, opts.augment ?? false);
+  const calibCounts: Record<LetterGlyph, number> = {} as any;
+  for (const L of LETTERS) calibCounts[L] = (db[L] || []).length;
+  const beta = opts.expectedLetter ? 0.15 : 0;
   const scored: { letter: LetterGlyph; raw: number }[] = [];
   for (const [letter, c] of Object.entries(centroids) as [LetterGlyph, Float32Array][]) {
-    scored.push({ letter, raw: dot(vec, c) });
+    const a = alphaFor(calibCounts[letter] || 0);
+    const prior = opts.expectedLetter && letter === opts.expectedLetter ? beta : 0;
+    scored.push({ letter, raw: a * dot(vec, c) + prior });
   }
   scored.sort((a, b) => b.raw - a.raw);
   const top = scored.slice(0, opts.topN ?? 5);

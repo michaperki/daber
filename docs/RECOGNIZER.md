@@ -162,6 +162,14 @@ accepted = top1.letter === expected && margin >= threshold
 
 Where `threshold` is user-tunable (default `0.10`). The margin rule is a cheap confidence check: if the recognizer is torn between two letters, we reject even if the top one happens to be correct. This prevents false-positives from boosting the accepted sample into the calibration set (which would poison future recognition).
 
+### Expected-letter prior (Hybrid mode)
+
+In Hybrid mode, scoring includes a small prior that nudges probability toward the next expected glyph in Practice/Vocab flows:
+
+  combined = logp(cnn) + alpha(count) * proto + beta * [L === expected]
+
+with `beta = 0.15`. This improves stability when two letters are close (e.g., base vs. final) without overwhelming calibration evidence.
+
 ## Final-form handling
 
 Hebrew has 5 letters with final forms at word ends:

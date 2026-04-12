@@ -18,7 +18,7 @@
     "dev:api": "npm -w apps/api run dev",
     "dev:web": "npm -w apps/web run dev",
     "heroku-postbuild": "npm run build",
-    "start": "node apps/api/dist/server.js"
+    "start": "node apps/api/dist/server.js",
+    "export:calibration": "node scripts/export_calibration_png.cjs"
   }
 }
-

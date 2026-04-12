@@ -97,6 +97,7 @@ export function VocabTab() {
       augment: prefs.augment,
       prototypes,
       topN: 10,
+      expectedLetter: (expected as LetterGlyph),
     });
     if (!top.length) return;
     const top1 = top[0];

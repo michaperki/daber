@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { getPrisma } from '../db';
+import { getPrisma } from '../db.js';
 
 const CalibrationSchema = z.object({
   version: z.literal(1),

@@ -3,9 +3,9 @@ import cors from '@fastify/cors';
 import sensible from '@fastify/sensible';
 import staticPlugin from '@fastify/static';
 import path from 'node:path';
-import { registerCalibrationRoutes } from './routes/calibration';
-import { registerProgressRoutes } from './routes/progress';
-import { registerHealthRoute } from './routes/health';
+import { registerCalibrationRoutes } from './routes/calibration.js';
+import { registerProgressRoutes } from './routes/progress.js';
+import { registerHealthRoute } from './routes/health.js';
 import fs from 'node:fs';
 
 const PORT = Number(process.env.PORT || 3000);

@@ -45,6 +45,9 @@ export function RecognizeTab() {
 
   const margin = topMargin(predictions);
   const hasCalibration = Object.keys(prototypes).length > 0;
+  // Allow Hybrid mode with a loaded CNN model even without calibration samples.
+  const hasCnn = typeof window !== 'undefined' && !!(window as any).daberCnnModel;
+  const hasRecognizer = hasCalibration || (prefs.mode === 'hybrid' && hasCnn);
 
   return (
     <>
@@ -102,8 +105,12 @@ export function RecognizeTab() {
           </label>
         </div>
 
-        {!hasCalibration ? (
-          <div class={panels.feedback}>Calibrate first to enable recognition.</div>
+        {!hasRecognizer ? (
+          <div class={panels.feedback}>
+            {prefs.mode === 'hybrid'
+              ? 'Waiting for CNN model. Ensure model files are under /models/. Or calibrate first.'
+              : 'Calibrate first to enable recognition.'}
+          </div>
         ) : predictions.length === 0 ? (
           <div class={panels.feedback}>Draw something to see predictions.</div>
         ) : (

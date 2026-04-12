@@ -53,7 +53,14 @@ export function RecognizeTab() {
     <>
       <DrawCanvas ref={canvasRef} onStrokeComplete={onStroke} />
       <div class={panels.row}>
-        <button onClick={() => canvasRef.current?.clear()}>Clear</button>
+        <button
+          onClick={() => {
+            canvasRef.current?.clear();
+            setPredictions([]);
+          }}
+        >
+          Clear
+        </button>
         <button onClick={() => canvasRef.current?.undo()}>Undo</button>
       </div>
 

@@ -19,3 +19,8 @@ pnpm-debug.log*
 # Generated content
 packages/content/dist/
 
+# Python venv / local environments
+.venv/
+venv/
+ENV/
+env/

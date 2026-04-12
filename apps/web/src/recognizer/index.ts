@@ -1,10 +1,10 @@
 import type { Ranked, LetterGlyph } from './types';
 import { predictByKnn, type KnnDb } from './knn';
 import { predictByCentroid, type Prototypes } from './centroid';
-import { predictByHybrid, getRawCnnProbs } from './hybrid';
+import { predictByHybrid, getRawCnnProbs, predictByCnn } from './hybrid';
 export { getRawCnnProbs };
 
-export type PredictMode = 'knn' | 'centroid' | 'hybrid';
+export type PredictMode = 'knn' | 'centroid' | 'hybrid' | 'cnn';
 
 export type PredictOpts = {
   mode: PredictMode;
@@ -23,6 +23,9 @@ export function predictTop(vec: Float32Array, opts: PredictOpts): Ranked[] {
       augment: opts.augment,
       topN: opts.topN ?? 5,
     });
+  }
+  if (opts.mode === 'cnn') {
+    return predictByCnn(vec, { topN: opts.topN ?? 5 });
   }
   if (opts.mode === 'hybrid') {
     return predictByHybrid(vec, opts.prototypes, {

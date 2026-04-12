@@ -37,8 +37,8 @@ export function RecognizeTab() {
       topN: 5,
     });
     setPredictions(top);
-    // CNN diagnostics: show raw CNN output when in hybrid mode
-    if (prefs.mode === 'hybrid' && hasCnn) {
+    // CNN diagnostics: show raw CNN output when in hybrid/cnn mode
+    if ((prefs.mode === 'hybrid' || prefs.mode === 'cnn') && hasCnn) {
       setCnnRaw(getRawCnnProbs(v.subarray(0, 64 * 64)).slice(0, 3));
     } else {
       setCnnRaw([]);
@@ -56,9 +56,9 @@ export function RecognizeTab() {
 
   const margin = topMargin(predictions);
   const hasCalibration = Object.keys(prototypes).length > 0;
-  // Allow Hybrid mode with a loaded CNN model even without calibration samples.
+  // Allow Hybrid/CNN modes with a loaded CNN model even without calibration samples.
   const hasCnn = typeof window !== 'undefined' && !!(window as any).daberCnnModel;
-  const hasRecognizer = hasCalibration || (prefs.mode === 'hybrid' && hasCnn);
+  const hasRecognizer = hasCalibration || ((prefs.mode === 'hybrid' || prefs.mode === 'cnn') && hasCnn);
 
   return (
     <>
@@ -90,7 +90,13 @@ export function RecognizeTab() {
         </div>
         <div class={panels.row}>
           <span style={{ fontSize: '12px', opacity: 0.8 }}>
-            {hasCnn ? 'Hybrid: CNN loaded' : 'Hybrid: no CNN (centroid/KNN only)'}
+            {prefs.mode === 'cnn'
+              ? hasCnn
+                ? 'CNN: model loaded'
+                : 'CNN: no model loaded'
+              : hasCnn
+                ? 'Hybrid: CNN loaded'
+                : 'Hybrid: no CNN (centroid/KNN only)'}
           </span>
         </div>
         <div class={panels.row}>
@@ -119,7 +125,7 @@ export function RecognizeTab() {
 
         {!hasRecognizer ? (
           <div class={panels.feedback}>
-            {prefs.mode === 'hybrid'
+            {prefs.mode === 'hybrid' || prefs.mode === 'cnn'
               ? 'Waiting for CNN model. Ensure model files are under /models/. Or calibrate first.'
               : 'Calibrate first to enable recognition.'}
           </div>

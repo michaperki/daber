@@ -94,6 +94,21 @@ export function getRawCnnProbs(vec64x64: Float32Array): { letter: LetterGlyph; p
   return entries;
 }
 
+// CNN-only predictor: rank letters by the TFJS model probabilities.
+export function predictByCnn(
+  vec: Float32Array,
+  opts: { topN?: number } = {},
+): { letter: LetterGlyph; prob: number; raw: number }[] {
+  const probs = getCnnProbsSync(vec.subarray(0, 64 * 64));
+  const out = LETTERS.map((L) => {
+    const p = probs[L] ?? 0;
+    const safe = Math.max(1e-8, p);
+    return { letter: L, prob: p, raw: Math.log(safe) };
+  });
+  out.sort((a, b) => b.prob - a.prob);
+  return out.slice(0, opts.topN ?? 5);
+}
+
 export async function predictByHybridAsync(
   vec: Float32Array,
   db: Prototypes,

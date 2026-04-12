@@ -53,6 +53,9 @@ function normalizedExpected(expected: string, atEnd: boolean): string {
 
 export function VocabTab() {
   const canvasRef = useRef<DrawCanvasHandle | null>(null);
+  // Force-remount key for the canvas to guarantee a fresh drawing surface
+  // after accepts/force-accepts (defensive against any lingering state).
+  const [canvasKey, setCanvasKey] = useState(0);
   const [state, setState] = useState<VocabState>(EMPTY_STATE);
   const [feedback, setFeedback] = useState<{ kind: 'ok' | 'bad' | 'idle'; text: string }>({
     kind: 'idle',
@@ -119,6 +122,7 @@ export function VocabTab() {
       navigator.vibrate?.(30);
       canvasRef.current?.flashAccept();
       canvasRef.current?.clear();
+      setCanvasKey((k) => k + 1);
       if (nextPos >= cur.he.length) {
         setFeedback({ kind: 'ok', text: '✓ Correct' });
         bumpVocabWord(cur.he);
@@ -167,8 +171,11 @@ export function VocabTab() {
     if (!expected) return;
     const atEnd = state.pos === cur.he.length - 1;
     const display = normalizedExpected(expected, atEnd);
-    // Do not learn from force-accepted strokes to avoid contaminating prototypes
-    // when the model was confidently wrong or the drawing was ambiguous.
+    // Learn from force-accepted strokes so the model adapts to the user's intent.
+    addCalibrationSample(
+      (atEnd ? display : toBaseForm(expected as LetterGlyph)) as LetterGlyph,
+      lastReject,
+    );
     bumpVocabLetter(true);
     setLastReject(null);
     const nextPos = state.pos + 1;
@@ -177,6 +184,7 @@ export function VocabTab() {
     navigator.vibrate?.(30);
     canvasRef.current?.flashAccept();
     canvasRef.current?.clear();
+    setCanvasKey((k) => k + 1);
     if (nextPos >= cur.he.length) {
       setFeedback({ kind: 'ok', text: '✓ Correct' });
       bumpVocabWord(cur.he);
@@ -232,7 +240,7 @@ export function VocabTab() {
 
   return (
     <>
-      <DrawCanvas ref={canvasRef} onStrokeComplete={onStroke} />
+      <DrawCanvas key={canvasKey} ref={canvasRef} onStrokeComplete={onStroke} />
       <div class={panels.row}>
         <button onClick={() => canvasRef.current?.clear()}>Clear</button>
         <button onClick={() => canvasRef.current?.undo()}>Undo</button>

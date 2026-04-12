@@ -17,6 +17,9 @@ import panels from './panels.module.css';
 // otherwise shake and let them retry. Accepted samples auto-calibrate.
 export function PracticeTab() {
   const canvasRef = useRef<DrawCanvasHandle | null>(null);
+  // Force-remount key for the canvas to guarantee a fresh drawing surface
+  // after accepts/force-accepts (defensive against any lingering state).
+  const [canvasKey, setCanvasKey] = useState(0);
   const [target, setTarget] = useState<LetterGlyph | null>(null);
   const [feedback, setFeedback] = useState<{ kind: 'ok' | 'bad' | 'idle'; text: string }>({
     kind: 'idle',
@@ -93,6 +96,7 @@ export function PracticeTab() {
       });
       navigator.vibrate?.(30);
       canvasRef.current?.flashAccept();
+      setCanvasKey((k) => k + 1);
       busyRef.current = true;
       window.setTimeout(() => {
         busyRef.current = false;
@@ -132,16 +136,17 @@ export function PracticeTab() {
 
   function forceAccept() {
     if (!lastReject || !target) return;
-    // Do not learn from force-accepted strokes to avoid contaminating prototypes
-    // when the model was confidently wrong or the drawing was ambiguous.
+    // Learn from force-accepted strokes so the model adapts to the user's intent.
+    addCalibrationSample(target, lastReject);
     bumpPracticeStats(true);
     setLastReject(null);
     setFeedback({
       kind: 'ok',
       text: `✓ ${target} (force-accepted)`,
     });
-    navigator.vibrate?.(30);
-    canvasRef.current?.flashAccept();
+      navigator.vibrate?.(30);
+      canvasRef.current?.flashAccept();
+      setCanvasKey((k) => k + 1);
     busyRef.current = true;
     window.setTimeout(() => {
       busyRef.current = false;
@@ -159,7 +164,7 @@ export function PracticeTab() {
 
   return (
     <>
-      <DrawCanvas ref={canvasRef} onStrokeComplete={onStroke} />
+      <DrawCanvas key={canvasKey} ref={canvasRef} onStrokeComplete={onStroke} />
       <div class={panels.row}>
         <button onClick={() => canvasRef.current?.clear()}>Clear</button>
         <button onClick={() => canvasRef.current?.undo()}>Undo</button>

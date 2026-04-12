@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
 import { predictTop, topMargin } from '../recognizer';
-import type { LetterGlyph } from '../recognizer/types';
+import type { LetterGlyph, Stroke } from '../recognizer/types';
 import { calibratedLetters, calibration, progress } from '../state/signals';
 import { toPrototypes } from '../storage/calibration';
 import {
@@ -62,7 +62,7 @@ export function PracticeTab() {
     canvasRef.current?.clear();
   }
 
-  function onStroke(vec: Float32Array) {
+  function onStroke(vec: Float32Array, strokes?: Stroke[]) {
     if (!target) return;
     if (busyRef.current) return;
 
@@ -87,6 +87,11 @@ export function PracticeTab() {
     bumpPracticeStats(accepted);
 
     if (accepted) {
+      // Capture raw strokes to local API for training (best-effort)
+      if (strokes && strokes.length) {
+        // Lazy import to avoid bundle impact
+        import('../storage/strokes').then(m => m.captureStroke(target, strokes).catch(() => {}));
+      }
       // Auto-calibrate from the correct draw.
       addCalibrationSample(target, vec);
       setLastReject(null);
@@ -138,6 +143,11 @@ export function PracticeTab() {
     if (!lastReject || !target) return;
     // Learn from force-accepted strokes so the model adapts to the user's intent.
     addCalibrationSample(target, lastReject);
+    // Also capture the last stroke if available
+    const s = canvasRef.current?.getStrokes?.();
+    if (s && s.length) {
+      import('../storage/strokes').then(m => m.captureStroke(target, s).catch(() => {}));
+    }
     bumpPracticeStats(true);
     setLastReject(null);
     setFeedback({

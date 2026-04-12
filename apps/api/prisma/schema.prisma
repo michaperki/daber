@@ -25,3 +25,14 @@ model DeviceProgress {
   @@map("device_progress")
 }
 
+model StrokeSample {
+  id         String   @id @default(cuid())
+  device_id  String
+  letter     String
+  split      String?
+  strokes    Json
+  created_at DateTime @default(now())
+
+  @@map("stroke_sample")
+  @@index([device_id])
+}

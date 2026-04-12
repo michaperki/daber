@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
+import type { Stroke } from '../recognizer/types';
 import { LETTERS, type LetterGlyph } from '../recognizer/types';
 import {
   calibrateLetterIdx,
@@ -84,6 +85,13 @@ export function CalibrateTab() {
     if (sum < 1e-3) return;
 
     addCalibrationSample(targetLetter, vec);
+    // Best-effort capture of raw strokes to the API for training
+    const strokes: Stroke[] | undefined = c.getStrokes?.();
+    if (strokes && strokes.length) {
+      import('../storage/strokes')
+        .then((m) => m.captureStroke(targetLetter, strokes).catch(() => {}))
+        .catch(() => {});
+    }
 
     // Auto-advance: during setup, jump to the next incomplete letter;
     // otherwise advance once the per-letter target is reached.

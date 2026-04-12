@@ -42,7 +42,6 @@ function getWatermarkImage(glyph: string, onLoad: () => void): HTMLImageElement 
   const img = new Image();
   img.src = `/letters/${glyph}.png`;
   img.onload = () => {
-    console.log('[watermark] image loaded:', glyph, img.naturalWidth, 'x', img.naturalHeight);
     _wmCache.set(glyph, img);
     onLoad();
   };
@@ -95,9 +94,7 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
 
     function fullRedraw() {
       const { w, h } = sizeRef.current;
-      const wm = watermarkRef.current;
-      console.log('[watermark] fullRedraw, wm=', wm ? 'yes' : 'null', 'w=', w);
-      redrawAll(ctx2d(), w, h, strokeWidth(), strokesRef.current, currentRef.current, wm);
+      redrawAll(ctx2d(), w, h, strokeWidth(), strokesRef.current, currentRef.current, watermarkRef.current);
     }
 
     function clear() {
@@ -222,7 +219,6 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
 
     // Load/update watermark image when watermarkLetter changes
     useEffect(() => {
-      console.log('[watermark] effect fired, letter=', watermarkLetter);
       if (!watermarkLetter) {
         watermarkRef.current = null;
         fullRedraw();

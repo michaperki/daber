@@ -50,20 +50,13 @@ def main():
 
         avg = acc / count  # 0=black/ink, 1=white/bg
 
-        # Convert to RGBA: ink pixels become dark with alpha proportional to ink density
-        # ink_density: 0 = no ink (white), 1 = full ink (black)
-        ink_density = 1.0 - avg
-        # Threshold: ignore very faint pixels (noise)
-        ink_density[ink_density < 0.05] = 0.0
-
-        rgba = np.zeros((SIZE, SIZE, 4), dtype=np.uint8)
-        rgba[:, :, 0] = 60   # dark gray R
-        rgba[:, :, 1] = 60   # dark gray G
-        rgba[:, :, 2] = 60   # dark gray B
-        rgba[:, :, 3] = (ink_density * 200).clip(0, 255).astype(np.uint8)
+        # Opaque grayscale: lift ink to light gray so it's a gentle reference.
+        # avg: 0=ink, 1=bg. Map ink→0.55 (light gray), bg→1.0 (white).
+        lifted = 0.55 + avg * 0.45
+        gray = (lifted.clip(0, 1) * 255).astype(np.uint8)
 
         out_path = OUT_DIR / f"{glyph}.png"
-        Image.fromarray(rgba, "RGBA").save(out_path)
+        Image.fromarray(gray, "L").save(out_path)
         print(f"  {glyph}: averaged {count} images -> {out_path.name}")
 
     print(f"\nDone. Output: {OUT_DIR}")

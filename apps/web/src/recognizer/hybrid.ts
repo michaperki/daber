@@ -1,6 +1,6 @@
 import type { LetterGlyph, Ranked } from './types';
 import { LETTERS } from './types';
-import { dot } from './distance';
+import { dotPixels } from './distance';
 import { computeCentroids, type Prototypes } from './centroid';
 import { normalizeUnit } from './features';
 
@@ -32,10 +32,22 @@ function softmax(arr: Float32Array): Float32Array {
   return exps;
 }
 
+function looksLikeProbabilities(arr: Float32Array): boolean {
+  if (arr.length === 0) return false;
+  let sum = 0;
+  let allPositive = true;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < -1e-6) { allPositive = false; break; }
+    sum += arr[i];
+  }
+  return allPositive && Math.abs(sum - 1) < 0.01;
+}
+
 function mapModelOutputToLetters(raw: Float32Array, labels?: string[] | null): Record<LetterGlyph, number> {
   // Prefer explicit labels if provided. If the first label looks like a stop token,
   // skip it; otherwise assume labels match LETTERS order.
-  const probs = softmax(raw);
+  // Skip softmax if the model already outputs probabilities (e.g. Keras softmax activation).
+  const probs = looksLikeProbabilities(raw) ? raw : softmax(raw);
   const outMap: Partial<Record<LetterGlyph, number>> = {};
   if (labels && labels.length === probs.length) {
     const first = String(labels[0] || '').toLowerCase();
@@ -184,7 +196,7 @@ export function debugHybridContribs(
   for (const L of LETTERS) {
     const a = alphaFor(calibCounts[L] || 0);
     const c = centroids[L];
-    const protoDot = c ? dot(q, c) : 0;
+    const protoDot = c ? dotPixels(q, c) : 0;
     const proto = a * protoDot;
     const p = Math.max(1e-8, cnnProbs[L] ?? 1e-8);
     const logp = Math.log(p);
@@ -209,7 +221,7 @@ export async function predictByHybridAsync(
   for (const L of LETTERS) {
     const arr = db[L] || [];
     calibCounts[L] = arr.length;
-    protoRaw[L] = centroids[L] ? dot(q, centroids[L]!) : 0;
+    protoRaw[L] = centroids[L] ? dotPixels(q, centroids[L]!) : 0;
   }
 
   // 2) CNN probabilities (optional)
@@ -258,7 +270,7 @@ export function predictByHybrid(
     const c = centroids[letter];
     const a = alphaFor(calibCounts[letter] || 0);
     const prior = opts.expectedLetter && letter === opts.expectedLetter ? beta : 0;
-    const proto = c ? a * dot(q, c) : 0;
+    const proto = c ? a * dotPixels(q, c) : 0;
     const logp = cnnProbs[letter] ? Math.log(Math.max(1e-8, cnnProbs[letter])) : 0;
     scored.push({ letter, raw: logp + proto + prior });
   }

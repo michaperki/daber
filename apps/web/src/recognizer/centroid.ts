@@ -1,7 +1,7 @@
 import type { LetterGlyph, Ranked } from './types';
-import { dot } from './distance';
+import { dotPixels } from './distance';
 import { normalizeUnit } from './features';
-import { augmentCardinal } from './augment';
+import { augmentRich } from './augment';
 
 export type Prototypes = Record<LetterGlyph, Float32Array[]>;
 
@@ -22,7 +22,7 @@ export function computeCentroids(
       for (let i = 0; i < dim; i++) acc[i] += v[i];
       n++;
       if (augment) {
-        for (const aug of augmentCardinal(v)) {
+        for (const aug of augmentRich(v)) {
           for (let i = 0; i < dim; i++) acc[i] += aug[i];
           n++;
         }
@@ -45,7 +45,7 @@ export function predictByCentroid(
   const q = normalizeUnit(vec);
   const scored: { letter: LetterGlyph; raw: number }[] = [];
   for (const [letter, c] of Object.entries(centroids) as [LetterGlyph, Float32Array][]) {
-    scored.push({ letter, raw: dot(q, c) });
+    scored.push({ letter, raw: dotPixels(q, c) });
   }
   scored.sort((a, b) => b.raw - a.raw);
   const top = scored.slice(0, topN);

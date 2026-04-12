@@ -3,6 +3,9 @@ CNN training on HHD (Hebrew Handwriting Dataset)
 Overview
 - Trains a small CNN on 64×64 grayscale inputs for 27 Hebrew classes (including finals).
 - Exports a TFJS model you can drop into `apps/web/public/models/` and use via Hybrid mode.
+- Includes online augmentation (rotation, elastic deformation, stroke width variation) and
+  optional skeletonization (`--thin`) to bridge the domain gap between scanned HHD images
+  and thin canvas-rasterized strokes.
 
 Quickstart
 1) Install deps in a fresh Python env (Python 3.10+):
@@ -26,23 +29,31 @@ Unicode-order mapping example (0..26):
   "20":"פ","21":"ץ","22":"צ","23":"ק","24":"ר","25":"ש","26":"ת"
 }
 
-3) Train:
-   python train.py --data data/hhd_by_letter --epochs 20 --batch 128 --out runs/hhd_cnn
+3) Train (recommended with --thin for canvas-stroke compatibility):
+   python train.py --data data/hhd_by_letter --thin --epochs 30 --batch 64 --out runs/hhd_cnn
 
-4) Convert to TFJS (two options):
-   - Using tensorflowjs_converter CLI:
+   Flags:
+   - `--thin`   Skeletonize HHD images so the model sees thin strokes (like the canvas).
+   - `--epochs` Default 30. Early stopping will halt sooner if val accuracy plateaus.
+   - `--batch`  Default 64. Smaller batches = more gradient updates per epoch.
+
+4) Export to TFJS:
+   python train.py --data data/hhd_by_letter --thin --out runs/hhd_cnn \
+     --export_tfjs apps/web/public/models/hebrew_letter_model_tuned
+
+   Or convert a saved .h5 separately:
      tensorflowjs_converter --input_format=keras --output_format=tfjs_layers_model \
        runs/hhd_cnn/model.h5 apps/web/public/models/hebrew_letter_model_tuned
-   - Or via the Python helper:
-     python train.py --export_tfjs apps/web/public/models/hebrew_letter_model_tuned
 
-5) Load in the app (optional snippet in page):
-   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-   <script>
-     (async () => { window.daberCnnModel = await tf.loadLayersModel('/models/hebrew_letter_model_tuned/model.json'); })();
-   </script>
+5) Copy labels.json alongside the model:
+   cp scripts/cnn_hhd/letters.json apps/web/public/models/hebrew_letter_model_tuned/labels.json
 
 Notes
+- The model outputs raw logits (no softmax activation). The JS inference code applies
+  softmax or detects if the model already produces probabilities.
 - Class order is fixed by `letters.json` and matches the frontend `LETTERS` array.
 - Inputs are 64×64, white background (1.0), ink dark (0.0). The trainer handles normalization.
-- If HHD structure differs, you may need to hand-map labels. The prep script writes any ambiguous files to `data/_unlabeled`.
+- Online augmentation is applied every epoch: rotation ±15°, scale ±15%, shift ±3px,
+  elastic deformation, random erosion/dilation, and Gaussian noise.
+- If HHD structure differs, you may need to hand-map labels. The prep script writes any
+  ambiguous files to `data/_unlabeled`.

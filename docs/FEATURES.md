@@ -238,9 +238,9 @@ Move feature extraction + KNN search off the main thread. Blocked on: nothing, j
 
 Service worker, manifest, icon. Blocked on: Vite PWA plugin is easy. Payoff: install-to-home-screen on iOS and Android, works offline.
 
-### L8. Own CNN model
+### L8. Own CNN model ✅ (shipped)
 
-Train a small CNN from scratch on your own calibration samples (once you have a few thousand) plus a public dataset as priors. Replace the TFJS CNN that `hebrew_drills/Daber` had. Blocked on: having enough data (collect via F2 + F5 over weeks), a training script, and a deploy path for the model file. Payoff: recognition good enough for whole-word mode.
+A small CNN (3×Conv+BN+Pool → Dense 256 → 27 logits) trained on the HHD dataset with skeletonization and online augmentation. Training pipeline: `scripts/cnn_hhd/train.py --thin`. Model outputs raw logits; the JS inference code auto-detects probabilities vs logits. See `scripts/cnn_hhd/README.md` for training instructions.
 
 ### L9. Sample upload endpoint for training
 

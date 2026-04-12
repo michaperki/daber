@@ -26,9 +26,15 @@ CNN model checks
 
 Gotchas addressed by the app
 - CNN input channels (1 vs 3) are detected automatically.
-- Outputs are softmaxed and mapped by labels; if absent, 27/28-class assumptions apply.
+- Model outputs are auto-detected: if values sum to ~1 (softmax layer), they're used as probabilities directly; otherwise softmax is applied. This prevents the double-softmax bug.
 - Queries fed to CNN/Hybrid use raw 64×64 pixels; KNN/Centroid normalize internally.
+- KNN/Centroid scoring uses pixel-only cosine similarity (4096 dims), ignoring the 3 geometry extras to reduce noise.
 
 Interpreting results
-- If CNN/Hybrid collapse to one class: labels missing/misaligned or domain mismatch; verify labels and model input shape. Consider light data augmentation or fine‑tuning.
+- If CNN/Hybrid collapse to one class: labels missing/misaligned or domain mismatch; verify labels and model input shape. Retrain with `--thin` flag to bridge domain gap.
 - If KNN underperforms Centroid on small data: try `augment = on` and `k = 7..9`.
+- Rich augmentation (rotation, scale, dilation) produces 15 variants per sample; expect ~16× scoring cost when augment is on.
+
+Offline diagnostics
+- Confusion matrix: `python scripts/cnn_hhd/confusion_matrix.py --data <path> --model <model_dir>`
+- Sample audit: `python scripts/cnn_hhd/sample_audit.py --data <path>` — generates an HTML report with random sample images per letter for visual label verification.

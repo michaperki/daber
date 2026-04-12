@@ -1,7 +1,7 @@
 import type { LetterGlyph, Ranked } from './types';
-import { dot } from './distance';
+import { dotPixels } from './distance';
 import { normalizeUnit } from './features';
-import { augmentCardinal } from './augment';
+import { augmentRich } from './augment';
 
 export type KnnDb = Record<LetterGlyph, Float32Array[]>;
 
@@ -18,7 +18,7 @@ export function buildFlatDb(db: KnnDb, augment: boolean): FlatDb {
       vectors.push(v);
       labels.push(letter);
       if (augment) {
-        for (const aug of augmentCardinal(v)) {
+        for (const aug of augmentRich(v)) {
           vectors.push(aug);
           labels.push(letter);
         }
@@ -46,7 +46,7 @@ export function predictByKnn(
 
   const sims = new Array<{ sim: number; label: LetterGlyph }>(n);
   for (let i = 0; i < n; i++) {
-    sims[i] = { sim: dot(q, flat.vectors[i]), label: flat.labels[i] };
+    sims[i] = { sim: dotPixels(q, flat.vectors[i]), label: flat.labels[i] };
   }
   sims.sort((a, b) => b.sim - a.sim);
 

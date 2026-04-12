@@ -73,6 +73,10 @@ Concatenate `[4096 pixels, widthNorm, heightNorm, aspect]`. Predictors that use 
 
 Cosine similarity of unit vectors is just a dot product. Two unit vectors `a` and `b` have cosine = `a · b ∈ [-1, 1]`. For non-negative ink features, it's in `[0, 1]` in practice. The app returns raw features from the canvas; the KNN and Centroid predictors L2-normalize the query internally before scoring. The CNN path consumes the raw 64×64 pixels directly (white background = 1 after inversion) to match training.
 
+### Pixel-only distance
+
+KNN and Centroid scoring compute cosine similarity over **only the 4096 pixel dimensions**, ignoring the 3 appended geometry features (widthNorm, heightNorm, aspect). The geometry extras are preserved in the stored vector for potential future use, but empirically they add noise to the cosine distance and hurt discrimination between similar-shaped letters. The `dotPixels()` helper computes a self-normalizing cosine on just the pixel slice.
+
 ### CNN inputs and label mapping
 
 - Input channels: the app detects whether the TFJS model expects 1 or 3 channels and supplies grayscale replicated across channels when needed.
@@ -80,7 +84,7 @@ Cosine similarity of unit vectors is just a dot product. Two unit vectors `a` an
   - If `window.daberCnnLabels` is present (array), the app maps outputs by label name. If the first label looks like a stop/pad token, it is skipped.
   - If no labels are present and the output length is 28, index 0 is treated as stop and indices 1..27 map to the built‑in `LETTERS` order.
   - If no labels are present and the output length is 27, outputs are assumed to already be in the built‑in `LETTERS` order.
-- The app applies softmax to the model outputs to handle raw logits safely.
+- The app detects whether the model already outputs probabilities (values sum to ~1) or raw logits, and applies softmax only when needed. This prevents the double-softmax problem when a Keras model has a softmax final layer.
 
 Provide `labels.json` next to `model.json` to avoid ambiguity. See `apps/web/public/models/README.txt`.
 
@@ -103,17 +107,18 @@ The quantization introduces tiny error, which is why we re-normalize after loadi
 
 ## Augmentation
 
-Real handwriting varies in where on the canvas you start. A letter drawn 2px to the left of where you drew the calibration sample looks very different to a cosine-similarity recognizer, even though it's the same letter.
+Real handwriting varies in position, rotation, and stroke thickness. A letter drawn 2px to the left of where you drew the calibration sample looks very different to a cosine-similarity recognizer, even though it's the same letter.
 
-**Cheap fix**: at recognizer-build time, for each stored sample, generate 4 shifted copies:
-- `(dx, dy) ∈ { (+1, 0), (-1, 0), (0, +1), (0, -1) }`
-- Shift the 64×64 grid by 1 pixel in each direction
-- Re-normalize each shifted variant
-- Include all variants in the KNN database
+When augmentation is enabled, each stored sample produces **15 variants**:
 
-Net effect: **~5× the effective sample count** for ~5× the recognition cost. Togglable via the Augment checkbox in the Recognize tab.
+- **Cardinal shifts** (8): ±1px and ±2px in each cardinal direction
+- **Rotations** (4): ±5° and ±10° around the grid centre
+- **Scale jitter** (2): ±10% uniform zoom
+- **Dilation** (1): morphological 3×3 box dilation (thickens strokes by ~1px)
 
-This is a direct port of `augmentFeature()` in `reference/hebrewhandwritingweb/app.js:348`.
+Each variant is re-normalized to unit length for cosine similarity. Net effect: **~16× the effective sample count**. Togglable via the Augment checkbox in the Recognize tab.
+
+The original ±1px cardinal shifts were a direct port of `augmentFeature()` in `reference/hebrewhandwritingweb/app.js:348`; the richer set was added to improve accuracy with few calibration samples.
 
 ## Scoring modes
 

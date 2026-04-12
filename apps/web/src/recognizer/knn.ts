@@ -1,7 +1,7 @@
 import type { LetterGlyph, Ranked } from './types';
 import { dotPixels } from './distance';
 import { normalizeUnit } from './features';
-import { augmentRich } from './augment';
+import { queryVariants } from './augment';
 
 export type KnnDb = Record<LetterGlyph, Float32Array[]>;
 
@@ -17,12 +17,6 @@ export function buildFlatDb(db: KnnDb, augment: boolean): FlatDb {
     for (const v of arr) {
       vectors.push(v);
       labels.push(letter);
-      if (augment) {
-        for (const aug of augmentRich(v)) {
-          vectors.push(aug);
-          labels.push(letter);
-        }
-      }
     }
   }
   return { vectors, labels };
@@ -40,20 +34,43 @@ export function predictByKnn(
 ): Ranked[] {
   // Normalize the query so cosine similarity is a pure dot product.
   const q = normalizeUnit(vec);
-  const flat = buildFlatDb(db, opts.augment ?? false);
+  const qVars = queryVariants(vec, opts.augment ?? false);
+  const flat = buildFlatDb(db, false);
   const n = flat.vectors.length;
   if (n === 0) return [];
 
-  const sims = new Array<{ sim: number; label: LetterGlyph }>(n);
-  for (let i = 0; i < n; i++) {
-    sims[i] = { sim: dotPixels(q, flat.vectors[i]), label: flat.labels[i] };
-  }
-  sims.sort((a, b) => b.sim - a.sim);
-
+  // Find top-k using query-side shift invariance and a small running buffer
+  // to avoid sorting the entire array.
   const k = Math.min(opts.k, n);
+  const buf: { sim: number; label: LetterGlyph }[] = [];
+  function bufMinIndex(): number {
+    let mi = 0;
+    for (let i = 1; i < buf.length; i++) if (buf[i].sim < buf[mi].sim) mi = i;
+    return mi;
+  }
+  for (let i = 0; i < n; i++) {
+    const v = flat.vectors[i];
+    let best = -Infinity;
+    // baseline on normalized q for the common case augment=false
+    best = Math.max(best, dotPixels(q, v));
+    if ((opts.augment ?? false) && qVars.length > 1) {
+      for (let j = 1; j < qVars.length; j++) {
+        const s = dotPixels(qVars[j], v);
+        if (s > best) best = s;
+      }
+    }
+    const item = { sim: best, label: flat.labels[i] };
+    if (buf.length < k) {
+      buf.push(item);
+    } else if (k > 0) {
+      const mi = bufMinIndex();
+      if (item.sim > buf[mi].sim) buf[mi] = item;
+    }
+  }
+  buf.sort((a, b) => b.sim - a.sim);
   const votes = new Map<LetterGlyph, number>();
-  for (let i = 0; i < k; i++) {
-    const s = sims[i];
+  for (let i = 0; i < Math.min(k, buf.length); i++) {
+    const s = buf[i];
     votes.set(s.label, (votes.get(s.label) ?? 0) + s.sim);
   }
   // Small prior boost for the expected letter — adds a fractional "virtual

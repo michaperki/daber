@@ -131,3 +131,19 @@ export function augmentRich(vec: Float32Array): Float32Array[] {
 
   return out; // 15 variants
 }
+
+// Build query-side variants for cheap translational invariance during scoring.
+// When augment=true, return unit-normalized [original, ±1px cardinal shifts].
+// When augment=false, return [normalized original] only. This avoids exploding
+// the database size and yields similar robustness at ~5x cost instead of ~16x.
+export function queryVariants(vec: Float32Array, augment: boolean): Float32Array[] {
+  if (!augment) return [normalizeUnit(vec)];
+  const variants: Float32Array[] = [];
+  // original
+  variants.push(normalizeUnit(vec));
+  // ±1px cardinal shifts
+  for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]] as [number,number][]) {
+    variants.push(normalizeUnit(shift64(vec, dx, dy)));
+  }
+  return variants;
+}

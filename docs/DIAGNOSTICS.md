@@ -33,7 +33,7 @@ Gotchas addressed by the app
 Interpreting results
 - If CNN/Hybrid collapse to one class: labels missing/misaligned or domain mismatch; verify labels and model input shape. Retrain with `--thin` flag to bridge domain gap.
 - If KNN underperforms Centroid on small data: try `augment = on` and `k = 7..9`.
-- Rich augmentation (rotation, scale, dilation) produces 15 variants per sample; expect ~16× scoring cost when augment is on.
+- Augment applies cheap query-side ±1px shifts (no DB explosion); expect ~5× scoring cost when augment is on.
 
 Offline diagnostics
 - Confusion matrix: `python scripts/cnn_hhd/confusion_matrix.py --data <path> --model <model_dir>`

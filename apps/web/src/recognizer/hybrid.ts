@@ -3,6 +3,7 @@ import { LETTERS } from './types';
 import { dotPixels } from './distance';
 import { computeCentroids, type Prototypes } from './centroid';
 import { normalizeUnit } from './features';
+import { queryVariants } from './augment';
 
 // Alpha weighting for prototype contribution as a function of calibration count
 function alphaFor(count: number): number {
@@ -248,8 +249,9 @@ export function debugHybridContribs(
   db: Prototypes,
   opts: { augment?: boolean; expectedLetter?: LetterGlyph } = {},
 ): HybridContrib[] {
-  const centroids = computeCentroids(db, opts.augment ?? false);
+  const centroids = computeCentroids(db, false);
   const q = normalizeUnit(vec);
+  const qVars = queryVariants(vec, opts.augment ?? false);
   const calibCounts: Record<LetterGlyph, number> = {} as any;
   for (const L of LETTERS) calibCounts[L] = (db[L] || []).length;
   const beta = opts.expectedLetter ? 0.15 : 0;
@@ -259,7 +261,16 @@ export function debugHybridContribs(
   for (const L of LETTERS) {
     const a = alphaFor(calibCounts[L] || 0);
     const c = centroids[L];
-    const protoDot = c ? dotPixels(q, c) : 0;
+    let protoDot = 0;
+    if (c) {
+      protoDot = dotPixels(q, c);
+      if (qVars.length > 1) {
+        for (let j = 1; j < qVars.length; j++) {
+          const s = dotPixels(qVars[j], c);
+          if (s > protoDot) protoDot = s;
+        }
+      }
+    }
     const proto = a * protoDot;
     const p = Math.max(1e-8, cnnProbs[L] ?? 1e-8);
     const logp = Math.log(p);
@@ -278,14 +289,26 @@ export async function predictByHybridAsync(
   opts: { augment?: boolean; topN?: number; expectedLetter?: LetterGlyph } = {},
 ): Promise<Ranked[]> {
   // 1) Prototype score from centroids
-  const centroids = computeCentroids(db, opts.augment ?? false);
+  const centroids = computeCentroids(db, false);
   const q = normalizeUnit(vec);
+  const qVars = queryVariants(vec, opts.augment ?? false);
   const protoRaw: Record<LetterGlyph, number> = {} as any;
   const calibCounts: Record<LetterGlyph, number> = {} as any;
   for (const L of LETTERS) {
     const arr = db[L] || [];
     calibCounts[L] = arr.length;
-    protoRaw[L] = centroids[L] ? dotPixels(q, centroids[L]!) : 0;
+    if (centroids[L]) {
+      let best = dotPixels(q, centroids[L]!);
+      if (qVars.length > 1) {
+        for (let j = 1; j < qVars.length; j++) {
+          const s = dotPixels(qVars[j], centroids[L]!);
+          if (s > best) best = s;
+        }
+      }
+      protoRaw[L] = best;
+    } else {
+      protoRaw[L] = 0;
+    }
   }
 
   // 2) CNN probabilities (optional)
@@ -324,8 +347,9 @@ export function predictByHybrid(
   opts: { augment?: boolean; topN?: number; expectedLetter?: LetterGlyph } = {},
 ): Ranked[] {
   // Synchronous fusion: use CNN probs if available, add centroid prototypes (weighted by alpha), and expected-letter prior.
-  const centroids = computeCentroids(db, opts.augment ?? false);
+  const centroids = computeCentroids(db, false);
   const q = normalizeUnit(vec);
+  const qVars = queryVariants(vec, opts.augment ?? false);
   const calibCounts: Record<LetterGlyph, number> = {} as any;
   for (const L of LETTERS) calibCounts[L] = (db[L] || []).length;
   const beta = opts.expectedLetter ? 0.04 : 0; // match centroid prior strength
@@ -339,7 +363,17 @@ export function predictByHybrid(
     const c = centroids[letter];
     const a = alphaFor(calibCounts[letter] || 0);
     const prior = opts.expectedLetter && letter === opts.expectedLetter ? beta : 0;
-    const proto = c ? a * dotPixels(q, c) : 0;
+    let protoDot = 0;
+    if (c) {
+      protoDot = dotPixels(q, c);
+      if (qVars.length > 1) {
+        for (let j = 1; j < qVars.length; j++) {
+          const s = dotPixels(qVars[j], c);
+          if (s > protoDot) protoDot = s;
+        }
+      }
+    }
+    const proto = a * protoDot;
     const p = cnnProbs[letter] ?? 0;
     const cnnScore = cnnW * CNN_GAMMA * (p - UNIFORM_P);
     scored.push({ letter, raw: proto + cnnScore + prior });

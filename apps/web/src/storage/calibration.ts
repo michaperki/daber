@@ -1,6 +1,6 @@
 import type { LetterGlyph } from '../recognizer/types';
 import { u8ToBase64, base64ToU8 } from './base64';
-import { FEATURE_SIZE, normalizeUnit } from '../recognizer/features';
+import { FEATURE_SIZE, FEATURE_PIXELS, normalizeUnit } from '../recognizer/features';
 
 export type CalibrationV1 = {
   version: 1;
@@ -70,6 +70,27 @@ export function addSample(cal: CalibrationV1, letter: LetterGlyph, vec: Float32A
 
 export function toPrototypes(cal: CalibrationV1): Record<LetterGlyph, Float32Array[]> {
   const out: Partial<Record<LetterGlyph, Float32Array[]>> = {};
+  // Light morphology to harmonize stored samples with current raster (thicker strokes).
+  function dilate64x64(src: Float32Array): Float32Array {
+    const W = 64;
+    const dst = new Float32Array(FEATURE_PIXELS);
+    for (let y = 0; y < W; y++) {
+      for (let x = 0; x < W; x++) {
+        let mx = 0;
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const ny = y + dy, nx = x + dx;
+            if (ny >= 0 && ny < W && nx >= 0 && nx < W) {
+              const v = src[ny * W + nx];
+              if (v > mx) mx = v;
+            }
+          }
+        }
+        dst[y * W + x] = mx;
+      }
+    }
+    return dst;
+  }
   for (const [letter, arr] of Object.entries(cal.samples) as [LetterGlyph, string[]][]) {
     out[letter] = arr.map((b64) => {
       const f = dequantize(base64ToU8(b64));
@@ -78,9 +99,19 @@ export function toPrototypes(cal: CalibrationV1): Record<LetterGlyph, Float32Arr
         const v = new Float32Array(FEATURE_SIZE);
         const n = Math.min(f.length, FEATURE_SIZE);
         for (let i = 0; i < n; i++) v[i] = f[i];
-        return normalizeUnit(v);
+        // Harmonize thickness for the pixel slice
+        const thick = dilate64x64(v.subarray(0, FEATURE_PIXELS));
+        const w = new Float32Array(FEATURE_SIZE);
+        w.set(thick, 0);
+        for (let i = FEATURE_PIXELS; i < FEATURE_SIZE; i++) w[i] = v[i];
+        return normalizeUnit(w);
       }
-      return normalizeUnit(f);
+      // Harmonize thickness for the pixel slice
+      const thick = dilate64x64(f.subarray(0, FEATURE_PIXELS));
+      const w = new Float32Array(FEATURE_SIZE);
+      w.set(thick, 0);
+      for (let i = FEATURE_PIXELS; i < FEATURE_SIZE; i++) w[i] = f[i];
+      return normalizeUnit(w);
     });
   }
   return out as Record<LetterGlyph, Float32Array[]>;
@@ -93,13 +124,33 @@ export function toRawVectors(cal: CalibrationV1): Record<LetterGlyph, Float32Arr
   for (const [letter, arr] of Object.entries(cal.samples) as [LetterGlyph, string[]][]) {
     out[letter] = arr.map((b64) => {
       const f = dequantize(base64ToU8(b64));
-      if (f.length !== FEATURE_SIZE) {
-        const v = new Float32Array(FEATURE_SIZE);
-        const n = Math.min(f.length, FEATURE_SIZE);
-        for (let i = 0; i < n; i++) v[i] = f[i];
-        return v;
-      }
-      return f;
+      const v = new Float32Array(FEATURE_SIZE);
+      const n = Math.min(f.length, FEATURE_SIZE);
+      for (let i = 0; i < n; i++) v[i] = f[i];
+      // Harmonize thickness for the pixel slice as well so Bench queries
+      // match prototype processing.
+      const thick = (function dilate64(src: Float32Array): Float32Array {
+        const W = 64;
+        const dst = new Float32Array(FEATURE_PIXELS);
+        for (let y = 0; y < W; y++) {
+          for (let x = 0; x < W; x++) {
+            let mx = 0;
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dx = -1; dx <= 1; dx++) {
+                const ny = y + dy, nx = x + dx;
+                if (ny >= 0 && ny < W && nx >= 0 && nx < W) {
+                  const val = src[ny * W + nx];
+                  if (val > mx) mx = val;
+                }
+              }
+            }
+            dst[y * W + x] = mx;
+          }
+        }
+        return dst;
+      })(v.subarray(0, FEATURE_PIXELS));
+      v.set(thick, 0);
+      return v;
     });
   }
   return out as Record<LetterGlyph, Float32Array[]>;

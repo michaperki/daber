@@ -10,10 +10,21 @@ function createImage(w: number, h: number): Image {
   return { w, h, data: new Float32Array(w * h) };
 }
 
+// Draw a small circular brush (radius=1) to produce canvas-like stroke width
+// instead of single-pixel thin lines. This stabilizes matching across small
+// subpixel/aliasing differences and helps close confusions.
+const BRUSH_RADIUS = 1;
 function setPixel(img: Image, x: number, y: number, v = 1) {
-  if (x < 0 || y < 0 || x >= img.w || y >= img.h) return;
-  const i = y * img.w + x;
-  img.data[i] = Math.max(img.data[i], v);
+  for (let dy = -BRUSH_RADIUS; dy <= BRUSH_RADIUS; dy++) {
+    for (let dx = -BRUSH_RADIUS; dx <= BRUSH_RADIUS; dx++) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (nx < 0 || ny < 0 || nx >= img.w || ny >= img.h) continue;
+      if (dx * dx + dy * dy > BRUSH_RADIUS * BRUSH_RADIUS) continue;
+      const i = ny * img.w + nx;
+      img.data[i] = Math.max(img.data[i], v);
+    }
+  }
 }
 
 function drawLine(img: Image, x0: number, y0: number, x1: number, y1: number) {

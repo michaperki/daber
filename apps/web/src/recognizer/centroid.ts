@@ -1,7 +1,7 @@
 import type { LetterGlyph, Ranked } from './types';
 import { dotPixels } from './distance';
 import { normalizeUnit } from './features';
-import { augmentRich } from './augment';
+import { queryVariants } from './augment';
 
 export type Prototypes = Record<LetterGlyph, Float32Array[]>;
 
@@ -21,12 +21,6 @@ export function computeCentroids(
     for (const v of arr) {
       for (let i = 0; i < dim; i++) acc[i] += v[i];
       n++;
-      if (augment) {
-        for (const aug of augmentRich(v)) {
-          for (let i = 0; i < dim; i++) acc[i] += aug[i];
-          n++;
-        }
-      }
     }
     if (!n) continue;
     for (let i = 0; i < dim; i++) acc[i] /= n;
@@ -41,8 +35,9 @@ export function predictByCentroid(
   opts: { augment?: boolean; topN?: number; expectedLetter?: LetterGlyph } = {},
 ): Ranked[] {
   const topN = opts.topN ?? 5;
-  const centroids = computeCentroids(db, opts.augment ?? false);
+  const centroids = computeCentroids(db, false);
   const q = normalizeUnit(vec);
+  const qVars = queryVariants(vec, opts.augment ?? false);
   // Small prior boost for the expected letter — helps in close calls without
   // overwhelming genuine evidence. 0.04 on raw cosine ≈ ~50% prob boost after
   // softmax with temp=10.
@@ -50,7 +45,14 @@ export function predictByCentroid(
   const scored: { letter: LetterGlyph; raw: number }[] = [];
   for (const [letter, c] of Object.entries(centroids) as [LetterGlyph, Float32Array][]) {
     const boost = letter === opts.expectedLetter ? prior : 0;
-    scored.push({ letter, raw: dotPixels(q, c) + boost });
+    let best = dotPixels(q, c);
+    if ((opts.augment ?? false) && qVars.length > 1) {
+      for (let j = 1; j < qVars.length; j++) {
+        const s = dotPixels(qVars[j], c);
+        if (s > best) best = s;
+      }
+    }
+    scored.push({ letter, raw: best + boost });
   }
   scored.sort((a, b) => b.raw - a.raw);
   const top = scored.slice(0, topN);

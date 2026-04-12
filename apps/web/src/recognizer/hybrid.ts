@@ -33,11 +33,21 @@ async function getCnnProbs(vec64x64: Float32Array): Promise<Record<LetterGlyph, 
     let sum = 0;
     const exps = Array.from(logits, (v) => { const e = Math.exp(v - max); sum += e; return e; });
     const probs = exps.map((e) => e / (sum || 1));
-    const outMap = {} as Record<LetterGlyph, number>;
-    for (let i = 0; i < LETTERS.length && i < probs.length; i++) {
-      outMap[LETTERS[i]] = probs[i];
+    const outMap: Partial<Record<LetterGlyph, number>> = {};
+    const labels = Array.isArray(win.daberCnnLabels) ? (win.daberCnnLabels as string[]) : null;
+    if (labels && labels.length === probs.length) {
+      for (let i = 0; i < probs.length; i++) {
+        const lab = String(labels[i]);
+        if ((LETTERS as string[]).includes(lab)) {
+          outMap[lab as LetterGlyph] = probs[i];
+        }
+      }
+    } else {
+      for (let i = 0; i < LETTERS.length && i < probs.length; i++) {
+        outMap[LETTERS[i]] = probs[i];
+      }
     }
-    return outMap;
+    return outMap as Record<LetterGlyph, number>;
   } catch {
     return {} as Record<LetterGlyph, number>;
   }

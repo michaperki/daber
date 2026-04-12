@@ -59,6 +59,15 @@ function mapModelOutputToLetters(raw: Float32Array, labels?: string[] | null): R
   return outMap as Record<LetterGlyph, number>;
 }
 
+function inputChannels(model: any): number {
+  try {
+    const s = model?.inputs?.[0]?.shape;
+    const c = Array.isArray(s) ? s[s.length - 1] : null;
+    if (c === 1 || c === 3) return c;
+  } catch {}
+  return 1;
+}
+
 async function getCnnProbs(vec64x64: Float32Array): Promise<Record<LetterGlyph, number>> {
   try {
     const win: any = window as any;
@@ -68,7 +77,20 @@ async function getCnnProbs(vec64x64: Float32Array): Promise<Record<LetterGlyph, 
     // Build 1x64x64x1 grayscale input in [0,1], white=1, ink=0
     const arr = new Float32Array(64 * 64);
     for (let i = 0; i < 64 * 64; i++) arr[i] = 1 - vec64x64[i];
-    const t = tf.tensor4d(arr, [1, 64, 64, 1]);
+    const channels = inputChannels(model);
+    let t;
+    if (channels === 3) {
+      const rgb = new Float32Array(64 * 64 * 3);
+      for (let i = 0; i < 64 * 64; i++) {
+        const v = arr[i];
+        rgb[i * 3 + 0] = v;
+        rgb[i * 3 + 1] = v;
+        rgb[i * 3 + 2] = v;
+      }
+      t = tf.tensor4d(rgb, [1, 64, 64, 3]);
+    } else {
+      t = tf.tensor4d(arr, [1, 64, 64, 1]);
+    }
     const out = model.predict(t);
     const logits = (await out.data()) as Float32Array;
     t.dispose?.();
@@ -88,7 +110,20 @@ function getCnnProbsSync(vec64x64: Float32Array): Record<LetterGlyph, number> {
     if (!tf || !model) return {} as Record<LetterGlyph, number>;
     const arr = new Float32Array(64 * 64);
     for (let i = 0; i < 64 * 64; i++) arr[i] = 1 - vec64x64[i];
-    const t = tf.tensor4d(arr, [1, 64, 64, 1]);
+    const channels = inputChannels(model);
+    let t;
+    if (channels === 3) {
+      const rgb = new Float32Array(64 * 64 * 3);
+      for (let i = 0; i < 64 * 64; i++) {
+        const v = arr[i];
+        rgb[i * 3 + 0] = v;
+        rgb[i * 3 + 1] = v;
+        rgb[i * 3 + 2] = v;
+      }
+      t = tf.tensor4d(rgb, [1, 64, 64, 3]);
+    } else {
+      t = tf.tensor4d(arr, [1, 64, 64, 1]);
+    }
     const out = model.predict(t);
     const logits = out.dataSync ? out.dataSync() as Float32Array : new Float32Array(0);
     t.dispose?.();

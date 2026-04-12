@@ -10,10 +10,19 @@ export function redrawAll(
   strokeWidth: number,
   strokes: Stroke[],
   current: Stroke,
+  watermark?: HTMLImageElement | null,
 ) {
   ctx.save();
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, width, height);
+  // Draw watermark centered at low opacity, under strokes
+  if (watermark && watermark.complete && watermark.naturalWidth > 0) {
+    const pad = width * 0.1;
+    const sz = width - pad * 2;
+    ctx.globalAlpha = 0.13;
+    ctx.drawImage(watermark, pad, pad, sz, sz);
+    ctx.globalAlpha = 1;
+  }
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.strokeStyle = '#000';

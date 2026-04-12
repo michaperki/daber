@@ -44,6 +44,15 @@
   align-items: center;
 }
 
+.modeSelect {
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+}
+
 .gear {
   font-size: 16px;
 }

@@ -9,7 +9,6 @@ import {
   addCalibrationSample,
   bumpVocabLetter,
   bumpVocabWord,
-  updatePrefs,
 } from '../storage/mutations';
 import { randomVocabEntry, vocab, type VocabEntry } from '../content';
 import panels from './panels.module.css';
@@ -257,14 +256,6 @@ export function VocabTab() {
           <button onClick={onSkip} title="Skip to a new word">
             Skip
           </button>
-          <label class="inline" title="Use CNN + KNN fusion if a model is available; otherwise falls back to Centroid">
-            Hybrid
-            <input
-              type="checkbox"
-              checked={prefs.mode === 'hybrid'}
-              onChange={(e) => updatePrefs({ mode: (e.target as HTMLInputElement).checked ? 'hybrid' : 'knn' })}
-            />
-          </label>
         </div>
         <div class={panels.prompt}>
           <span class={panels.promptLabel}>Hebrew:</span>

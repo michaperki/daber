@@ -1,6 +1,7 @@
 import { useEffect } from 'preact/hooks';
 import styles from './app.module.css';
-import { activeTab, rightRailOpen, settingsOpen, syncStatus, type TabId } from './state/signals';
+import { activeTab, rightRailOpen, settingsOpen, syncStatus, progress, type TabId } from './state/signals';
+import { updatePrefs } from './storage/mutations';
 import { CalibrateTab } from './ui/CalibrateTab';
 import { RecognizeTab } from './ui/RecognizeTab';
 import { PracticeTab } from './ui/PracticeTab';
@@ -85,6 +86,17 @@ export function App() {
         </nav>
 
         <div class={styles.topBarActions}>
+          <select
+            class={styles.modeSelect}
+            value={progress.value.prefs.mode}
+            onChange={(e) => updatePrefs({ mode: (e.target as HTMLSelectElement).value as 'knn' | 'centroid' | 'hybrid' })}
+            title="Recognition mode"
+            aria-label="Recognition mode"
+          >
+            <option value="knn">KNN</option>
+            <option value="centroid">Centroid</option>
+            <option value="hybrid">Hybrid</option>
+          </select>
           <button
             class={styles.railToggle}
             onClick={() => { rightRailOpen.value = !drawerOpen; }}

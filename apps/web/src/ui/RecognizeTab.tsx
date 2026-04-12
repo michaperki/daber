@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
-import { predictTop, topMargin, type Ranked } from '../recognizer';
+import { predictTop, topMargin, getRawCnnProbs, type Ranked } from '../recognizer';
 import { calibration, progress } from '../state/signals';
 import { toPrototypes } from '../storage/calibration';
 import { updatePrefs } from '../storage/mutations';
@@ -11,6 +11,7 @@ import panels from './panels.module.css';
 export function RecognizeTab() {
   const canvasRef = useRef<DrawCanvasHandle | null>(null);
   const [predictions, setPredictions] = useState<Ranked[]>([]);
+  const [cnnRaw, setCnnRaw] = useState<{ letter: string; prob: number }[]>([]);
   const [live, setLive] = useState(true);
 
   const prefs = progress.value.prefs;
@@ -36,6 +37,12 @@ export function RecognizeTab() {
       topN: 5,
     });
     setPredictions(top);
+    // CNN diagnostics: show raw CNN output when in hybrid mode
+    if (prefs.mode === 'hybrid' && hasCnn) {
+      setCnnRaw(getRawCnnProbs(v.subarray(0, 64 * 64)).slice(0, 3));
+    } else {
+      setCnnRaw([]);
+    }
   }
 
   function onStroke(vec: Float32Array) {
@@ -61,6 +68,7 @@ export function RecognizeTab() {
           onClick={() => {
             canvasRef.current?.clear();
             setPredictions([]);
+            setCnnRaw([]);
           }}
         >
           Clear
@@ -86,18 +94,6 @@ export function RecognizeTab() {
           </span>
         </div>
         <div class={panels.row}>
-          <label class="inline">
-            Mode
-            <select
-              value={prefs.mode}
-              onChange={(e) => updatePrefs({ mode: (e.target as HTMLSelectElement).value as 'knn' | 'centroid' | 'hybrid' })}
-              title="Centroid = average per class; KNN = vote over k most similar samples; Hybrid = CNN+KNN if model present"
-            >
-              <option value="knn">KNN</option>
-              <option value="centroid">Centroid</option>
-              <option value="hybrid">Hybrid (CNN + KNN)</option>
-            </select>
-          </label>
           <label class="inline">
             k
             <input
@@ -148,6 +144,11 @@ export function RecognizeTab() {
               ))}
             </div>
           </>
+        )}
+        {cnnRaw.length > 0 && (
+          <div style={{ fontSize: '11px', opacity: 0.7, marginTop: '4px' }}>
+            CNN raw: {cnnRaw.map((c) => `${c.letter} ${(c.prob * 100).toFixed(1)}%`).join('  ·  ')}
+          </div>
         )}
         <div class={panels.shortcuts}>
           Enter = predict · Space = clear · Ctrl+Z = undo

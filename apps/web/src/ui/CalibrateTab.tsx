@@ -185,7 +185,7 @@ export function CalibrateTab() {
 
   return (
     <>
-      <DrawCanvas ref={canvasRef} onStrokeComplete={onStroke} />
+      <DrawCanvas ref={canvasRef} onStrokeComplete={onStroke} watermarkLetter={targetLetter} />
       <div class={panels.row}>
         <button onClick={() => canvasRef.current?.clear()}>Clear</button>
         <button onClick={() => canvasRef.current?.undo()}>Undo</button>

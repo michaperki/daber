@@ -1,6 +1,7 @@
 import { useEffect, useImperativeHandle, useRef } from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
 import type { Stroke } from '../recognizer/types';
+import type { LetterGlyph } from '../recognizer/types';
 import { extractFeaturesFromStrokes } from '../recognizer';
 import { redrawAll } from './strokes';
 import styles from './DrawCanvas.module.css';
@@ -25,14 +26,30 @@ export type DrawCanvasProps = {
   onPenUp?: () => void;
   // Optional debounced live vector updates while drawing
   onLiveVector?: (vec: Float32Array) => void;
+  // Optional letter glyph to show as a faint watermark reference
+  watermarkLetter?: LetterGlyph;
 };
 
 // Square drawing surface that mirrors the reference HebrewHandwritingWeb
 // canvas: pointer events unified across mouse / touch / pen, `touch-action:
 // none` to prevent page scroll, DPR-aware buffer sizing, stroke width
 // proportional to CSS width. See reference/hebrewhandwritingweb/app.js ~97.
+// Simple cache for watermark images so we don't re-fetch on every render.
+const _wmCache = new Map<string, HTMLImageElement>();
+function getWatermarkImage(glyph: string, onLoad: () => void): HTMLImageElement | null {
+  const cached = _wmCache.get(glyph);
+  if (cached) return cached;
+  const img = new Image();
+  img.src = `/letters/${encodeURIComponent(glyph)}.png`;
+  img.onload = () => {
+    _wmCache.set(glyph, img);
+    onLoad();
+  };
+  return null;
+}
+
 export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
-  function DrawCanvas({ onStrokeComplete, onPenUp, onLiveVector }, ref) {
+  function DrawCanvas({ onStrokeComplete, onPenUp, onLiveVector, watermarkLetter }, ref) {
     const wrapRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const strokesRef = useRef<Stroke[]>([]);
@@ -44,6 +61,7 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
     const onStrokeCompleteRef = useRef(onStrokeComplete);
     const onPenUpRef = useRef(onPenUp);
     const onLiveVectorRef = useRef(onLiveVector);
+    const watermarkRef = useRef<HTMLImageElement | null>(null);
     onStrokeCompleteRef.current = onStrokeComplete;
     onPenUpRef.current = onPenUp;
     onLiveVectorRef.current = onLiveVector;
@@ -75,7 +93,7 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
 
     function fullRedraw() {
       const { w, h } = sizeRef.current;
-      redrawAll(ctx2d(), w, h, strokeWidth(), strokesRef.current, currentRef.current);
+      redrawAll(ctx2d(), w, h, strokeWidth(), strokesRef.current, currentRef.current, watermarkRef.current);
     }
 
     function clear() {
@@ -197,6 +215,22 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
       // intentionally empty to keep the canvas stable across re-renders.
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Load/update watermark image when watermarkLetter changes
+    useEffect(() => {
+      if (!watermarkLetter) {
+        watermarkRef.current = null;
+        fullRedraw();
+        return;
+      }
+      const cached = getWatermarkImage(watermarkLetter, () => {
+        watermarkRef.current = _wmCache.get(watermarkLetter) ?? null;
+        fullRedraw();
+      });
+      watermarkRef.current = cached;
+      fullRedraw();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [watermarkLetter]);
 
     return (
       <div class={styles.wrap} ref={wrapRef}>

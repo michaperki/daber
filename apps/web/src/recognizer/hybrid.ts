@@ -28,11 +28,10 @@ async function getCnnProbs(vec64x64: Float32Array): Promise<Record<LetterGlyph, 
     const logits = (await out.data()) as Float32Array;
     t.dispose?.();
     out.dispose?.();
-    // Softmax if needed
-    const max = Math.max(...logits);
+    // Model output is already softmax — just normalize for FP safety
     let sum = 0;
-    const exps = Array.from(logits, (v) => { const e = Math.exp(v - max); sum += e; return e; });
-    const probs = exps.map((e) => e / (sum || 1));
+    for (let i = 0; i < logits.length; i++) sum += logits[i];
+    const probs = Array.from(logits, (v) => v / (sum || 1));
     const outMap: Partial<Record<LetterGlyph, number>> = {};
     const labels = Array.isArray(win.daberCnnLabels) ? (win.daberCnnLabels as string[]) : null;
     if (labels && labels.length === probs.length) {
@@ -67,10 +66,10 @@ function getCnnProbsSync(vec64x64: Float32Array): Record<LetterGlyph, number> {
     t.dispose?.();
     out.dispose?.();
     if (!logits || logits.length === 0) return {} as Record<LetterGlyph, number>;
-    const max = Math.max(...Array.from(logits));
+    // Model output is already softmax — just normalize for FP safety
     let sum = 0;
-    const exps = Array.from(logits, (v: number) => { const e = Math.exp(v - max); sum += e; return e; });
-    const probs = exps.map((e: number) => e / (sum || 1));
+    for (let i = 0; i < logits.length; i++) sum += logits[i];
+    const probs = Array.from(logits, (v: number) => v / (sum || 1));
     const outMap: Partial<Record<LetterGlyph, number>> = {};
     const labels = Array.isArray(win.daberCnnLabels) ? (win.daberCnnLabels as string[]) : null;
     if (labels && labels.length === probs.length) {
@@ -85,6 +84,14 @@ function getCnnProbsSync(vec64x64: Float32Array): Record<LetterGlyph, number> {
   } catch {
     return {} as Record<LetterGlyph, number>;
   }
+}
+
+// Expose raw CNN probs for diagnostics (sync version).
+export function getRawCnnProbs(vec64x64: Float32Array): { letter: LetterGlyph; prob: number }[] {
+  const probs = getCnnProbsSync(vec64x64);
+  const entries = LETTERS.map((L) => ({ letter: L, prob: probs[L] ?? 0 }));
+  entries.sort((a, b) => b.prob - a.prob);
+  return entries;
 }
 
 export async function predictByHybridAsync(

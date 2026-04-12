@@ -1,7 +1,8 @@
 import type { Ranked, LetterGlyph } from './types';
 import { predictByKnn, type KnnDb } from './knn';
 import { predictByCentroid, type Prototypes } from './centroid';
-import { predictByHybrid } from './hybrid';
+import { predictByHybrid, getRawCnnProbs } from './hybrid';
+export { getRawCnnProbs };
 
 export type PredictMode = 'knn' | 'centroid' | 'hybrid';
 

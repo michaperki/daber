@@ -174,14 +174,6 @@ export function PracticeTab() {
             Skip
           </button>
           <button onClick={() => resetPracticeStats()}>Reset Score</button>
-          <label class="inline" title="Use CNN + KNN fusion if a model is available; otherwise falls back to Centroid">
-            Hybrid
-            <input
-              type="checkbox"
-              checked={prefs.mode === 'hybrid'}
-              onChange={(e) => updatePrefs({ mode: (e.target as HTMLInputElement).checked ? 'hybrid' : 'knn' })}
-            />
-          </label>
           <label class="inline" title="Top-1 minus top-2 probability required to accept">
             Threshold
             <input

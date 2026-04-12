@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
 import { predictTop, topMargin } from '../recognizer';
+import { predictByStroke, fuseHybridWithStroke } from '../recognizer/stroke';
 import type { LetterGlyph } from '../recognizer/types';
+import type { Stroke } from '../recognizer/types';
 import { baseToFinal, isFinalForm, toBaseForm } from '../recognizer/final-forms';
 import { calibration, progress } from '../state/signals';
+import { strokeSamples } from '../state/strokes';
 import { toPrototypes } from '../storage/calibration';
 import {
   addCalibrationSample,
@@ -92,7 +95,7 @@ export function VocabTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function onStroke(vec: Float32Array) {
+  function onStroke(vec: Float32Array, strokes?: Stroke[]) {
     if (busyRef.current) return;
     const cur = state.current;
     if (!cur) return;
@@ -103,14 +106,33 @@ export function VocabTab() {
     for (let i = 0; i < vec.length; i++) sum += vec[i];
     if (sum < 1e-3) return;
 
-    const top = predictTop(vec, {
-      mode: prefs.mode,
-      k: prefs.k,
-      augment: prefs.augment,
-      prototypes,
-      topN: 10,
-      expectedLetter: (expected as LetterGlyph),
-    });
+    let top;
+    if (prefs.mode === 'stroke' && strokes && strokes.length) {
+      top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
+    } else if (prefs.mode === 'hybrid') {
+      const base = predictTop(vec, {
+        mode: 'hybrid',
+        augment: prefs.augment,
+        prototypes,
+        topN: 10,
+        expectedLetter: expected as LetterGlyph,
+      });
+      if (strokes && strokes.length) {
+        const stroke = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
+        top = fuseHybridWithStroke(base.map(b => ({ letter: b.letter, raw: b.raw } as any)), stroke, strokeSamples.value as any);
+      } else {
+        top = base;
+      }
+    } else {
+      top = predictTop(vec, {
+        mode: prefs.mode,
+        k: prefs.k,
+        augment: prefs.augment,
+        prototypes,
+        topN: 10,
+        expectedLetter: expected as LetterGlyph,
+      });
+    }
     if (!top.length) return;
     const top1 = top[0];
     const margin = topMargin(top);

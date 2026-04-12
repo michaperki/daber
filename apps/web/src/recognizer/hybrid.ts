@@ -2,6 +2,7 @@ import type { LetterGlyph, Ranked } from './types';
 import { LETTERS } from './types';
 import { dot } from './distance';
 import { computeCentroids, type Prototypes } from './centroid';
+import { normalizeUnit } from './features';
 
 // Alpha weighting for prototype contribution as a function of calibration count
 function alphaFor(count: number): number {
@@ -116,15 +117,17 @@ export async function predictByHybridAsync(
 ): Promise<Ranked[]> {
   // 1) Prototype score from centroids
   const centroids = computeCentroids(db, opts.augment ?? false);
+  const q = normalizeUnit(vec);
   const protoRaw: Record<LetterGlyph, number> = {} as any;
   const calibCounts: Record<LetterGlyph, number> = {} as any;
   for (const L of LETTERS) {
     const arr = db[L] || [];
     calibCounts[L] = arr.length;
-    protoRaw[L] = centroids[L] ? dot(vec, centroids[L]!) : 0;
+    protoRaw[L] = centroids[L] ? dot(q, centroids[L]!) : 0;
   }
 
   // 2) CNN probabilities (optional)
+  // CNN path expects raw 64x64 pixel intensities (not unit-normalized)
   const cnnProbs = await getCnnProbs(vec.subarray(0, 64 * 64));
 
   // 3) Combine: logp(cnn) + alpha(count)*proto + prior(expected)
@@ -157,9 +160,11 @@ export function predictByHybrid(
 ): Ranked[] {
   // Synchronous fusion: use CNN probs if available, add centroid prototypes (weighted by alpha), and expected-letter prior.
   const centroids = computeCentroids(db, opts.augment ?? false);
+  const q = normalizeUnit(vec);
   const calibCounts: Record<LetterGlyph, number> = {} as any;
   for (const L of LETTERS) calibCounts[L] = (db[L] || []).length;
   const beta = opts.expectedLetter ? 0.15 : 0;
+  // CNN path expects raw 64x64 pixel intensities (not unit-normalized)
   const cnnProbs = getCnnProbsSync(vec.subarray(0, 64 * 64));
   const scored: { letter: LetterGlyph; raw: number }[] = [];
   const letters = LETTERS as LetterGlyph[];
@@ -167,7 +172,7 @@ export function predictByHybrid(
     const c = centroids[letter];
     const a = alphaFor(calibCounts[letter] || 0);
     const prior = opts.expectedLetter && letter === opts.expectedLetter ? beta : 0;
-    const proto = c ? a * dot(vec, c) : 0;
+    const proto = c ? a * dot(q, c) : 0;
     const logp = cnnProbs[letter] ? Math.log(Math.max(1e-8, cnnProbs[letter])) : 0;
     scored.push({ letter, raw: logp + proto + prior });
   }

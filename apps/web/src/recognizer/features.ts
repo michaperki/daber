@@ -40,10 +40,15 @@ function geometryExtras(strokes: Stroke[]): Float32Array {
 
 // Public API: convert strokes → unit vector (64x64 + extras)
 export function extractFeaturesFromStrokes(strokes: Stroke[]): Float32Array {
+  // IMPORTANT: return raw features (no unit normalization) so that
+  // downstream consumers can decide how to use them.
+  // - KNN/Centroid paths will L2-normalize the query internally.
+  // - CNN path expects raw 64x64 pixels in [0,1] (white=0 in our raster,
+  //   inverted to white=1 just before feeding the model).
   const img = rasterizeStrokesTo64(strokes);
   const extras = geometryExtras(strokes);
   const combined = new Float32Array(FEATURE_SIZE);
   combined.set(img, 0);
   combined.set(extras, FEATURE_PIXELS);
-  return normalizeUnit(combined);
+  return combined;
 }

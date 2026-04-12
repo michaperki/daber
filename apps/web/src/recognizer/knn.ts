@@ -1,5 +1,6 @@
 import type { LetterGlyph, Ranked } from './types';
 import { dot } from './distance';
+import { normalizeUnit } from './features';
 import { augmentCardinal } from './augment';
 
 export type KnnDb = Record<LetterGlyph, Float32Array[]>;
@@ -37,13 +38,15 @@ export function predictByKnn(
   db: KnnDb,
   opts: { k: number; augment?: boolean; topN?: number } = { k: 5 },
 ): Ranked[] {
+  // Normalize the query so cosine similarity is a pure dot product.
+  const q = normalizeUnit(vec);
   const flat = buildFlatDb(db, opts.augment ?? false);
   const n = flat.vectors.length;
   if (n === 0) return [];
 
   const sims = new Array<{ sim: number; label: LetterGlyph }>(n);
   for (let i = 0; i < n; i++) {
-    sims[i] = { sim: dot(vec, flat.vectors[i]), label: flat.labels[i] };
+    sims[i] = { sim: dot(q, flat.vectors[i]), label: flat.labels[i] };
   }
   sims.sort((a, b) => b.sim - a.sim);
 

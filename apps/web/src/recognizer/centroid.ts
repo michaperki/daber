@@ -42,9 +42,10 @@ export function predictByCentroid(
 ): Ranked[] {
   const topN = opts.topN ?? 5;
   const centroids = computeCentroids(db, opts.augment ?? false);
+  const q = normalizeUnit(vec);
   const scored: { letter: LetterGlyph; raw: number }[] = [];
   for (const [letter, c] of Object.entries(centroids) as [LetterGlyph, Float32Array][]) {
-    scored.push({ letter, raw: dot(vec, c) });
+    scored.push({ letter, raw: dot(q, c) });
   }
   scored.sort((a, b) => b.raw - a.raw);
   const top = scored.slice(0, topN);

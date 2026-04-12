@@ -35,10 +35,10 @@ The explicit deferred item is a real CNN (see `FEATURES.md` § L8). We'll only t
  5. Convert to grayscale features
           │  For each pixel: ink_intensity = (255 - avg_rgb) / 255  // in [0, 1]
           ▼
- 6. Unit-normalize (L2)        (for cosine similarity)
+ 6. Keep raw features          (predictors normalize query internally)
           │
           ▼
- Float32Array(4096)
+Float32Array(4096 + 3 extras)
           │
           ▼
  7. Score against all stored samples (KNN) or centroids (centroid mode)
@@ -67,11 +67,11 @@ Read the 64×64 buffer back, convert to a Float32Array of length 4096 where each
 - `heightNorm = height / max(width, height)`
 - `aspect = atan(height / width) / (π/2)`
 
-Concatenate `[4096 pixels, widthNorm, heightNorm, aspect]` and unit-normalize the full vector. This fixes the yud/vav/nun-sofit confusion caused by normalization erasing size differences.
+Concatenate `[4096 pixels, widthNorm, heightNorm, aspect]`. Predictors that use cosine similarity normalize the query internally; CNN uses the raw 64×64 slice only. This preserves scale/aspect information for KNN/Centroid and prevents skewing CNN inputs.
 
-### Why unit-normalize?
+### Why unit-normalize (and where)?
 
-Cosine similarity of unit vectors is just a dot product. Two unit vectors `a` and `b` have cosine = `a · b ∈ [-1, 1]`. For non-negative ink features, it's in `[0, 1]` in practice. This lets us treat the dot product as a similarity score directly, with no division or norm computation per comparison.
+Cosine similarity of unit vectors is just a dot product. Two unit vectors `a` and `b` have cosine = `a · b ∈ [-1, 1]`. For non-negative ink features, it's in `[0, 1]` in practice. The app returns raw features from the canvas; the KNN and Centroid predictors L2-normalize the query internally before scoring. The CNN path consumes the raw 64×64 pixels directly (white background = 1 after inversion) to match training.
 
 ### Quantization for storage
 

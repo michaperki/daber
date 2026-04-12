@@ -29,6 +29,9 @@ export const calibrateLetterIdx = signal<number>(0);
 // Settings panel visibility
 export const settingsOpen = signal<boolean>(false);
 
+// RightRail drawer visibility (mobile bottom-sheet)
+export const rightRailOpen = signal<boolean>(false);
+
 // ---- Derived ----
 
 export const sampleCounts = computed<Record<LetterGlyph, number>>(() => {

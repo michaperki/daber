@@ -1,6 +1,6 @@
 import { LETTERS } from '../recognizer/types';
 import type { LetterGlyph } from '../recognizer/types';
-import { activeTab, calibrateLetterIdx, sampleCounts } from '../state/signals';
+import { activeTab, calibrateLetterIdx, rightRailOpen, sampleCounts } from '../state/signals';
 import styles from './LettersGrid.module.css';
 
 // 27-tile grid of Hebrew letters with per-letter sample counts. Clicking a
@@ -22,6 +22,7 @@ export function LettersGrid() {
             onClick={() => {
               calibrateLetterIdx.value = idx;
               if (!onCalibrate) activeTab.value = 'calibrate';
+              rightRailOpen.value = false;
             }}
             title={`${letter}: ${counts[letter] || 0} samples`}
           >

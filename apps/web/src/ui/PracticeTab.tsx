@@ -22,6 +22,7 @@ export function PracticeTab() {
     kind: 'idle',
     text: '',
   });
+  const [lastReject, setLastReject] = useState<Float32Array | null>(null);
   const busyRef = useRef(false);
 
   const cal = calibration.value;
@@ -53,6 +54,7 @@ export function PracticeTab() {
 
   function nextTarget() {
     setFeedback({ kind: 'idle', text: '' });
+    setLastReject(null);
     setTarget(pickNextTarget(target));
     canvasRef.current?.clear();
   }
@@ -83,10 +85,12 @@ export function PracticeTab() {
     if (accepted) {
       // Auto-calibrate from the correct draw.
       addCalibrationSample(target, vec);
+      setLastReject(null);
       setFeedback({
         kind: 'ok',
         text: `✓ ${top1.letter} (margin ${(margin * 100).toFixed(1)}%)`,
       });
+      navigator.vibrate?.(30);
       canvasRef.current?.flashAccept();
       busyRef.current = true;
       window.setTimeout(() => {
@@ -99,6 +103,8 @@ export function PracticeTab() {
           ? `low margin ${(margin * 100).toFixed(1)}% < ${(threshold * 100).toFixed(0)}%`
           : `got ${top1.letter} (${(top1.prob * 100).toFixed(0)}%) vs expected ${target}`;
       setFeedback({ kind: 'bad', text: `✗ ${reason}` });
+      setLastReject(vec);
+      navigator.vibrate?.([50, 30, 50]);
       canvasRef.current?.shake();
     }
   }
@@ -122,6 +128,24 @@ export function PracticeTab() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   });
+
+  function forceAccept() {
+    if (!lastReject || !target) return;
+    addCalibrationSample(target, lastReject);
+    bumpPracticeStats(true);
+    setLastReject(null);
+    setFeedback({
+      kind: 'ok',
+      text: `✓ ${target} (force-accepted)`,
+    });
+    navigator.vibrate?.(30);
+    canvasRef.current?.flashAccept();
+    busyRef.current = true;
+    window.setTimeout(() => {
+      busyRef.current = false;
+      nextTarget();
+    }, 380);
+  }
 
   const pct = stats.total ? Math.round((100 * stats.correct) / stats.total) : 0;
   const feedbackClass =
@@ -172,6 +196,13 @@ export function PracticeTab() {
             ? 'Calibrate at least one letter to start practicing.'
             : feedback.text}
         </div>
+        {lastReject && (
+          <div class={panels.row}>
+            <button onClick={forceAccept} title="Save this drawing as a correct sample and advance">
+              I drew it right
+            </button>
+          </div>
+        )}
         <div class={panels.stats}>
           Correct: {stats.correct} / {stats.total}  ({pct}%)
         </div>

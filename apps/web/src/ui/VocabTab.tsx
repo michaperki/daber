@@ -58,6 +58,7 @@ export function VocabTab() {
     kind: 'idle',
     text: '',
   });
+  const [lastReject, setLastReject] = useState<Float32Array | null>(null);
   const busyRef = useRef(false);
 
   const cal = calibration.value;
@@ -66,6 +67,7 @@ export function VocabTab() {
 
   function pickNext() {
     setFeedback({ kind: 'idle', text: '' });
+    setLastReject(null);
     const entry = randomVocabEntry();
     setState({ current: entry, pos: 0, output: '', revealed: false });
     canvasRef.current?.clear();
@@ -109,9 +111,11 @@ export function VocabTab() {
       // Auto-calibrate: store the sample under the canonical (drawn) glyph
       // so the model learns user-specific final-form variants.
       addCalibrationSample(top1.letter, vec);
+      setLastReject(null);
       const nextPos = state.pos + 1;
       const newOutput = state.output + display;
       setState((s) => ({ ...s, pos: nextPos, output: newOutput }));
+      navigator.vibrate?.(30);
       canvasRef.current?.flashAccept();
       canvasRef.current?.clear();
       if (nextPos >= cur.he.length) {
@@ -130,6 +134,8 @@ export function VocabTab() {
         kind: 'bad',
         text: `✗ expected ${expected}, got ${top1.letter} (${(top1.prob * 100).toFixed(0)}%)`,
       });
+      setLastReject(vec);
+      navigator.vibrate?.([50, 30, 50]);
       canvasRef.current?.shake();
     }
   }
@@ -146,10 +152,44 @@ export function VocabTab() {
       output: s.output.slice(0, -1),
     }));
     setFeedback({ kind: 'idle', text: '' });
+    setLastReject(null);
     canvasRef.current?.clear();
   }
   function onSkip() {
     pickNext();
+  }
+
+  function forceAccept() {
+    if (!lastReject || !state.current) return;
+    const cur = state.current;
+    const expected = cur.he[state.pos];
+    if (!expected) return;
+    const atEnd = state.pos === cur.he.length - 1;
+    const display = normalizedExpected(expected, atEnd);
+    // Save the stroke under the expected letter to improve the model.
+    addCalibrationSample(
+      (atEnd ? display : toBaseForm(expected as LetterGlyph)) as LetterGlyph,
+      lastReject,
+    );
+    bumpVocabLetter(true);
+    setLastReject(null);
+    const nextPos = state.pos + 1;
+    const newOutput = state.output + display;
+    setState((s) => ({ ...s, pos: nextPos, output: newOutput }));
+    navigator.vibrate?.(30);
+    canvasRef.current?.flashAccept();
+    canvasRef.current?.clear();
+    if (nextPos >= cur.he.length) {
+      setFeedback({ kind: 'ok', text: '✓ Correct' });
+      bumpVocabWord(cur.he);
+      busyRef.current = true;
+      window.setTimeout(() => {
+        busyRef.current = false;
+        pickNext();
+      }, 480);
+    } else {
+      setFeedback({ kind: 'idle', text: '' });
+    }
   }
 
   // Keyboard: Enter = skip, Space = clear.
@@ -221,6 +261,13 @@ export function VocabTab() {
           <span class={panels.hebrewOutput}>{state.output}</span>
         </div>
         <div class={feedbackClass}>{feedback.text}</div>
+        {lastReject && (
+          <div class={panels.row}>
+            <button onClick={forceAccept} title="Save this drawing as a correct sample and advance">
+              I drew it right
+            </button>
+          </div>
+        )}
         {state.revealed && state.current && (
           <div class={panels.feedback}>Answer: {state.current.he}</div>
         )}

@@ -8,10 +8,12 @@
   --accent: #4f8cff;
   --accent-2: #00b894;
   --danger: #ff5c5c;
+  --bottom-bar-height: 56px;
 }
 
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+html, body, #app { height: 100%; overflow: hidden; }
+#app { display: flex; flex-direction: column; }
 body {
   margin: 0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
@@ -25,13 +27,12 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-#app { min-height: 100%; }
-
 button {
   background: var(--panel);
   color: var(--text);
   border: 1px solid var(--border);
-  padding: 8px 12px;
+  min-height: 44px;
+  padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
   touch-action: manipulation;

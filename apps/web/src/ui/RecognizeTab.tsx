@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
-import { predictTop, topMargin, getRawCnnProbs, type Ranked } from '../recognizer';
+import { predictTop, topMargin, getRawCnnProbs, debugHybridContribs, type Ranked } from '../recognizer';
 import { calibration, progress } from '../state/signals';
 import { toPrototypes } from '../storage/calibration';
 import { updatePrefs } from '../storage/mutations';
@@ -13,6 +13,10 @@ export function RecognizeTab() {
   const [predictions, setPredictions] = useState<Ranked[]>([]);
   const [cnnRaw, setCnnRaw] = useState<{ letter: string; prob: number }[]>([]);
   const [live, setLive] = useState(true);
+  const [debug, setDebug] = useState(false);
+  const [lastVec, setLastVec] = useState<Float32Array | null>(null);
+  const [hybridContribs, setHybridContribs] = useState<ReturnType<typeof debugHybridContribs> | null>(null);
+  const [allModes, setAllModes] = useState<{ knn: Ranked[]; centroid: Ranked[]; cnn: Ranked[]; hybrid: Ranked[] } | null>(null);
 
   const prefs = progress.value.prefs;
   const cal = calibration.value;
@@ -29,6 +33,7 @@ export function RecognizeTab() {
       setPredictions([]);
       return;
     }
+    setLastVec(v);
     const top = predictTop(v, {
       mode: prefs.mode,
       k: prefs.k,
@@ -42,6 +47,22 @@ export function RecognizeTab() {
       setCnnRaw(getRawCnnProbs(v.subarray(0, 64 * 64)).slice(0, 3));
     } else {
       setCnnRaw([]);
+    }
+    if (debug) {
+      // Collect breakdowns across modes and hybrid contributions
+      const knn = predictTop(v, { mode: 'knn', k: prefs.k, augment: prefs.augment, prototypes, topN: 5 });
+      const centroid = predictTop(v, { mode: 'centroid', augment: prefs.augment, prototypes, topN: 5 });
+      const cnn = predictTop(v, { mode: 'cnn', prototypes, topN: 5 });
+      const hybrid = predictTop(v, { mode: 'hybrid', augment: prefs.augment, prototypes, topN: 5 });
+      setAllModes({ knn, centroid, cnn, hybrid });
+      if (prefs.mode === 'hybrid' || prefs.mode === 'cnn') {
+        setHybridContribs(debugHybridContribs(v, prototypes, {}));
+      } else {
+        setHybridContribs(null);
+      }
+    } else {
+      setAllModes(null);
+      setHybridContribs(null);
     }
   }
 
@@ -87,6 +108,14 @@ export function RecognizeTab() {
             />
           </label>
           <button onClick={() => runPrediction()}>Predict Once</button>
+          <label class="inline" title="Show internal scores and 64×64 preview">
+            Debug
+            <input
+              type="checkbox"
+              checked={debug}
+              onChange={(e) => setDebug((e.target as HTMLInputElement).checked)}
+            />
+          </label>
         </div>
         <div class={panels.row}>
           <span style={{ fontSize: '12px', opacity: 0.8 }}>
@@ -154,6 +183,77 @@ export function RecognizeTab() {
         {cnnRaw.length > 0 && (
           <div style={{ fontSize: '11px', opacity: 0.7, marginTop: '4px' }}>
             CNN raw: {cnnRaw.map((c) => `${c.letter} ${(c.prob * 100).toFixed(1)}%`).join('  ·  ')}
+          </div>
+        )}
+        {debug && lastVec && (
+          <div style={{ marginTop: '8px' }}>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+              <div>
+                <div style={{ fontSize: '12px', opacity: 0.8, marginBottom: '4px' }}>64×64 preview</div>
+                <canvas
+                  width={64}
+                  height={64}
+                  ref={(el) => {
+                    if (!el) return;
+                    const ctx = el.getContext('2d');
+                    if (!ctx) return;
+                    const img = ctx.createImageData(64, 64);
+                    for (let i = 0; i < 64 * 64; i++) {
+                      // draw as black ink on white background
+                      const ink = lastVec[i] || 0; // [0,1], ink=1
+                      const gray = Math.max(0, Math.min(255, Math.round((1 - ink) * 255)));
+                      img.data[i * 4 + 0] = gray;
+                      img.data[i * 4 + 1] = gray;
+                      img.data[i * 4 + 2] = gray;
+                      img.data[i * 4 + 3] = 255;
+                    }
+                    ctx.putImageData(img, 0, 0);
+                  }}
+                  style={{ border: '1px solid #333' }}
+                />
+              </div>
+              {allModes && (
+                <div style={{ fontSize: '12px', opacity: 0.85, minWidth: '220px' }}>
+                  <div style={{ marginBottom: '6px' }}>By mode (top-3):</div>
+                  <div>• KNN: {allModes.knn.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
+                  <div>• Centroid: {allModes.centroid.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
+                  <div>• CNN: {allModes.cnn.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
+                  <div>• Hybrid: {allModes.hybrid.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
+                </div>
+              )}
+              {hybridContribs && (
+                <div style={{ fontSize: '11px', opacity: 0.8 }}>
+                  <div style={{ marginBottom: '6px' }}>Hybrid contributions (top-3):</div>
+                  {hybridContribs.slice(0,3).map((c) => (
+                    <div key={c.letter}>
+                      <span style={{ fontWeight: 600 }} dir="rtl">{c.letter}</span>
+                      {`  · logp=${c.logp.toFixed(3)}  · proto=${c.proto.toFixed(3)} (α=${c.alpha.toFixed(2)})  · prior=${c.prior.toFixed(2)}`}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div style={{ marginTop: '8px' }}>
+              <button onClick={() => {
+                const payload = {
+                  mode: prefs.mode,
+                  k: prefs.k,
+                  augment: prefs.augment,
+                  predictions,
+                  cnnRaw,
+                  allModes,
+                  hybridContribs,
+                  vec: Array.from(lastVec),
+                };
+                const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'daber_debug.json';
+                a.click();
+                URL.revokeObjectURL(url);
+              }}>Export JSON</button>
+            </div>
           </div>
         )}
         <div class={panels.shortcuts}>

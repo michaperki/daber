@@ -15,6 +15,50 @@ function alphaFor(count: number): number {
 // Expected: a model attached at (window as any).daberCnnModel with signature
 // predict(tensor) -> logits or probs for len(LETTERS) classes.
 // This file intentionally avoids importing tfjs/onnx so the app builds without them.
+function softmax(arr: Float32Array): Float32Array {
+  if (!arr || arr.length === 0) return new Float32Array(0);
+  // numerical stability
+  let maxv = -Infinity;
+  for (let i = 0; i < arr.length; i++) if (arr[i] > maxv) maxv = arr[i];
+  const exps = new Float32Array(arr.length);
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    const e = Math.exp(arr[i] - maxv);
+    exps[i] = e;
+    sum += e;
+  }
+  if (!isFinite(sum) || sum <= 0) return new Float32Array(arr.length);
+  for (let i = 0; i < arr.length; i++) exps[i] /= sum;
+  return exps;
+}
+
+function mapModelOutputToLetters(raw: Float32Array, labels?: string[] | null): Record<LetterGlyph, number> {
+  // Prefer explicit labels if provided. If the first label looks like a stop token,
+  // skip it; otherwise assume labels match LETTERS order.
+  const probs = softmax(raw);
+  const outMap: Partial<Record<LetterGlyph, number>> = {};
+  if (labels && labels.length === probs.length) {
+    const first = String(labels[0] || '').toLowerCase();
+    const skipFirst = first === 'stop' || first === '<stop>' || first === 'pad' || first === '<pad>';
+    for (let i = 0; i < probs.length; i++) {
+      if (skipFirst && i === 0) continue;
+      const lab = String(labels[i]);
+      if ((LETTERS as string[]).includes(lab)) outMap[lab as LetterGlyph] = probs[i];
+    }
+  } else {
+    // No labels: infer mapping by output dimension.
+    const m = probs.length;
+    if (m === LETTERS.length + 1) {
+      // likely includes stop at index 0
+      for (let i = 1; i < m && (i - 1) < LETTERS.length; i++) outMap[LETTERS[i - 1]] = probs[i];
+    } else {
+      const n = Math.min(LETTERS.length, m);
+      for (let i = 0; i < n; i++) outMap[LETTERS[i]] = probs[i];
+    }
+  }
+  return outMap as Record<LetterGlyph, number>;
+}
+
 async function getCnnProbs(vec64x64: Float32Array): Promise<Record<LetterGlyph, number>> {
   try {
     const win: any = window as any;
@@ -29,25 +73,8 @@ async function getCnnProbs(vec64x64: Float32Array): Promise<Record<LetterGlyph, 
     const logits = (await out.data()) as Float32Array;
     t.dispose?.();
     out.dispose?.();
-    // Model output is already softmax — just normalize for FP safety
-    let sum = 0;
-    for (let i = 0; i < logits.length; i++) sum += logits[i];
-    const probs = Array.from(logits, (v) => v / (sum || 1));
-    const outMap: Partial<Record<LetterGlyph, number>> = {};
     const labels = Array.isArray(win.daberCnnLabels) ? (win.daberCnnLabels as string[]) : null;
-    if (labels && labels.length === probs.length) {
-      for (let i = 0; i < probs.length; i++) {
-        const lab = String(labels[i]);
-        if ((LETTERS as string[]).includes(lab)) {
-          outMap[lab as LetterGlyph] = probs[i];
-        }
-      }
-    } else {
-      for (let i = 0; i < LETTERS.length && i < probs.length; i++) {
-        outMap[LETTERS[i]] = probs[i];
-      }
-    }
-    return outMap as Record<LetterGlyph, number>;
+    return mapModelOutputToLetters(logits, labels);
   } catch {
     return {} as Record<LetterGlyph, number>;
   }
@@ -67,21 +94,8 @@ function getCnnProbsSync(vec64x64: Float32Array): Record<LetterGlyph, number> {
     t.dispose?.();
     out.dispose?.();
     if (!logits || logits.length === 0) return {} as Record<LetterGlyph, number>;
-    // Model output is already softmax — just normalize for FP safety
-    let sum = 0;
-    for (let i = 0; i < logits.length; i++) sum += logits[i];
-    const probs = Array.from(logits, (v: number) => v / (sum || 1));
-    const outMap: Partial<Record<LetterGlyph, number>> = {};
     const labels = Array.isArray(win.daberCnnLabels) ? (win.daberCnnLabels as string[]) : null;
-    if (labels && labels.length === probs.length) {
-      for (let i = 0; i < probs.length; i++) {
-        const lab = String(labels[i]);
-        if ((LETTERS as string[]).includes(lab)) outMap[lab as LetterGlyph] = probs[i];
-      }
-    } else {
-      for (let i = 0; i < LETTERS.length && i < probs.length; i++) outMap[LETTERS[i]] = probs[i];
-    }
-    return outMap as Record<LetterGlyph, number>;
+    return mapModelOutputToLetters(logits, labels);
   } catch {
     return {} as Record<LetterGlyph, number>;
   }
@@ -108,6 +122,43 @@ export function predictByCnn(
   });
   out.sort((a, b) => b.prob - a.prob);
   return out.slice(0, opts.topN ?? 5);
+}
+
+export type HybridContrib = {
+  letter: LetterGlyph;
+  cnnProb: number;
+  logp: number;
+  proto: number; // a * (q·centroid)
+  alpha: number;
+  prior: number;
+  raw: number; // logp + proto + prior
+};
+
+export function debugHybridContribs(
+  vec: Float32Array,
+  db: Prototypes,
+  opts: { augment?: boolean; expectedLetter?: LetterGlyph } = {},
+): HybridContrib[] {
+  const centroids = computeCentroids(db, opts.augment ?? false);
+  const q = normalizeUnit(vec);
+  const calibCounts: Record<LetterGlyph, number> = {} as any;
+  for (const L of LETTERS) calibCounts[L] = (db[L] || []).length;
+  const beta = opts.expectedLetter ? 0.15 : 0;
+  const cnnProbs = getCnnProbsSync(vec.subarray(0, 64 * 64));
+  const contribs: HybridContrib[] = [];
+  for (const L of LETTERS) {
+    const a = alphaFor(calibCounts[L] || 0);
+    const c = centroids[L];
+    const protoDot = c ? dot(q, c) : 0;
+    const proto = a * protoDot;
+    const p = Math.max(1e-8, cnnProbs[L] ?? 1e-8);
+    const logp = Math.log(p);
+    const prior = opts.expectedLetter && L === opts.expectedLetter ? beta : 0;
+    const raw = logp + proto + prior;
+    contribs.push({ letter: L, cnnProb: p, logp, proto, alpha: a, prior, raw });
+  }
+  contribs.sort((a, b) => b.raw - a.raw);
+  return contribs;
 }
 
 export async function predictByHybridAsync(

@@ -22,6 +22,18 @@ function flattenStrokes(strokes: Array<Array<{ x: number; y: number; t?: number 
 }
 
 export async function registerStrokesRoutes(app: FastifyInstance) {
+  app.get('/api/strokes/:deviceId', async (req, reply) => {
+    const { deviceId } = req.params as { deviceId: string };
+    const prisma = getPrisma();
+    const rows = await prisma.strokeSample.findMany({ where: { device_id: deviceId }, orderBy: { created_at: 'asc' } });
+    const grouped: Record<string, Array<Array<{ x: number; y: number; t?: number }>>> = {} as any;
+    for (const r of rows) {
+      const letter = r.letter;
+      if (!grouped[letter]) grouped[letter] = [] as any;
+      grouped[letter]!.push((r.strokes as any) || []);
+    }
+    return reply.send({ version: 1, samples: grouped });
+  });
   app.post('/api/strokes', async (req, reply) => {
     const parse = PayloadSchema.safeParse(req.body);
     if (!parse.success) return reply.code(400).send({ error: 'invalid_payload' });

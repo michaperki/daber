@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
 import { predictTop, topMargin, getRawCnnProbs, debugHybridContribs, type Ranked } from '../recognizer';
+import { predictByStroke } from '../recognizer/stroke';
+import { strokeSamples } from '../state/strokes';
 import { calibration, progress } from '../state/signals';
 import { toPrototypes } from '../storage/calibration';
 import { updatePrefs } from '../storage/mutations';
@@ -35,13 +37,21 @@ export function RecognizeTab() {
       return;
     }
     setLastVec(v);
-    const top = predictTop(v, {
-      mode: prefs.mode,
-      k: prefs.k,
-      augment: prefs.augment,
-      prototypes,
-      topN: 5,
-    });
+    let top: Ranked[] = [];
+    if (prefs.mode === 'stroke') {
+      const strokes = canvasRef.current?.getStrokes?.();
+      if (strokes && strokes.length) {
+        top = predictByStroke(strokes, strokeSamples.value as any, { topN: 5 });
+      }
+    } else {
+      top = predictTop(v, {
+        mode: prefs.mode,
+        k: prefs.k,
+        augment: prefs.augment,
+        prototypes,
+        topN: 5,
+      });
+    }
     setPredictions(top);
     // CNN diagnostics: show raw CNN output when in hybrid/cnn mode
     if ((prefs.mode === 'hybrid' || prefs.mode === 'cnn') && hasCnn) {

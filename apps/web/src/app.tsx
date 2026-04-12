@@ -91,7 +91,7 @@ export function App() {
           <select
             class={styles.modeSelect}
             value={progress.value.prefs.mode}
-            onChange={(e) => updatePrefs({ mode: (e.target as HTMLSelectElement).value as 'knn' | 'centroid' | 'hybrid' | 'cnn' })}
+            onChange={(e) => updatePrefs({ mode: (e.target as HTMLSelectElement).value as any })}
             title="Recognition mode"
             aria-label="Recognition mode"
           >
@@ -99,6 +99,7 @@ export function App() {
             <option value="centroid">Centroid</option>
             <option value="hybrid">Hybrid</option>
             <option value="cnn">CNN</option>
+            <option value="stroke">Stroke</option>
           </select>
           <button
             class={styles.railToggle}

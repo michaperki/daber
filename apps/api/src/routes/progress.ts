@@ -5,7 +5,7 @@ import { getPrisma } from '../db.js';
 const ProgressSchema = z.object({
   version: z.literal(1),
   prefs: z.object({
-    mode: z.enum(['knn', 'centroid', 'hybrid']),
+    mode: z.enum(['knn', 'centroid', 'hybrid', 'cnn', 'stroke']),
     k: z.number().int().min(1).max(99),
     augment: z.boolean(),
     samples_per_letter: z.number().int().min(0).max(100),

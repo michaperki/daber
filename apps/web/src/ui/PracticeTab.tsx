@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
 import { predictTop, topMargin } from '../recognizer';
+import { predictByStroke } from '../recognizer/stroke';
 import type { LetterGlyph, Stroke } from '../recognizer/types';
 import { calibratedLetters, calibration, progress } from '../state/signals';
+import { strokeSamples } from '../state/strokes';
 import { toPrototypes } from '../storage/calibration';
 import {
   addCalibrationSample,
@@ -70,14 +72,16 @@ export function PracticeTab() {
     for (let i = 0; i < vec.length; i++) sum += vec[i];
     if (sum < 1e-3) return;
 
-    const top = predictTop(vec, {
-      mode: prefs.mode,
-      k: prefs.k,
-      augment: prefs.augment,
-      prototypes,
-      topN: 10,
-      expectedLetter: target,
-    });
+    const top = (prefs.mode === 'stroke' && strokes)
+      ? predictByStroke(strokes, strokeSamples.value as any, { topN: 10 })
+      : predictTop(vec, {
+          mode: prefs.mode,
+          k: prefs.k,
+          augment: prefs.augment,
+          prototypes,
+          topN: 10,
+          expectedLetter: target,
+        });
     if (!top.length) return;
     const top1 = top[0];
     const margin = topMargin(top);

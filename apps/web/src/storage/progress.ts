@@ -1,7 +1,7 @@
 export type ProgressV1 = {
   version: 1;
   prefs: {
-    mode: 'knn' | 'centroid' | 'hybrid' | 'cnn';
+    mode: 'knn' | 'centroid' | 'hybrid' | 'cnn' | 'stroke';
     k: number;
     augment: boolean;
     samples_per_letter: number;

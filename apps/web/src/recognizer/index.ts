@@ -4,7 +4,7 @@ import { predictByCentroid, type Prototypes } from './centroid';
 import { predictByHybrid, getRawCnnProbs, predictByCnn, debugHybridContribs } from './hybrid';
 export { getRawCnnProbs, debugHybridContribs };
 
-export type PredictMode = 'knn' | 'centroid' | 'hybrid' | 'cnn';
+export type PredictMode = 'knn' | 'centroid' | 'hybrid' | 'cnn' | 'stroke';
 
 export type PredictOpts = {
   mode: PredictMode;
@@ -19,6 +19,10 @@ export type PredictOpts = {
 };
 
 export function predictTop(vec: Float32Array, opts: PredictOpts): Ranked[] {
+  if (opts.mode === 'stroke') {
+    // Stroke mode needs raw strokes; call predictTopStroke from callers.
+    return [];
+  }
   if (opts.mode === 'centroid') {
     return predictByCentroid(vec, opts.prototypes, {
       augment: opts.augment,

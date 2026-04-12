@@ -11,6 +11,27 @@ function alphaFor(count: number): number {
   return 0.3 + (count - 1) * (0.5 / 7);
 }
 
+// Measure Shannon entropy of CNN output. Low entropy = CNN is very confident
+// (possibly collapsed to one class). Returns bits; uniform over 27 ≈ 4.75 bits.
+function cnnEntropy(probs: Record<LetterGlyph, number>): number {
+  let h = 0;
+  for (const L of LETTERS) {
+    const p = probs[L] ?? 0;
+    if (p > 1e-10) h -= p * Math.log2(p);
+  }
+  return h;
+}
+
+// Scale CNN contribution by how informative its output is.
+// If entropy < 1.5 bits (collapsed to ~1-2 classes), CNN weight → 0.
+// If entropy > 3.0 bits (reasonable spread), CNN weight → 1.0.
+function cnnReliability(probs: Record<LetterGlyph, number>): number {
+  const h = cnnEntropy(probs);
+  if (h < 1.5) return 0;
+  if (h > 3.0) return 1;
+  return (h - 1.5) / 1.5;
+}
+
 // Try to obtain CNN probabilities via a global TFJS model, if one is loaded.
 // Expected: a model attached at (window as any).daberCnnModel with signature
 // predict(tensor) -> logits or probs for len(LETTERS) classes.
@@ -227,6 +248,7 @@ export function debugHybridContribs(
   for (const L of LETTERS) calibCounts[L] = (db[L] || []).length;
   const beta = opts.expectedLetter ? 0.15 : 0;
   const cnnProbs = getCnnProbsSync(vec.subarray(0, 64 * 64));
+  const cnnW = cnnReliability(cnnProbs);
   const contribs: HybridContrib[] = [];
   for (const L of LETTERS) {
     const a = alphaFor(calibCounts[L] || 0);
@@ -236,7 +258,7 @@ export function debugHybridContribs(
     const p = Math.max(1e-8, cnnProbs[L] ?? 1e-8);
     const logp = Math.log(p);
     const prior = opts.expectedLetter && L === opts.expectedLetter ? beta : 0;
-    const raw = logp + proto + prior;
+    const raw = cnnW * logp + proto + prior;
     contribs.push({ letter: L, cnnProb: p, logp, proto, alpha: a, prior, raw });
   }
   contribs.sort((a, b) => b.raw - a.raw);
@@ -263,7 +285,9 @@ export async function predictByHybridAsync(
   // CNN path expects raw 64x64 pixel intensities (not unit-normalized)
   const cnnProbs = await getCnnProbs(vec.subarray(0, 64 * 64));
 
-  // 3) Combine: logp(cnn) + alpha(count)*proto + prior(expected)
+  // 3) Combine: cnnW*logp(cnn) + alpha(count)*proto + prior(expected)
+  //    cnnW scales 0→1 based on CNN output entropy — collapsed predictions are ignored.
+  const cnnW = cnnReliability(cnnProbs);
   const combined: { letter: LetterGlyph; raw: number }[] = [];
   const beta = opts.expectedLetter ? 0.15 : 0;
   for (const L of LETTERS) {
@@ -271,7 +295,7 @@ export async function predictByHybridAsync(
     const logp = Math.log(p);
     const a = alphaFor(calibCounts[L] || 0);
     const prior = opts.expectedLetter && L === opts.expectedLetter ? beta : 0;
-    combined.push({ letter: L, raw: logp + a * (protoRaw[L] || 0) + prior });
+    combined.push({ letter: L, raw: cnnW * logp + a * (protoRaw[L] || 0) + prior });
   }
   combined.sort((a, b) => b.raw - a.raw);
   const top = combined.slice(0, opts.topN ?? 5);
@@ -299,6 +323,8 @@ export function predictByHybrid(
   const beta = opts.expectedLetter ? 0.15 : 0;
   // CNN path expects raw 64x64 pixel intensities (not unit-normalized)
   const cnnProbs = getCnnProbsSync(vec.subarray(0, 64 * 64));
+  // Scale CNN contribution by reliability — if it's collapsed to one class, ignore it.
+  const cnnW = cnnReliability(cnnProbs);
   const scored: { letter: LetterGlyph; raw: number }[] = [];
   const letters = LETTERS as LetterGlyph[];
   for (const letter of letters) {
@@ -307,7 +333,7 @@ export function predictByHybrid(
     const prior = opts.expectedLetter && letter === opts.expectedLetter ? beta : 0;
     const proto = c ? a * dotPixels(q, c) : 0;
     const logp = cnnProbs[letter] ? Math.log(Math.max(1e-8, cnnProbs[letter])) : 0;
-    scored.push({ letter, raw: logp + proto + prior });
+    scored.push({ letter, raw: cnnW * logp + proto + prior });
   }
   scored.sort((a, b) => b.raw - a.raw);
   const top = scored.slice(0, opts.topN ?? 5);

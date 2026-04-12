@@ -42,6 +42,7 @@ function getWatermarkImage(glyph: string, onLoad: () => void): HTMLImageElement 
   const img = new Image();
   img.src = `/letters/${glyph}.png`;
   img.onload = () => {
+    console.log('[watermark] image loaded:', glyph, img.naturalWidth, 'x', img.naturalHeight);
     _wmCache.set(glyph, img);
     onLoad();
   };
@@ -219,6 +220,7 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
 
     // Load/update watermark image when watermarkLetter changes
     useEffect(() => {
+      console.log('[watermark] effect fired, letter=', watermarkLetter);
       if (!watermarkLetter) {
         watermarkRef.current = null;
         fullRedraw();

@@ -43,6 +43,11 @@ async function main() {
     throw new Error('Invalid calibration JSON');
   }
   fs.mkdirSync(outDir, { recursive: true });
+  let total = 0;
+  for (const L of LETTERS) total += (cal.samples[L] || []).length;
+  let done = 0;
+  const tickEvery = Math.max(1, Math.floor(total / 100));
+
   for (const L of LETTERS) {
     const arr = cal.samples[L] || [];
     if (!arr.length) continue;
@@ -58,8 +63,14 @@ async function main() {
       // ignore appended features beyond first 4096 implicitly
       // eslint-disable-next-line no-await-in-loop
       await writePng(vec, outPath);
+      done++;
+      if (done % tickEvery === 0 || done === total) {
+        const pct = Math.floor((done / total) * 100);
+        process.stdout.write(`\rExporting PNGs: ${done}/${total} (${pct}%)`);
+      }
     }
   }
+  process.stdout.write('\n');
   console.log('Exported PNGs to', outDir);
 }
 
@@ -67,4 +78,3 @@ main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
-

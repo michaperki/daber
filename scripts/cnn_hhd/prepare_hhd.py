@@ -8,7 +8,7 @@ Because HHD variants differ, this script tries common patterns:
 - Filenames containing the glyph
 Unclassified images go to <out>/_unlabeled for manual triage.
 """
-import argparse, os, zipfile, shutil, re
+import argparse, os, zipfile, shutil, re, sys
 from pathlib import Path
 
 LETTERS = [
@@ -29,7 +29,27 @@ def main():
   tmp.mkdir(parents=True, exist_ok=True)
 
   with zipfile.ZipFile(args.zip, 'r') as z:
-    z.extractall(tmp)
+    names = z.namelist()
+    total = len(names)
+    copied = 0
+    try:
+      from tqdm import tqdm  # type: ignore
+      for name in tqdm(names, desc='Extract', unit='file'):
+        z.extract(name, tmp)
+        copied += 1
+    except Exception:
+      print(f'Extract: {total} files...')
+      next_tick = 0
+      tick = max(1, total // 100)
+      for name in names:
+        z.extract(name, tmp)
+        copied += 1
+        if copied >= next_tick:
+          pct = int((copied / total) * 100)
+          sys.stdout.write(f"\rExtract: {copied}/{total} ({pct}%)")
+          sys.stdout.flush()
+          next_tick += tick
+      sys.stdout.write("\n")
 
   out = Path(args.out)
   if out.exists():
@@ -74,4 +94,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-

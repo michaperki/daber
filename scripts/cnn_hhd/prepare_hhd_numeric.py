@@ -13,7 +13,7 @@ Mapping file formats supported:
 If no mapping is provided, the default order in letters.json is used
 (index 0 -> LETTERS[0], etc.). You should verify this by sampling images.
 """
-import argparse, json, os, shutil
+import argparse, json, os, shutil, sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -34,10 +34,13 @@ def load_mapping(path: str | None):
   raise ValueError('Unknown mapping JSON format')
 
 def copy_split(root: Path, split: str, out: Path, idx2glyph: dict[str,str]):
+  """Copy a split with a progress bar. Falls back to simple prints if tqdm is missing."""
   src = root / split
   if not src.exists():
     return 0
-  copied = 0
+
+  # Build copy plan
+  tasks: list[tuple[Path, Path]] = []
   for sub in sorted(src.iterdir()):
     if not sub.is_dir():
       continue
@@ -54,11 +57,37 @@ def copy_split(root: Path, split: str, out: Path, idx2glyph: dict[str,str]):
         continue
       if f.suffix.lower() not in IMG_EXTS:
         continue
-      # Create a stable filename to avoid collisions
       name = f"{split}_{idx}_{n}{f.suffix.lower()}"
-      shutil.copy2(f, dst / name)
+      tasks.append((f, dst / name))
       n += 1
+
+  total = len(tasks)
+  copied = 0
+
+  # Progress helpers
+  try:
+    from tqdm import tqdm  # type: ignore
+    bar = tqdm(total=total, unit='img', desc=f'{split}')
+    for src_path, dst_path in tasks:
+      shutil.copy2(src_path, dst_path)
+      bar.update(1)
       copied += 1
+    bar.close()
+  except Exception:
+    # Fallback: simple textual progress every 500 files
+    print(f"{split}: copying {total} files...")
+    next_tick = 0
+    tick = max(1, total // 100)  # ~100 updates max
+    for src_path, dst_path in tasks:
+      shutil.copy2(src_path, dst_path)
+      copied += 1
+      if copied >= next_tick:
+        pct = int((copied / total) * 100)
+        sys.stdout.write(f"\r{split}: {copied}/{total} ({pct}%)")
+        sys.stdout.flush()
+        next_tick += tick
+    sys.stdout.write("\n")
+
   return copied
 
 def main():
@@ -82,4 +111,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-

@@ -32,4 +32,13 @@ Example (in index.html or a custom plugin):
     })();
   </script>
 
+Label mapping
+- Provide a `labels.json` alongside `model.json`.
+- 27-class models: labels must be the 27 Hebrew glyphs in Unicode order.
+- 28-class models: the first label should be a stop token (e.g., "stop"), followed by the 27 glyphs.
+- If labels are absent: the app assumes either 27 letters in Unicode order or 28 with stop at index 0.
+
+Channels
+- The app auto-detects whether the model expects 1 or 3 channels and will feed grayscale replicated across RGB if needed.
+
 If no model is present, Hybrid mode falls back to centroid-only scoring.

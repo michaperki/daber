@@ -55,6 +55,7 @@ The MVP is feature-parity with the current `HebrewHandwritingWeb` app, modulariz
 - KNN `k` input (default 5)
 - Augment toggle (±1px shifts of every stored sample)
 - Live prediction as you draw (debounced) OR predict once on pen-up
+- Optional Debug: shows 64×64 preview, per-mode top-3 (KNN/Centroid/CNN/Hybrid), Hybrid score breakdown (logp, α·prototype, prior), model info (input shape, output size, labels count), and a one-click JSON export for a single draw
 
 **Acceptance**:
 - Toggling mode / k / augment re-runs prediction immediately against the current canvas
@@ -119,7 +120,7 @@ The MVP is feature-parity with the current `HebrewHandwritingWeb` app, modulariz
 **Purpose**: the math. See `RECOGNIZER.md` for details.
 
 **Behavior**:
-- 64×64 grayscale feature vector, unit-normalized for cosine similarity
+- 64×64 grayscale feature vector (+ 3 geometry features). Predictors normalize the query internally for cosine similarity; CNN consumes the raw 64×64 slice.
 - Centroid mode: one averaged prototype per class, cosine-score against all
 - KNN mode: cosine-score against every stored sample, take top `k` by similarity, sum-per-class, argmax
 - Augmentation: ±1px shifts of every stored sample at recognizer-build time
@@ -129,6 +130,20 @@ The MVP is feature-parity with the current `HebrewHandwritingWeb` app, modulariz
 **Acceptance**:
 - Matches the current `HebrewHandwritingWeb/app.js` behavior (this is a straight port)
 - Mode/k/augment toggle from UI without a page reload
+
+### F12. Bench tab (leave‑one‑out)
+
+**Purpose**: quantify recognizer quality on your own samples without redeploys.
+
+**Behavior**:
+- Leave‑one‑out over each letter with ≥2 samples: hold out one sample as the query, predict against the rest
+- Reports overall accuracy per mode (KNN/Centroid/CNN/Hybrid), per‑letter breakdown, and top confusions
+- Options: `k`, augment on/off, include CNN/Hybrid (only if a TFJS model is loaded), save per‑sample predictions in the exported JSON
+- Export JSON with the full results
+
+**Acceptance**:
+- Running Bench does not mutate calibration
+- CNN/Hybrid evaluation uses raw 64×64 pixels for queries; KNN/Centroid use normalized vectors
 
 ### F8. Sync backend (minimal)
 

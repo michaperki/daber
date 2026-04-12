@@ -73,6 +73,17 @@ Concatenate `[4096 pixels, widthNorm, heightNorm, aspect]`. Predictors that use 
 
 Cosine similarity of unit vectors is just a dot product. Two unit vectors `a` and `b` have cosine = `a · b ∈ [-1, 1]`. For non-negative ink features, it's in `[0, 1]` in practice. The app returns raw features from the canvas; the KNN and Centroid predictors L2-normalize the query internally before scoring. The CNN path consumes the raw 64×64 pixels directly (white background = 1 after inversion) to match training.
 
+### CNN inputs and label mapping
+
+- Input channels: the app detects whether the TFJS model expects 1 or 3 channels and supplies grayscale replicated across channels when needed.
+- Output mapping:
+  - If `window.daberCnnLabels` is present (array), the app maps outputs by label name. If the first label looks like a stop/pad token, it is skipped.
+  - If no labels are present and the output length is 28, index 0 is treated as stop and indices 1..27 map to the built‑in `LETTERS` order.
+  - If no labels are present and the output length is 27, outputs are assumed to already be in the built‑in `LETTERS` order.
+- The app applies softmax to the model outputs to handle raw logits safely.
+
+Provide `labels.json` next to `model.json` to avoid ambiguity. See `apps/web/public/models/README.txt`.
+
 ### Quantization for storage
 
 The feature vector is a Float32Array (16 KB per sample). We store it as a Uint8Array (4 KB per sample) by scaling to `[0, 255]`:

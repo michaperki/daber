@@ -51,6 +51,7 @@ In suggested order:
 6. `docs/RECOGNIZER.md` — how the recognizer works (KNN/Centroid, Hybrid, features)
 7. `docs/ROADMAP.md` — phased plan from MVP to sentence writing
 8. `docs/PLAN.md` — Phase 0 implementation checklist (the concrete next actions)
+9. `docs/DIAGNOSTICS.md` — Bench and Debug: how to evaluate and troubleshoot models quickly
 9. `docs/DEPLOYMENT.md` — Heroku setup and local dev DB
 
 ## What's in `reference/`

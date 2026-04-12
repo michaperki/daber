@@ -95,7 +95,9 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
 
     function fullRedraw() {
       const { w, h } = sizeRef.current;
-      redrawAll(ctx2d(), w, h, strokeWidth(), strokesRef.current, currentRef.current, watermarkRef.current);
+      const wm = watermarkRef.current;
+      console.log('[watermark] fullRedraw, wm=', wm ? 'yes' : 'null', 'w=', w);
+      redrawAll(ctx2d(), w, h, strokeWidth(), strokesRef.current, currentRef.current, wm);
     }
 
     function clear() {

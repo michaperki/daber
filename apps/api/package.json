@@ -9,7 +9,10 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev --name init"
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:status": "prisma migrate status",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "fastify": "^4.26.2",
@@ -25,4 +28,3 @@
     "typescript": "^5.4.0"
   }
 }
-

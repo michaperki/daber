@@ -23,6 +23,8 @@ export type DrawCanvasProps = {
   // Fired on pen-up even for empty strokes. Used by tabs to know when to
   // recheck things like live prediction.
   onPenUp?: () => void;
+  // Optional debounced live vector updates while drawing
+  onLiveVector?: (vec: Float32Array) => void;
 };
 
 // Square drawing surface that mirrors the reference HebrewHandwritingWeb
@@ -30,7 +32,7 @@ export type DrawCanvasProps = {
 // none` to prevent page scroll, DPR-aware buffer sizing, stroke width
 // proportional to CSS width. See reference/hebrewhandwritingweb/app.js ~97.
 export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
-  function DrawCanvas({ onStrokeComplete, onPenUp }, ref) {
+  function DrawCanvas({ onStrokeComplete, onPenUp, onLiveVector }, ref) {
     const wrapRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const strokesRef = useRef<Stroke[]>([]);
@@ -41,8 +43,10 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
     // useEffect always call the latest versions.
     const onStrokeCompleteRef = useRef(onStrokeComplete);
     const onPenUpRef = useRef(onPenUp);
+    const onLiveVectorRef = useRef(onLiveVector);
     onStrokeCompleteRef.current = onStrokeComplete;
     onPenUpRef.current = onPenUp;
+    onLiveVectorRef.current = onLiveVector;
 
     function ctx2d() {
       const c = canvasRef.current!;
@@ -105,6 +109,19 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
       if (!drawingRef.current) return;
       currentRef.current.push(getPos(e));
       fullRedraw();
+      // Debounced live vector update including the in-progress stroke
+      if (onLiveVectorRef.current) {
+        // store timer on function to avoid extra refs
+        const anyMove = onMove as any;
+        if (anyMove._liveTimer) window.clearTimeout(anyMove._liveTimer);
+        anyMove._liveTimer = window.setTimeout(() => {
+          const strokesAll = currentRef.current.length
+            ? [...strokesRef.current, currentRef.current]
+            : strokesRef.current;
+          const vec = extractFeaturesFromStrokes(strokesAll);
+          onLiveVectorRef.current?.(vec);
+        }, 120);
+      }
     }
     function onUp() {
       if (!drawingRef.current) return;

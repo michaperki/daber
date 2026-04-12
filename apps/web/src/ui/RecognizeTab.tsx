@@ -42,6 +42,10 @@ export function RecognizeTab() {
     if (!live) return;
     runPrediction(vec);
   }
+  function onLive(vec: Float32Array) {
+    if (!live) return;
+    runPrediction(vec);
+  }
 
   const margin = topMargin(predictions);
   const hasCalibration = Object.keys(prototypes).length > 0;
@@ -51,7 +55,7 @@ export function RecognizeTab() {
 
   return (
     <>
-      <DrawCanvas ref={canvasRef} onStrokeComplete={onStroke} />
+      <DrawCanvas ref={canvasRef} onStrokeComplete={onStroke} onLiveVector={onLive} />
       <div class={panels.row}>
         <button
           onClick={() => {
@@ -75,6 +79,11 @@ export function RecognizeTab() {
             />
           </label>
           <button onClick={() => runPrediction()}>Predict Once</button>
+        </div>
+        <div class={panels.row}>
+          <span style={{ fontSize: '12px', opacity: 0.8 }}>
+            {hasCnn ? 'Hybrid: CNN loaded' : 'Hybrid: no CNN (centroid/KNN only)'}
+          </span>
         </div>
         <div class={panels.row}>
           <label class="inline">

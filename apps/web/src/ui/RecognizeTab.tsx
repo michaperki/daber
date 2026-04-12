@@ -17,6 +17,7 @@ export function RecognizeTab() {
   const [lastVec, setLastVec] = useState<Float32Array | null>(null);
   const [hybridContribs, setHybridContribs] = useState<ReturnType<typeof debugHybridContribs> | null>(null);
   const [allModes, setAllModes] = useState<{ knn: Ranked[]; centroid: Ranked[]; cnn: Ranked[]; hybrid: Ranked[] } | null>(null);
+  const [modelInfo, setModelInfo] = useState<{ inShape?: number[]; outLen?: number; labels?: string[] } | null>(null);
 
   const prefs = progress.value.prefs;
   const cal = calibration.value;
@@ -60,9 +61,21 @@ export function RecognizeTab() {
       } else {
         setHybridContribs(null);
       }
+      // Model info snapshot
+      try {
+        const win: any = window as any;
+        const m = win.daberCnnModel;
+        const info = m ? {
+          inShape: (m?.inputs?.[0]?.shape as number[] | undefined),
+          outLen: (m?.outputs?.[0]?.shape?.slice(-1)?.[0] as number | undefined),
+          labels: Array.isArray(win.daberCnnLabels) ? (win.daberCnnLabels as string[]) : undefined,
+        } : null;
+        setModelInfo(info);
+      } catch { setModelInfo(null); }
     } else {
       setAllModes(null);
       setHybridContribs(null);
+      setModelInfo(null);
     }
   }
 
@@ -188,6 +201,14 @@ export function RecognizeTab() {
         {debug && lastVec && (
           <div style={{ marginTop: '8px' }}>
             <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+              {modelInfo && (
+                <div style={{ fontSize: '11px', opacity: 0.7, minWidth: '220px' }}>
+                  <div style={{ marginBottom: '6px' }}>Model info</div>
+                  <div>in: {JSON.stringify(modelInfo.inShape || [])}</div>
+                  <div>out: {modelInfo.outLen ?? '?'}</div>
+                  <div>labels: {modelInfo.labels ? modelInfo.labels.length : 0}</div>
+                </div>
+              )}
               <div>
                 <div style={{ fontSize: '12px', opacity: 0.8, marginBottom: '4px' }}>64×64 preview</div>
                 <canvas

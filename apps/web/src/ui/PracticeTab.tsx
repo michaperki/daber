@@ -132,7 +132,8 @@ export function PracticeTab() {
 
   function forceAccept() {
     if (!lastReject || !target) return;
-    addCalibrationSample(target, lastReject);
+    // Do not learn from force-accepted strokes to avoid contaminating prototypes
+    // when the model was confidently wrong or the drawing was ambiguous.
     bumpPracticeStats(true);
     setLastReject(null);
     setFeedback({

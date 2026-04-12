@@ -167,11 +167,8 @@ export function VocabTab() {
     if (!expected) return;
     const atEnd = state.pos === cur.he.length - 1;
     const display = normalizedExpected(expected, atEnd);
-    // Save the stroke under the expected letter to improve the model.
-    addCalibrationSample(
-      (atEnd ? display : toBaseForm(expected as LetterGlyph)) as LetterGlyph,
-      lastReject,
-    );
+    // Do not learn from force-accepted strokes to avoid contaminating prototypes
+    // when the model was confidently wrong or the drawing was ambiguous.
     bumpVocabLetter(true);
     setLastReject(null);
     const nextPos = state.pos + 1;

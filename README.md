@@ -1,3 +1,5 @@
+READ MIKES_NOTES.md
+
 # Daber
 
 A Hebrew handwriting practice app that calibrates to your handwriting and lets you write your way through vocab, inflections, and eventually sentences.

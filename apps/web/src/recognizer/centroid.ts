@@ -38,14 +38,19 @@ export function computeCentroids(
 export function predictByCentroid(
   vec: Float32Array,
   db: Prototypes,
-  opts: { augment?: boolean; topN?: number } = {},
+  opts: { augment?: boolean; topN?: number; expectedLetter?: LetterGlyph } = {},
 ): Ranked[] {
   const topN = opts.topN ?? 5;
   const centroids = computeCentroids(db, opts.augment ?? false);
   const q = normalizeUnit(vec);
+  // Small prior boost for the expected letter — helps in close calls without
+  // overwhelming genuine evidence. 0.04 on raw cosine ≈ ~50% prob boost after
+  // softmax with temp=10.
+  const prior = opts.expectedLetter ? 0.04 : 0;
   const scored: { letter: LetterGlyph; raw: number }[] = [];
   for (const [letter, c] of Object.entries(centroids) as [LetterGlyph, Float32Array][]) {
-    scored.push({ letter, raw: dotPixels(q, c) });
+    const boost = letter === opts.expectedLetter ? prior : 0;
+    scored.push({ letter, raw: dotPixels(q, c) + boost });
   }
   scored.sort((a, b) => b.raw - a.raw);
   const top = scored.slice(0, topN);

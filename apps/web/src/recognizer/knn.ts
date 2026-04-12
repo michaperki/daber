@@ -36,7 +36,7 @@ export function buildFlatDb(db: KnnDb, augment: boolean): FlatDb {
 export function predictByKnn(
   vec: Float32Array,
   db: KnnDb,
-  opts: { k: number; augment?: boolean; topN?: number } = { k: 5 },
+  opts: { k: number; augment?: boolean; topN?: number; expectedLetter?: LetterGlyph } = { k: 5 },
 ): Ranked[] {
   // Normalize the query so cosine similarity is a pure dot product.
   const q = normalizeUnit(vec);
@@ -55,6 +55,13 @@ export function predictByKnn(
   for (let i = 0; i < k; i++) {
     const s = sims[i];
     votes.set(s.label, (votes.get(s.label) ?? 0) + s.sim);
+  }
+  // Small prior boost for the expected letter — adds a fractional "virtual
+  // vote" so the expected letter wins close ties. Equivalent to about half
+  // a max-similarity neighbor voting for it.
+  if (opts.expectedLetter && votes.size > 0) {
+    const cur = votes.get(opts.expectedLetter) ?? 0;
+    votes.set(opts.expectedLetter, cur + 0.4);
   }
   const total = Array.from(votes.values()).reduce((a, b) => a + b, 0) || 1;
   const ranked: Ranked[] = Array.from(votes.entries()).map(([letter, vote]) => ({

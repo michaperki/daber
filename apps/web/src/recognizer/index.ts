@@ -12,8 +12,9 @@ export type PredictOpts = {
   augment?: boolean;
   prototypes: Prototypes; // per-letter calibration samples
   topN?: number;
-  // Optional expected-letter prior (Hybrid mode uses this to bias toward the
-  // expected glyph in Practice/Vocab flows). Ignored by KNN/Centroid.
+  // Optional expected-letter prior. All modes use this to give a small bias
+  // toward the expected glyph in Practice/Vocab flows. This helps close calls
+  // without accepting arbitrary scribbles (the margin threshold still gates).
   expectedLetter?: LetterGlyph;
 };
 
@@ -22,6 +23,7 @@ export function predictTop(vec: Float32Array, opts: PredictOpts): Ranked[] {
     return predictByCentroid(vec, opts.prototypes, {
       augment: opts.augment,
       topN: opts.topN ?? 5,
+      expectedLetter: opts.expectedLetter,
     });
   }
   if (opts.mode === 'cnn') {
@@ -38,6 +40,7 @@ export function predictTop(vec: Float32Array, opts: PredictOpts): Ranked[] {
     k: opts.k ?? 5,
     augment: opts.augment,
     topN: opts.topN ?? 5,
+    expectedLetter: opts.expectedLetter,
   });
 }
 

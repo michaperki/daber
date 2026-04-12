@@ -117,3 +117,132 @@ entries:
       - he: יש לי קנקן
         en: I have a pitcher, jug.
     gender: m
+  - lemma: כוס
+    gloss: cup, glass
+    forms:
+      sg: כוס
+      pl: כוסות
+    examples:
+      - he: תביא כוס מים
+        en: Bring a glass of water.
+    gender: f
+  - lemma: צלחת
+    gloss: plate
+    forms:
+      sg: צלחת
+      pl: צלחות
+    examples:
+      - he: שים את האוכל על הצלחת
+        en: Put the food on the plate.
+    gender: f
+  - lemma: מזלג
+    gloss: fork
+    forms:
+      sg: מזלג
+      pl: מזלגות
+    examples:
+      - he: אין מזלג נקי
+        en: There is no clean fork.
+    gender: m
+  - lemma: סכין
+    gloss: knife
+    forms:
+      sg: סכין
+      pl: סכינים
+    examples:
+      - he: תזהר מהסכין
+        en: Be careful with the knife.
+    gender: f
+  - lemma: כפית
+    gloss: teaspoon
+    forms:
+      sg: כפית
+      pl: כפיות
+    examples:
+      - he: אפשר כפית?
+        en: May I have a teaspoon?
+    gender: f
+  - lemma: ביצה
+    gloss: egg
+    forms:
+      sg: ביצה
+      pl: ביצים
+    examples:
+      - he: אני אוכל ביצה לארוחת בוקר
+        en: I eat an egg for breakfast.
+    gender: f
+  - lemma: גבינה
+    gloss: cheese
+    forms:
+      sg: גבינה
+      pl: גבינות
+    examples:
+      - he: אני אוהב גבינה צהובה
+        en: I like yellow cheese.
+    gender: f
+  - lemma: חמאה
+    gloss: butter
+    forms:
+      sg: חמאה
+    examples:
+      - he: תוסיף חמאה ללחם
+        en: Add butter to the bread.
+    gender: f
+  - lemma: שמן
+    gloss: oil
+    forms:
+      sg: שמן
+    examples:
+      - he: שמן זית
+        en: olive oil
+    gender: m
+  - lemma: סוכר
+    gloss: sugar
+    forms:
+      sg: סוכר
+    examples:
+      - he: שים פחות סוכר
+        en: Put less sugar.
+    gender: m
+  - lemma: מלח
+    gloss: salt
+    forms:
+      sg: מלח
+    examples:
+      - he: תוסיף קצת מלח
+        en: Add a bit of salt.
+    gender: m
+  - lemma: פלפל
+    gloss: pepper
+    forms:
+      sg: פלפל
+      pl: פלפלים
+    examples:
+      - he: פלפל שחור
+        en: black pepper
+    gender: m
+  - lemma: עוף
+    gloss: chicken (meat)
+    forms:
+      sg: עוף
+    examples:
+      - he: אני מבשל עוף
+        en: I am cooking chicken.
+    gender: m
+  - lemma: דג
+    gloss: fish
+    forms:
+      sg: דג
+      pl: דגים
+    examples:
+      - he: אני קונה דג טרי
+        en: I buy fresh fish.
+    gender: m
+  - lemma: בשר
+    gloss: meat
+    forms:
+      sg: בשר
+    examples:
+      - he: אני לא אוכל בשר
+        en: I do not eat meat.
+    gender: m

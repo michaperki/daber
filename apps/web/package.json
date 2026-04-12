@@ -1,0 +1,22 @@
+{
+  "name": "@daber/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "preact": "^10.22.0",
+    "@preact/signals": "^1.2.3",
+    "@daber/content": "*"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.8.2",
+    "typescript": "^5.4.0",
+    "vite": "^5.2.11"
+  }
+}

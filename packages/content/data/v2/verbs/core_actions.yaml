@@ -341,3 +341,134 @@ entries:
         en: I am writing the letter.
       - he: הוא כותב לחבר
         en: He is writing to a friend.
+
+  - lemma: לאכול
+    gloss: to eat
+    primary_prep: et
+    examples:
+      - he: אני אוהב לאכול פסטה
+        en: I like to eat pasta.
+      - he: היא אוכלת ארוחת בוקר
+        en: She eats breakfast.
+
+  - lemma: לשתות
+    gloss: to drink
+    primary_prep: et
+    examples:
+      - he: אני שותה מים
+        en: I drink water.
+      - he: הם שותים קפה חם
+        en: They drink hot coffee.
+
+  - lemma: לעבוד
+    gloss: to work
+    examples:
+      - he: אני עובד מהבית
+        en: I work from home.
+      - he: היא עובדת במשרד
+        en: She works in an office.
+
+  - lemma: לשבת
+    gloss: to sit
+    examples:
+      - he: תושב כאן בבקשה
+        en: Please sit here.
+      - he: אנחנו יושבים בגינה
+        en: We are sitting in the garden.
+
+  - lemma: לעמוד
+    gloss: to stand
+    examples:
+      - he: אני עומד בתור
+        en: I am standing in line.
+      - he: כולם עומדים
+        en: Everyone is standing.
+
+  - lemma: לשחק
+    gloss: to play
+    primary_prep: b
+    examples:
+      - he: הילדים משחקים בכדור
+        en: The kids are playing ball.
+      - he: אני משחק בשחמט
+        en: I play chess.
+
+  - lemma: לשלם
+    gloss: to pay
+    primary_prep: et
+    examples:
+      - he: אני משלם במזומן
+        en: I pay in cash.
+      - he: היא שילמה על הארוחה
+        en: She paid for the meal.
+
+  - lemma: לבשל
+    gloss: to cook
+    primary_prep: et
+    examples:
+      - he: אני מבשל מרק
+        en: I am cooking soup.
+      - he: הוא אוהב לבשל
+        en: He likes to cook.
+
+  - lemma: לנקות
+    gloss: to clean
+    primary_prep: et
+    examples:
+      - he: אני מנקה את הבית
+        en: I clean the house.
+      - he: צריך לנקות את המטבח
+        en: We need to clean the kitchen.
+
+  - lemma: לישון
+    gloss: to sleep
+    examples:
+      - he: אני ישן שמונה שעות
+        en: I sleep eight hours.
+      - he: התינוק ישן
+        en: The baby is sleeping.
+
+  - lemma: לאהוב
+    gloss: to love; to like
+    primary_prep: et
+    examples:
+      - he: אני אוהב מוזיקה
+        en: I like music.
+      - he: היא אוהבת אותו
+        en: She loves him.
+
+  - lemma: לרצות
+    gloss: to want
+    primary_prep: et
+    examples:
+      - he: אני רוצה קפה
+        en: I want coffee.
+      - he: הוא רוצה ללכת הביתה
+        en: He wants to go home.
+
+  - lemma: לקחת
+    gloss: to take
+    primary_prep: et
+    examples:
+      - he: קח את הספר
+        en: Take the book.
+      - he: אני לוקח מונית
+        en: I take a taxi.
+
+  - lemma: לתת
+    gloss: to give
+    primary_prep: l
+    examples:
+      - he: תן לי רגע
+        en: Give me a moment.
+      - he: היא נותנת מתנה לחבר
+        en: She gives a gift to a friend.
+
+  - lemma: למצוא
+    gloss: to find
+    primary_prep: et
+    examples:
+      - he: מצאתי את המפתח
+        en: I found the key.
+      - he: קשה למצוא חניה
+        en: It is hard to find parking.

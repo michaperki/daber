@@ -1,0 +1,102 @@
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prompt {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.promptLabel { color: var(--muted); font-size: 14px; }
+.promptValue { font-size: 48px; font-weight: 700; line-height: 1; }
+.promptValueSmall { font-size: 24px; font-weight: 700; }
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.progress {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+.progressOk { color: var(--accent-2); }
+
+.shortcuts {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.feedback {
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 16px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+.feedbackOk { color: var(--accent-2); }
+.feedbackBad { color: var(--danger); }
+
+.stats { font-size: 14px; color: var(--text); margin-top: 4px; }
+
+.fileInput {
+  border: 1px dashed var(--border);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  color: inherit;
+}
+.fileInput input { display: none; }
+
+.predictions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.predItem {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.predLetter { font-size: 20px; font-weight: 600; width: 28px; text-align: center; }
+.predBar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 999px;
+  flex: 1;
+  overflow: hidden;
+}
+.predBar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.predPct { min-width: 48px; color: var(--muted); font-size: 12px; }
+.margin {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+
+.hebrewOutput {
+  font-size: 48px;
+  font-weight: 700;
+  direction: rtl;
+  unicode-bidi: embed;
+  min-height: 52px;
+  color: var(--text);
+}

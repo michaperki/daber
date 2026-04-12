@@ -1,0 +1,55 @@
+import { signal, computed } from '@preact/signals';
+import type { CalibrationV1 } from '../storage/calibration';
+import { emptyCalibration } from '../storage/calibration';
+import type { ProgressV1 } from '../storage/progress';
+import { emptyProgress } from '../storage/progress';
+import type { LetterGlyph } from '../recognizer/types';
+import { LETTERS } from '../recognizer/types';
+
+export type TabId = 'calibrate' | 'recognize' | 'practice' | 'vocab';
+
+// ---- Top-level signals ----
+
+export const activeTab = signal<TabId>('calibrate');
+export const deviceId = signal<string>('');
+
+// Calibration and progress are loaded from localStorage synchronously at boot
+// and then rehydrated from the server once the initial GETs return.
+export const calibration = signal<CalibrationV1>(emptyCalibration());
+export const progress = signal<ProgressV1>(emptyProgress());
+
+// Lightweight sync status for an inline offline indicator in the header.
+export type SyncStatus = 'idle' | 'loading' | 'error' | 'saving';
+export const syncStatus = signal<SyncStatus>('idle');
+export const offline = signal<boolean>(false);
+
+// Current letter index inside the Calibrate tab (0..LETTERS.length-1).
+export const calibrateLetterIdx = signal<number>(0);
+
+// Settings panel visibility
+export const settingsOpen = signal<boolean>(false);
+
+// ---- Derived ----
+
+export const sampleCounts = computed<Record<LetterGlyph, number>>(() => {
+  const cal = calibration.value;
+  const out = {} as Record<LetterGlyph, number>;
+  for (const L of LETTERS) out[L] = (cal.samples[L] || []).length;
+  return out;
+});
+
+export const setupCount = computed<number>(() => {
+  const counts = sampleCounts.value;
+  let n = 0;
+  for (const L of LETTERS) if ((counts[L] || 0) > 0) n++;
+  return n;
+});
+
+export const setupComplete = computed<boolean>(
+  () => setupCount.value >= LETTERS.length,
+);
+
+export const calibratedLetters = computed<LetterGlyph[]>(() => {
+  const counts = sampleCounts.value;
+  return LETTERS.filter((L) => counts[L] > 0);
+});

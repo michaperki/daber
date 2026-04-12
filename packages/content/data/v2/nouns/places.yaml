@@ -99,3 +99,48 @@ entries:
       - he: יש לי שכונה
         en: I have a neighborhood.
     gender: f
+  - lemma: סופרמרקט
+    gloss: supermarket
+    forms:
+      sg: סופרמרקט
+      pl: סופרמרקטים
+    examples:
+      - he: אני הולך לסופרמרקט
+        en: I am going to the supermarket.
+    gender: m
+  - lemma: בית ספר
+    gloss: school
+    forms:
+      sg: בית ספר
+      pl: בתי ספר
+    examples:
+      - he: הילדים בבית ספר
+        en: The children are at school.
+    gender: m
+  - lemma: בית חולים
+    gloss: hospital
+    forms:
+      sg: בית חולים
+      pl: בתי חולים
+    examples:
+      - he: הוא בבית חולים
+        en: He is in the hospital.
+    gender: m
+  - lemma: פארק
+    gloss: park
+    forms:
+      sg: פארק
+      pl: פארקים
+    examples:
+      - he: נלך לפארק
+        en: Let's go to the park.
+    gender: m
+  - lemma: חוף
+    gloss: beach
+    forms:
+      sg: חוף
+      pl: חופים
+    examples:
+      - he: אנחנו בחוף הים
+        en: We are at the beach.
+    gender: m

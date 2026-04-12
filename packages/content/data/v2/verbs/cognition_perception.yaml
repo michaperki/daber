@@ -231,3 +231,30 @@ entries:
         en: i will hear
       - he: את תשמעי
         en: you will hear
+
+  - lemma: לדעת
+    gloss: to know
+    primary_prep: et
+    examples:
+      - he: אני יודע את התשובה
+        en: I know the answer.
+      - he: היא יודעת עברית
+        en: She knows Hebrew.
+
+  - lemma: לחשוב
+    gloss: to think
+    primary_prep: al
+    examples:
+      - he: אני חושב על זה
+        en: I am thinking about it.
+      - he: מה את חושבת?
+        en: What do you think?
+
+  - lemma: להרגיש
+    gloss: to feel
+    primary_prep: et
+    examples:
+      - he: אני מרגיש טוב
+        en: I feel well.
+      - he: היא מרגישה רע
+        en: She feels bad.

@@ -134,3 +134,35 @@ entries:
         en: We are leaving the house.
       - he: היא יוצאת מהעבודה בשש
         en: She leaves work at six.
+
+  - lemma: ללכת
+    gloss: to go; to walk
+    examples:
+      - he: אני הולך לעבודה
+        en: I am going to work.
+      - he: אנחנו הולכים ברגל
+        en: We are walking on foot.
+
+  - lemma: לבוא
+    gloss: to come
+    examples:
+      - he: תבוא מחר
+        en: Come tomorrow.
+      - he: הם באים עכשיו
+        en: They are coming now.
+
+  - lemma: לנסוע
+    gloss: to travel; to drive (as passenger)
+    examples:
+      - he: אני נוסע באוטובוס
+        en: I ride the bus.
+      - he: מחר ניסע לירושלים
+        en: Tomorrow we will travel to Jerusalem.
+
+  - lemma: לנהוג
+    gloss: to drive (operate a vehicle)
+    examples:
+      - he: הוא נוהג לעבודה כל יום
+        en: He drives to work every day.
+      - he: אל תנהג מהר
+        en: Do not drive fast.

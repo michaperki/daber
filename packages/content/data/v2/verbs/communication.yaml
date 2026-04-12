@@ -143,3 +143,21 @@ entries:
         en: I am speaking with Dani.
       - he: דיברנו על העבודה
         en: We talked about work.
+
+  - lemma: לומר
+    gloss: to say
+    primary_prep: none
+    examples:
+      - he: יש לו מה לומר
+        en: He has something to say.
+      - he: אני לא יודע מה לומר
+        en: I don't know what to say.
+
+  - lemma: לשאול
+    gloss: to ask (a question)
+    primary_prep: et
+    examples:
+      - he: אפשר לשאול שאלה?
+        en: May I ask a question?
+      - he: היא שואלת את המורה
+        en: She asks the teacher.

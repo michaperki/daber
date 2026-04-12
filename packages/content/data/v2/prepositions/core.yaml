@@ -238,6 +238,78 @@ entries:
         en: The courage is within you.
       - he: השקט בתוכה.
         en: The calm is within her.
+
+  - lemma: עם
+    gloss: with
+    examples:
+      - he: אני הולך עם חברים
+        en: I am going with friends.
+      - he: היא מדברת עם אחותה
+        en: She is talking with her sister.
+
+  - lemma: בלי
+    gloss: without
+    examples:
+      - he: קפה בלי סוכר
+        en: Coffee without sugar.
+      - he: אל תצא בלי מעיל
+        en: Don't go out without a coat.
+
+  - lemma: לפני
+    gloss: before; in front of
+    examples:
+      - he: לפני העבודה אני רץ
+        en: Before work I run.
+      - he: הוא עומד לפני הבית
+        en: He is standing in front of the house.
+
+  - lemma: מעל
+    gloss: above; over
+    examples:
+      - he: המטוס מעל העיר
+        en: The plane is over the city.
+      - he: המדף מעל המיטה
+        en: The shelf is above the bed.
+
+  - lemma: מתחת
+    gloss: under; beneath
+    examples:
+      - he: החתול מתחת לשולחן
+        en: The cat is under the table.
+      - he: הנעליים מתחת למיטה
+        en: The shoes are under the bed.
+
+  - lemma: מול
+    gloss: opposite; in front of
+    examples:
+      - he: הבנק מול התחנה
+        en: The bank is opposite the station.
+      - he: הוא יושב מולי
+        en: He sits opposite me.
+
+  - lemma: עד
+    gloss: until; up to
+    examples:
+      - he: חכו עד מחר
+        en: Wait until tomorrow.
+      - he: חם עד מאוד
+        en: Very hot (up to a lot).
+
+  - lemma: בגלל
+    gloss: because of
+    examples:
+      - he: בגלל הגשם נשארנו בבית
+        en: Because of the rain we stayed home.
+      - he: איחרתי בגלל הפקקים
+        en: I was late because of the traffic.
+
+  - lemma: דרך
+    gloss: through; via
+    examples:
+      - he: אנחנו נוסעים דרך תל אביב
+        en: We are traveling via Tel Aviv.
+      - he: האור נכנס דרך החלון
+        en: The light comes in through the window.
       - he: התקווה בתוכנו.
         en: The hope is within us.
       - he: האור בתוככם.

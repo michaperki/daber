@@ -1,0 +1,11 @@
+{
+  "name": "Daber",
+  "description": "Hebrew handwriting practice with continuous personalization",
+  "addons": ["heroku-postgresql:mini"],
+  "env": {
+    "NODE_ENV": { "value": "production" },
+    "CORS_ORIGIN": { "value": "https://daber.herokuapp.com" }
+  },
+  "buildpacks": [{ "url": "heroku/nodejs" }]
+}
+

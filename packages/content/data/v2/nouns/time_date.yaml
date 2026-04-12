@@ -77,3 +77,29 @@ entries:
       - he: יש לנו שבוע קשה
         en: We have a tough week.
     gender: m
+  - lemma: ערב
+    gloss: evening
+    forms:
+      sg: ערב
+      pl: ערבים
+    examples:
+      - he: בערב אנחנו אוכלים ביחד
+        en: In the evening we eat together.
+    gender: m
+  - lemma: לילה
+    gloss: night
+    forms:
+      sg: לילה
+      pl: לילות
+    examples:
+      - he: לילה טוב
+        en: Good night.
+    gender: m
+  - lemma: צהריים
+    gloss: noon; afternoon (early)
+    forms:
+      sg: צהריים
+    examples:
+      - he: ניפגש בצהריים
+        en: We'll meet at noon.
+    gender: m

@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DeviceCalibration {
+  device_id   String   @id
+  payload     Json
+  updated_at  DateTime @default(now()) @updatedAt
+  created_at  DateTime @default(now())
+
+  @@map("device_calibration")
+}
+
+model DeviceProgress {
+  device_id   String   @id
+  payload     Json
+  updated_at  DateTime @default(now()) @updatedAt
+  created_at  DateTime @default(now())
+
+  @@map("device_progress")
+}
+

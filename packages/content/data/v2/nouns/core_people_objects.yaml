@@ -198,6 +198,103 @@ entries:
       - he: יש לי הרבה חברים
         en: I have many friends.
     gender: m
+  - lemma: מקרר
+    gloss: refrigerator
+    forms:
+      sg: מקרר
+      pl: מקררים
+    examples:
+      - he: החלב במקרר
+        en: The milk is in the fridge.
+    gender: m
+  - lemma: תנור
+    gloss: oven
+    forms:
+      sg: תנור
+      pl: תנורים
+    examples:
+      - he: האוכל בתנור
+        en: The food is in the oven.
+    gender: m
+  - lemma: מיקרוגל
+    gloss: microwave
+    forms:
+      sg: מיקרוגל
+      pl: מיקרוגלים
+    examples:
+      - he: חממתי במיקרוגל
+        en: I heated it in the microwave.
+    gender: m
+  - lemma: קומקום
+    gloss: kettle
+    forms:
+      sg: קומקום
+      pl: קומקומים
+    examples:
+      - he: הקומקום רותח
+        en: The kettle is boiling.
+    gender: m
+  - lemma: סיר
+    gloss: pot
+    forms:
+      sg: סיר
+      pl: סירים
+    examples:
+      - he: הסיר על הכיריים
+        en: The pot is on the stove.
+    gender: m
+  - lemma: מחבת
+    gloss: frying pan
+    forms:
+      sg: מחבת
+      pl: מחבתות
+    examples:
+      - he: תשתמש במחבת הזאת
+        en: Use this frying pan.
+    gender: f
+  - lemma: חולצה
+    gloss: shirt
+    forms:
+      sg: חולצה
+      pl: חולצות
+    examples:
+      - he: אני לובש חולצה לבנה
+        en: I am wearing a white shirt.
+    gender: f
+  - lemma: מכנסיים
+    gloss: pants
+    forms:
+      sg: מכנסיים
+    examples:
+      - he: איפה המכנסיים שלי?
+        en: Where are my pants?
+    gender: m
+  - lemma: שמלה
+    gloss: dress
+    forms:
+      sg: שמלה
+      pl: שמלות
+    examples:
+      - he: זו שמלה יפה
+        en: That's a beautiful dress.
+    gender: f
+  - lemma: נעליים
+    gloss: shoes
+    forms:
+      sg: נעליים
+    examples:
+      - he: תלבשי נעליים
+        en: Put on shoes.
+    gender: f
+  - lemma: מעיל
+    gloss: coat
+    forms:
+      sg: מעיל
+      pl: מעילים
+    examples:
+      - he: קח מעיל, קר בחוץ
+        en: Take a coat, it's cold outside.
+    gender: m
   - lemma: מסמך
     gloss: document
     forms:

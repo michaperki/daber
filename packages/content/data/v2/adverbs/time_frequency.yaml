@@ -50,3 +50,107 @@ entries:
         en: I always drink coffee in the morning.
       - he: היא תמיד מאחרת
         en: She is always late.
+  - lemma: בדרך כלל
+    gloss: usually
+    examples:
+      - he: בדרך כלל אני קם מוקדם
+        en: Usually I get up early.
+      - he: בדרך כלל אנחנו אוכלים בבית
+        en: Usually we eat at home.
+  - lemma: לעיתים קרובות
+    gloss: often
+    examples:
+      - he: הוא מבקר אותנו לעיתים קרובות
+        en: He visits us often.
+      - he: לעיתים קרובות יורד גשם כאן
+        en: It often rains here.
+  - lemma: לעיתים רחוקות
+    gloss: rarely
+    examples:
+      - he: אנחנו הולכים לקולנוע לעיתים רחוקות
+        en: We rarely go to the cinema.
+      - he: היא לעיתים רחוקות אוכלת בחוץ
+        en: She rarely eats out.
+  - lemma: אף פעם
+    gloss: never
+    examples:
+      - he: אני אף פעם לא מאחר
+        en: I am never late.
+      - he: הוא אף פעם לא שותה קפה
+        en: He never drinks coffee.
+  - lemma: לפעמים
+    gloss: sometimes
+    examples:
+      - he: לפעמים אני עובד עד מאוחר
+        en: Sometimes I work late.
+      - he: לפעמים יורד שלג
+        en: Sometimes it snows.
+  - lemma: מחר
+    gloss: tomorrow
+    examples:
+      - he: נפגש מחר
+        en: We will meet tomorrow.
+      - he: מה תעשה מחר?
+        en: What will you do tomorrow?
+  - lemma: היום
+    gloss: today
+    examples:
+      - he: היום חם מאוד
+        en: Today is very hot.
+      - he: היום אנחנו נוסעים לירושלים
+        en: Today we are going to Jerusalem.
+  - lemma: שלשום
+    gloss: the day before yesterday
+    examples:
+      - he: שלשום ירד גשם
+        en: The day before yesterday it rained.
+  - lemma: מחרתיים
+    gloss: the day after tomorrow
+    examples:
+      - he: נצא לטיול מחרתיים
+        en: We'll go on a trip the day after tomorrow.
+  - lemma: אחר כך
+    gloss: later
+    examples:
+      - he: נדבר אחר כך
+        en: We'll talk later.
+  - lemma: קודם
+    gloss: earlier; first
+    examples:
+      - he: קודם כל נשב
+        en: First of all let's sit.
+  - lemma: כבר
+    gloss: already
+    examples:
+      - he: כבר אכלתי
+        en: I already ate.
+  - lemma: עדיין
+    gloss: still; yet
+    examples:
+      - he: אני עדיין בעבודה
+        en: I am still at work.
+  - lemma: כמעט
+    gloss: almost
+    examples:
+      - he: כמעט הגעתי
+        en: I almost arrived.
+  - lemma: בדיוק
+    gloss: exactly
+    examples:
+      - he: זה בדיוק מה שרציתי
+        en: That's exactly what I wanted.
+  - lemma: בערך
+    gloss: approximately
+    examples:
+      - he: זה עולה בערך מאה שקלים
+        en: It costs approximately one hundred shekels.
+  - lemma: שוב
+    gloss: again
+    examples:
+      - he: תנסה שוב
+        en: Try again.
+  - lemma: פתאום
+    gloss: suddenly
+    examples:
+      - he: פתאום התחיל גשם
+        en: Suddenly it started to rain.

@@ -96,3 +96,205 @@ entries:
         en: The house is new.
       - he: הדירה חדשה
         en: The apartment is new.
+  - lemma: ישן
+    gloss: old
+    forms:
+      m_sg: ישן
+      f_sg: ישנה
+      m_pl: ישנים
+      f_pl: ישנות
+    examples:
+      - he: הבית ישן
+        en: The house is old.
+      - he: הספה ישנה
+        en: The couch is old.
+  - lemma: ארוך
+    gloss: long
+    forms:
+      m_sg: ארוך
+      f_sg: ארוכה
+      m_pl: ארוכים
+      f_pl: ארוכות
+    examples:
+      - he: הרחוב ארוך
+        en: The street is long.
+  - lemma: קצר
+    gloss: short
+    forms:
+      m_sg: קצר
+      f_sg: קצרה
+      m_pl: קצרים
+      f_pl: קצרות
+    examples:
+      - he: זה סרט קצר
+        en: This is a short film.
+  - lemma: חם
+    gloss: hot
+    forms:
+      m_sg: חם
+      f_sg: חמה
+      m_pl: חמים
+      f_pl: חמות
+    examples:
+      - he: היום חם
+        en: It is hot today.
+  - lemma: קר
+    gloss: cold
+    forms:
+      m_sg: קר
+      f_sg: קרה
+      m_pl: קרים
+      f_pl: קרות
+    examples:
+      - he: המים קרים
+        en: The water is cold.
+  - lemma: מהיר
+    gloss: fast
+    forms:
+      m_sg: מהיר
+      f_sg: מהירה
+      m_pl: מהירים
+      f_pl: מהירות
+    examples:
+      - he: הרכב מהיר
+        en: The vehicle is fast.
+  - lemma: איטי
+    gloss: slow
+    forms:
+      m_sg: איטי
+      f_sg: איטית
+      m_pl: איטיים
+      f_pl: איטיות
+    examples:
+      - he: הקצב איטי
+        en: The pace is slow.
+  - lemma: יקר
+    gloss: expensive
+    forms:
+      m_sg: יקר
+      f_sg: יקרה
+      m_pl: יקרים
+      f_pl: יקרות
+    examples:
+      - he: זה יקר
+        en: This is expensive.
+  - lemma: זול
+    gloss: cheap
+    forms:
+      m_sg: זול
+      f_sg: זולה
+      m_pl: זולים
+      f_pl: זולות
+    examples:
+      - he: זה זול
+        en: This is cheap.
+  - lemma: נקי
+    gloss: clean
+    forms:
+      m_sg: נקי
+      f_sg: נקייה
+      m_pl: נקיים
+      f_pl: נקיות
+    examples:
+      - he: החדר נקי
+        en: The room is clean.
+  - lemma: מלוכלך
+    gloss: dirty
+    forms:
+      m_sg: מלוכלך
+      f_sg: מלוכלכת
+      m_pl: מלוכלכים
+      f_pl: מלוכלכות
+    examples:
+      - he: הרצפה מלוכלכת
+        en: The floor is dirty.
+  - lemma: פתוח
+    gloss: open
+    forms:
+      m_sg: פתוח
+      f_sg: פתוחה
+      m_pl: פתוחים
+      f_pl: פתוחות
+    examples:
+      - he: החנות פתוחה
+        en: The shop is open.
+  - lemma: סגור
+    gloss: closed
+    forms:
+      m_sg: סגור
+      f_sg: סגורה
+      m_pl: סגורים
+      f_pl: סגורות
+    examples:
+      - he: הדלת סגורה
+        en: The door is closed.
+  - lemma: עייף
+    gloss: tired
+    forms:
+      m_sg: עייף
+      f_sg: עייפה
+      m_pl: עייפים
+      f_pl: עייפות
+    examples:
+      - he: אני עייף
+        en: I am tired.
+  - lemma: בריא
+    gloss: healthy
+    forms:
+      m_sg: בריא
+      f_sg: בריאה
+      m_pl: בריאים
+      f_pl: בריאות
+    examples:
+      - he: הילד בריא
+        en: The child is healthy.
+  - lemma: חולה
+    gloss: sick
+    forms:
+      m_sg: חולה
+      f_sg: חולה
+      m_pl: חולים
+      f_pl: חולות
+    examples:
+      - he: אני חולה היום
+        en: I am sick today.
+  - lemma: שמח
+    gloss: happy
+    forms:
+      m_sg: שמח
+      f_sg: שמחה
+      m_pl: שמחים
+      f_pl: שמחות
+    examples:
+      - he: אני שמח
+        en: I am happy.
+  - lemma: עצוב
+    gloss: sad
+    forms:
+      m_sg: עצוב
+      f_sg: עצובה
+      m_pl: עצובים
+      f_pl: עצובות
+    examples:
+      - he: זה עצוב
+        en: This is sad.
+  - lemma: ריק
+    gloss: empty
+    forms:
+      m_sg: ריק
+      f_sg: ריקה
+      m_pl: ריקים
+      f_pl: ריקות
+    examples:
+      - he: הבקבוק ריק
+        en: The bottle is empty.
+  - lemma: מלא
+    gloss: full
+    forms:
+      m_sg: מלא
+      f_sg: מלאה
+      m_pl: מלאים
+      f_pl: מלאות
+    examples:
+      - he: הכוס מלאה
+        en: The cup is full.

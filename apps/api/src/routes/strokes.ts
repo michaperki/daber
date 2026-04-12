@@ -29,7 +29,6 @@ export async function registerStrokesRoutes(app: FastifyInstance) {
     const prisma = getPrisma();
     await prisma.strokeSample.create({
       data: {
-        id: undefined as unknown as string, // allow default cuid()
         device_id: p.deviceId,
         letter: p.letter,
         split: p.split,

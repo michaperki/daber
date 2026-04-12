@@ -13,6 +13,16 @@ import {
 import { randomVocabEntry, vocab, type VocabEntry } from '../content';
 import panels from './panels.module.css';
 
+// Heuristic: consider the current position to be at the end of a word if the
+// next character is missing or a separator (space/punctuation/maqaf).
+function isEndOfWord(text: string, pos: number): boolean {
+  const i = pos + 1;
+  if (i >= text.length) return true;
+  const next = text[i];
+  if (!next) return true;
+  return /[\s.,!?;:\-־]/.test(next);
+}
+
 type VocabState = {
   current: VocabEntry | null;
   pos: number;
@@ -105,7 +115,7 @@ export function VocabTab() {
     const top1 = top[0];
     const margin = topMargin(top);
     const threshold = prefs.practice_threshold;
-    const atEnd = state.pos === cur.he.length - 1;
+    const atEnd = isEndOfWord(cur.he, state.pos);
     const ok = lettersMatch(top1.letter, expected, atEnd) && margin >= threshold;
 
     bumpVocabLetter(ok);
@@ -169,7 +179,7 @@ export function VocabTab() {
     const cur = state.current;
     const expected = cur.he[state.pos];
     if (!expected) return;
-    const atEnd = state.pos === cur.he.length - 1;
+    const atEnd = isEndOfWord(cur.he, state.pos);
     const display = normalizedExpected(expected, atEnd);
     // Learn from force-accepted strokes so the model adapts to the user's intent.
     addCalibrationSample(

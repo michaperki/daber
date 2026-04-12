@@ -3,9 +3,11 @@ import { calibration, progress } from '../state/signals';
 import { toPrototypes, toRawVectors } from '../storage/calibration';
 import { LETTERS, type LetterGlyph, type Ranked } from '../recognizer/types';
 import { predictTop } from '../recognizer';
+import { predictByStroke } from '../recognizer/stroke';
+import { strokeSamples } from '../state/strokes';
 import panels from './panels.module.css';
 
-type ModeKey = 'knn' | 'centroid' | 'hybrid' | 'cnn';
+type ModeKey = 'knn' | 'centroid' | 'hybrid' | 'cnn' | 'stroke';
 
 type BenchResult = {
   total: number;
@@ -23,6 +25,7 @@ export function BenchTab() {
   const [useAugment, setUseAugment] = useState<boolean>(prefs.augment);
   const [kVal, setKVal] = useState<number>(prefs.k);
   const [includeCnn, setIncludeCnn] = useState<boolean>(true);
+  const [includeStroke, setIncludeStroke] = useState<boolean>(true);
   const [saveExamples, setSaveExamples] = useState<boolean>(false);
 
   const db = useMemo(() => toPrototypes(cal), [cal]);
@@ -45,6 +48,7 @@ export function BenchTab() {
         centroid: { correct: 0, total: 0 },
         hybrid: { correct: 0, total: 0 },
         cnn: { correct: 0, total: 0 },
+        stroke: { correct: 0, total: 0 },
       };
       const perLetter: BenchResult['perLetter'] = {} as any;
       for (const L of LETTERS) {
@@ -53,10 +57,11 @@ export function BenchTab() {
           centroid: { correct: 0, total: 0 },
           hybrid: { correct: 0, total: 0 },
           cnn: { correct: 0, total: 0 },
+          stroke: { correct: 0, total: 0 },
         };
       }
       const confusions: BenchResult['confusions'] = {
-        knn: {}, centroid: {}, hybrid: {}, cnn: {},
+        knn: {}, centroid: {}, hybrid: {}, cnn: {}, stroke: {},
       };
       const examples: BenchResult['examples'] = saveExamples ? [] : undefined;
 
@@ -106,6 +111,35 @@ export function BenchTab() {
         }
       }
 
+      // Stroke leave-one-out on raw strokes
+      if (includeStroke) {
+        const sdb = strokeSamples.value as any as Record<LetterGlyph, any[]>;
+        for (const L of LETTERS) {
+          const arr = sdb[L] || [];
+          if (!arr || arr.length < 2) continue;
+          for (let i = 0; i < arr.length; i++) {
+            const held = arr[i];
+            const hold: any = {};
+            for (const LL of LETTERS) {
+              const a2 = (sdb[LL] || []).slice();
+              if (LL === L) a2.splice(i, 1);
+              hold[LL] = a2;
+            }
+            const preds = predictByStroke(held, hold, { topN: 5 });
+            const top = preds[0]?.letter as LetterGlyph | undefined;
+            perMode.stroke.total++;
+            perLetter[L].stroke.total++;
+            if (top === L) {
+              perMode.stroke.correct++;
+              perLetter[L].stroke.correct++;
+            } else if (top) {
+              const key = `${L}->${top}`;
+              confusions.stroke[key] = (confusions.stroke[key] || 0) + 1;
+            }
+          }
+        }
+      }
+
       setResult({ total, perMode, perLetter, confusions, examples });
     } finally {
       setRunning(false);
@@ -145,6 +179,10 @@ export function BenchTab() {
             Include CNN/Hybrid
             <input type="checkbox" checked={includeCnn} onChange={(e) => setIncludeCnn((e.target as HTMLInputElement).checked)} />
           </label>
+          <label class="inline" title="Include Stroke mode (raw strokes LOO)">
+            Include Stroke
+            <input type="checkbox" checked={includeStroke} onChange={(e) => setIncludeStroke((e.target as HTMLInputElement).checked)} />
+          </label>
           <label class="inline" title="Save per-sample predictions in the result JSON">
             Save examples
             <input type="checkbox" checked={saveExamples} onChange={(e) => setSaveExamples((e.target as HTMLInputElement).checked)} />
@@ -173,6 +211,7 @@ export function BenchTab() {
                 <li>Centroid: {result.perMode.centroid.total ? Math.round((100 * result.perMode.centroid.correct) / result.perMode.centroid.total) : 0}%</li>
                 <li>Hybrid: {result.perMode.hybrid.total ? Math.round((100 * result.perMode.hybrid.correct) / result.perMode.hybrid.total) : 0}%</li>
                 <li>CNN: {result.perMode.cnn.total ? Math.round((100 * result.perMode.cnn.correct) / result.perMode.cnn.total) : 0}%</li>
+                <li>Stroke: {result.perMode.stroke.total ? Math.round((100 * result.perMode.stroke.correct) / result.perMode.stroke.total) : 0}%</li>
               </ul>
             </div>
             <div style={{ marginTop: '6px' }}>
@@ -183,6 +222,9 @@ export function BenchTab() {
             </div>
             <div>
               Top confusions (Hybrid): {Object.entries(result.confusions.hybrid).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k}(${v})`).join('  ·  ') || '—'}
+            </div>
+            <div>
+              Top confusions (Stroke): {Object.entries(result.confusions.stroke).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k}(${v})`).join('  ·  ') || '—'}
             </div>
           </div>
         )}

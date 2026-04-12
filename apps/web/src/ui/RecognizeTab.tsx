@@ -65,7 +65,9 @@ export function RecognizeTab() {
       const centroid = predictTop(v, { mode: 'centroid', augment: prefs.augment, prototypes, topN: 5 });
       const cnn = predictTop(v, { mode: 'cnn', prototypes, topN: 5 });
       const hybrid = predictTop(v, { mode: 'hybrid', augment: prefs.augment, prototypes, topN: 5 });
-      setAllModes({ knn, centroid, cnn, hybrid });
+      const strokes = canvasRef.current?.getStrokes?.();
+      const stroke = strokes && strokes.length ? predictByStroke(strokes, strokeSamples.value as any, { topN: 5 }) : [];
+      setAllModes({ knn, centroid, cnn, hybrid, stroke } as any);
       if (prefs.mode === 'hybrid' || prefs.mode === 'cnn') {
         setHybridContribs(debugHybridContribs(v, prototypes, {}));
       } else {
@@ -249,7 +251,10 @@ export function RecognizeTab() {
                   <div>• KNN: {allModes.knn.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
                   <div>• Centroid: {allModes.centroid.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
                   <div>• CNN: {allModes.cnn.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
-                  <div>• Hybrid: {allModes.hybrid.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
+              <div>• Hybrid: {allModes.hybrid.slice(0,3).map(p => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
+              {'stroke' in allModes && (allModes as any).stroke?.length ? (
+                <div>• Stroke: {(allModes as any).stroke.slice(0,3).map((p: any) => `${p.letter} ${(p.prob*100).toFixed(0)}%`).join('  ·  ')}</div>
+              ) : null}
                 </div>
               )}
               {hybridContribs && (

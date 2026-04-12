@@ -40,11 +40,12 @@ function getWatermarkImage(glyph: string, onLoad: () => void): HTMLImageElement 
   const cached = _wmCache.get(glyph);
   if (cached) return cached;
   const img = new Image();
-  img.src = `/letters/${encodeURIComponent(glyph)}.png`;
+  img.src = `/letters/${glyph}.png`;
   img.onload = () => {
     _wmCache.set(glyph, img);
     onLoad();
   };
+  img.onerror = () => console.warn(`Watermark failed to load: /letters/${glyph}.png`);
   return null;
 }
 

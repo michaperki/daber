@@ -32,6 +32,12 @@ function cnnReliability(probs: Record<LetterGlyph, number>): number {
   return (h - 1.5) / 1.5;
 }
 
+// Hybrid mixing: scale CNN contribution gently so prototypes dominate unless
+// the CNN is both confident and correct. Use a centered probability so a
+// uniform distribution contributes ~0.
+const UNIFORM_P = 1 / LETTERS.length; // ~0.037 for 27 classes
+const CNN_GAMMA = 0.22; // small assist; tuned to avoid overpowering prototypes
+
 // Try to obtain CNN probabilities via a global TFJS model, if one is loaded.
 // Expected: a model attached at (window as any).daberCnnModel with signature
 // predict(tensor) -> logits or probs for len(LETTERS) classes.
@@ -234,7 +240,7 @@ export type HybridContrib = {
   proto: number; // a * (q·centroid)
   alpha: number;
   prior: number;
-  raw: number; // logp + proto + prior
+  raw: number; // proto + cnnScore + prior
 };
 
 export function debugHybridContribs(
@@ -258,7 +264,8 @@ export function debugHybridContribs(
     const p = Math.max(1e-8, cnnProbs[L] ?? 1e-8);
     const logp = Math.log(p);
     const prior = opts.expectedLetter && L === opts.expectedLetter ? beta : 0;
-    const raw = cnnW * logp + proto + prior;
+    const cnnScore = cnnW * CNN_GAMMA * (p - UNIFORM_P);
+    const raw = proto + cnnScore + prior;
     contribs.push({ letter: L, cnnProb: p, logp, proto, alpha: a, prior, raw });
   }
   contribs.sort((a, b) => b.raw - a.raw);
@@ -285,17 +292,18 @@ export async function predictByHybridAsync(
   // CNN path expects raw 64x64 pixel intensities (not unit-normalized)
   const cnnProbs = await getCnnProbs(vec.subarray(0, 64 * 64));
 
-  // 3) Combine: cnnW*logp(cnn) + alpha(count)*proto + prior(expected)
-  //    cnnW scales 0→1 based on CNN output entropy — collapsed predictions are ignored.
+  // 3) Combine: proto + cnnScore + prior(expected)
+  //    cnnScore = cnnW * gamma * (p - uniform), so uniform CNN output is neutral.
   const cnnW = cnnReliability(cnnProbs);
   const combined: { letter: LetterGlyph; raw: number }[] = [];
-  const beta = opts.expectedLetter ? 0.15 : 0;
+  const beta = opts.expectedLetter ? 0.04 : 0; // match centroid prior strength
   for (const L of LETTERS) {
     const p = Math.max(1e-8, cnnProbs[L] ?? 1e-8);
-    const logp = Math.log(p);
     const a = alphaFor(calibCounts[L] || 0);
     const prior = opts.expectedLetter && L === opts.expectedLetter ? beta : 0;
-    combined.push({ letter: L, raw: cnnW * logp + a * (protoRaw[L] || 0) + prior });
+    const proto = a * (protoRaw[L] || 0);
+    const cnnScore = cnnW * CNN_GAMMA * (p - UNIFORM_P);
+    combined.push({ letter: L, raw: proto + cnnScore + prior });
   }
   combined.sort((a, b) => b.raw - a.raw);
   const top = combined.slice(0, opts.topN ?? 5);
@@ -320,7 +328,7 @@ export function predictByHybrid(
   const q = normalizeUnit(vec);
   const calibCounts: Record<LetterGlyph, number> = {} as any;
   for (const L of LETTERS) calibCounts[L] = (db[L] || []).length;
-  const beta = opts.expectedLetter ? 0.15 : 0;
+  const beta = opts.expectedLetter ? 0.04 : 0; // match centroid prior strength
   // CNN path expects raw 64x64 pixel intensities (not unit-normalized)
   const cnnProbs = getCnnProbsSync(vec.subarray(0, 64 * 64));
   // Scale CNN contribution by reliability — if it's collapsed to one class, ignore it.
@@ -332,8 +340,9 @@ export function predictByHybrid(
     const a = alphaFor(calibCounts[letter] || 0);
     const prior = opts.expectedLetter && letter === opts.expectedLetter ? beta : 0;
     const proto = c ? a * dotPixels(q, c) : 0;
-    const logp = cnnProbs[letter] ? Math.log(Math.max(1e-8, cnnProbs[letter])) : 0;
-    scored.push({ letter, raw: cnnW * logp + proto + prior });
+    const p = cnnProbs[letter] ?? 0;
+    const cnnScore = cnnW * CNN_GAMMA * (p - UNIFORM_P);
+    scored.push({ letter, raw: proto + cnnScore + prior });
   }
   scored.sort((a, b) => b.raw - a.raw);
   const top = scored.slice(0, opts.topN ?? 5);

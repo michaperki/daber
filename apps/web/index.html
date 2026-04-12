@@ -24,13 +24,25 @@
             try {
               window.daberCnnModel = await window.tf.loadLayersModel('/models/hebrew_letter_model_tuned/model.json');
               try {
-                const labels = await fetch('/models/hebrew_letter_model_tuned/labels.json').then(r => r.json());
+                let labels;
+                try { labels = await fetch('/models/hebrew_letter_model_tuned/labels.json').then(r => r.json()); } catch {}
+                if (!Array.isArray(labels)) {
+                  try { labels = await fetch('/models/hebrew_letter_model_tuned/letters.json').then(r => r.json()); } catch {}
+                }
                 if (Array.isArray(labels)) window.daberCnnLabels = labels;
               } catch {}
             } catch (e) {
               // Fallback path if tuned model not present
               try {
                 window.daberCnnModel = await window.tf.loadLayersModel('/models/hebrew_letter_model/model.json');
+                try {
+                  let labels;
+                  try { labels = await fetch('/models/hebrew_letter_model/labels.json').then(r => r.json()); } catch {}
+                  if (!Array.isArray(labels)) {
+                    try { labels = await fetch('/models/hebrew_letter_model/letters.json').then(r => r.json()); } catch {}
+                  }
+                  if (Array.isArray(labels)) window.daberCnnLabels = labels;
+                } catch {}
               } catch {}
             }
           }

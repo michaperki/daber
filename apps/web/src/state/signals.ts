@@ -6,7 +6,7 @@ import { emptyProgress } from '../storage/progress';
 import type { LetterGlyph } from '../recognizer/types';
 import { LETTERS } from '../recognizer/types';
 
-export type TabId = 'calibrate' | 'recognize' | 'practice' | 'vocab';
+export type TabId = 'calibrate' | 'recognize' | 'practice' | 'vocab' | 'bench';
 
 // ---- Top-level signals ----
 

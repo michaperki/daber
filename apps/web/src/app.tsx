@@ -6,6 +6,7 @@ import { CalibrateTab } from './ui/CalibrateTab';
 import { RecognizeTab } from './ui/RecognizeTab';
 import { PracticeTab } from './ui/PracticeTab';
 import { VocabTab } from './ui/VocabTab';
+import { BenchTab } from './ui/BenchTab';
 import { RightRail } from './ui/RightRail';
 import { SettingsPanel } from './ui/SettingsPanel';
 
@@ -14,6 +15,7 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'recognize', label: 'Recognize' },
   { id: 'practice', label: 'Practice' },
   { id: 'vocab', label: 'Vocab' },
+  { id: 'bench', label: 'Bench' },
 ];
 
 function SyncDot() {
@@ -124,6 +126,7 @@ export function App() {
           {tab === 'recognize' && <RecognizeTab />}
           {tab === 'practice' && <PracticeTab />}
           {tab === 'vocab' && <VocabTab />}
+          {tab === 'bench' && <BenchTab />}
         </section>
         <section class={styles.right}>
           <RightRail />

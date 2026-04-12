@@ -80,15 +80,50 @@ function inputChannels(model: any): number {
   return 1;
 }
 
+// Thicken 1px canvas strokes to ~3px so they match HHD training images.
+// Operates on the raw raster (ink=1, bg=0) BEFORE inversion.
+// Two rounds of 3×3 max-filter dilation.
+function dilateForCnn(src: Float32Array): Float32Array {
+  const W = 64;
+  let cur = src;
+  for (let pass = 0; pass < 2; pass++) {
+    const dst = new Float32Array(W * W);
+    for (let y = 0; y < W; y++) {
+      for (let x = 0; x < W; x++) {
+        let mx = 0;
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const ny = y + dy, nx = x + dx;
+            if (ny >= 0 && ny < W && nx >= 0 && nx < W) {
+              const v = cur[ny * W + nx];
+              if (v > mx) mx = v;
+            }
+          }
+        }
+        dst[y * W + x] = mx;
+      }
+    }
+    cur = dst;
+  }
+  return cur;
+}
+
+// Prepare the 64×64 raw raster for CNN input: dilate then invert.
+function prepareCnnInput(vec64x64: Float32Array): Float32Array {
+  const dilated = dilateForCnn(vec64x64);
+  const arr = new Float32Array(64 * 64);
+  for (let i = 0; i < 64 * 64; i++) arr[i] = 1 - dilated[i];
+  return arr;
+}
+
 async function getCnnProbs(vec64x64: Float32Array): Promise<Record<LetterGlyph, number>> {
   try {
     const win: any = window as any;
     const tf = win.tf as any;
     const model = win.daberCnnModel as any;
     if (!tf || !model) return {} as Record<LetterGlyph, number>;
-    // Build 1x64x64x1 grayscale input in [0,1], white=1, ink=0
-    const arr = new Float32Array(64 * 64);
-    for (let i = 0; i < 64 * 64; i++) arr[i] = 1 - vec64x64[i];
+    // Dilate thin canvas strokes then invert to white=1, ink=0
+    const arr = prepareCnnInput(vec64x64);
     const channels = inputChannels(model);
     let t;
     if (channels === 3) {
@@ -120,8 +155,8 @@ function getCnnProbsSync(vec64x64: Float32Array): Record<LetterGlyph, number> {
     const tf = win.tf as any;
     const model = win.daberCnnModel as any;
     if (!tf || !model) return {} as Record<LetterGlyph, number>;
-    const arr = new Float32Array(64 * 64);
-    for (let i = 0; i < 64 * 64; i++) arr[i] = 1 - vec64x64[i];
+    // Dilate thin canvas strokes then invert to white=1, ink=0
+    const arr = prepareCnnInput(vec64x64);
     const channels = inputChannels(model);
     let t;
     if (channels === 3) {

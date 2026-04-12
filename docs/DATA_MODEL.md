@@ -192,7 +192,9 @@ Where `LetterGlyph` is one of the 27 Hebrew classes:
 א ב ג ד ה ו ז ח ט י ך כ ל ם מ ן נ ס ע ף פ ץ צ ק ר ש ת
 ```
 
-Each sample is a **64×64 grayscale feature vector, quantized to 8-bit** (Uint8Array of length 4096). See `RECOGNIZER.md` for how these are produced.
+Each sample is a **64×64 grayscale feature vector plus 3 geometry features, quantized to 8-bit** (Uint8Array of length 4099). Older 4096-dim samples are padded on load for backward compatibility. See `RECOGNIZER.md` for how these are produced.
+
+To prevent unbounded growth and model drift from stale mistakes, per-letter samples are capped at 30; the oldest are dropped as new ones are added.
 
 **Serialization** (over the wire and to localStorage):
 - Each `Uint8Array` → base64 string

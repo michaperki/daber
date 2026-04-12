@@ -3,6 +3,7 @@ import { LETTERS, type LetterGlyph } from '../recognizer/types';
 import { calibration } from '../state/signals';
 import { toPrototypes } from '../storage/calibration';
 import { computeCentroids } from '../recognizer/centroid';
+import { FEATURE_PIXELS } from '../recognizer/features';
 import styles from './Prototypes.module.css';
 
 // Renders each calibrated letter's averaged prototype as a 64x64 black-on-
@@ -47,7 +48,7 @@ function ProtoThumb({ letter, vec }: { letter: LetterGlyph; vec: Float32Array })
     // The feature vector is unit-normalized, so raw values are small. Find
     // the max so we scale to full-contrast black for display.
     let max = 0;
-    for (let i = 0; i < vec.length; i++) if (vec[i] > max) max = vec[i];
+    for (let i = 0; i < FEATURE_PIXELS; i++) if (vec[i] > max) max = vec[i];
     const scale = max > 0 ? 255 / max : 0;
     for (let i = 0; i < 64 * 64; i++) {
       const v = Math.max(0, Math.min(255, Math.round(vec[i] * scale)));

@@ -51,7 +51,7 @@ The MVP is feature-parity with the current `HebrewHandwritingWeb` app, modulariz
 **Behavior**:
 - Top-5 predictions as letter + percentage bars
 - Top-1 margin displayed separately as confidence proxy
-- Mode toggle: KNN or Centroid (live)
+- Mode toggle: KNN, Centroid, or Hybrid (CNN + KNN; falls back to Centroid when no model is present)
 - KNN `k` input (default 5)
 - Augment toggle (±1px shifts of every stored sample)
 - Live prediction as you draw (debounced) OR predict once on pen-up
@@ -73,6 +73,7 @@ The MVP is feature-parity with the current `HebrewHandwritingWeb` app, modulariz
 - Threshold input (default 0.10) — also used by F5
 - Skip button to pick a new target without scoring
 - Reset Score button
+- Optional Hybrid toggle (CNN + KNN). Uses Hybrid if a model is available; otherwise falls back to Centroid scoring.
 
 **Acceptance**:
 - Acceptance is silent-fast: no "Next" button needed on correct
@@ -91,6 +92,7 @@ The MVP is feature-parity with the current `HebrewHandwritingWeb` app, modulariz
   - Clear canvas, expect next letter
 - On wrong letter: red shake, keep expected letter
 - Controls: "I don't know" (reveal full word), Backspace (remove last accepted letter), Skip (new word)
+- Optional Hybrid toggle (CNN + KNN). Uses Hybrid if a model is available; otherwise falls back to Centroid scoring.
 - Word list: pulled from `packages/content/data/v2/*.yaml` via build step (~996 entries initially)
 - Keyboard: Enter = skip, Space = clear canvas
 

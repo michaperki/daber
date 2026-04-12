@@ -1,8 +1,10 @@
 import { normalizeUnit } from './features';
 
-// Shift a 64x64 vector by (dx, dy). Pixels shifted off-grid are dropped.
+// Shift only the 64x64 image portion by (dx, dy), preserving any appended
+// extra features (e.g., aspect ratio). The output preserves the input length.
 export function shift64(vec: Float32Array, dx: number, dy: number): Float32Array {
-  const out = new Float32Array(64 * 64);
+  const base = 64 * 64;
+  const out = new Float32Array(vec.length);
   for (let y = 0; y < 64; y++) {
     for (let x = 0; x < 64; x++) {
       const sy = y - dy;
@@ -11,6 +13,8 @@ export function shift64(vec: Float32Array, dx: number, dy: number): Float32Array
       out[y * 64 + x] = vec[sy * 64 + sx];
     }
   }
+  // Preserve any extra dimensions after the 64x64 grid
+  for (let i = base; i < vec.length; i++) out[i] = vec[i];
   return out;
 }
 

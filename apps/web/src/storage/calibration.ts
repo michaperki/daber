@@ -1,5 +1,6 @@
 import type { LetterGlyph } from '../recognizer/types';
 import { u8ToBase64, base64ToU8 } from './base64';
+import { FEATURE_SIZE, normalizeUnit } from '../recognizer/features';
 
 export type CalibrationV1 = {
   version: 1;
@@ -55,6 +56,13 @@ export function addSample(cal: CalibrationV1, letter: LetterGlyph, vec: Float32A
   const b64 = u8ToBase64(u8);
   const samples = cal.samples[letter] || [];
   samples.push(b64);
+  // Cap samples per letter to prevent unbounded growth and stale drift
+  const MAX_SAMPLES_PER_LETTER = 30;
+  if (samples.length > MAX_SAMPLES_PER_LETTER) {
+    // Drop oldest first
+    const drop = samples.length - MAX_SAMPLES_PER_LETTER;
+    samples.splice(0, drop);
+  }
   cal.samples[letter] = samples;
   saveCalibration(cal);
   return cal;
@@ -63,8 +71,17 @@ export function addSample(cal: CalibrationV1, letter: LetterGlyph, vec: Float32A
 export function toPrototypes(cal: CalibrationV1): Record<LetterGlyph, Float32Array[]> {
   const out: Partial<Record<LetterGlyph, Float32Array[]>> = {};
   for (const [letter, arr] of Object.entries(cal.samples) as [LetterGlyph, string[]][]) {
-    out[letter] = arr.map((b64) => dequantize(base64ToU8(b64)));
+    out[letter] = arr.map((b64) => {
+      const f = dequantize(base64ToU8(b64));
+      // Backward-compat: pad older 4096-dim samples to current feature size
+      if (f.length !== FEATURE_SIZE) {
+        const v = new Float32Array(FEATURE_SIZE);
+        const n = Math.min(f.length, FEATURE_SIZE);
+        for (let i = 0; i < n; i++) v[i] = f[i];
+        return normalizeUnit(v);
+      }
+      return normalizeUnit(f);
+    });
   }
   return out as Record<LetterGlyph, Float32Array[]>;
 }
-

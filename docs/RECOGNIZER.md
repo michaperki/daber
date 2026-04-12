@@ -61,7 +61,13 @@ For each pixel, treat `ink = 255 - avg(r, g, b)`. If `ink > 10`, it's part of a 
 
 Pad by 15% of the bbox dimensions (clamped to canvas), then compute a square `side = max(bw, bh)`. Draw the cropped region centered into a `side × side` intermediate canvas (white background), then draw that into a 64×64 offscreen canvas with `imageSmoothingEnabled = true`.
 
-Read the 64×64 buffer back, convert to a Float32Array of length 4096 where each entry is `(255 - gray) / 255`. Unit-normalize: `v /= sqrt(sum(v_i^2))`. This is the feature vector.
+Read the 64×64 buffer back, convert to a Float32Array of length 4096 where each entry is `(255 - gray) / 255`. Append 3 geometry features computed on the pre-scale bounding box to preserve aspect information lost by scale-to-fill:
+
+- `widthNorm = width / max(width, height)`
+- `heightNorm = height / max(width, height)`
+- `aspect = atan(height / width) / (π/2)`
+
+Concatenate `[4096 pixels, widthNorm, heightNorm, aspect]` and unit-normalize the full vector. This fixes the yud/vav/nun-sofit confusion caused by normalization erasing size differences.
 
 ### Why unit-normalize?
 

@@ -71,11 +71,12 @@ export function RecognizeTab() {
             Mode
             <select
               value={prefs.mode}
-              onChange={(e) => updatePrefs({ mode: (e.target as HTMLSelectElement).value as 'knn' | 'centroid' })}
-              title="Centroid = average per class; KNN = vote over k most similar samples"
+              onChange={(e) => updatePrefs({ mode: (e.target as HTMLSelectElement).value as 'knn' | 'centroid' | 'hybrid' })}
+              title="Centroid = average per class; KNN = vote over k most similar samples; Hybrid = CNN+KNN if model present"
             >
               <option value="knn">KNN</option>
               <option value="centroid">Centroid</option>
+              <option value="hybrid">Hybrid (CNN + KNN)</option>
             </select>
           </label>
           <label class="inline">

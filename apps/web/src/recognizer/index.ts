@@ -1,8 +1,9 @@
 import type { Ranked } from './types';
 import { predictByKnn, type KnnDb } from './knn';
 import { predictByCentroid, type Prototypes } from './centroid';
+import { predictByHybrid } from './hybrid';
 
-export type PredictMode = 'knn' | 'centroid';
+export type PredictMode = 'knn' | 'centroid' | 'hybrid';
 
 export type PredictOpts = {
   mode: PredictMode;
@@ -15,6 +16,12 @@ export type PredictOpts = {
 export function predictTop(vec: Float32Array, opts: PredictOpts): Ranked[] {
   if (opts.mode === 'centroid') {
     return predictByCentroid(vec, opts.prototypes, {
+      augment: opts.augment,
+      topN: opts.topN ?? 5,
+    });
+  }
+  if (opts.mode === 'hybrid') {
+    return predictByHybrid(vec, opts.prototypes, {
       augment: opts.augment,
       topN: opts.topN ?? 5,
     });

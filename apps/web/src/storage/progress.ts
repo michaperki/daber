@@ -1,7 +1,7 @@
 export type ProgressV1 = {
   version: 1;
   prefs: {
-    mode: 'knn' | 'centroid';
+    mode: 'knn' | 'centroid' | 'hybrid';
     k: number;
     augment: boolean;
     samples_per_letter: number;
@@ -47,4 +47,3 @@ export function saveProgress(p: ProgressV1) {
   p.updated_at = nowIso();
   localStorage.setItem(KEY, JSON.stringify(p));
 }
-

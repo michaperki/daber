@@ -42,9 +42,10 @@ function drawLine(img: Image, x0: number, y0: number, x1: number, y1: number) {
   }
 }
 
-export function rasterizeStrokesTo64(strokes: Stroke[], padding = 2): Float32Array {
-  if (!strokes.length) return new Float32Array(64 * 64);
-  // Compute bounds
+export function measureBounds(strokes: Stroke[]): {
+  minX: number; minY: number; maxX: number; maxY: number; width: number; height: number;
+} | null {
+  if (!strokes.length) return null;
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   for (const s of strokes) {
     for (const p of s) {
@@ -54,13 +55,19 @@ export function rasterizeStrokesTo64(strokes: Stroke[], padding = 2): Float32Arr
       if (p.y > maxY) maxY = p.y;
     }
   }
-  if (!isFinite(minX) || !isFinite(minY) || !isFinite(maxX) || !isFinite(maxY)) {
-    return new Float32Array(64 * 64);
-  }
+  if (!isFinite(minX) || !isFinite(minY) || !isFinite(maxX) || !isFinite(maxY)) return null;
+  const width = maxX - minX;
+  const height = maxY - minY;
+  return { minX, minY, maxX, maxY, width, height };
+}
 
-  const width = maxX - minX || 1;
-  const height = maxY - minY || 1;
-  const scale = (64 - padding * 2) / Math.max(width, height);
+export function rasterizeStrokesTo64(strokes: Stroke[], padding = 2): Float32Array {
+  const b = measureBounds(strokes);
+  if (!b) return new Float32Array(64 * 64);
+  const { minX, minY, width, height } = b;
+  const safeW = width || 1;
+  const safeH = height || 1;
+  const scale = (64 - padding * 2) / Math.max(safeW, safeH);
 
   const img = createImage(64, 64);
   for (const s of strokes) {
@@ -85,4 +92,3 @@ export function rasterizeStrokesTo64(strokes: Stroke[], padding = 2): Float32Arr
 
   return img.data;
 }
-

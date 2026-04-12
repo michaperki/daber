@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'preact/hooks';
 import { calibration, progress } from '../state/signals';
-import { toPrototypes } from '../storage/calibration';
+import { toPrototypes, toRawVectors } from '../storage/calibration';
 import { LETTERS, type LetterGlyph, type Ranked } from '../recognizer/types';
 import { predictTop } from '../recognizer';
 import panels from './panels.module.css';
@@ -26,11 +26,12 @@ export function BenchTab() {
   const [saveExamples, setSaveExamples] = useState<boolean>(false);
 
   const db = useMemo(() => toPrototypes(cal), [cal]);
+  const rawDb = useMemo(() => toRawVectors(cal), [cal]);
   const counts = useMemo(() => {
     const out: Record<LetterGlyph, number> = {} as any;
-    for (const L of LETTERS) out[L] = db[L]?.length || 0;
+    for (const L of LETTERS) out[L] = rawDb[L]?.length || 0;
     return out;
-  }, [db]);
+  }, [rawDb]);
 
   async function runBench() {
     setRunning(true);
@@ -62,14 +63,14 @@ export function BenchTab() {
       // Leave-one-out per letter; skip letters with <2 samples.
       let total = 0;
       for (const L of LETTERS) {
-        const arr = db[L] || [];
+        const arr = rawDb[L] || [];
         if (!arr || arr.length < 2) continue;
         for (let i = 0; i < arr.length; i++) {
-          const held = arr[i];
-          // Build holdout DB: copy arrays but omit current sample for its letter
+          const heldRaw = arr[i];
+          // Build holdout DB (normalized prototypes): copy arrays but omit current sample for its letter
           const hold: typeof db = {} as any;
           for (const LL of LETTERS) {
-            if (!db[LL] || db[LL]!.length === 0) continue;
+              if (!db[LL] || db[LL]!.length === 0) continue;
             if (LL === L) {
               const tmp = db[LL]!.slice();
               tmp.splice(i, 1);
@@ -81,7 +82,7 @@ export function BenchTab() {
 
           const modePreds: Record<ModeKey, Ranked[]> = {} as any;
           for (const m of modes) {
-            const preds = predictTop(held, {
+            const preds = predictTop(heldRaw, {
               mode: m,
               k: kVal,
               augment: useAugment,
@@ -189,4 +190,3 @@ export function BenchTab() {
     </>
   );
 }
-

@@ -85,3 +85,22 @@ export function toPrototypes(cal: CalibrationV1): Record<LetterGlyph, Float32Arr
   }
   return out as Record<LetterGlyph, Float32Array[]>;
 }
+
+// Raw vectors (no normalization), useful for pipelines that need the original
+// 64×64 pixel values for CNN evaluation. Pads older 4096-dim samples.
+export function toRawVectors(cal: CalibrationV1): Record<LetterGlyph, Float32Array[]> {
+  const out: Partial<Record<LetterGlyph, Float32Array[]>> = {};
+  for (const [letter, arr] of Object.entries(cal.samples) as [LetterGlyph, string[]][]) {
+    out[letter] = arr.map((b64) => {
+      const f = dequantize(base64ToU8(b64));
+      if (f.length !== FEATURE_SIZE) {
+        const v = new Float32Array(FEATURE_SIZE);
+        const n = Math.min(f.length, FEATURE_SIZE);
+        for (let i = 0; i < n; i++) v[i] = f[i];
+        return v;
+      }
+      return f;
+    });
+  }
+  return out as Record<LetterGlyph, Float32Array[]>;
+}

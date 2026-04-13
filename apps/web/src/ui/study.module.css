@@ -17,6 +17,11 @@
   direction: rtl;
 }
 
+.spacer {
+  width: 18px; /* visual gap between words */
+  height: 44px; /* match tile height to keep row height consistent */
+}
+
 .tile {
   width: 36px;
   height: 44px;

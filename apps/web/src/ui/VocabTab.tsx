@@ -297,14 +297,17 @@ export function VocabTab() {
       <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>
         {(() => {
           const he = state.current?.he || '';
-          const letters = he.split('').filter(ch => ch !== ' ');
+          const chars = he.split('');
           const accepted = state.output.replace(/\s/g, '').length;
           const revealAll = !!state.revealed;
-          return letters.map((ch, i) => {
-            const filled = accepted > i;
+          let idx = 0; // index over non-space letters
+          return chars.map((ch, i) => {
+            if (ch === ' ') return <div key={`sp-${i}`} class={study.spacer} aria-hidden="true" />;
+            const filled = accepted > idx;
             const show = revealAll || filled;
+            idx++;
             return (
-              <div class={`${study.tile} ${filled ? study.tileOk : ''}`}>{show ? ch : ''}</div>
+              <div key={`t-${i}`} class={`${study.tile} ${filled ? study.tileOk : ''}`}>{show ? ch : ''}</div>
             );
           });
         })()}

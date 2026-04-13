@@ -14,6 +14,7 @@ import {
 } from '../storage/mutations';
 import { randomVocabEntry, vocab, type VocabEntry } from '../content';
 import panels from './panels.module.css';
+import study from './study.module.css';
 
 // Heuristic: consider the current position to be at the end of a word if the
 // next character is missing or a separator (space/punctuation/maqaf).
@@ -92,11 +93,27 @@ export function VocabTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Helper: skip over spaces in the Hebrew word and prefill them in the output
+  function advancePastSpaces(he: string, from: number, currentOut: string): { pos: number; out: string } {
+    let pos = from;
+    let out = currentOut;
+    while (pos < he.length && he[pos] === ' ') {
+      out += ' ';
+      pos++;
+    }
+    return { pos, out };
+  }
+
   function onStroke(vec: Float32Array, strokes?: Stroke[]) {
     if (busyRef.current) return;
     const cur = state.current;
     if (!cur) return;
-    const expected = cur.he[state.pos];
+    // Skip spaces at current position
+    const advanced = advancePastSpaces(cur.he, state.pos, state.output);
+    if (advanced.pos !== state.pos || advanced.out !== state.output) {
+      setState((s) => ({ ...s, pos: advanced.pos, output: advanced.out }));
+    }
+    const expected = cur.he[advanced.pos];
     if (!expected) return;
 
     let sum = 0;
@@ -109,7 +126,7 @@ export function VocabTab() {
     const top1 = top[0];
     const margin = topMargin(top);
     const threshold = prefs.practice_threshold;
-    const atEnd = isEndOfWord(cur.he, state.pos);
+    const atEnd = isEndOfWord(cur.he, advanced.pos);
     let ok = lettersMatch(top1.letter, expected, atEnd) && margin >= threshold;
 
     // Forgiveness rule: י/ו/ן are visually similar; accept any within the set.
@@ -134,8 +151,12 @@ export function VocabTab() {
         import('../storage/strokes').then(m => m.captureStroke(top1.letter, strokes).catch(() => {}));
       }
       setLastReject(null);
-      const nextPos = state.pos + 1;
-      const newOutput = state.output + display;
+      let nextPos = advanced.pos + 1;
+      let newOutput = advanced.out + display;
+      // Auto-fill any following spaces
+      const skip = advancePastSpaces(cur.he, nextPos, newOutput);
+      nextPos = skip.pos;
+      newOutput = skip.out;
       setState((s) => ({ ...s, pos: nextPos, output: newOutput }));
       navigator.vibrate?.(30);
       canvasRef.current?.flashAccept();
@@ -148,35 +169,23 @@ export function VocabTab() {
         window.setTimeout(() => {
           busyRef.current = false;
           pickNext();
-        }, 480);
+        }, 1000);
       } else {
         setFeedback({ kind: 'idle', text: '' });
       }
     } else {
-      setFeedback({
-        kind: 'bad',
-        text: `✗ expected ${expected}, got ${top1.letter} (${(top1.prob * 100).toFixed(0)}%)`,
-      });
+      // On wrong: brief red flash, auto-clear, retry same letter
+      setFeedback({ kind: 'bad', text: '' });
       setLastReject(vec);
-      navigator.vibrate?.([50, 30, 50]);
+      navigator.vibrate?.([40]);
       canvasRef.current?.shake();
+      canvasRef.current?.clear();
     }
   }
 
   function onIdk() {
     if (!state.current) return;
     setState((s) => ({ ...s, revealed: true }));
-  }
-  function onBackspace() {
-    if (!state.current || state.pos === 0) return;
-    setState((s) => ({
-      ...s,
-      pos: s.pos - 1,
-      output: s.output.slice(0, -1),
-    }));
-    setFeedback({ kind: 'idle', text: '' });
-    setLastReject(null);
-    canvasRef.current?.clear();
   }
   function onSkip() {
     pickNext();
@@ -264,47 +273,27 @@ export function VocabTab() {
 
   return (
     <>
-      <DrawCanvas key={canvasKey} ref={canvasRef} onStrokeComplete={onStroke} />
-      <div class={panels.row}>
-        <button onClick={() => canvasRef.current?.clear()}>Clear</button>
-        <button onClick={() => canvasRef.current?.undo()}>Undo</button>
+      <div class={study.topWord}>{state.current?.en ?? '—'}</div>
+      {/* Tiles: one per Hebrew letter, skip spaces */}
+      <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>
+        {(state.current?.he || '').split('').filter(ch => ch !== ' ').map((ch, i) => {
+          const filled = (state.output.replace(/\s/g, '').length) > i;
+          return (
+            <div class={`${study.tile} ${filled ? study.tileOk : ''}`}>{ch}</div>
+          );
+        })}
+      </div>
+      <div class={study.canvasWrap}>
+        <DrawCanvas key={canvasKey} ref={canvasRef} onStrokeComplete={onStroke} />
+        <button class={study.clearIcon} onClick={() => canvasRef.current?.clear()} title="Clear">×</button>
+      </div>
+      <div class={study.controlsRow}>
+        <button class={study.secondaryBtn} onClick={onIdk} title="Reveal the word and advance">I don’t know</button>
+        <button class={study.secondaryBtn} onClick={onSkip} title="Skip to a new word">Skip</button>
       </div>
 
-      <div class={panels.panel}>
-        <div class={panels.prompt}>
-          <span class={panels.promptLabel}>English:</span>
-          <span class={panels.promptValueSmall}>{state.current?.en ?? '—'}</span>
-        </div>
-        <div class={panels.row}>
-          <button onClick={onIdk} title="Reveal the Hebrew spelling">
-            I don&rsquo;t know
-          </button>
-          <button onClick={onBackspace} title="Remove the last accepted letter">
-            Backspace
-          </button>
-          <button onClick={onSkip} title="Skip to a new word">
-            Skip
-          </button>
-        </div>
-        <div class={panels.prompt}>
-          <span class={panels.promptLabel}>Hebrew:</span>
-          <span class={panels.hebrewOutput}>{state.output}</span>
-        </div>
-        <div class={feedbackClass}>{feedback.text}</div>
-        {lastReject && (
-          <div class={panels.row}>
-            <button onClick={forceAccept} title="Save this drawing as a correct sample and advance">
-              I drew it right
-            </button>
-          </div>
-        )}
-        {state.revealed && state.current && (
-          <div class={panels.feedback}>Answer: {state.current.he}</div>
-        )}
-        <div class={panels.shortcuts}>
-          Draw each letter; lift to submit. Space = clear · Enter = skip
-        </div>
-      </div>
+      <div class={feedbackClass}>{feedback.text}</div>
+      <div class={panels.shortcuts}>Space = clear · Enter = skip</div>
     </>
   );
 }

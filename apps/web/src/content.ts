@@ -137,7 +137,9 @@ function randomVocabEntryByCell(): VocabEntry | null {
     const arr = [...recentLemmas.slice(-9), lemma];
     return new Set(arr).size >= 3;
   };
-  const noveltyBudget = 3; // 2–4 target; pick 3 as default
+  // Dynamic novelty budget: allow more exploration early
+  const distinctSeen = (seenCells?.size || 0);
+  const noveltyBudget = distinctSeen < 30 ? 8 : 3; // loosen early, tighten later
   const isNewCell = (key: string) => !cells[key] && !seenCells.has(key);
   const isEasy = (row: VocabEntry) => {
     const short = (row.he || '').replace(/\s/g, '').length <= 4;
@@ -158,8 +160,20 @@ function randomVocabEntryByCell(): VocabEntry | null {
   };
 
   const filtered = items.filter(applyGuards);
+  // Relaxed guards (only enforce depth cap and warm-up) to avoid collapsing
+  // to a tiny candidate set early in the session or with small datasets.
+  const relaxedGuards = ({ key, row }: { key: string; row: VocabEntry }) => {
+    const parts = key.split(':');
+    const lemma = parts[1] || row.lemma || row.he;
+    if (!lemma) return true;
+    if (wouldViolateDepthCap(lemma)) return false;
+    if (pickCount < 2 && !isEasy(row)) return false; // warm-up bias
+    return true;
+  };
+  const relaxed = items.filter(relaxedGuards);
 
-  const source = filtered.length ? filtered : items;
+  const MIN_POOL = Math.min(15, items.length);
+  const source = filtered.length >= MIN_POOL ? filtered : (relaxed.length >= MIN_POOL ? relaxed : items);
 
   const weighted = source.map(({ key, row }) => {
     const c = cells[key];

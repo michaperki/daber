@@ -146,23 +146,21 @@ export function SettingsPanel() {
 
         <div class={styles.divider} />
 
-        {/* Dev-only: show stroke sample counts to verify DB hydrate */}
-        {typeof window !== 'undefined' && /(?:^|[?&])dev=1(?:&|$)/.test(window.location.search) && (
-          <div>
-            <div class={styles.label}>Dev: Stroke samples loaded</div>
-            <div class={styles.hint}>
-              {(() => {
-                const sdb = strokeSamples.value as any as Record<string, any[]>;
-                let total = 0;
-                for (const k of Object.keys(sdb)) total += (sdb[k] || []).length;
-                const y = (sdb['י'] || []).length || 0;
-                const v = (sdb['ו'] || []).length || 0;
-                const n = (sdb['ן'] || []).length || 0;
-                return `total=${total}  ·  י=${y}  ו=${v}  ן=${n}`;
-              })()}
-            </div>
+        {/* Stroke sample counts */}
+        <div>
+          <div class={styles.label}>Stroke samples loaded</div>
+          <div class={styles.hint}>
+            {(() => {
+              const sdb = strokeSamples.value as any as Record<string, any[]>;
+              let total = 0;
+              for (const k of Object.keys(sdb)) total += (sdb[k] || []).length;
+              const y = (sdb['י'] || []).length || 0;
+              const v = (sdb['ו'] || []).length || 0;
+              const n = (sdb['ן'] || []).length || 0;
+              return `total=${total}  ·  י=${y}  ו=${v}  ן=${n}`;
+            })()}
           </div>
-        )}
+        </div>
 
         <div>
           <div class={styles.label}>Export debug bundle</div>
@@ -199,31 +197,13 @@ export function SettingsPanel() {
           </div>
         </div>
 
-        {typeof window !== 'undefined' && /(?:^|[?&])dev=1(?:&|$)/.test(window.location.search) && (
-          <>
-            <div class={styles.divider} />
-            <div>
-              <div class={styles.label}>Dev: Version</div>
-              <div class={styles.hint}>Frontend: {FRONTEND_VERSION}</div>
-              <div class={styles.row}>
-                <button
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      const res = await fetch('/version');
-                      const json = await res.json();
-                      setDevOutput(`Backend: ${json?.version || '(none)'}\nFrontend: ${FRONTEND_VERSION}`);
-                    } catch {
-                      setDevOutput('Failed to fetch /version');
-                    }
-                  }}
-                >
-                  Check backend /version
-                </button>
-              </div>
-            </div>
-          </>
-        )}
+        <div class={styles.divider} />
+
+        {/* Always show simple build number */}
+        <div>
+          <div class={styles.label}>Version</div>
+          <div class={styles.hint}>{FRONTEND_VERSION}</div>
+        </div>
 
         <div class={styles.divider} />
 
@@ -267,120 +247,98 @@ export function SettingsPanel() {
           </div>
         </div>
 
-        {/* Dev-only: quick confusion check for י/ו/ן with and without geometry */}
-        {typeof window !== 'undefined' && /(?:^|[?&])dev=1(?:&|$)/.test(window.location.search) && (
-          <>
-            <div class={styles.divider} />
-            <div>
-              <div class={styles.label}>Dev: Stroke confusion check</div>
-              <div class={styles.hint}>Compare base vs geometry-weighted stroke scoring for י/ו/ן (λ∈[0,0.5,1.0])</div>
-              <div class={styles.row}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    try {
-                      const targets: LetterGlyph[] = ['י','ו','ן'];
-                      const sdb = strokeSamples.value as any as Record<LetterGlyph, any[]>;
-                      const stats = {
-                        base: { correct: 0, total: 0, conf: {} as Record<string, number> },
-                        g05: { correct: 0, total: 0, conf: {} as Record<string, number> },
-                        g10: { correct: 0, total: 0, conf: {} as Record<string, number> },
-                      };
-                      for (const L of targets) {
-                        const arr = (sdb[L] || []) as any[];
-                        if (!arr || arr.length < 2) continue;
-                        for (let i = 0; i < arr.length; i++) {
-                          const held = arr[i];
-                          const hold: any = {};
-                          for (const LL of targets) {
-                            const a2 = (sdb[LL] || []).slice();
-                            if (LL === L) a2.splice(i, 1);
-                            hold[LL] = a2;
-                          }
-                          const p0 = predictByStroke(held, hold, { topN: 1, geometryWeight: 0 });
-                          const bTop = p0[0]?.letter as LetterGlyph | undefined;
-                          stats.base.total++;
-                          if (bTop === L) stats.base.correct++; else if (bTop) {
-                            const k = `${L}->${bTop}`; stats.base.conf[k] = (stats.base.conf[k] || 0) + 1;
-                          }
-                          const p05 = predictByStroke(held, hold, { topN: 1, geometryWeight: 0.5 });
-                          const g05Top = p05[0]?.letter as LetterGlyph | undefined;
-                          stats.g05.total++;
-                          if (g05Top === L) stats.g05.correct++; else if (g05Top) {
-                            const k = `${L}->${g05Top}`; stats.g05.conf[k] = (stats.g05.conf[k] || 0) + 1;
-                          }
-                          const p10 = predictByStroke(held, hold, { topN: 1, geometryWeight: 1.0 });
-                          const g10Top = p10[0]?.letter as LetterGlyph | undefined;
-                          stats.g10.total++;
-                          if (g10Top === L) stats.g10.correct++; else if (g10Top) {
-                            const k = `${L}->${g10Top}`; stats.g10.conf[k] = (stats.g10.conf[k] || 0) + 1;
-                          }
+        {/* Stroke confusion check and aspect stats */}
+        <>
+          <div class={styles.divider} />
+          <div>
+            <div class={styles.label}>Stroke confusion check</div>
+            <div class={styles.hint}>Compare stroke scoring for י/ו/ן on your samples</div>
+            <div class={styles.row}>
+              <button
+                type="button"
+                onClick={() => {
+                  try {
+                    const targets: LetterGlyph[] = ['י','ו','ן'];
+                    const sdb = strokeSamples.value as any as Record<LetterGlyph, any[]>;
+                    const stats = { correct: 0, total: 0, conf: {} as Record<string, number> };
+                    for (const L of targets) {
+                      const arr = (sdb[L] || []) as any[];
+                      if (!arr || arr.length < 2) continue;
+                      for (let i = 0; i < arr.length; i++) {
+                        const held = arr[i];
+                        const hold: any = {};
+                        for (const LL of targets) {
+                          const a2 = (sdb[LL] || []).slice();
+                          if (LL === L) a2.splice(i, 1);
+                          hold[LL] = a2;
+                        }
+                        const p = predictByStroke(held, hold, { topN: 1 });
+                        const top = p[0]?.letter as LetterGlyph | undefined;
+                        stats.total++;
+                        if (top === L) stats.correct++; else if (top) {
+                          const k = `${L}->${top}`; stats.conf[k] = (stats.conf[k] || 0) + 1;
                         }
                       }
-                      const pct = (c: number, t: number) => (t ? Math.round((100 * c) / t) : 0);
-                      const top5 = (m: Record<string, number>) => Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k}(${v})`).join(' · ') || '—';
-                      setDevOutput([
-                        `Base (λ=0):    ${pct(stats.base.correct, stats.base.total)}%  conf: ${top5(stats.base.conf)}`,
-                        `Geom (λ=0.5):  ${pct(stats.g05.correct, stats.g05.total)}%  conf: ${top5(stats.g05.conf)}`,
-                        `Geom (λ=1.0):  ${pct(stats.g10.correct, stats.g10.total)}%  conf: ${top5(stats.g10.conf)}`,
-                      ].join('\n'));
-                    } catch (e) {
-                      setDevOutput('Confusion check failed. Collect stroke samples first.');
                     }
-                  }}
-                >
-                  Run stroke confusion check
-                </button>
+                    const pct = (c: number, t: number) => (t ? Math.round((100 * c) / t) : 0);
+                    const top5 = (m: Record<string, number>) => Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k}(${v})`).join(' · ') || '—';
+                    setDevOutput(`Stroke: ${pct(stats.correct, stats.total)}%  conf: ${top5(stats.conf)}`);
+                  } catch (e) {
+                    setDevOutput('Confusion check failed. Collect stroke samples first.');
+                  }
+                }}
+              >
+                Run stroke confusion check
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  try {
+                    const letters: LetterGlyph[] = ['י','ו','ן'];
+                    const sdb = strokeSamples.value as any as Record<LetterGlyph, any[]>;
+                    function logAspectLocal(strokes: any[]): number {
+                      const b = measureBounds(strokes as any);
+                      if (!b) return 0;
+                      const w = Math.max(1e-3, b.width);
+                      const h = Math.max(1e-3, b.height);
+                      return Math.log(h / w);
+                    }
+                    const lines: string[] = [];
+                    for (const L of letters) {
+                      const arr = (sdb[L] || []) as any[];
+                      const vals = arr.map(a => logAspectLocal(a)).filter(v => Number.isFinite(v));
+                      if (!vals.length) { lines.push(`${L}: n=0`); continue; }
+                      const n = vals.length;
+                      const mean = vals.reduce((s,v)=>s+v,0)/n;
+                      const sd = Math.sqrt(vals.reduce((s,v)=>s+(v-mean)*(v-mean),0)/n);
+                      const min = Math.min(...vals);
+                      const max = Math.max(...vals);
+                      lines.push(`${L}: n=${n}  mean=${mean.toFixed(3)}  sd=${sd.toFixed(3)}  min=${min.toFixed(3)}  max=${max.toFixed(3)}`);
+                    }
+                    setDevOutput(lines.join('\n'));
+                  } catch (e) {
+                    setDevOutput('Aspect stats failed.');
+                  }
+                }}
+                style={{ marginLeft: '8px' }}
+              >
+                Aspect stats (י/ו/ן)
+              </button>
+            </div>
+            {devOutput ? (
+              <div class={styles.row}>
+                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', flex: 1 }}>{devOutput}</pre>
                 <button
                   type="button"
-                  onClick={() => {
-                    try {
-                      const letters: LetterGlyph[] = ['י','ו','ן'];
-                      const sdb = strokeSamples.value as any as Record<LetterGlyph, any[]>;
-                      function logAspectLocal(strokes: any[]): number {
-                        const b = measureBounds(strokes as any);
-                        if (!b) return 0;
-                        const w = Math.max(1e-3, b.width);
-                        const h = Math.max(1e-3, b.height);
-                        return Math.log(h / w);
-                      }
-                      const lines: string[] = [];
-                      for (const L of letters) {
-                        const arr = (sdb[L] || []) as any[];
-                        const vals = arr.map(a => logAspectLocal(a)).filter(v => Number.isFinite(v));
-                        if (!vals.length) { lines.push(`${L}: n=0`); continue; }
-                        const n = vals.length;
-                        const mean = vals.reduce((s,v)=>s+v,0)/n;
-                        const sd = Math.sqrt(vals.reduce((s,v)=>s+(v-mean)*(v-mean),0)/n);
-                        const min = Math.min(...vals);
-                        const max = Math.max(...vals);
-                        lines.push(`${L}: n=${n}  mean=${mean.toFixed(3)}  sd=${sd.toFixed(3)}  min=${min.toFixed(3)}  max=${max.toFixed(3)}`);
-                      }
-                      setDevOutput(lines.join('\n'));
-                    } catch (e) {
-                      setDevOutput('Aspect stats failed.');
-                    }
-                  }}
-                  style={{ marginLeft: '8px' }}
+                  onClick={async () => { try { await navigator.clipboard.writeText(devOutput); } catch {} }}
+                  style={{ marginLeft: '8px', alignSelf: 'flex-start' }}
                 >
-                  Aspect stats (י/ו/ן)
+                  Copy
                 </button>
               </div>
-              {devOutput ? (
-                <div class={styles.row}>
-                  <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', flex: 1 }}>{devOutput}</pre>
-                  <button
-                    type="button"
-                    onClick={async () => { try { await navigator.clipboard.writeText(devOutput); } catch {} }}
-                    style={{ marginLeft: '8px', alignSelf: 'flex-start' }}
-                  >
-                    Copy
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </>
-        )}
+            ) : null}
+          </div>
+        </>
 
         {msg ? (
           <div class={styles.hint} style={{ color: msg.kind === 'ok' ? 'var(--accent-2)' : 'var(--danger)' }}>

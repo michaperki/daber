@@ -203,13 +203,8 @@ export function VocabTab() {
 
   function onIdk() {
     if (!state.current) return;
+    // Reveal the full word but stay on this item so the user can trace it.
     setState((s) => ({ ...s, revealed: true }));
-    // Small pause to let the user see the answer, then advance
-    busyRef.current = true;
-    window.setTimeout(() => {
-      busyRef.current = false;
-      pickNext();
-    }, 900);
   }
   function onSkip() {
     pickNext();

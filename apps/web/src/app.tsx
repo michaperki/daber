@@ -1,12 +1,12 @@
 import { useEffect } from 'preact/hooks';
 import styles from './app.module.css';
-import { activeTab, rightRailOpen, settingsOpen, syncStatus, type TabId } from './state/signals';
+import { activeTab, rightRailOpen, settingsOpen, syncStatus, setupComplete, progress, type TabId } from './state/signals';
 import { CalibrateTab } from './ui/CalibrateTab';
 import { VocabTab } from './ui/VocabTab';
 import { RightRail } from './ui/RightRail';
 import { SettingsPanel } from './ui/SettingsPanel';
 
-const TABS: { id: TabId; label: string }[] = [
+const ALL_TABS: { id: TabId; label: string }[] = [
   { id: 'calibrate', label: 'Calibrate' },
   { id: 'vocab', label: 'Vocab' },
 ];
@@ -51,12 +51,21 @@ function useWakeLock(tab: TabId) {
 export function App() {
   const tab = activeTab.value;
   const drawerOpen = rightRailOpen.value;
+  const onboardingDone = progress.value.prefs.pilot_wizard_done || setupComplete.value;
+  const TABS = onboardingDone ? ALL_TABS.filter(t => t.id !== 'calibrate') : ALL_TABS;
 
   useWakeLock(tab);
 
   function selectTab(id: TabId) {
     activeTab.value = id;
   }
+
+  // If onboarding completes, ensure we don't stay on a hidden tab
+  useEffect(() => {
+    if (onboardingDone && activeTab.value === 'calibrate') {
+      activeTab.value = 'vocab';
+    }
+  }, [onboardingDone]);
 
   return (
     <div class={styles.shell}>
@@ -112,17 +121,19 @@ export function App() {
       </main>
 
       {/* Bottom nav — mobile only */}
-      <nav class={styles.bottomNav}>
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            class={`${styles.bottomTab} ${tab === t.id ? styles.bottomTabActive : ''}`}
-            onClick={() => selectTab(t.id)}
-          >
-            {t.label}
-          </button>
-        ))}
-      </nav>
+      {TABS.length > 1 && (
+        <nav class={styles.bottomNav}>
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              class={`${styles.bottomTab} ${tab === t.id ? styles.bottomTabActive : ''}`}
+              onClick={() => selectTab(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
+      )}
 
       {/* RightRail drawer — mobile overlay */}
       {drawerOpen && (

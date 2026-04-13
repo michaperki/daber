@@ -74,3 +74,44 @@ export function expandVerbFormPatterns(patterns: string[]): VerbFormToken[] {
   return Array.from(out);
 }
 
+// ---- Adjectives ----
+export const ADJ_FORMS = [
+  'm_sg',
+  'f_sg',
+  'm_pl',
+  'f_pl',
+] as const;
+export type AdjectiveFormToken = (typeof ADJ_FORMS)[number];
+
+export function expandAdjectiveFormPatterns(patterns: string[]): AdjectiveFormToken[] {
+  const out = new Set<AdjectiveFormToken>();
+  for (const p of patterns || []) {
+    if (p.endsWith('*')) {
+      const prefix = p.slice(0, -1);
+      for (const t of ADJ_FORMS) if ((t as string).startsWith(prefix)) out.add(t);
+      continue;
+    }
+    if ((ADJ_FORMS as readonly string[]).includes(p)) out.add(p as AdjectiveFormToken);
+  }
+  return Array.from(out);
+}
+
+// ---- Nouns ----
+export const NOUN_FORMS = [
+  'sg',
+  'pl',
+] as const;
+export type NounFormToken = (typeof NOUN_FORMS)[number];
+
+export function expandNounFormPatterns(patterns: string[]): NounFormToken[] {
+  const out = new Set<NounFormToken>();
+  for (const p of patterns || []) {
+    if (p.endsWith('*')) {
+      const prefix = p.slice(0, -1);
+      for (const t of NOUN_FORMS) if ((t as string).startsWith(prefix)) out.add(t);
+      continue;
+    }
+    if ((NOUN_FORMS as readonly string[]).includes(p)) out.add(p as NounFormToken);
+  }
+  return Array.from(out);
+}

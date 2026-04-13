@@ -81,8 +81,12 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
         }
         case 'noun': {
           const n = NounEntrySchema.parse(entry);
-          const he = n.forms?.sg || n.forms?.base || n.lemma;
-          rows.push({ he, en: n.gloss, pos });
+          const sg = n.forms?.sg || n.forms?.base || n.lemma;
+          const pl = (n as any).forms?.pl;
+          // Emit singular (sg) as its own cell
+          if (typeof sg === 'string' && sg.trim()) rows.push({ he: sg, en: n.gloss, pos, variant: 'sg', lemma: n.lemma });
+          // Emit plural if present
+          if (typeof pl === 'string' && pl.trim()) rows.push({ he: pl, en: n.gloss, pos, variant: 'pl', lemma: n.lemma });
           break;
         }
         case 'adjective': {
@@ -95,7 +99,7 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
             variant: 'm_sg' | 'f_sg' | 'm_pl' | 'f_pl',
           ) => {
             if (typeof he === 'string' && he.trim() && typeof en === 'string' && en.trim()) {
-              rows.push({ he, en, pos, variant });
+              rows.push({ he, en, pos, variant, lemma: a.lemma });
             }
           };
           addAdj(forms.m_sg, formsEn.m_sg, 'm_sg');

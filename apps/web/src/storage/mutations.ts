@@ -145,14 +145,14 @@ export function bumpVocabWord(he: string, cleanAttempt: boolean) {
 
 // ---- Cells (verb:<lemma>:<token>) ----
 
-function cellKey(lemma: string, token: string) {
-  return `verb:${lemma}:${token}`;
+function cellKeyFor(pos: string, lemma: string, token: string) {
+  return `${pos}:${lemma}:${token}`;
 }
 
-export function bumpCell(lemma?: string, token?: string, cleanAttempt?: boolean) {
-  if (!lemma || !token) return;
+export function bumpCell(pos?: string, lemma?: string, token?: string, cleanAttempt?: boolean) {
+  if (!pos || !lemma || !token) return;
   const p = progress.value;
-  const key = cellKey(lemma, token);
+  const key = cellKeyFor(pos, lemma, token);
   const cells = { ...(p.cells || {}) } as Record<string, CellProgress>;
   const prev: CellProgress = cells[key] || { state: 'introduced', streak: 0, correct: 0, attempts: 0 };
   const nowIsoStr = nowIso();
@@ -188,7 +188,7 @@ export function bumpCell(lemma?: string, token?: string, cleanAttempt?: boolean)
   commitProgress({ ...p, cells });
 }
 
-export { cellKey };
+export { cellKeyFor as cellKey };
 
 // Re-hydrate local signals from localStorage. Used by the Settings reset
 // flow when the user wants a completely clean slate after wiping local data.

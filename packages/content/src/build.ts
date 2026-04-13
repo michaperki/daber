@@ -30,5 +30,10 @@ function main() {
   // Also emit curriculum projection (if present)
   writeCurriculumDist(ROOT);
 }
-
-main();
+try {
+  main();
+} catch (err) {
+  // eslint-disable-next-line no-console
+  console.error('Build failed:', err);
+  process.exit(1);
+}

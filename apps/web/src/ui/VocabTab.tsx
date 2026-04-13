@@ -214,8 +214,8 @@ export function VocabTab() {
         setFeedback({ kind: 'ok', text: '✓ Correct' });
         const attemptClean = !(attemptRef.current.mistake || attemptRef.current.reveal || attemptRef.current.force);
         bumpVocabWord(cur.he, attemptClean);
-        const token = cur.variant || 'lemma';
-        if (cur.lemma) bumpCell(cur.lemma, token, attemptClean);
+        const token = cur.variant || (cur.pos === 'verb' ? 'lemma' : cur.pos === 'noun' ? 'sg' : 'm_sg');
+        if (cur.lemma) bumpCell(cur.pos, cur.lemma, token, attemptClean);
         busyRef.current = true;
         window.setTimeout(() => {
           busyRef.current = false;

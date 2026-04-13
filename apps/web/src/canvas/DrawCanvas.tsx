@@ -24,6 +24,9 @@ export type DrawCanvasProps = {
   // Fired on pen-up even for empty strokes. Used by tabs to know when to
   // recheck things like live prediction.
   onPenUp?: () => void;
+  // Fired on pen-down (start of a new stroke). Useful to cancel delayed
+  // actions scheduled after a previous stroke (e.g., delayed clear on wrong).
+  onPenDown?: () => void;
   // Optional debounced live vector updates while drawing
   onLiveVector?: (vec: Float32Array) => void;
   // Optional letter glyph to show as a faint watermark reference
@@ -50,7 +53,7 @@ function getWatermarkImage(glyph: string, onLoad: () => void): HTMLImageElement 
 }
 
 export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
-  function DrawCanvas({ onStrokeComplete, onPenUp, onLiveVector, watermarkLetter }, ref) {
+  function DrawCanvas({ onStrokeComplete, onPenUp, onPenDown, onLiveVector, watermarkLetter }, ref) {
     const wrapRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const strokesRef = useRef<Stroke[]>([]);
@@ -62,10 +65,12 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
     const onStrokeCompleteRef = useRef(onStrokeComplete);
     const onPenUpRef = useRef(onPenUp);
     const onLiveVectorRef = useRef(onLiveVector);
+    const onPenDownRef = useRef(onPenDown);
     const watermarkRef = useRef<HTMLImageElement | null>(null);
     onStrokeCompleteRef.current = onStrokeComplete;
     onPenUpRef.current = onPenUp;
     onLiveVectorRef.current = onLiveVector;
+    onPenDownRef.current = onPenDown;
 
     function ctx2d() {
       const c = canvasRef.current!;
@@ -120,6 +125,8 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
       } catch {
         /* some browsers throw — ignore */
       }
+      // Notify listeners that a new stroke is beginning
+      onPenDownRef.current?.();
       drawingRef.current = true;
       currentRef.current = [getPos(e)];
       fullRedraw();

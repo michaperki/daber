@@ -14,6 +14,7 @@
   flex-wrap: wrap;
   gap: 6px;
   margin: 6px 0 12px;
+  direction: rtl;
 }
 
 .tile {
@@ -76,4 +77,3 @@
   50% { transform: scale(1.02); }
   100% { transform: scale(1); }
 }
-

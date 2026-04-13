@@ -104,6 +104,19 @@ export function VocabTab() {
     return { pos, out };
   }
 
+  const wrongTimerRef = useRef<number | null>(null);
+
+  function cancelWrongTimer() {
+    if (wrongTimerRef.current) {
+      window.clearTimeout(wrongTimerRef.current);
+      wrongTimerRef.current = null;
+    }
+  }
+
+  function onPenDown() {
+    cancelWrongTimer();
+  }
+
   function onStroke(vec: Float32Array, strokes?: Stroke[]) {
     if (busyRef.current) return;
     const cur = state.current;
@@ -174,18 +187,29 @@ export function VocabTab() {
         setFeedback({ kind: 'idle', text: '' });
       }
     } else {
-      // On wrong: brief red flash, auto-clear, retry same letter
+      // On wrong: brief red flash, schedule auto-clear after idle; cancel if a new stroke starts
       setFeedback({ kind: 'bad', text: '' });
       setLastReject(vec);
       navigator.vibrate?.([40]);
       canvasRef.current?.shake();
-      canvasRef.current?.clear();
+      cancelWrongTimer();
+      wrongTimerRef.current = window.setTimeout(() => {
+        wrongTimerRef.current = null;
+        // Clear only if no new stroke has begun in the meantime
+        canvasRef.current?.clear();
+      }, 400);
     }
   }
 
   function onIdk() {
     if (!state.current) return;
     setState((s) => ({ ...s, revealed: true }));
+    // Small pause to let the user see the answer, then advance
+    busyRef.current = true;
+    window.setTimeout(() => {
+      busyRef.current = false;
+      pickNext();
+    }, 900);
   }
   function onSkip() {
     pickNext();
@@ -276,15 +300,22 @@ export function VocabTab() {
       <div class={study.topWord}>{state.current?.en ?? '—'}</div>
       {/* Tiles: one per Hebrew letter, skip spaces */}
       <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>
-        {(state.current?.he || '').split('').filter(ch => ch !== ' ').map((ch, i) => {
-          const filled = (state.output.replace(/\s/g, '').length) > i;
-          return (
-            <div class={`${study.tile} ${filled ? study.tileOk : ''}`}>{ch}</div>
-          );
-        })}
+        {(() => {
+          const he = state.current?.he || '';
+          const letters = he.split('').filter(ch => ch !== ' ');
+          const accepted = state.output.replace(/\s/g, '').length;
+          const revealAll = !!state.revealed;
+          return letters.map((ch, i) => {
+            const filled = accepted > i;
+            const show = revealAll || filled;
+            return (
+              <div class={`${study.tile} ${filled ? study.tileOk : ''}`}>{show ? ch : ''}</div>
+            );
+          });
+        })()}
       </div>
       <div class={study.canvasWrap}>
-        <DrawCanvas key={canvasKey} ref={canvasRef} onStrokeComplete={onStroke} />
+        <DrawCanvas key={canvasKey} ref={canvasRef} onStrokeComplete={onStroke} onPenDown={onPenDown} />
         <button class={study.clearIcon} onClick={() => canvasRef.current?.clear()} title="Clear">×</button>
       </div>
       <div class={study.controlsRow}>

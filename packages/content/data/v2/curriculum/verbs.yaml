@@ -30,3 +30,21 @@ waves:
     unlocked: false
     forms: [imperative_*]
     files: [all, cognition_perception, communication, core_actions, motion]
+
+# Adjectives curriculum
+adjectives: []
+adj_waves:
+  - id: adj_core_all
+    title: "Adjectives — core"
+    unlocked: true
+    forms: [m_sg, f_sg, m_pl, f_pl]
+    files: [all, core, colors]
+
+# Nouns curriculum
+nouns: []
+noun_waves:
+  - id: noun_core_all
+    title: "Nouns — core"
+    unlocked: true
+    forms: [sg, pl]
+    files: [all, core_people_objects, places, food_drink, time_date]

@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks';
 import styles from './app.module.css';
-import { settingsOpen, syncStatus, setupComplete } from './state/signals';
+import { settingsOpen, syncStatus, setupComplete, calibrationMode } from './state/signals';
 import { Onboarding } from './ui/Onboarding';
 import { VocabTab } from './ui/VocabTab';
 import { VerbInspector } from './ui/VerbInspector';
@@ -46,6 +46,7 @@ function useWakeLockWhenStudying(studying: boolean) {
 
 export function App() {
   const studying = setupComplete.value;
+  const calibrating = calibrationMode.value;
   useWakeLockWhenStudying(studying);
   const [inspect, setInspect] = useState(false);
 
@@ -81,7 +82,9 @@ export function App() {
       {/* Main content */}
       <main class={styles.main}>
         <section class={styles.left}>
-          {!studying ? <Onboarding /> : inspect ? <VerbInspector /> : <VocabTab />}
+          {calibrating
+            ? <Onboarding />
+            : (!studying ? <Onboarding /> : (inspect ? <VerbInspector /> : <VocabTab />))}
         </section>
       </main>
 

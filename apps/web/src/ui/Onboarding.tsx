@@ -17,6 +17,7 @@ import { appendLocalSample } from '../storage/strokes_store';
 import { strokeSamples } from '../state/strokes';
 import { LettersGrid } from './LettersGrid';
 import panels from './panels.module.css';
+import { calibrationMode } from '../state/signals';
 
 // Hebrew right-to-left order for next/prev navigation matches the order
 // learners encounter letters in the alphabet (LETTERS array).
@@ -138,6 +139,11 @@ export function Onboarding() {
       <div class={panels.row}>
         <button onClick={() => canvasRef.current?.clear()}>Clear</button>
         <button onClick={() => canvasRef.current?.undo()}>Undo</button>
+        {setupComplete.value && (
+          <button style={{ marginLeft: 8 }} onClick={() => { calibrationMode.value = false; }}>
+            Back to Drill
+          </button>
+        )}
       </div>
 
       <div class={panels.panel}>

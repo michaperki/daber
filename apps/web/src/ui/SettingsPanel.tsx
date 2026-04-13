@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
-import { calibration, deviceId, progress, settingsOpen, syncStatus } from '../state/signals';
+import { calibration, deviceId, progress, settingsOpen, syncStatus, calibrationMode } from '../state/signals';
 import { emptyCalibration } from '../storage/calibration';
 import { emptyProgress } from '../storage/progress';
 import { putCalibration, putProgress } from '../storage/sync';
@@ -88,6 +88,22 @@ export function SettingsPanel() {
               onChange={(e) => updatePrefs({ haptics_enabled: (e.target as HTMLInputElement).checked })}
             />
           </label>
+        </div>
+
+        <div class={styles.divider} />
+
+        {/* Calibration access */}
+        <div>
+          <div class={styles.label}>Calibration</div>
+          <div class={styles.row}>
+            <button
+              type="button"
+              onClick={() => { calibrationMode.value = true; close(); }}
+              disabled={busy}
+            >
+              Open Calibration
+            </button>
+          </div>
         </div>
 
         <div class={styles.divider} />

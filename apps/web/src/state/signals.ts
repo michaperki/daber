@@ -26,6 +26,8 @@ export const calibrateLetterIdx = signal<number>(0);
 
 // Settings panel visibility
 export const settingsOpen = signal<boolean>(false);
+// Allow entering calibration mode even after setup is complete
+export const calibrationMode = signal<boolean>(false);
 
 // ---- Derived ----
 

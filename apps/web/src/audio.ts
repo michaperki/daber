@@ -3,6 +3,7 @@
 
 type Ctx = AudioContext;
 let ctx: Ctx | null = null;
+let unlocked = false;
 
 function getAudioContext(): Ctx | null {
   try {
@@ -14,6 +15,25 @@ function getAudioContext(): Ctx | null {
     return ctx;
   } catch {
     return null;
+  }
+}
+
+// Prime/unlock audio on a direct user gesture (pointer/touch/click).
+export async function primeAudio(): Promise<boolean> {
+  const c = getAudioContext();
+  if (!c) return false;
+  try {
+    if (c.state === 'suspended') await c.resume();
+    // iOS Safari requires a short playback to unlock; play a 1-frame silent buffer.
+    const buf = c.createBuffer(1, 1, c.sampleRate);
+    const src = c.createBufferSource();
+    src.buffer = buf;
+    src.connect(c.destination);
+    src.start();
+    unlocked = true;
+    return true;
+  } catch {
+    return false;
   }
 }
 
@@ -63,4 +83,3 @@ export function playReveal() {
   // Soft neutral tone
   playTone({ freq: 440, durationMs: 180, type: 'sine', volume: 0.12 });
 }
-

@@ -13,7 +13,7 @@ import {
   bumpVocabWord,
 } from '../storage/mutations';
 import { randomVocabEntry, vocab, type VocabEntry } from '../content';
-import { playCorrect, playWrong, playWordComplete, playReveal } from '../audio';
+import { playCorrect, playWrong, playWordComplete, playReveal, primeAudio } from '../audio';
 import panels from './panels.module.css';
 import study from './study.module.css';
 
@@ -141,6 +141,8 @@ export function VocabTab() {
 
   function onPenDown() {
     cancelWrongTimer();
+    // Prime Web Audio on first user gesture to satisfy iOS Safari
+    void primeAudio();
   }
 
   function onStroke(vec: Float32Array, strokes?: Stroke[]) {
@@ -250,6 +252,7 @@ export function VocabTab() {
     // Reveal the full word but stay on this item so the user can trace it.
     attemptRef.current.reveal = true;
     setState((s) => ({ ...s, revealed: true }));
+    void primeAudio();
     playReveal();
   }
   function onSkip() {

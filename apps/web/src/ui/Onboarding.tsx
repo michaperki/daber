@@ -165,9 +165,7 @@ export function Onboarding() {
             : `Setup: ${setupCount.value}/${LETTERS.length} letters collected`}
         </div>
         <div class={panels.progress}>{progressLine}</div>
-        <div class={panels.shortcuts}>
-          Space = clear · Ctrl+Z = undo. Tap a tile to redo a letter.
-        </div>
+        
       </div>
     </>
   );

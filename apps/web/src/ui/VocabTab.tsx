@@ -414,7 +414,6 @@ export function VocabTab() {
       </div>
 
       <div class={feedbackClass}>{feedback.text}</div>
-      <div class={panels.shortcuts}>Space = clear · Enter = skip</div>
     </>
   );
 }

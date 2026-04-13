@@ -1,0 +1,45 @@
+Drill Selection Simulator
+
+Overview
+- Purpose: simulate the exact vocab/cell selection a learner receives over time under different user behaviors.
+- Scope: works for free practice and for lesson‑scoped drills.
+- Fidelity: uses the same selector logic and cell progress transitions as the app.
+
+Why
+- Verify diversity (lemmas, cells) over 20/50/100 prompts.
+- Detect loops, starvation of novelty, and POS bias.
+- Compare behaviors: perfect answers, always reveal/skip, mixed performance.
+
+Quick Start
+- Build content (required): `npm -w packages/content run build`
+- Run simulator:
+  - Free practice, perfect user: `npm run sim -- --n 20,50,100 --behavior perfect --seed 123`
+  - Always skip: `npm run sim -- --n 50 --behavior skip`
+  - Always reveal: `npm run sim -- --n 50 --behavior reveal`
+  - Mixed user: `npm run sim -- --n 100 --behavior mixed --seed 42`
+  - Lesson scope: `npm run sim -- --n 50 --behavior perfect --lesson cafe_ordering_1`
+- Show ordered sequence: add `--verbose`.
+
+Args
+- `--n`       Number of prompts (single or comma‑separated list). Default: 100
+- `--behavior` One of `perfect`, `skip`, `reveal`, `mixed`. Default: `perfect`
+- `--lesson`  Lesson id to scope selection; omit for free practice
+- `--seed`    Seed for deterministic RNG (optional)
+- `--verbose` Print the ordered sequence of delivered items
+
+Reports
+- Ordered sequence (with `--verbose`)
+- Distinct lemmas and cells
+- Repeat counts by exact item and by lemma
+- POS distribution
+- Loop/starvation heuristic and scope coverage
+
+Implementation Notes
+- Selector mirrors `apps/web/src/content.ts` (guards, weighting, and the two‑bucket novelty sampler).
+- Progress transitions mirror `apps/web/src/storage/mutations.ts` (introduced → practicing on 3 clean, practicing → mastered on 5 clean, demote on miss).
+- Content loaded from `packages/content/dist/{vocab,lessons}.json`.
+
+Interpreting Results
+- Diversity improves when distinct cells/lemmas grow steadily across 20 → 50 → 100 and the stall/loop heuristic does not trigger early.
+- Lesson‑scoped runs should reach high coverage of the lesson’s cells without obvious loops.
+

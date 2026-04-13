@@ -175,9 +175,8 @@ function randomVocabEntryByCell(): VocabEntry | null {
     const arr = [...recentLemmas.slice(-9), lemma];
     return new Set(arr).size >= 3;
   };
-  // Dynamic novelty budget: allow more exploration early
+  // Novelty detection
   const distinctSeen = (seenCells?.size || 0);
-  const noveltyBudget = distinctSeen < 30 ? 8 : 3; // loosen early, tighten later
   const isNewCell = (key: string) => !cells[key] && !seenCells.has(key);
   const isEasy = (row: VocabEntry) => {
     const short = (row.he || '').replace(/\s/g, '').length <= 4;
@@ -192,7 +191,6 @@ function randomVocabEntryByCell(): VocabEntry | null {
     if (!lemma) return false;
     if (wouldViolateDepthCap(lemma)) return false;
     if (!breadthCheck(lemma)) return false;
-    if (isNewCell(key) && newCells >= noveltyBudget) return false;
     if (pickCount < 2 && !isEasy(row)) return false; // warm-up
     return true;
   };
@@ -213,12 +211,18 @@ function randomVocabEntryByCell(): VocabEntry | null {
   const MIN_POOL = Math.min(15, items.length);
   const source = filtered.length >= MIN_POOL ? filtered : (relaxed.length >= MIN_POOL ? relaxed : items);
 
-  const weighted = source.map(({ key, row }) => {
+  const weightedEntries = source.map(({ key, row }) => {
     const c = cells[key];
     const w = stateWeight(c?.state) * recency(c?.last_seen_at) * difficulty(c?.streak);
-    return { item: row, weight: w };
+    return { key, item: row, weight: w };
   });
-  const picked = pickWeighted(weighted);
+  const newBucket = weightedEntries.filter((e) => isNewCell(e.key)).map(({ item, weight }) => ({ item, weight }));
+  const oldBucket = weightedEntries.filter((e) => !isNewCell(e.key)).map(({ item, weight }) => ({ item, weight }));
+  const uniqRecent = new Set(recentLemmas).size;
+  const pNew = pickCount < 20 ? 0.5 : (distinctSeen < 100 ? 0.3 : 0.1);
+  const chooseNew = Math.random() < pNew;
+  const picked = chooseNew ? (newBucket.length ? pickWeighted(newBucket) : (oldBucket.length ? pickWeighted(oldBucket) : null))
+                           : (oldBucket.length ? pickWeighted(oldBucket) : (newBucket.length ? pickWeighted(newBucket) : null));
   if (!picked) return null;
   // Update session trackers
   const pos = picked.pos;

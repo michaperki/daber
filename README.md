@@ -37,6 +37,7 @@ Daber/
   scripts/
     cnn_hhd/          # Train small CNN on HHD and export TFJS
     export_calibration_png.cjs  # Export saved samples to PNGs
+    sim_drill.js      # Selection simulator (see docs/SIMULATOR.md)
 ```
 
 ## Read the docs
@@ -53,6 +54,7 @@ In suggested order:
 8. `docs/PLAN.md` — Phase 0 implementation checklist (the concrete next actions)
 9. `docs/DIAGNOSTICS.md` — Bench and Debug: how to evaluate and troubleshoot models quickly
 9. `docs/DEPLOYMENT.md` — Heroku setup and local dev DB
+10. `docs/SIMULATOR.md` — How to simulate the drill selector and analyze diversity
 
 ## What's in `reference/`
 

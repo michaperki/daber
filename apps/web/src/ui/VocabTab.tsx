@@ -351,9 +351,21 @@ export function VocabTab() {
         {state.current ? (
           <>
             <span>{state.current.en}</span>
-            {state.current.variant === 'f_sg' ? (
-              <span aria-label="feminine" title="feminine"> ♀</span>
-            ) : null}
+            {(() => {
+              const v = state.current?.variant;
+              if (!v) return null;
+              if (v === 'present_f_sg' || v === 'f_sg') {
+                return <span aria-label="feminine" title="feminine"> ♀</span>;
+              }
+              if (v === 'present_m_pl' || v === 'm_pl') {
+                return <span aria-label="masculine plural" title="masculine plural"> ♂ pl</span>;
+              }
+              if (v === 'present_f_pl' || v === 'f_pl') {
+                return <span aria-label="feminine plural" title="feminine plural"> ♀ pl</span>;
+              }
+              // present_m_sg or m_sg → no badge
+              return null;
+            })()}
           </>
         ) : (
           '—'

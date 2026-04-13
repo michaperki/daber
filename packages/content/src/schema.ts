@@ -14,6 +14,17 @@ export const VerbEntrySchema = z.object({
     .object({
       m_sg: z.string().optional(),
       f_sg: z.string().optional(),
+      m_pl: z.string().optional(),
+      f_pl: z.string().optional(),
+    })
+    .partial()
+    .optional(),
+  present_en: z
+    .object({
+      m_sg: z.string().optional(),
+      f_sg: z.string().optional(),
+      m_pl: z.string().optional(),
+      f_pl: z.string().optional(),
     })
     .partial()
     .optional(),
@@ -38,7 +49,18 @@ export const AdjectiveEntrySchema = z.object({
     .object({
       m_sg: z.string().optional(),
       f_sg: z.string().optional(),
+      m_pl: z.string().optional(),
+      f_pl: z.string().optional(),
       base: z.string().optional(),
+    })
+    .partial()
+    .optional(),
+  forms_en: z
+    .object({
+      m_sg: z.string().optional(),
+      f_sg: z.string().optional(),
+      m_pl: z.string().optional(),
+      f_pl: z.string().optional(),
     })
     .partial()
     .optional(),

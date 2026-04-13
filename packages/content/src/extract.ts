@@ -34,11 +34,22 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
           const v = VerbEntrySchema.parse(entry);
           // Base infinitive
           rows.push({ he: v.lemma, en: v.gloss, pos });
-          // Present feminine singular (if available)
-          const fs = v.present?.f_sg;
-          if (typeof fs === 'string' && fs.trim().length > 0) {
-            rows.push({ he: fs, en: v.gloss, pos, variant: 'f_sg' });
-          }
+          // Present forms with English labels (emit only if both sides exist)
+          const pres = v.present || {};
+          const presEn = v.present_en || {};
+          const add = (
+            he: unknown,
+            en: unknown,
+            variant: 'present_m_sg' | 'present_f_sg' | 'present_m_pl' | 'present_f_pl',
+          ) => {
+            if (typeof he === 'string' && he.trim() && typeof en === 'string' && en.trim()) {
+              rows.push({ he, en, pos, variant });
+            }
+          };
+          add(pres.m_sg, presEn.m_sg, 'present_m_sg');
+          add(pres.f_sg, presEn.f_sg, 'present_f_sg');
+          add(pres.m_pl, presEn.m_pl, 'present_m_pl');
+          add(pres.f_pl, presEn.f_pl, 'present_f_pl');
           break;
         }
         case 'noun': {
@@ -49,12 +60,21 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
         }
         case 'adjective': {
           const a = AdjectiveEntrySchema.parse(entry);
-          const he = a.forms?.m_sg || a.forms?.base || a.lemma;
-          rows.push({ he, en: a.gloss, pos });
-          const fsg = a.forms?.f_sg;
-          if (typeof fsg === 'string' && fsg.trim().length > 0) {
-            rows.push({ he: fsg, en: a.gloss, pos, variant: 'f_sg' });
-          }
+          const forms = a.forms || {};
+          const formsEn = (a as any).forms_en || {};
+          const addAdj = (
+            he: unknown,
+            en: unknown,
+            variant: 'm_sg' | 'f_sg' | 'm_pl' | 'f_pl',
+          ) => {
+            if (typeof he === 'string' && he.trim() && typeof en === 'string' && en.trim()) {
+              rows.push({ he, en, pos, variant });
+            }
+          };
+          addAdj(forms.m_sg, formsEn.m_sg, 'm_sg');
+          addAdj(forms.f_sg, formsEn.f_sg, 'f_sg');
+          addAdj(forms.m_pl, formsEn.m_pl, 'm_pl');
+          addAdj(forms.f_pl, formsEn.f_pl, 'f_pl');
           break;
         }
         case 'adverb':

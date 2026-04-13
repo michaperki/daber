@@ -27,6 +27,7 @@ const curriculum = firstCurr || { verbs: {}, tokens: [] };
 export const curriculumData = curriculum;
 
 import { progress } from './state/signals';
+import { getActiveVerbTokens } from './curriculum_active';
 
 function pickWeighted<T>(items: { item: T; weight: number }[]): T | null {
   const total = items.reduce((s, x) => s + x.weight, 0);
@@ -68,7 +69,8 @@ function randomVocabEntryByCell(): VocabEntry | null {
   // Eligible cells from curriculum across POS with a corresponding vocab row
   const items: { key: string; row: VocabEntry }[] = [];
   // Verbs
-  for (const [lemma, tokens] of Object.entries(curriculumData.verbs || {})) {
+  const effectiveVerbs = getActiveVerbTokens(curriculumData.verbs || {});
+  for (const [lemma, tokens] of Object.entries(effectiveVerbs || {})) {
     for (const token of tokens) {
       const key = `verb:${lemma}:${token}`;
       const row = vmap.get(key);

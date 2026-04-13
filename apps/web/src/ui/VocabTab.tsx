@@ -18,7 +18,7 @@ import { progress } from '../state/signals';
 import panels from './panels.module.css';
 import study from './study.module.css';
 import { appendLocalSample } from '../storage/strokes_store';
-import { strokeSamples } from '../state/strokes';
+import { tierSuggestion, tierToast, acceptTierUnlock, snoozeTierSuggestion } from '../tier_suggest';
 
 // Heuristic: consider the current position to be at the end of a word if the
 // next character is missing or a separator (space/punctuation/maqaf).
@@ -358,9 +358,31 @@ export function VocabTab() {
 
   return (
     <>
+      {/* Minimal toast for unlock */}
+      {tierToast.value && (
+        <div class={panels.feedback + ' ' + panels.feedbackOk}>{tierToast.value}</div>
+      )}
       <div class={study.topWord}>
         {state.current ? <span>{state.current.en}</span> : '—'}
       </div>
+      {/* Inline minimal prompt when a tier is ready */}
+      {tierSuggestion.value && (
+        <div class={panels.panel}>
+          <div class={panels.row}>
+            <div class={panels.promptLabel}>
+              {(() => {
+                const s = tierSuggestion.value!;
+                const tier = s.tier === 2 ? 'Past' : s.tier === 3 ? 'Future' : 'Imperative';
+                return `${tier} forms for ‘${s.lemma}’ are ready. Unlock now?`;
+              })()}
+            </div>
+            <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
+              <button class={study.secondaryBtn} onClick={() => acceptTierUnlock()}>Unlock</button>
+              <button class={study.secondaryBtn} onClick={() => snoozeTierSuggestion()}>Later</button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Tiles grouped by word: preserve i and idx numbering across full phrase */}
       <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>
         {(() => {

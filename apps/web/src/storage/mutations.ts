@@ -186,6 +186,12 @@ export function bumpCell(pos?: string, lemma?: string, token?: string, cleanAtte
 
   cells[key] = next;
   commitProgress({ ...p, cells });
+
+  // After committing a clean verb cell, evaluate per-lemma tier readiness and maybe prompt.
+  if (pos === 'verb' && clean) {
+    // Lazy import to avoid circular deps at module init time
+    import('../tier_suggest').then((m) => m.maybeTriggerTierSuggestion(lemma, true)).catch(() => {});
+  }
 }
 
 export { cellKeyFor as cellKey };

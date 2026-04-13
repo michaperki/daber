@@ -461,3 +461,109 @@ entries:
         en: May I ask a question?
       - he: היא שואלת את המורה
         en: She asks the teacher.
+
+  - lemma: להזמין
+    gloss: to order; to invite
+    primary_prep: et
+    present:
+      m_sg: מזמין
+      f_sg: מזמינה
+      m_pl: מזמינים
+      f_pl: מזמינות
+    present_he:
+      m_sg: "הוא מזמין"
+      f_sg: "היא מזמינה"
+      m_pl: "הם מזמינים"
+      f_pl: "הן מזמינות"
+    present_en:
+      m_sg: "he orders"
+      f_sg: "she orders"
+      m_pl: "they order (m)"
+      f_pl: "they order (f)"
+    past:
+      1sg: הזמנתי
+      2sg_m: הזמנת
+      2sg_f: הזמנת
+      3sg_m: הזמין
+      3sg_f: הזמינה
+      1pl: הזמנו
+      2pl_m: הזמנתם
+      2pl_f: הזמנתן
+      3pl: הזמינו
+    past_he:
+      1sg: "אני הזמנתי"
+      2sg_m: "אתה הזמנת"
+      2sg_f: "את הזמנת"
+      3sg_m: "הוא הזמין"
+      3sg_f: "היא הזמינה"
+      1pl: "אנחנו הזמנו"
+      2pl_m: "אתם הזמנתם"
+      2pl_f: "אתן הזמנתן"
+      3pl: "הם הזמינו"
+    past_en:
+      1sg: "I ordered"
+      2sg_m: "you ordered (m)"
+      2sg_f: "you ordered (f)"
+      3sg_m: "he ordered"
+      3sg_f: "she ordered"
+      1pl: "we ordered"
+      2pl_m: "you ordered (m pl)"
+      2pl_f: "you ordered (f pl)"
+      3pl: "they ordered"
+    future:
+      1sg: אזמין
+      2sg_m: תזמין
+      2sg_f: תזמיני
+      3sg_m: יזמין
+      3sg_f: תזמין
+      1pl: נזמין
+      2pl_m: תזמינו
+      2pl_f: תזמינו
+      3pl: יזמינו
+    future_he:
+      1sg: "אני אזמין"
+      2sg_m: "אתה תזמין"
+      2sg_f: "את תזמיני"
+      3sg_m: "הוא יזמין"
+      3sg_f: "היא תזמין"
+      1pl: "אנחנו נזמין"
+      2pl_m: "אתם תזמינו"
+      2pl_f: "אתן תזמינו"
+      3pl: "הם יזמינו"
+    future_en:
+      1sg: "I will order"
+      2sg_m: "you will order (m)"
+      2sg_f: "you will order (f)"
+      3sg_m: "he will order"
+      3sg_f: "she will order"
+      1pl: "we will order"
+      2pl_m: "you will order (m pl)"
+      2pl_f: "you will order (f pl)"
+      3pl: "they will order"
+    imperative:
+      sg_m: הזמן
+      sg_f: הזמיני
+      pl_m: הזמינו
+      pl_f: הזמינו
+    imperative_he:
+      sg_m: "הזמן"
+      sg_f: "הזמיני"
+      pl_m: "הזמינו"
+      pl_f: "הזמינו"
+    imperative_en:
+      sg_m: "order! (m)"
+      sg_f: "order! (f)"
+      pl_m: "order! (m pl)"
+      pl_f: "order! (f pl)"
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: להזמין את ___
+          sense_en: order (something); invite (someone)
+      transitivity: transitive
+    examples:
+      - he: אני מזמין קפה
+        en: I am ordering coffee.
+      - he: היא הזמינה חשבון
+        en: She asked for the bill.

@@ -309,6 +309,15 @@ entries:
       - he: השירות מצוין כאן
         en: The service here is excellent.
     gender: m
+  - lemma: חשבון
+    gloss: bill, check
+    forms:
+      sg: חשבון
+      pl: חשבונות
+    examples:
+      - he: אפשר את החשבון, בבקשה?
+        en: The bill, please.
+    gender: m
   - lemma: תוצאה
     gloss: result, outcome
     forms:

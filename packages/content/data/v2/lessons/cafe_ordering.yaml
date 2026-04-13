@@ -1,0 +1,41 @@
+id: cafe_ordering_1
+title: Ordering at a Café
+tagline: Get a drink and a bite, ask for the bill
+estimated_minutes: 10
+endpoint:
+  description: A concrete café interaction from “hello” to paying the bill.
+core:
+  verbs:
+    להזמין: [present_m_sg, present_f_sg]
+    לשתות: [present_m_sg, present_f_sg]
+    לאכול: [present_m_sg, present_f_sg]
+    לשלם: [present_m_sg, present_f_sg]
+  nouns:
+    בית קפה: [sg]
+    מלצר: [sg]
+    תפריט: [sg]
+    חשבון: [sg]
+    קפה: [sg]
+    תה: [sg]
+    מים: [pl]
+    עוגה: [sg]
+    כריך: [sg]
+supporting:
+  adjectives:
+    חם: [m_sg, f_sg]
+    קר: [m_sg, f_sg]
+phases:
+  - id: warmup
+    title: Warm-up
+    goal: Drinks and foods + present forms for להזמין/לשתות.
+  - id: order
+    title: Order
+    goal: Combine item + temperature + להזמין.
+  - id: pay
+    title: Pay
+    goal: Ask for תפריט/חשבון and finish the interaction.
+  - id: perform
+    title: Performance
+    goal: From ordering to paying smoothly.
+wishlist:
+  - Add female waiter noun (מלצרית) later for gender balance.

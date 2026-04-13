@@ -1,0 +1,33 @@
+id: making_plans_1
+title: Making Plans
+tagline: Suggest a time and place and agree to meet
+estimated_minutes: 8
+endpoint:
+  description: A short exchange proposing to meet and agreeing on when and where.
+core:
+  verbs:
+    להיפגש: [future_1pl]
+    לבוא: [present_m_sg, present_f_sg]
+  nouns:
+    בוקר: [sg]
+    ערב: [sg]
+    תחנה: [sg]
+    פארק: [sg]
+supporting:
+  verbs:
+    לחכות: [present_m_sg, present_f_sg]
+  nouns:
+    שבוע: [sg]
+    יום: [sg]
+phases:
+  - id: warmup
+    title: Warm-up
+    goal: Review present of לבוא and time words.
+  - id: propose
+    title: Propose & confirm
+    goal: Use ניפגש + time/place to make a plan.
+  - id: perform
+    title: Performance
+    goal: Deliver a short plan agreement (when and where).
+wishlist:
+  - Optional future expansion with weekday names and clock times.

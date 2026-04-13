@@ -844,3 +844,102 @@ entries:
         en: Don't press the button.
       - he: למה אתה בלחץ?
         en: Why are you stressed?
+
+  - lemma: לאחר
+    gloss: to be late
+    primary_prep: l
+    present:
+      m_sg: מאחר
+      f_sg: מאחרת
+      m_pl: מאחרים
+      f_pl: מאחרות
+    present_he:
+      m_sg: "הוא מאחר"
+      f_sg: "היא מאחרת"
+      m_pl: "הם מאחרים"
+      f_pl: "הן מאחרות"
+    present_en:
+      m_sg: "he is late"
+      f_sg: "she is late"
+      m_pl: "they are late (m)"
+      f_pl: "they are late (f)"
+    past:
+      1sg: איחרתי
+      2sg_m: איחרת
+      2sg_f: איחרת
+      3sg_m: איחר
+      3sg_f: איחרה
+      1pl: איחרנו
+      2pl_m: איחרתם
+      2pl_f: איחרתן
+      3pl: איחרו
+    past_he:
+      1sg: "אני איחרתי"
+      2sg_m: "אתה איחרת"
+      2sg_f: "את איחרת"
+      3sg_m: "הוא איחר"
+      3sg_f: "היא איחרה"
+      1pl: "אנחנו איחרנו"
+      2pl_m: "אתם איחרתם"
+      2pl_f: "אתן איחרתן"
+      3pl: "הם איחרו"
+    past_en:
+      1sg: "I was late"
+      2sg_m: "you were late (m)"
+      2sg_f: "you were late (f)"
+      3sg_m: "he was late"
+      3sg_f: "she was late"
+      1pl: "we were late"
+      2pl_m: "you were late (m pl)"
+      2pl_f: "you were late (f pl)"
+      3pl: "they were late"
+    future:
+      1sg: אאחר
+      2sg_m: תאחר
+      2sg_f: תאחרי
+      3sg_m: יאחר
+      3sg_f: תאחר
+      1pl: נאחר
+      2pl_m: תאחרו
+      2pl_f: תאחרו
+      3pl: יאחרו
+    future_he:
+      1sg: "אני אאחר"
+      2sg_m: "אתה תאחר"
+      2sg_f: "את תאחרי"
+      3sg_m: "הוא יאחר"
+      3sg_f: "היא תאחר"
+      1pl: "אנחנו נאחר"
+      2pl_m: "אתם תאחרו"
+      2pl_f: "אתן תאחרו"
+      3pl: "הם יאחרו"
+    future_en:
+      1sg: "I will be late"
+      2sg_m: "you will be late (m)"
+      2sg_f: "you will be late (f)"
+      3sg_m: "he will be late"
+      3sg_f: "she will be late"
+      1pl: "we will be late"
+      2pl_m: "you will be late (m pl)"
+      2pl_f: "you will be late (f pl)"
+      3pl: "they will be late"
+    imperative:
+      sg_m: אחר
+      sg_f: אחרי
+      pl_m: אחרו
+      pl_f: אחרו
+    imperative_he:
+      sg_m: "אחר"
+      sg_f: "אחרי"
+      pl_m: "אחרו"
+      pl_f: "אחרו"
+    imperative_en:
+      sg_m: "be late! (m)"
+      sg_f: "be late! (f)"
+      pl_m: "be late! (m pl)"
+      pl_f: "be late! (f pl)"
+    examples:
+      - he: אני מאחר לעבודה
+        en: I am late for work.
+      - he: אל תאחר!
+        en: Don't be late!

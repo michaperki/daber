@@ -204,6 +204,15 @@ entries:
       - he: שים פחות סוכר
         en: Put less sugar.
     gender: m
+  - lemma: תפריט
+    gloss: menu
+    forms:
+      sg: תפריט
+      pl: תפריטים
+    examples:
+      - he: אפשר לראות את התפריט?
+        en: May I see the menu?
+    gender: m
   - lemma: מלח
     gloss: salt
     forms:
@@ -220,6 +229,15 @@ entries:
     examples:
       - he: פלפל שחור
         en: black pepper
+    gender: m
+  - lemma: כריך
+    gloss: sandwich
+    forms:
+      sg: כריך
+      pl: כריכים
+    examples:
+      - he: הזמנתי כריך
+        en: I ordered a sandwich.
     gender: m
   - lemma: עוף
     gloss: chicken (meat)

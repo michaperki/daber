@@ -1,0 +1,30 @@
+id: running_late_morning_1
+title: Running Late in the Morning
+tagline: Wake up late, scramble, and get moving
+estimated_minutes: 9
+endpoint:
+  description: A short first-person mini-story about waking late and hurrying to the bus/work.
+core:
+  verbs:
+    להתעורר: [present_m_sg, present_f_sg]
+    לרוץ: [present_m_sg, present_f_sg]
+    לאחר: [present_m_sg, present_f_sg]
+  nouns:
+    בוקר: [sg]
+    אוטובוס: [sg]
+    עבודה: [sg]
+supporting:
+  verbs:
+    ללכת: [present_m_sg, present_f_sg]
+phases:
+  - id: warmup
+    title: Warm-up
+    goal: Present forms for להתעורר/לרוץ with בוקר.
+  - id: scramble
+    title: Scramble
+    goal: Use לאחר + אוטובוס/עבודה in the present.
+  - id: perform
+    title: Performance
+    goal: Tell the short “late morning” micro-story.
+wishlist:
+  - Add clock-time nouns (שעה/דקה) in a follow-up lesson.

@@ -144,3 +144,12 @@ entries:
       - he: אנחנו בחוף הים
         en: We are at the beach.
     gender: m
+  - lemma: בית קפה
+    gloss: café
+    forms:
+      sg: בית קפה
+      pl: בתי קפה
+    examples:
+      - he: ניפגש בבית קפה
+        en: We'll meet at a café.
+    gender: m

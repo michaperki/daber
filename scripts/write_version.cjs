@@ -3,20 +3,10 @@ const { execSync } = require('node:child_process');
 const { writeFileSync } = require('node:fs');
 const { join } = require('node:path');
 
-function toShortNumberFromHex(hex) {
-  if (!hex) return '';
-  const h = String(hex).replace(/[^0-9a-f]/gi, '').slice(0, 8);
-  if (!h) return '';
-  try { return String(parseInt(h, 16)); } catch { return ''; }
-}
-
 function getBuildNumber() {
   // Prefer Heroku-provided envs in slug/build environments
   const rel = process.env.HEROKU_RELEASE_VERSION; // e.g., 'v123'
   if (rel && /^v\d+$/.test(rel)) return rel.slice(1);
-  const slug = process.env.HEROKU_SLUG_COMMIT || process.env.SOURCE_VERSION;
-  const fromSlug = toShortNumberFromHex(slug);
-  if (fromSlug) return fromSlug;
   try {
     const out = execSync('git rev-list --count HEAD', { stdio: ['ignore', 'pipe', 'ignore'] })
       .toString()

@@ -102,7 +102,8 @@ export function collectYamlFiles(rootDir: string): string[] {
 export function dedupeAndSort(rows: VocabRow[]): VocabRow[] {
   const map = new Map<string, VocabRow>();
   for (const r of rows) {
-    const key = r.he;
+    // Include variant in key so f_sg vs base can coexist even if `he` matches
+    const key = `${r.he}::${r.variant || ''}`;
     if (!map.has(key)) map.set(key, r);
   }
   const out = Array.from(map.values());

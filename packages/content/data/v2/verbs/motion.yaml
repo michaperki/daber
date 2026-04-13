@@ -8,6 +8,11 @@ entries:
       f_sg: נכנסת
       m_pl: נכנסים
       f_pl: נכנסות
+    present_en:
+      m_sg: "he enters"
+      f_sg: "she enters"
+      m_pl: "they enter (m)"
+      f_pl: "they enter (f)"
     past:
       1sg: נכנסתי
       2sg_m: נכנסת
@@ -18,6 +23,16 @@ entries:
       2pl_m: נכנסתם
       2pl_f: נכנסתן
       3pl: נכנסו
+    past_en:
+      1sg: "I entered"
+      2sg_m: "you entered (m)"
+      2sg_f: "you entered (f)"
+      3sg_m: "he entered"
+      3sg_f: "she entered"
+      1pl: "we entered"
+      2pl_m: "you entered (m pl)"
+      2pl_f: "you entered (f pl)"
+      3pl: "they entered"
     future:
       1sg: אכנס
       2sg_m: תכנס
@@ -28,11 +43,26 @@ entries:
       2pl_m: תכנסו
       2pl_f: תכנסו
       3pl: יכנסו
+    future_en:
+      1sg: "I will enter"
+      2sg_m: "you will enter (m)"
+      2sg_f: "you will enter (f)"
+      3sg_m: "he will enter"
+      3sg_f: "she will enter"
+      1pl: "we will enter"
+      2pl_m: "you will enter (m pl)"
+      2pl_f: "you will enter (f pl)"
+      3pl: "they will enter"
     imperative:
       sg_m: היכנס
       sg_f: היכנסי
       pl_m: היכנסו
       pl_f: היכנסו
+    imperative_en:
+      sg_m: "enter! (m)"
+      sg_f: "enter! (f)"
+      pl_m: "enter! (m pl)"
+      pl_f: "enter! (f pl)"
     governance:
       frames:
         - prep: l
@@ -53,6 +83,11 @@ entries:
       f_sg: רצה
       m_pl: רצים
       f_pl: רצות
+    present_en:
+      m_sg: "he runs"
+      f_sg: "she runs"
+      m_pl: "they run (m)"
+      f_pl: "they run (f)"
     past:
       1sg: רצתי
       2sg_m: רצת
@@ -63,6 +98,16 @@ entries:
       2pl_m: רצתם
       2pl_f: רצתן
       3pl: רצו
+    past_en:
+      1sg: "I ran"
+      2sg_m: "you ran (m)"
+      2sg_f: "you ran (f)"
+      3sg_m: "he ran"
+      3sg_f: "she ran"
+      1pl: "we ran"
+      2pl_m: "you ran (m pl)"
+      2pl_f: "you ran (f pl)"
+      3pl: "they ran"
     future:
       1sg: ארוץ
       2sg_m: תרוץ
@@ -73,11 +118,26 @@ entries:
       2pl_m: תרוצו
       2pl_f: תרוצו
       3pl: ירוצו
+    future_en:
+      1sg: "I will run"
+      2sg_m: "you will run (m)"
+      2sg_f: "you will run (f)"
+      3sg_m: "he will run"
+      3sg_f: "she will run"
+      1pl: "we will run"
+      2pl_m: "you will run (m pl)"
+      2pl_f: "you will run (f pl)"
+      3pl: "they will run"
     imperative:
       sg_m: רוץ
       sg_f: רוצי
       pl_m: רוצו
       pl_f: רוצו
+    imperative_en:
+      sg_m: "run! (m)"
+      sg_f: "run! (f)"
+      pl_m: "run! (m pl)"
+      pl_f: "run! (f pl)"
     governance:
       frames:
         - prep: none
@@ -97,6 +157,11 @@ entries:
       f_sg: יוצאת
       m_pl: יוצאים
       f_pl: יוצאות
+    present_en:
+      m_sg: "he goes out"
+      f_sg: "she goes out"
+      m_pl: "they go out (m)"
+      f_pl: "they go out (f)"
     past:
       1sg: יצאתי
       2sg_m: יצאת
@@ -107,6 +172,16 @@ entries:
       2pl_m: יצאתם
       2pl_f: יצאתן
       3pl: יצאו
+    past_en:
+      1sg: "I went out"
+      2sg_m: "you went out (m)"
+      2sg_f: "you went out (f)"
+      3sg_m: "he went out"
+      3sg_f: "she went out"
+      1pl: "we went out"
+      2pl_m: "you went out (m pl)"
+      2pl_f: "you went out (f pl)"
+      3pl: "they went out"
     future:
       1sg: אצא
       2sg_m: תצא
@@ -117,11 +192,26 @@ entries:
       2pl_m: תצאו
       2pl_f: תצאו
       3pl: יצאו
+    future_en:
+      1sg: "I will go out"
+      2sg_m: "you will go out (m)"
+      2sg_f: "you will go out (f)"
+      3sg_m: "he will go out"
+      3sg_f: "she will go out"
+      1pl: "we will go out"
+      2pl_m: "you will go out (m pl)"
+      2pl_f: "you will go out (f pl)"
+      3pl: "they will go out"
     imperative:
       sg_m: צא
       sg_f: צאי
       pl_m: צאו
       pl_f: צאו
+    imperative_en:
+      sg_m: "go out! (m)"
+      sg_f: "go out! (f)"
+      pl_m: "go out! (m pl)"
+      pl_f: "go out! (f pl)"
     governance:
       frames:
         - prep: min

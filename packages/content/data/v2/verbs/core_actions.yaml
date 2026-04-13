@@ -8,6 +8,11 @@ entries:
       f_sg: פותחת
       m_pl: פותחים
       f_pl: פותחות
+    present_en:
+      m_sg: "he opens"
+      f_sg: "she opens"
+      m_pl: "they open (m)"
+      f_pl: "they open (f)"
     past:
       1sg: פתחתי
       2sg_m: פתחת
@@ -18,6 +23,16 @@ entries:
       2pl_m: פתחתם
       2pl_f: פתחתן
       3pl: פתחו
+    past_en:
+      1sg: "I opened"
+      2sg_m: "you opened (m)"
+      2sg_f: "you opened (f)"
+      3sg_m: "he opened"
+      3sg_f: "she opened"
+      1pl: "we opened"
+      2pl_m: "you opened (m pl)"
+      2pl_f: "you opened (f pl)"
+      3pl: "they opened"
     future:
       1sg: אפתח
       2sg_m: תפתח
@@ -28,11 +43,26 @@ entries:
       2pl_m: תפתחו
       2pl_f: תפתחו
       3pl: יפתחו
+    future_en:
+      1sg: "I will open"
+      2sg_m: "you will open (m)"
+      2sg_f: "you will open (f)"
+      3sg_m: "he will open"
+      3sg_f: "she will open"
+      1pl: "we will open"
+      2pl_m: "you will open (m pl)"
+      2pl_f: "you will open (f pl)"
+      3pl: "they will open"
     imperative:
       sg_m: פתח
       sg_f: פתחי
       pl_m: פתחו
       pl_f: פתחו
+    imperative_en:
+      sg_m: "open! (m)"
+      sg_f: "open! (f)"
+      pl_m: "open! (m pl)"
+      pl_f: "open! (f pl)"
     governance:
       frames:
         - prep: et
@@ -53,6 +83,11 @@ entries:
       f_sg: מחזיקה…
       m_pl: מחזיקים
       f_pl: מחזיקות
+    present_en:
+      m_sg: "he holds"
+      f_sg: "she holds"
+      m_pl: "they hold (m)"
+      f_pl: "they hold (f)"
     past:
       1sg: החזקתי
       2sg_m: החזקת
@@ -63,6 +98,16 @@ entries:
       2pl_m: החזקתם
       2pl_f: החזקתן
       3pl: החזיקו
+    past_en:
+      1sg: "I held"
+      2sg_m: "you held (m)"
+      2sg_f: "you held (f)"
+      3sg_m: "he held"
+      3sg_f: "she held"
+      1pl: "we held"
+      2pl_m: "you held (m pl)"
+      2pl_f: "you held (f pl)"
+      3pl: "they held"
     future:
       1sg: אחזיק
       2sg_m: תחזיק
@@ -73,11 +118,26 @@ entries:
       2pl_m: תחזיקו
       2pl_f: תחזיקו
       3pl: יחזיקו
+    future_en:
+      1sg: "I will hold"
+      2sg_m: "you will hold (m)"
+      2sg_f: "you will hold (f)"
+      3sg_m: "he will hold"
+      3sg_f: "she will hold"
+      1pl: "we will hold"
+      2pl_m: "you will hold (m pl)"
+      2pl_f: "you will hold (f pl)"
+      3pl: "they will hold"
     imperative:
       sg_m: החזק
       sg_f: החזיקי
       pl_m: החזיקו
       pl_f: החזיקו
+    imperative_en:
+      sg_m: "hold! (m)"
+      sg_f: "hold! (f)"
+      pl_m: "hold! (m pl)"
+      pl_f: "hold! (f pl)"
     governance:
       frames:
         - prep: et
@@ -102,6 +162,11 @@ entries:
       f_sg: עוזרת
       m_pl: עוזרים
       f_pl: עוזרות
+    present_en:
+      m_sg: "he helps"
+      f_sg: "she helps"
+      m_pl: "they help (m)"
+      f_pl: "they help (f)"
     past:
       1sg: עזרתי
       2sg_m: עזרת
@@ -112,6 +177,16 @@ entries:
       2pl_m: עזרתם
       2pl_f: עזרתן
       3pl: עזרו
+    past_en:
+      1sg: "I helped"
+      2sg_m: "you helped (m)"
+      2sg_f: "you helped (f)"
+      3sg_m: "he helped"
+      3sg_f: "she helped"
+      1pl: "we helped"
+      2pl_m: "you helped (m pl)"
+      2pl_f: "you helped (f pl)"
+      3pl: "they helped"
     future:
       1sg: אעזור
       2sg_m: תעזור
@@ -122,11 +197,26 @@ entries:
       2pl_m: תעזרו
       2pl_f: תעזרו
       3pl: יעזרו
+    future_en:
+      1sg: "I will help"
+      2sg_m: "you will help (m)"
+      2sg_f: "you will help (f)"
+      3sg_m: "he will help"
+      3sg_f: "she will help"
+      1pl: "we will help"
+      2pl_m: "you will help (m pl)"
+      2pl_f: "you will help (f pl)"
+      3pl: "they will help"
     imperative:
       sg_m: עזור
       sg_f: עזרי
       pl_m: עזרו
       pl_f: עזרו
+    imperative_en:
+      sg_m: "help! (m)"
+      sg_f: "help! (f)"
+      pl_m: "help! (m pl)"
+      pl_f: "help! (f pl)"
     governance:
       frames:
         - prep: l
@@ -151,6 +241,11 @@ entries:
       f_sg: עושה
       m_pl: עושים
       f_pl: עושות
+    present_en:
+      m_sg: "he does"
+      f_sg: "she does"
+      m_pl: "they do (m)"
+      f_pl: "they do (f)"
     past:
       1sg: עשיתי
       2sg_m: עשית
@@ -161,6 +256,16 @@ entries:
       2pl_m: עשיתם
       2pl_f: עשיתן
       3pl: עשו
+    past_en:
+      1sg: "I did"
+      2sg_m: "you did (m)"
+      2sg_f: "you did (f)"
+      3sg_m: "he did"
+      3sg_f: "she did"
+      1pl: "we did"
+      2pl_m: "you did (m pl)"
+      2pl_f: "you did (f pl)"
+      3pl: "they did"
     future:
       1sg: אעשה
       2sg_m: תעשה
@@ -171,11 +276,26 @@ entries:
       2pl_m: תעשו
       2pl_f: תעשו
       3pl: יעשו
+    future_en:
+      1sg: "I will do"
+      2sg_m: "you will do (m)"
+      2sg_f: "you will do (f)"
+      3sg_m: "he will do"
+      3sg_f: "she will do"
+      1pl: "we will do"
+      2pl_m: "you will do (m pl)"
+      2pl_f: "you will do (f pl)"
+      3pl: "they will do"
     imperative:
       sg_m: עשה
       sg_f: עשי
       pl_m: עשו
       pl_f: עשו
+    imperative_en:
+      sg_m: "do! (m)"
+      sg_f: "do! (f)"
+      pl_m: "do! (m pl)"
+      pl_f: "do! (f pl)"
     governance:
       frames:
         - prep: et
@@ -198,6 +318,11 @@ entries:
       f_sg: קונה
       m_pl: קונים
       f_pl: קונות
+    present_en:
+      m_sg: "he buys"
+      f_sg: "she buys"
+      m_pl: "they buy (m)"
+      f_pl: "they buy (f)"
     past:
       1sg: קניתי
       2sg_m: קנית
@@ -208,6 +333,16 @@ entries:
       2pl_m: קניתם
       2pl_f: קניתן
       3pl: קנו
+    past_en:
+      1sg: "I bought"
+      2sg_m: "you bought (m)"
+      2sg_f: "you bought (f)"
+      3sg_m: "he bought"
+      3sg_f: "she bought"
+      1pl: "we bought"
+      2pl_m: "you bought (m pl)"
+      2pl_f: "you bought (f pl)"
+      3pl: "they bought"
     future:
       1sg: אקנה
       2sg_m: תקנה
@@ -218,11 +353,26 @@ entries:
       2pl_m: תקנו
       2pl_f: תקנו
       3pl: יקנו
+    future_en:
+      1sg: "I will buy"
+      2sg_m: "you will buy (m)"
+      2sg_f: "you will buy (f)"
+      3sg_m: "he will buy"
+      3sg_f: "she will buy"
+      1pl: "we will buy"
+      2pl_m: "you will buy (m pl)"
+      2pl_f: "you will buy (f pl)"
+      3pl: "they will buy"
     imperative:
       sg_m: קנה
       sg_f: קני
       pl_m: קנו
       pl_f: קנו
+    imperative_en:
+      sg_m: "buy! (m)"
+      sg_f: "buy! (f)"
+      pl_m: "buy! (m pl)"
+      pl_f: "buy! (f pl)"
     governance:
       frames:
         - prep: et
@@ -247,6 +397,11 @@ entries:
       f_sg: שולחת
       m_pl: שולחים
       f_pl: שולחות
+    present_en:
+      m_sg: "he sends"
+      f_sg: "she sends"
+      m_pl: "they send (m)"
+      f_pl: "they send (f)"
     past:
       1sg: שלחתי
       2sg_m: שלחת
@@ -257,6 +412,16 @@ entries:
       2pl_m: שלחתם
       2pl_f: שלחתן
       3pl: שלחו
+    past_en:
+      1sg: "I sent"
+      2sg_m: "you sent (m)"
+      2sg_f: "you sent (f)"
+      3sg_m: "he sent"
+      3sg_f: "she sent"
+      1pl: "we sent"
+      2pl_m: "you sent (m pl)"
+      2pl_f: "you sent (f pl)"
+      3pl: "they sent"
     future:
       1sg: אשלח
       2sg_m: תשלח
@@ -267,11 +432,26 @@ entries:
       2pl_m: תשלחו
       2pl_f: תשלחו
       3pl: ישלחו
+    future_en:
+      1sg: "I will send"
+      2sg_m: "you will send (m)"
+      2sg_f: "you will send (f)"
+      3sg_m: "he will send"
+      3sg_f: "she will send"
+      1pl: "we will send"
+      2pl_m: "you will send (m pl)"
+      2pl_f: "you will send (f pl)"
+      3pl: "they will send"
     imperative:
       sg_m: שלח
       sg_f: שלחי
       pl_m: שלחו
       pl_f: שלחו
+    imperative_en:
+      sg_m: "send! (m)"
+      sg_f: "send! (f)"
+      pl_m: "send! (m pl)"
+      pl_f: "send! (f pl)"
     governance:
       frames:
         - prep: et
@@ -300,6 +480,11 @@ entries:
       f_sg: כותבת
       m_pl: כותבים
       f_pl: כותבות
+    present_en:
+      m_sg: "he writes"
+      f_sg: "she writes"
+      m_pl: "they write (m)"
+      f_pl: "they write (f)"
     past:
       1sg: כתבתי
       3sg_m: כתב
@@ -310,6 +495,16 @@ entries:
       2sg_f: כתבת
       2pl_m: כתבתם
       2pl_f: כתבתן
+    past_en:
+      1sg: "I wrote"
+      3sg_m: "he wrote"
+      3sg_f: "she wrote"
+      1pl: "we wrote"
+      3pl: "they wrote"
+      2sg_m: "you wrote (m)"
+      2sg_f: "you wrote (f)"
+      2pl_m: "you wrote (m pl)"
+      2pl_f: "you wrote (f pl)"
     future:
       1sg: אכתוב
       2sg_m: תכתוב
@@ -320,11 +515,26 @@ entries:
       3pl: יכתבו
       3sg_f: תכתוב
       2pl_f: תכתבו
+    future_en:
+      1sg: "I will write"
+      2sg_m: "you will write (m)"
+      2sg_f: "you will write (f)"
+      3sg_m: "he will write"
+      1pl: "we will write"
+      2pl_m: "you will write (m pl)"
+      3pl: "they will write"
+      3sg_f: "she will write"
+      2pl_f: "you will write (f pl)"
     imperative:
       sg_m: כתוב
       sg_f: כתבי
       pl_m: כתבו
       pl_f: כתבו
+    imperative_en:
+      sg_m: "write! (m)"
+      sg_f: "write! (f)"
+      pl_m: "write! (m pl)"
+      pl_f: "write! (f pl)"
     governance:
       frames:
         - prep: et

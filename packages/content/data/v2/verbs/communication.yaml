@@ -8,6 +8,11 @@ entries:
       f_sg: צועקת
       m_pl: צועקים
       f_pl: צועקות
+    present_en:
+      m_sg: "he shouts"
+      f_sg: "she shouts"
+      m_pl: "they shout (m)"
+      f_pl: "they shout (f)"
     past:
       1sg: צעקתי
       2sg_m: צעקת
@@ -18,6 +23,16 @@ entries:
       2pl_m: צעקתם
       2pl_f: צעקתן
       3pl: צעקו
+    past_en:
+      1sg: "I shouted"
+      2sg_m: "you shouted (m)"
+      2sg_f: "you shouted (f)"
+      3sg_m: "he shouted"
+      3sg_f: "she shouted"
+      1pl: "we shouted"
+      2pl_m: "you shouted (m pl)"
+      2pl_f: "you shouted (f pl)"
+      3pl: "they shouted"
     future:
       1sg: אצעק
       2sg_m: תצעק
@@ -28,11 +43,26 @@ entries:
       2pl_m: תצעקו
       2pl_f: תצעקו
       3pl: יצעקו
+    future_en:
+      1sg: "I will shout"
+      2sg_m: "you will shout (m)"
+      2sg_f: "you will shout (f)"
+      3sg_m: "he will shout"
+      3sg_f: "she will shout"
+      1pl: "we will shout"
+      2pl_m: "you will shout (m pl)"
+      2pl_f: "you will shout (f pl)"
+      3pl: "they will shout"
     imperative:
       sg_m: צעק
       sg_f: צעקי
       pl_m: צעקו
       pl_f: צעקו
+    imperative_en:
+      sg_m: "shout! (m)"
+      sg_f: "shout! (f)"
+      pl_m: "shout! (m pl)"
+      pl_f: "shout! (f pl)"
     governance:
       frames:
         - prep: al
@@ -53,6 +83,11 @@ entries:
       f_sg: פוגשת
       m_pl: פוגשים
       f_pl: פוגשות
+    present_en:
+      m_sg: "he meets"
+      f_sg: "she meets"
+      m_pl: "they meet (m)"
+      f_pl: "they meet (f)"
     past:
       1sg: פגשתי
       2sg_m: פגשת
@@ -63,6 +98,16 @@ entries:
       2pl_m: פגשתם
       2pl_f: פגשתן
       3pl: פגשו
+    past_en:
+      1sg: "I met"
+      2sg_m: "you met (m)"
+      2sg_f: "you met (f)"
+      3sg_m: "he met"
+      3sg_f: "she met"
+      1pl: "we met"
+      2pl_m: "you met (m pl)"
+      2pl_f: "you met (f pl)"
+      3pl: "they met"
     future:
       1sg: אפגוש
       2sg_m: תפגוש
@@ -73,6 +118,16 @@ entries:
       2pl_m: תפגשו
       2pl_f: תפגשו
       3pl: יפגשו
+    future_en:
+      1sg: "I will meet"
+      2sg_m: "you will meet (m)"
+      2sg_f: "you will meet (f)"
+      3sg_m: "he will meet"
+      3sg_f: "she will meet"
+      1pl: "we will meet"
+      2pl_m: "you will meet (m pl)"
+      2pl_f: "you will meet (f pl)"
+      3pl: "they will meet"
     governance:
       frames:
         - prep: et
@@ -94,6 +149,11 @@ entries:
       sg_f: פגשי
       pl_m: פגשו
       pl_f: פגשו
+    imperative_en:
+      sg_m: "meet! (m)"
+      sg_f: "meet! (f)"
+      pl_m: "meet! (m pl)"
+      pl_f: "meet! (f pl)"
   - lemma: לדבר
     gloss: to speak
     primary_prep: im
@@ -102,6 +162,11 @@ entries:
       f_sg: מדברת
       m_pl: מדברים
       f_pl: מדברות
+    present_en:
+      m_sg: "he speaks"
+      f_sg: "she speaks"
+      m_pl: "they speak (m)"
+      f_pl: "they speak (f)"
     past:
       1sg: דיברתי
       3sg_m: דיבר
@@ -112,6 +177,16 @@ entries:
       2sg_f: דיברת
       2pl_m: דיברתם
       2pl_f: דיברתן
+    past_en:
+      1sg: "I spoke"
+      3sg_m: "he spoke"
+      3sg_f: "she spoke"
+      1pl: "we spoke"
+      3pl: "they spoke"
+      2sg_m: "you spoke (m)"
+      2sg_f: "you spoke (f)"
+      2pl_m: "you spoke (m pl)"
+      2pl_f: "you spoke (f pl)"
     future:
       1sg: אדבר
       2sg_m: תדבר
@@ -122,11 +197,26 @@ entries:
       3pl: ידברו
       3sg_f: תדבר
       2pl_f: תדברו
+    future_en:
+      1sg: "I will speak"
+      2sg_m: "you will speak (m)"
+      2sg_f: "you will speak (f)"
+      3sg_m: "he will speak"
+      1pl: "we will speak"
+      2pl_m: "you will speak (m pl)"
+      3pl: "they will speak"
+      3sg_f: "she will speak"
+      2pl_f: "you will speak (f pl)"
     imperative:
       sg_m: דבר
       sg_f: דברי
       pl_m: דברו
       pl_f: דברו
+    imperative_en:
+      sg_m: "speak! (m)"
+      sg_f: "speak! (f)"
+      pl_m: "speak! (m pl)"
+      pl_f: "speak! (f pl)"
     governance:
       frames:
         - prep: im

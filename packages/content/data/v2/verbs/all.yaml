@@ -8,6 +8,11 @@ entries:
       f_sg: שורפת
       m_pl: שורפים
       f_pl: שורפות
+    present_en:
+      m_sg: "he burns"
+      f_sg: "she burns"
+      m_pl: "they burn (m)"
+      f_pl: "they burn (f)"
     past:
       2sg_f: שרפת…
       1sg: נשרפתי
@@ -18,6 +23,16 @@ entries:
       2pl_m: נשרפתם
       2pl_f: נשרפתן
       3pl: שרפו
+    past_en:
+      2sg_f: "you burned (f)"
+      1sg: "I burned"
+      2sg_m: "you burned (m)"
+      3sg_m: "he burned"
+      3sg_f: "she burned"
+      1pl: "we burned"
+      2pl_m: "you burned (m pl)"
+      2pl_f: "you burned (f pl)"
+      3pl: "they burned"
     future:
       1sg: אשרוף
       2sg_m: תשרוף
@@ -28,6 +43,16 @@ entries:
       2pl_m: תשרפו
       2pl_f: תשרפו
       3pl: ישרפו
+    future_en:
+      1sg: "I will burn"
+      2sg_m: "you will burn (m)"
+      2sg_f: "you will burn (f)"
+      3sg_m: "he will burn"
+      3sg_f: "she will burn"
+      1pl: "we will burn"
+      2pl_m: "you will burn (m pl)"
+      2pl_f: "you will burn (f pl)"
+      3pl: "they will burn"
     governance:
       frames:
         - prep: et
@@ -45,6 +70,11 @@ entries:
       sg_f: שרפי
       pl_m: שרפו
       pl_f: שרפו
+    imperative_en:
+      sg_m: "burn! (m)"
+      sg_f: "burn! (f)"
+      pl_m: "burn! (m pl)"
+      pl_f: "burn! (f pl)"
   - lemma: להתעורר
     gloss: to wake up
     primary_prep: none
@@ -53,6 +83,11 @@ entries:
       f_sg: מתעוררת..
       m_pl: מתעוררים
       f_pl: מתעוררות
+    present_en:
+      m_sg: "he wakes up"
+      f_sg: "she wakes up"
+      m_pl: "they wake up (m)"
+      f_pl: "they wake up (f)"
     past:
       1sg: התעוררתי
       2sg_m: התעוררת
@@ -63,6 +98,16 @@ entries:
       2pl_m: התעוררתם
       2pl_f: התעוררתן
       3pl: התעוררו
+    past_en:
+      1sg: "I woke up"
+      2sg_m: "you woke up (m)"
+      2sg_f: "you woke up (f)"
+      3sg_m: "he woke up"
+      3sg_f: "she woke up"
+      1pl: "we woke up"
+      2pl_m: "you woke up (m pl)"
+      2pl_f: "you woke up (f pl)"
+      3pl: "they woke up"
     future:
       1sg: אתעורר
       2sg_m: תתעורר
@@ -73,11 +118,26 @@ entries:
       2pl_m: תתעוררו
       2pl_f: תתעוררו
       3pl: יתעוררו
+    future_en:
+      1sg: "I will wake up"
+      2sg_m: "you will wake up (m)"
+      2sg_f: "you will wake up (f)"
+      3sg_m: "he will wake up"
+      3sg_f: "she will wake up"
+      1pl: "we will wake up"
+      2pl_m: "you will wake up (m pl)"
+      2pl_f: "you will wake up (f pl)"
+      3pl: "they will wake up"
     imperative:
       sg_m: התעורר
       sg_f: התעוררי
       pl_m: התעוררו
       pl_f: התעוררו
+    imperative_en:
+      sg_m: "wake up! (m)"
+      sg_f: "wake up! (f)"
+      pl_m: "wake up! (m pl)"
+      pl_f: "wake up! (f pl)"
     governance:
       frames:
         - prep: none
@@ -98,6 +158,11 @@ entries:
       f_sg: סומכת
       m_pl: סומכים
       f_pl: סומכות
+    present_en:
+      m_sg: "he relies"
+      f_sg: "she relies"
+      m_pl: "they rely (m)"
+      f_pl: "they rely (f)"
     past:
       1sg: סמכתי
       2sg_m: סמכת
@@ -108,6 +173,16 @@ entries:
       2pl_m: סמכתם
       2pl_f: סמכתן
       3pl: סמכו
+    past_en:
+      1sg: "I relied"
+      2sg_m: "you relied (m)"
+      2sg_f: "you relied (f)"
+      3sg_m: "he relied"
+      3sg_f: "she relied"
+      1pl: "we relied"
+      2pl_m: "you relied (m pl)"
+      2pl_f: "you relied (f pl)"
+      3pl: "they relied"
     future:
       1sg: אסמוך
       2sg_m: תסמוך
@@ -118,11 +193,26 @@ entries:
       2pl_m: תסמכו
       2pl_f: תסמכו
       3pl: יסמכו
+    future_en:
+      1sg: "I will rely"
+      2sg_m: "you will rely (m)"
+      2sg_f: "you will rely (f)"
+      3sg_m: "he will rely"
+      3sg_f: "she will rely"
+      1pl: "we will rely"
+      2pl_m: "you will rely (m pl)"
+      2pl_f: "you will rely (f pl)"
+      3pl: "they will rely"
     imperative:
       sg_m: סמוך
       sg_f: סמכי
       pl_m: סמכו
       pl_f: סמכו
+    imperative_en:
+      sg_m: "rely! (m)"
+      sg_f: "rely! (f)"
+      pl_m: "rely! (m pl)"
+      pl_f: "rely! (f pl)"
     governance:
       frames:
         - prep: al
@@ -143,6 +233,11 @@ entries:
       f_sg: נפגשת
       m_pl: נפגשים
       f_pl: נפגשות
+    present_en:
+      m_sg: "he meets"
+      f_sg: "she meets"
+      m_pl: "they meet (m)"
+      f_pl: "they meet (f)"
     past:
       1sg: נפגשתי
       2sg_m: נפגשת
@@ -153,6 +248,16 @@ entries:
       2pl_m: נפגשתם
       2pl_f: נפגשתן
       3pl: נפגשו
+    past_en:
+      1sg: "I met"
+      2sg_m: "you met (m)"
+      2sg_f: "you met (f)"
+      3sg_m: "he met"
+      3sg_f: "she met"
+      1pl: "we met"
+      2pl_m: "you met (m pl)"
+      2pl_f: "you met (f pl)"
+      3pl: "they met"
     future:
       1sg: אפגש
       2sg_m: תפגש
@@ -163,11 +268,26 @@ entries:
       2pl_m: תפגשו
       2pl_f: תפגשו
       3pl: יפגשו
+    future_en:
+      1sg: "I will meet"
+      2sg_m: "you will meet (m)"
+      2sg_f: "you will meet (f)"
+      3sg_m: "he will meet"
+      3sg_f: "she will meet"
+      1pl: "we will meet"
+      2pl_m: "you will meet (m pl)"
+      2pl_f: "you will meet (f pl)"
+      3pl: "they will meet"
     imperative:
       sg_m: היפגש
       sg_f: היפגשי
       pl_m: היפגשו
       pl_f: היפגשו
+    imperative_en:
+      sg_m: "meet! (m)"
+      sg_f: "meet! (f)"
+      pl_m: "meet! (m pl)"
+      pl_f: "meet! (f pl)"
     governance:
       frames:
         - prep: im
@@ -188,6 +308,11 @@ entries:
       f_sg: מחכה
       m_pl: מחכים
       f_pl: מחכות
+    present_en:
+      m_sg: "he waits"
+      f_sg: "she waits"
+      m_pl: "they wait (m)"
+      f_pl: "they wait (f)"
     past:
       1sg: חיכיתי
       2sg_m: חיכית
@@ -198,6 +323,16 @@ entries:
       2pl_m: חיכיתם
       2pl_f: חיכיתן
       3pl: חיכו
+    past_en:
+      1sg: "I waited"
+      2sg_m: "you waited (m)"
+      2sg_f: "you waited (f)"
+      3sg_m: "he waited"
+      3sg_f: "she waited"
+      1pl: "we waited"
+      2pl_m: "you waited (m pl)"
+      2pl_f: "you waited (f pl)"
+      3pl: "they waited"
     future:
       1sg: אחכה
       2sg_m: תחכה
@@ -208,11 +343,26 @@ entries:
       2pl_m: תחכו
       2pl_f: תחכו
       3pl: יחכו
+    future_en:
+      1sg: "I will wait"
+      2sg_m: "you will wait (m)"
+      2sg_f: "you will wait (f)"
+      3sg_m: "he will wait"
+      3sg_f: "she will wait"
+      1pl: "we will wait"
+      2pl_m: "you will wait (m pl)"
+      2pl_f: "you will wait (f pl)"
+      3pl: "they will wait"
     imperative:
       sg_m: חכה
       sg_f: חכי
       pl_m: חכו
       pl_f: חכו
+    imperative_en:
+      sg_m: "wait! (m)"
+      sg_f: "wait! (f)"
+      pl_m: "wait! (m pl)"
+      pl_f: "wait! (f pl)"
     governance:
       frames:
         - prep: l
@@ -237,6 +387,11 @@ entries:
       f_sg: נזהרת
       m_pl: נזהרים
       f_pl: נזהרות
+    present_en:
+      m_sg: "he is careful"
+      f_sg: "she is careful"
+      m_pl: "they are careful (m)"
+      f_pl: "they are careful (f)"
     past:
       1sg: נזהרתי
       2sg_m: נזהרת
@@ -247,6 +402,16 @@ entries:
       2pl_m: נזהרתם
       2pl_f: נזהרתן
       3pl: נזהרו
+    past_en:
+      1sg: "I was careful"
+      2sg_m: "you were careful (m)"
+      2sg_f: "you were careful (f)"
+      3sg_m: "he was careful"
+      3sg_f: "she was careful"
+      1pl: "we were careful"
+      2pl_m: "you were careful (m pl)"
+      2pl_f: "you were careful (f pl)"
+      3pl: "they were careful"
     future:
       1sg: אזהר
       2sg_m: תזהר
@@ -257,11 +422,26 @@ entries:
       2pl_m: תזהרו
       2pl_f: תזהרו
       3pl: יזהרו
+    future_en:
+      1sg: "I will be careful"
+      2sg_m: "you will be careful (m)"
+      2sg_f: "you will be careful (f)"
+      3sg_m: "he will be careful"
+      3sg_f: "she will be careful"
+      1pl: "we will be careful"
+      2pl_m: "you will be careful (m pl)"
+      2pl_f: "you will be careful (f pl)"
+      3pl: "they will be careful"
     imperative:
       sg_m: היזהר
       sg_f: היזהרי
       pl_m: היזהרו
       pl_f: היזהרו
+    imperative_en:
+      sg_m: "be careful! (m)"
+      sg_f: "be careful! (f)"
+      pl_m: "be careful! (m pl)"
+      pl_f: "be careful! (f pl)"
     governance:
       frames:
         - prep: min
@@ -282,6 +462,11 @@ entries:
       f_sg: לוקחת
       m_pl: לוקחים
       f_pl: לוקחות
+    present_en:
+      m_sg: "he takes"
+      f_sg: "she takes"
+      m_pl: "they take (m)"
+      f_pl: "they take (f)"
     past:
       1sg: לקחתי
       2sg_m: לקחת
@@ -292,6 +477,16 @@ entries:
       2pl_m: לקחתם
       2pl_f: לקחתן
       3pl: לקחו
+    past_en:
+      1sg: "I took"
+      2sg_m: "you took (m)"
+      2sg_f: "you took (f)"
+      3sg_m: "he took"
+      3sg_f: "she took"
+      1pl: "we took"
+      2pl_m: "you took (m pl)"
+      2pl_f: "you took (f pl)"
+      3pl: "they took"
     future:
       1sg: אקח
       2sg_m: תיקח
@@ -302,11 +497,26 @@ entries:
       2pl_m: תיקחו
       2pl_f: תיקחו
       3pl: ייקחו
+    future_en:
+      1sg: "I will take"
+      2sg_m: "you will take (m)"
+      2sg_f: "you will take (f)"
+      3sg_m: "he will take"
+      3sg_f: "she will take"
+      1pl: "we will take"
+      2pl_m: "you will take (m pl)"
+      2pl_f: "you will take (f pl)"
+      3pl: "they will take"
     imperative:
       sg_m: קח
       sg_f: קחי
       pl_m: קחו
       pl_f: קחו
+    imperative_en:
+      sg_m: "take! (m)"
+      sg_f: "take! (f)"
+      pl_m: "take! (m pl)"
+      pl_f: "take! (f pl)"
     governance:
       frames:
         - prep: et
@@ -327,6 +537,11 @@ entries:
       f_sg: לוחצת
       m_pl: לוחצים
       f_pl: לוחצות
+    present_en:
+      m_sg: "he presses"
+      f_sg: "she presses"
+      m_pl: "they press (m)"
+      f_pl: "they press (f)"
     past:
       1sg: לחצתי
       2sg_m: לחצת
@@ -337,6 +552,16 @@ entries:
       2pl_m: לחצתם
       2pl_f: לחצתן
       3pl: לחצו
+    past_en:
+      1sg: "I pressed"
+      2sg_m: "you pressed (m)"
+      2sg_f: "you pressed (f)"
+      3sg_m: "he pressed"
+      3sg_f: "she pressed"
+      1pl: "we pressed"
+      2pl_m: "you pressed (m pl)"
+      2pl_f: "you pressed (f pl)"
+      3pl: "they pressed"
     future:
       1sg: אלחץ
       2sg_m: תלחץ
@@ -347,11 +572,26 @@ entries:
       2pl_m: תלחצו
       2pl_f: תלחצו
       3pl: ילחצו
+    future_en:
+      1sg: "I will press"
+      2sg_m: "you will press (m)"
+      2sg_f: "you will press (f)"
+      3sg_m: "he will press"
+      3sg_f: "she will press"
+      1pl: "we will press"
+      2pl_m: "you will press (m pl)"
+      2pl_f: "you will press (f pl)"
+      3pl: "they will press"
     imperative:
       sg_m: לחץ
       sg_f: לחצי
       pl_m: לחצו
       pl_f: לחצו
+    imperative_en:
+      sg_m: "press! (m)"
+      sg_f: "press! (f)"
+      pl_m: "press! (m pl)"
+      pl_f: "press! (f pl)"
     governance:
       frames:
         - prep: al

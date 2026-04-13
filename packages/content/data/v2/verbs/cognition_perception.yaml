@@ -8,6 +8,11 @@ entries:
       f_sg: מתכוננת
       m_pl: מתכוננים
       f_pl: מתכוננות
+    present_en:
+      m_sg: "he gets ready"
+      f_sg: "she gets ready"
+      m_pl: "they get ready (m)"
+      f_pl: "they get ready (f)"
     past:
       1sg: התכוננתי
       2sg_m: התכוננת
@@ -18,6 +23,16 @@ entries:
       2pl_m: התכוננתם
       2pl_f: התכוננתן
       3pl: התכוננו
+    past_en:
+      1sg: "I got ready"
+      2sg_m: "you got ready (m)"
+      2sg_f: "you got ready (f)"
+      3sg_m: "he got ready"
+      3sg_f: "she got ready"
+      1pl: "we got ready"
+      2pl_m: "you got ready (m pl)"
+      2pl_f: "you got ready (f pl)"
+      3pl: "they got ready"
     future:
       1sg: אתכונן
       2sg_m: תתכונן
@@ -28,11 +43,26 @@ entries:
       2pl_m: תתכוננו
       2pl_f: תתכוננו
       3pl: יתכוננו
+    future_en:
+      1sg: "I will get ready"
+      2sg_m: "you will get ready (m)"
+      2sg_f: "you will get ready (f)"
+      3sg_m: "he will get ready"
+      3sg_f: "she will get ready"
+      1pl: "we will get ready"
+      2pl_m: "you will get ready (m pl)"
+      2pl_f: "you will get ready (f pl)"
+      3pl: "they will get ready"
     imperative:
       sg_m: התכונן
       sg_f: התכונני
       pl_m: התכוננו
       pl_f: התכוננו
+    imperative_en:
+      sg_m: "get ready! (m)"
+      sg_f: "get ready! (f)"
+      pl_m: "get ready! (m pl)"
+      pl_f: "get ready! (f pl)"
     governance:
       frames:
         - prep: l
@@ -53,6 +83,11 @@ entries:
       f_sg: שוכחת
       m_pl: שוכחים
       f_pl: שוכחות
+    present_en:
+      m_sg: "he forgets"
+      f_sg: "she forgets"
+      m_pl: "they forget (m)"
+      f_pl: "they forget (f)"
     past:
       1sg: שכחתי
       2sg_m: שכחת
@@ -63,6 +98,16 @@ entries:
       2pl_m: שכחתם
       2pl_f: שכחתן
       3pl: שכחו
+    past_en:
+      1sg: "I forgot"
+      2sg_m: "you forgot (m)"
+      2sg_f: "you forgot (f)"
+      3sg_m: "he forgot"
+      3sg_f: "she forgot"
+      1pl: "we forgot"
+      2pl_m: "you forgot (m pl)"
+      2pl_f: "you forgot (f pl)"
+      3pl: "they forgot"
     future:
       1sg: אשכח
       2sg_m: תשכח
@@ -73,11 +118,26 @@ entries:
       2pl_m: תשכחו
       2pl_f: תשכחו
       3pl: ישכחו
+    future_en:
+      1sg: "I will forget"
+      2sg_m: "you will forget (m)"
+      2sg_f: "you will forget (f)"
+      3sg_m: "he will forget"
+      3sg_f: "she will forget"
+      1pl: "we will forget"
+      2pl_m: "you will forget (m pl)"
+      2pl_f: "you will forget (f pl)"
+      3pl: "they will forget"
     imperative:
       sg_m: שכח
       sg_f: שכחי
       pl_m: שכחו
       pl_f: שכחו
+    imperative_en:
+      sg_m: "forget! (m)"
+      sg_f: "forget! (f)"
+      pl_m: "forget! (m pl)"
+      pl_f: "forget! (f pl)"
     governance:
       frames:
         - prep: et
@@ -98,6 +158,11 @@ entries:
       f_sg: רואה
       m_pl: רואים
       f_pl: רואות
+    present_en:
+      m_sg: "he sees"
+      f_sg: "she sees"
+      m_pl: "they see (m)"
+      f_pl: "they see (f)"
     past:
       1sg: ראיתי
       2sg_m: ראית
@@ -108,6 +173,16 @@ entries:
       2pl_m: ראיתם
       2pl_f: ראיתן
       3pl: ראו
+    past_en:
+      1sg: "I saw"
+      2sg_m: "you saw (m)"
+      2sg_f: "you saw (f)"
+      3sg_m: "he saw"
+      3sg_f: "she saw"
+      1pl: "we saw"
+      2pl_m: "you saw (m pl)"
+      2pl_f: "you saw (f pl)"
+      3pl: "they saw"
     future:
       1sg: אראה
       2sg_m: תראה
@@ -118,11 +193,26 @@ entries:
       2pl_m: תראו
       2pl_f: תראו
       3pl: יראו
+    future_en:
+      1sg: "I will see"
+      2sg_m: "you will see (m)"
+      2sg_f: "you will see (f)"
+      3sg_m: "he will see"
+      3sg_f: "she will see"
+      1pl: "we will see"
+      2pl_m: "you will see (m pl)"
+      2pl_f: "you will see (f pl)"
+      3pl: "they will see"
     imperative:
       sg_m: ראה
       sg_f: ראי
       pl_m: ראו
       pl_f: ראו
+    imperative_en:
+      sg_m: "see! (m)"
+      sg_f: "see! (f)"
+      pl_m: "see! (m pl)"
+      pl_f: "see! (f pl)"
     governance:
       frames:
         - prep: et
@@ -145,6 +235,11 @@ entries:
       f_sg: קוראת
       m_pl: קוראים
       f_pl: קוראות
+    present_en:
+      m_sg: "he reads"
+      f_sg: "she reads"
+      m_pl: "they read (m)"
+      f_pl: "they read (f)"
     past:
       1sg: קראתי
       3sg_m: קרא
@@ -155,6 +250,16 @@ entries:
       2sg_f: קראת
       2pl_m: קראתם
       2pl_f: קראתן
+    past_en:
+      1sg: "I read"
+      3sg_m: "he read"
+      3sg_f: "she read"
+      1pl: "we read"
+      3pl: "they read"
+      2sg_m: "you read (m)"
+      2sg_f: "you read (f)"
+      2pl_m: "you read (m pl)"
+      2pl_f: "you read (f pl)"
     future:
       1sg: אקרא
       2sg_m: תקרא
@@ -165,6 +270,16 @@ entries:
       3pl: יקראו
       3sg_f: תקרא
       2pl_f: תקראו
+    future_en:
+      1sg: "I will read"
+      2sg_m: "you will read (m)"
+      2sg_f: "you will read (f)"
+      3sg_m: "he will read"
+      1pl: "we will read"
+      2pl_m: "you will read (m pl)"
+      3pl: "they will read"
+      3sg_f: "she will read"
+      2pl_f: "you will read (f pl)"
     governance:
       frames:
         - prep: et
@@ -186,6 +301,11 @@ entries:
       sg_f: קראי
       pl_m: קראו
       pl_f: קראו
+    imperative_en:
+      sg_m: "read! (m)"
+      sg_f: "read! (f)"
+      pl_m: "read! (m pl)"
+      pl_f: "read! (f pl)"
   - lemma: לשמוע
     gloss: to hear
     primary_prep: et
@@ -194,6 +314,11 @@ entries:
       f_sg: שומעת
       m_pl: שומעים
       f_pl: שומעות
+    present_en:
+      m_sg: "he hears"
+      f_sg: "she hears"
+      m_pl: "they hear (m)"
+      f_pl: "they hear (f)"
     past:
       1sg: שמעתי
       3sg_m: שמע
@@ -204,6 +329,16 @@ entries:
       2sg_f: שמעת
       2pl_m: שמעתם
       2pl_f: שמעתן
+    past_en:
+      1sg: "I heard"
+      3sg_m: "he heard"
+      3sg_f: "she heard"
+      1pl: "we heard"
+      3pl: "they heard"
+      2sg_m: "you heard (m)"
+      2sg_f: "you heard (f)"
+      2pl_m: "you heard (m pl)"
+      2pl_f: "you heard (f pl)"
     future:
       1sg: אשמע
       2sg_m: תשמע
@@ -214,11 +349,26 @@ entries:
       3pl: ישמעו
       3sg_f: תשמע
       2pl_f: תשמעו
+    future_en:
+      1sg: "I will hear"
+      2sg_m: "you will hear (m)"
+      2sg_f: "you will hear (f)"
+      3sg_m: "he will hear"
+      1pl: "we will hear"
+      2pl_m: "you will hear (m pl)"
+      3pl: "they will hear"
+      3sg_f: "she will hear"
+      2pl_f: "you will hear (f pl)"
     imperative:
       sg_m: שמע
       sg_f: שמעי
       pl_m: שמעו
       pl_f: שמעו
+    imperative_en:
+      sg_m: "hear! (m)"
+      sg_f: "hear! (f)"
+      pl_m: "hear! (m pl)"
+      pl_f: "hear! (f pl)"
     governance:
       frames:
         - prep: et

@@ -134,6 +134,24 @@ export function SettingsPanel() {
 
         <div class={styles.divider} />
 
+        {/* Dev-only: show stroke sample counts to verify DB hydrate */}
+        {typeof window !== 'undefined' && /(?:^|[?&])dev=1(?:&|$)/.test(window.location.search) && (
+          <div>
+            <div class={styles.label}>Dev: Stroke samples loaded</div>
+            <div class={styles.hint}>
+              {(() => {
+                const sdb = strokeSamples.value as any as Record<string, any[]>;
+                let total = 0;
+                for (const k of Object.keys(sdb)) total += (sdb[k] || []).length;
+                const y = (sdb['י'] || []).length || 0;
+                const v = (sdb['ו'] || []).length || 0;
+                const n = (sdb['ן'] || []).length || 0;
+                return `total=${total}  ·  י=${y}  ו=${v}  ן=${n}`;
+              })()}
+            </div>
+          </div>
+        )}
+
         <div>
           <div class={styles.label}>Export debug bundle</div>
           <div class={styles.hint}>Calibration, progress, and saved stroke samples for this device</div>

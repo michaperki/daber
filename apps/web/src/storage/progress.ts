@@ -13,7 +13,6 @@ export type ProgressV1 = {
   prefs: {
     sound_enabled: boolean;
     haptics_enabled: boolean;
-    cell_selector_enabled?: boolean;
   };
   practice_stats: { correct: number; total: number };
   vocab_stats: { correct_letters: number; total_letters: number; words_completed: number };
@@ -33,7 +32,7 @@ export function nowIso() {
 export function emptyProgress(): ProgressV1 {
   return {
     version: 1,
-    prefs: { sound_enabled: true, haptics_enabled: true, cell_selector_enabled: false },
+    prefs: { sound_enabled: true, haptics_enabled: true },
     practice_stats: { correct: 0, total: 0 },
     vocab_stats: { correct_letters: 0, total_letters: 0, words_completed: 0 },
     seen_words: {},
@@ -67,7 +66,6 @@ export function loadProgress(): ProgressV1 {
       parsed.prefs = {
         sound_enabled: typeof p.sound_enabled === 'boolean' ? p.sound_enabled : true,
         haptics_enabled: typeof p.haptics_enabled === 'boolean' ? p.haptics_enabled : true,
-        cell_selector_enabled: typeof p.cell_selector_enabled === 'boolean' ? p.cell_selector_enabled : false,
       };
       if (!parsed.cells) parsed.cells = {};
       return parsed as ProgressV1;

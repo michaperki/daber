@@ -41,46 +41,7 @@ function pickWeighted<T>(items: { item: T; weight: number }[]): T | null {
 
 export function randomVocabEntry(): VocabEntry | null {
   if (!vocab.length) return null;
-  if (progress.value.prefs?.cell_selector_enabled) {
-    return randomVocabEntryByCell();
-  }
-  // Only surface entries with at least 3 Hebrew characters (excluding spaces)
-  const eligible = vocab.filter((v) => v.he.replace(/\s/g, '').length >= 3);
-  if (!eligible.length) return null;
-
-  const seenMap = progress.value.seen_words || {};
-  const unseen: VocabEntry[] = [];
-  const struggling: { item: VocabEntry; weight: number }[] = [];
-  for (const e of eligible) {
-    const stats = (seenMap as any)[e.he];
-    if (!stats) {
-      unseen.push(e);
-      continue;
-    }
-    const attempted = Number(stats.attempted) || 0;
-    const clean = Number(stats.clean) || 0;
-    if (attempted <= 0) {
-      // Consider not enough data → treat as unseen
-      unseen.push(e);
-      continue;
-    }
-    const cleanRate = clean / attempted;
-    const w = Math.max(0, 1 - cleanRate); // more weight for lower clean rate
-    if (w > 0) struggling.push({ item: e, weight: w });
-  }
-
-  // Split sampling: 60% struggling, 40% unseen. Fallbacks if a bucket is empty.
-  const preferStruggling = Math.random() < 0.6;
-  if (preferStruggling) {
-    if (struggling.length) return pickWeighted(struggling);
-    if (unseen.length) return unseen[Math.floor(Math.random() * unseen.length)];
-  } else {
-    if (unseen.length) return unseen[Math.floor(Math.random() * unseen.length)];
-    if (struggling.length) return pickWeighted(struggling);
-  }
-
-  // If both buckets somehow empty, fall back to uniform from eligible
-  return eligible[Math.floor(Math.random() * eligible.length)];
+  return randomVocabEntryByCell();
 }
 
 function randomVocabEntryByCell(): VocabEntry | null {

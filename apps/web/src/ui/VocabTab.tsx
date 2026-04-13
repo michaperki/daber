@@ -407,7 +407,6 @@ export function VocabTab() {
       </div>
       <div class={study.canvasWrap}>
         <DrawCanvas key={canvasKey} ref={canvasRef} onStrokeComplete={onStroke} onPenDown={onPenDown} />
-        <button class={study.clearIcon} onClick={() => canvasRef.current?.clear()} title="Clear">×</button>
       </div>
       <div class={study.controlsRow}>
         <button class={study.secondaryBtn} onClick={onIdk} title="Reveal the word and advance">I don’t know</button>

@@ -1,21 +1,14 @@
 import { useEffect } from 'preact/hooks';
 import styles from './app.module.css';
-import { activeTab, rightRailOpen, settingsOpen, syncStatus, progress, type TabId } from './state/signals';
-import { updatePrefs } from './storage/mutations';
+import { activeTab, rightRailOpen, settingsOpen, syncStatus, type TabId } from './state/signals';
 import { CalibrateTab } from './ui/CalibrateTab';
-import { RecognizeTab } from './ui/RecognizeTab';
-import { PracticeTab } from './ui/PracticeTab';
 import { VocabTab } from './ui/VocabTab';
-import { BenchTab } from './ui/BenchTab';
 import { RightRail } from './ui/RightRail';
 import { SettingsPanel } from './ui/SettingsPanel';
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'calibrate', label: 'Calibrate' },
-  { id: 'recognize', label: 'Recognize' },
-  { id: 'practice', label: 'Practice' },
   { id: 'vocab', label: 'Vocab' },
-  { id: 'bench', label: 'Bench' },
 ];
 
 function SyncDot() {
@@ -37,7 +30,7 @@ function SyncDot() {
 
 function useWakeLock(tab: TabId) {
   useEffect(() => {
-    if (tab !== 'practice' && tab !== 'vocab') return;
+    if (tab !== 'vocab') return;
     if (!navigator.wakeLock) return;
     let sentinel: WakeLockSentinel | null = null;
     let cancelled = false;
@@ -88,19 +81,6 @@ export function App() {
         </nav>
 
         <div class={styles.topBarActions}>
-          <select
-            class={styles.modeSelect}
-            value={progress.value.prefs.mode}
-            onChange={(e) => updatePrefs({ mode: (e.target as HTMLSelectElement).value as any })}
-            title="Recognition mode"
-            aria-label="Recognition mode"
-          >
-            <option value="knn">KNN</option>
-            <option value="centroid">Centroid</option>
-            <option value="hybrid">Hybrid</option>
-            <option value="cnn">CNN</option>
-            <option value="stroke">Stroke</option>
-          </select>
           <button
             class={styles.railToggle}
             onClick={() => { rightRailOpen.value = !drawerOpen; }}
@@ -124,10 +104,7 @@ export function App() {
       <main class={styles.main}>
         <section class={styles.left}>
           {tab === 'calibrate' && <CalibrateTab />}
-          {tab === 'recognize' && <RecognizeTab />}
-          {tab === 'practice' && <PracticeTab />}
           {tab === 'vocab' && <VocabTab />}
-          {tab === 'bench' && <BenchTab />}
         </section>
         <section class={styles.right}>
           <RightRail />

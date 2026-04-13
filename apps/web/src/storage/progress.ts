@@ -23,7 +23,7 @@ export function nowIso() {
 export function emptyProgress(): ProgressV1 {
   return {
     version: 1,
-    prefs: { mode: 'knn', k: 5, augment: true, samples_per_letter: 5, practice_threshold: 0.5, pilot_wizard_done: false },
+    prefs: { mode: 'stroke', k: 5, augment: true, samples_per_letter: 5, practice_threshold: 0.5, pilot_wizard_done: false },
     practice_stats: { correct: 0, total: 0 },
     vocab_stats: { correct_letters: 0, total_letters: 0, words_completed: 0 },
     seen_words: {},

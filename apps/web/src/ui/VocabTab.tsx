@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
-import { predictTop, topMargin } from '../recognizer';
-import { predictByStroke, fuseHybridWithStroke } from '../recognizer/stroke';
+import { topMargin } from '../recognizer';
+import { predictByStroke } from '../recognizer/stroke';
 import type { LetterGlyph } from '../recognizer/types';
 import type { Stroke } from '../recognizer/types';
 import { baseToFinal, isFinalForm, toBaseForm } from '../recognizer/final-forms';
-import { calibration, progress } from '../state/signals';
+import { progress } from '../state/signals';
 import { strokeSamples } from '../state/strokes';
-import { toPrototypes } from '../storage/calibration';
 import {
   addCalibrationSample,
   bumpVocabLetter,
@@ -77,9 +76,7 @@ export function VocabTab() {
   const [lastReject, setLastReject] = useState<Float32Array | null>(null);
   const busyRef = useRef(false);
 
-  const cal = calibration.value;
   const prefs = progress.value.prefs;
-  const prototypes = useMemo(() => toPrototypes(cal), [cal]);
 
   function pickNext() {
     setFeedback({ kind: 'idle', text: '' });
@@ -106,33 +103,8 @@ export function VocabTab() {
     for (let i = 0; i < vec.length; i++) sum += vec[i];
     if (sum < 1e-3) return;
 
-    let top;
-    if (prefs.mode === 'stroke' && strokes && strokes.length) {
-      top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
-    } else if (prefs.mode === 'hybrid') {
-      const base = predictTop(vec, {
-        mode: 'hybrid',
-        augment: prefs.augment,
-        prototypes,
-        topN: 10,
-        expectedLetter: expected as LetterGlyph,
-      });
-      if (strokes && strokes.length) {
-        const stroke = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
-        top = fuseHybridWithStroke(base.map(b => ({ letter: b.letter, raw: b.raw } as any)), stroke, strokeSamples.value as any);
-      } else {
-        top = base;
-      }
-    } else {
-      top = predictTop(vec, {
-        mode: prefs.mode,
-        k: prefs.k,
-        augment: prefs.augment,
-        prototypes,
-        topN: 10,
-        expectedLetter: expected as LetterGlyph,
-      });
-    }
+    if (!strokes || strokes.length === 0) return;
+    const top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
     if (!top.length) return;
     const top1 = top[0];
     const margin = topMargin(top);
@@ -147,6 +119,10 @@ export function VocabTab() {
       // Auto-calibrate: store the sample under the canonical (drawn) glyph
       // so the model learns user-specific final-form variants.
       addCalibrationSample(top1.letter, vec);
+      // Also capture raw strokes to server for continued training (best-effort)
+      if (strokes && strokes.length) {
+        import('../storage/strokes').then(m => m.captureStroke(top1.letter, strokes).catch(() => {}));
+      }
       setLastReject(null);
       const nextPos = state.pos + 1;
       const newOutput = state.output + display;
@@ -208,6 +184,12 @@ export function VocabTab() {
       (atEnd ? display : toBaseForm(expected as LetterGlyph)) as LetterGlyph,
       lastReject,
     );
+    // Also capture last stroke if present
+    const s = canvasRef.current?.getStrokes?.();
+    if (s && s.length) {
+      const letter = (atEnd ? display : toBaseForm(expected as LetterGlyph)) as LetterGlyph;
+      import('../storage/strokes').then(m => m.captureStroke(letter, s).catch(() => {}));
+    }
     bumpVocabLetter(true);
     setLastReject(null);
     const nextPos = state.pos + 1;

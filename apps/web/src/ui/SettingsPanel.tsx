@@ -4,6 +4,7 @@ import { setDeviceId } from '../storage/device';
 import { emptyCalibration } from '../storage/calibration';
 import { emptyProgress } from '../storage/progress';
 import { getCalibration, getProgress, putCalibration, putProgress } from '../storage/sync';
+import { getStrokes } from '../storage/strokes_fetch';
 import { commitCalibration, commitProgress } from '../storage/mutations';
 import styles from './SettingsPanel.module.css';
 import { strokeSamples } from '../state/strokes';
@@ -128,6 +129,43 @@ export function SettingsPanel() {
           <div class={styles.hint}>
             Type this full code into another device's Settings to move your calibration and
             progress across.
+          </div>
+        </div>
+
+        <div class={styles.divider} />
+
+        <div>
+          <div class={styles.label}>Export debug bundle</div>
+          <div class={styles.hint}>Calibration, progress, and saved stroke samples for this device</div>
+          <div class={styles.row}>
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  const did = deviceId.value;
+                  const strokes = await getStrokes(did);
+                  const payload = {
+                    version: 1,
+                    device_id: did,
+                    exported_at: new Date().toISOString(),
+                    calibration: calibration.value,
+                    progress: progress.value,
+                    strokes: strokes ?? { version: 1, samples: {} },
+                  };
+                  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'daber_debug_bundle.json';
+                  a.click();
+                  URL.revokeObjectURL(url);
+                } catch {
+                  alert('Export failed — still offline?');
+                }
+              }}
+            >
+              Export JSON
+            </button>
           </div>
         </div>
 

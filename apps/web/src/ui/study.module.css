@@ -12,14 +12,16 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 14px;
   margin: 6px 0 12px;
   direction: rtl;
 }
 
-.spacer {
-  width: 18px; /* visual gap between words */
-  height: 44px; /* match tile height to keep row height consistent */
+.wordGroup {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  direction: rtl;
 }
 
 .tile {

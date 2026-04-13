@@ -353,23 +353,48 @@ export function VocabTab() {
       <div class={study.topWord}>
         {state.current ? <span>{state.current.en}</span> : '—'}
       </div>
-      {/* Tiles: one per Hebrew letter, skip spaces */}
+      {/* Tiles grouped by word: preserve i and idx numbering across full phrase */}
       <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>
         {(() => {
           const he = state.current?.he || '';
           const chars = he.split('');
           const accepted = state.output.replace(/\s/g, '').length;
           const revealAll = !!state.revealed;
-          let idx = 0; // index over non-space letters
-          return chars.map((ch, i) => {
-            if (ch === ' ') return <div key={`sp-${i}`} class={study.spacer} aria-hidden="true" />;
+          let idx = 0; // index over non-space letters across the full phrase
+
+          // First pass: compute render info per character, preserving i and idx semantics
+          type Info =
+            | { kind: 'space'; i: number }
+            | { kind: 'letter'; i: number; ch: string; filled: boolean; show: boolean };
+          const info: Info[] = chars.map((ch, i) => {
+            if (ch === ' ') return { kind: 'space', i } as const;
             const filled = accepted > idx;
             const show = revealAll || filled || !!state.hints[i];
             idx++;
-            return (
-              <div key={`t-${i}`} class={`${study.tile} ${filled ? study.tileOk : ''}`}>{show ? ch : ''}</div>
-            );
+            return { kind: 'letter', i, ch, filled, show } as const;
           });
+
+          // Split into word groups on spaces
+          const groups: Info[][] = [];
+          let cur: Info[] = [];
+          for (const item of info) {
+            if (item.kind === 'space') {
+              if (cur.length) groups.push(cur);
+              cur = [];
+            } else {
+              cur.push(item);
+            }
+          }
+          if (cur.length) groups.push(cur);
+
+          // Render each word group as its own container, without spacers
+          return groups.map((group, gi) => (
+            <div key={`g-${gi}`} class={study.wordGroup}>
+              {group.map((it) => (
+                <div key={`t-${it.i}`} class={`${study.tile} ${it.filled ? study.tileOk : ''}`}>{it.show ? it.ch : ''}</div>
+              ))}
+            </div>
+          ));
         })()}
       </div>
       <div class={study.canvasWrap}>

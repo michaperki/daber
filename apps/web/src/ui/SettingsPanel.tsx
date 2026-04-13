@@ -9,6 +9,7 @@ import { commitCalibration, commitProgress } from '../storage/mutations';
 import styles from './SettingsPanel.module.css';
 import { strokeSamples } from '../state/strokes';
 import { predictByStroke } from '../recognizer/stroke';
+import { measureBounds } from '../recognizer/raster';
 import type { LetterGlyph } from '../recognizer/types';
 
 // Device handoff flow (per USER_FLOW.md):
@@ -293,6 +294,40 @@ export function SettingsPanel() {
                   }}
                 >
                   Run stroke confusion check
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      const letters: LetterGlyph[] = ['י','ו','ן'];
+                      const sdb = strokeSamples.value as any as Record<LetterGlyph, any[]>;
+                      function logAspectLocal(strokes: any[]): number {
+                        const b = measureBounds(strokes as any);
+                        if (!b) return 0;
+                        const w = Math.max(1e-3, b.width);
+                        const h = Math.max(1e-3, b.height);
+                        return Math.log(h / w);
+                      }
+                      const lines: string[] = [];
+                      for (const L of letters) {
+                        const arr = (sdb[L] || []) as any[];
+                        const vals = arr.map(a => logAspectLocal(a)).filter(v => Number.isFinite(v));
+                        if (!vals.length) { lines.push(`${L}: n=0`); continue; }
+                        const n = vals.length;
+                        const mean = vals.reduce((s,v)=>s+v,0)/n;
+                        const sd = Math.sqrt(vals.reduce((s,v)=>s+(v-mean)*(v-mean),0)/n);
+                        const min = Math.min(...vals);
+                        const max = Math.max(...vals);
+                        lines.push(`${L}: n=${n}  mean=${mean.toFixed(3)}  sd=${sd.toFixed(3)}  min=${min.toFixed(3)}  max=${max.toFixed(3)}`);
+                      }
+                      alert(lines.join('\n'));
+                    } catch (e) {
+                      alert('Aspect stats failed.');
+                    }
+                  }}
+                  style={{ marginLeft: '8px' }}
+                >
+                  Aspect stats (י/ו/ן)
                 </button>
               </div>
             </div>

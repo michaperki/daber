@@ -27,6 +27,17 @@ entries:
       2pl_f: מולכן
       3pl_m: מולם
       3pl_f: מולן
+    suffixes_en:
+      1sg: "opposite me"
+      2sg_m: "opposite you (m)"
+      2sg_f: "opposite you (f)"
+      3sg_m: "opposite him"
+      3sg_f: "opposite her"
+      1pl: "opposite us"
+      2pl_m: "opposite you (m pl)"
+      2pl_f: "opposite you (f pl)"
+      3pl_m: "opposite them (m)"
+      3pl_f: "opposite them (f)"
     examples:
       - he: הבית מול התחנה
         en: The house is opposite the station.
@@ -45,6 +56,17 @@ entries:
       2pl_f: בשבילכן
       3pl_m: בשבילם
       3pl_f: בשבילן
+    suffixes_en:
+      1sg: "for me"
+      2sg_m: "for you (m)"
+      2sg_f: "for you (f)"
+      3sg_m: "for him"
+      3sg_f: "for her"
+      1pl: "for us"
+      2pl_m: "for you (m pl)"
+      2pl_f: "for you (f pl)"
+      3pl_m: "for them (m)"
+      3pl_f: "for them (f)"
     examples:
       - he: זה בשבילך
         en: This is for you.
@@ -75,6 +97,17 @@ entries:
       2pl_f: בגללכן
       3pl_m: בגללם
       3pl_f: בגללן
+    suffixes_en:
+      1sg: "because of me"
+      2sg_m: "because of you (m)"
+      2sg_f: "because of you (f)"
+      3sg_m: "because of him"
+      3sg_f: "because of her"
+      1pl: "because of us"
+      2pl_m: "because of you (m pl)"
+      2pl_f: "because of you (f pl)"
+      3pl_m: "because of them (m)"
+      3pl_f: "because of them (f)"
     examples:
       - he: זה בגלל האהבה 😍
         en: It's because of the love 😍
@@ -109,6 +142,17 @@ entries:
       2pl_f: בלעדיכן
       3pl_m: בלעדיהם
       3pl_f: בלעדיהן
+    suffixes_en:
+      1sg: "without me"
+      2sg_m: "without you (m)"
+      2sg_f: "without you (f)"
+      3sg_m: "without him"
+      3sg_f: "without her"
+      1pl: "without us"
+      2pl_m: "without you (m pl)"
+      2pl_f: "without you (f pl)"
+      3pl_m: "without them (m)"
+      3pl_f: "without them (f)"
     examples:
       - he: אני לא יוצא בלי מפתח
         en: I don't go out without a key.
@@ -139,6 +183,17 @@ entries:
       2pl_f: מעליכן
       3pl_m: מעליהם
       3pl_f: מעליהן
+    suffixes_en:
+      1sg: "above me"
+      2sg_m: "above you (m)"
+      2sg_f: "above you (f)"
+      3sg_m: "above him"
+      3sg_f: "above her"
+      1pl: "above us"
+      2pl_m: "above you (m pl)"
+      2pl_f: "above you (f pl)"
+      3pl_m: "above them (m)"
+      3pl_f: "above them (f)"
     examples:
       - he: המנורה מעל השולחן
         en: The lamp is above the table.
@@ -169,6 +224,17 @@ entries:
       2pl_f: מתחתיכן
       3pl_m: מתחתיהם
       3pl_f: מתחתיהן
+    suffixes_en:
+      1sg: "below me"
+      2sg_m: "below you (m)"
+      2sg_f: "below you (f)"
+      3sg_m: "below him"
+      3sg_f: "below her"
+      1pl: "below us"
+      2pl_m: "below you (m pl)"
+      2pl_f: "below you (f pl)"
+      3pl_m: "below them (m)"
+      3pl_f: "below them (f)"
     examples:
       - he: הכלב מתחת לשולחן
         en: The dog is under the table.

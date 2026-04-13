@@ -13,6 +13,17 @@ entries:
       2pl_f: אחריכן
       3pl_m: אחריהם
       3pl_f: אחריהן
+    suffixes_en:
+      1sg: "after me"
+      2sg_m: "after you (m)"
+      2sg_f: "after you (f)"
+      3sg_m: "after him"
+      3sg_f: "after her"
+      1pl: "after us"
+      2pl_m: "after you (m pl)"
+      2pl_f: "after you (f pl)"
+      3pl_m: "after them (m)"
+      3pl_f: "after them (f)"
     examples:
       - he: אחרי העבודה אני נח
         en: After work I rest.
@@ -49,6 +60,17 @@ entries:
       2pl_f: שלכן
       3pl_m: שלהם
       3pl_f: שלהן
+    suffixes_en:
+      1sg: "mine"
+      2sg_m: "yours (m)"
+      2sg_f: "yours (f)"
+      3sg_m: "his"
+      3sg_f: "hers"
+      1pl: "ours"
+      2pl_m: "yours (m pl)"
+      2pl_f: "yours (f pl)"
+      3pl_m: "theirs (m)"
+      3pl_f: "theirs (f)"
     examples:
       - he: הספר של דני
         en: Danny's book
@@ -67,6 +89,17 @@ entries:
       2pl_f: עליכן
       3pl_m: עליהם
       3pl_f: עליהן
+    suffixes_en:
+      1sg: "on me"
+      2sg_m: "on you (m)"
+      2sg_f: "on you (f)"
+      3sg_m: "on him"
+      3sg_f: "on her"
+      1pl: "on us"
+      2pl_m: "on you (m pl)"
+      2pl_f: "on you (f pl)"
+      3pl_m: "on them (m)"
+      3pl_f: "on them (f)"
     examples:
       - he: הספר על השולחן
         en: The book is on the table.
@@ -103,6 +136,17 @@ entries:
       2pl_f: לכן
       3pl_m: להם
       3pl_f: להן
+    suffixes_en:
+      1sg: "to me"
+      2sg_m: "to you (m)"
+      2sg_f: "to you (f)"
+      3sg_m: "to him"
+      3sg_f: "to her"
+      1pl: "to us"
+      2pl_m: "to you (m pl)"
+      2pl_f: "to you (f pl)"
+      3pl_m: "to them (m)"
+      3pl_f: "to them (f)"
     examples:
       - he: תכתבי לי בבקשה
         en: Please write to me.
@@ -121,6 +165,17 @@ entries:
       2pl_f: בכן
       3pl_m: בהם
       3pl_f: בהן
+    suffixes_en:
+      1sg: "in me"
+      2sg_m: "in you (m)"
+      2sg_f: "in you (f)"
+      3sg_m: "in him"
+      3sg_f: "in her"
+      1pl: "in us"
+      2pl_m: "in you (m pl)"
+      2pl_f: "in you (f pl)"
+      3pl_m: "in them (m)"
+      3pl_f: "in them (f)"
     examples:
       - he: אני עובד בבית
         en: I work at home.
@@ -139,6 +194,17 @@ entries:
       2pl_f: מכן
       3pl_m: מהם
       3pl_f: מהן
+    suffixes_en:
+      1sg: "from me"
+      2sg_m: "from you (m)"
+      2sg_f: "from you (f)"
+      3sg_m: "from him"
+      3sg_f: "from her"
+      1pl: "from us"
+      2pl_m: "from you (m pl)"
+      2pl_f: "from you (f pl)"
+      3pl_m: "from them (m)"
+      3pl_f: "from them (f)"
     examples:
       - he: אני בא מהעבודה
         en: I come from work.
@@ -157,6 +223,17 @@ entries:
       2pl_f: אצלכן
       3pl_m: אצלם
       3pl_f: אצלן
+    suffixes_en:
+      1sg: "at my place"
+      2sg_m: "at your place (m)"
+      2sg_f: "at your place (f)"
+      3sg_m: "at his place"
+      3sg_f: "at her place"
+      1pl: "at our place"
+      2pl_m: "at your place (m pl)"
+      2pl_f: "at your place (f pl)"
+      3pl_m: "at their place (m)"
+      3pl_f: "at their place (f)"
     examples:
       - he: היום אנחנו אצל ההורים
         en: Today we are at the parents' place.
@@ -175,6 +252,17 @@ entries:
       2pl_f: לידכן
       3pl_m: לידם
       3pl_f: לידן
+    suffixes_en:
+      1sg: "next to me"
+      2sg_m: "next to you (m)"
+      2sg_f: "next to you (f)"
+      3sg_m: "next to him"
+      3sg_f: "next to her"
+      1pl: "next to us"
+      2pl_m: "next to you (m pl)"
+      2pl_f: "next to you (f pl)"
+      3pl_m: "next to them (m)"
+      3pl_f: "next to them (f)"
     examples:
       - he: החנות ליד הבית
         en: The shop is near the house.
@@ -201,6 +289,17 @@ entries:
       2pl_f: ביניכן
       3pl_m: ביניהם
       3pl_f: ביניהן
+    suffixes_en:
+      1sg: "between me"
+      2sg_m: "between you (m)"
+      2sg_f: "between you (f)"
+      3sg_m: "between him"
+      3sg_f: "between her"
+      1pl: "between us"
+      2pl_m: "between you (m pl)"
+      2pl_f: "between you (f pl)"
+      3pl_m: "between them (m)"
+      3pl_f: "between them (f)"
     examples:
       - he: הכדור בין הכיסאות
         en: The ball is between the chairs.
@@ -227,6 +326,17 @@ entries:
       2pl_f: בתוככן
       3pl_m: בתוכם
       3pl_f: בתוכן
+    suffixes_en:
+      1sg: "inside me"
+      2sg_m: "inside you (m)"
+      2sg_f: "inside you (f)"
+      3sg_m: "inside him"
+      3sg_f: "inside her"
+      1pl: "inside us"
+      2pl_m: "inside you (m pl)"
+      2pl_f: "inside you (f pl)"
+      3pl_m: "inside them (m)"
+      3pl_f: "inside them (f)"
     examples:
       - he: החתול בתוך הקופסה
         en: The cat is inside the box.
@@ -329,6 +439,17 @@ entries:
       2pl_f: לפניכן
       3pl_m: לפניהם
       3pl_f: לפניהן
+    suffixes_en:
+      1sg: "in front of me"
+      2sg_m: "in front of you (m)"
+      2sg_f: "in front of you (f)"
+      3sg_m: "in front of him"
+      3sg_f: "in front of her"
+      1pl: "in front of us"
+      2pl_m: "in front of you (m pl)"
+      2pl_f: "in front of you (f pl)"
+      3pl_m: "in front of them (m)"
+      3pl_f: "in front of them (f)"
     examples:
       - he: אני מגיע לפני הפגישה
         en: I arrive before the meeting.
@@ -367,6 +488,17 @@ entries:
       2pl_f: אליכן
       3pl_m: אליהם
       3pl_f: אליהן
+    suffixes_en:
+      1sg: "to me"
+      2sg_m: "to you (m)"
+      2sg_f: "to you (f)"
+      3sg_m: "to him"
+      3sg_f: "to her"
+      1pl: "to us"
+      2pl_m: "to you (m pl)"
+      2pl_f: "to you (f pl)"
+      3pl_m: "to them (m)"
+      3pl_f: "to them (f)"
     examples:
       - he: הוא הולך אל התחנה
         en: He is going to the station.
@@ -403,6 +535,17 @@ entries:
       2pl_f: איתכן
       3pl_m: איתם
       3pl_f: איתן
+    suffixes_en:
+      1sg: "with me"
+      2sg_m: "with you (m)"
+      2sg_f: "with you (f)"
+      3sg_m: "with him"
+      3sg_f: "with her"
+      1pl: "with us"
+      2pl_m: "with you (m pl)"
+      2pl_f: "with you (f pl)"
+      3pl_m: "with them (m)"
+      3pl_f: "with them (f)"
     examples:
       - he: אני בא עם חבר
         en: I am coming with a friend.

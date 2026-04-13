@@ -78,6 +78,23 @@ export function predictByStroke(
   const gw = opts.geometryWeight ?? 0.5; // penalty weight for |Δ log-aspect|
   const q = resampleStroke(strokes, N);
   const qGeom = logAspect(strokes);
+  // Compute per-class mean geometry (log-aspect) once to stabilize the
+  // geometry prior and avoid per-sample noise.
+  let classGeom: Partial<Record<LetterGlyph, number>> | null = null;
+  if (gw > 0) {
+    classGeom = {} as any;
+    for (const L of LETTERS) {
+      const arr = db[L] || [];
+      if (!arr.length) { (classGeom as any)[L] = 0; continue; }
+      let sum = 0;
+      let n = 0;
+      for (let i = 0; i < arr.length; i++) {
+        const g = logAspect(arr[i]!);
+        if (Number.isFinite(g)) { sum += g; n++; }
+      }
+      (classGeom as any)[L] = n > 0 ? (sum / n) : 0;
+    }
+  }
   const scores: { letter: LetterGlyph; score: number }[] = [];
   for (const L of LETTERS) {
     const arr = db[L] || [];
@@ -86,13 +103,15 @@ export function predictByStroke(
     const k = Math.min(5, arr.length);
     // Take up to k nearest
     const dists: number[] = [];
+    const geomPenalty = gw > 0 && classGeom ? gw * Math.abs(qGeom - ((classGeom as any)[L] ?? 0)) : 0;
     for (let i = 0; i < arr.length; i++) {
       const sample = arr[i]!;
       const f = resampleStroke(sample, N);
       const dShape = l2(q, f);
-      // Add gentle geometry penalty based on difference in log(height/width)
-      const g = Math.abs(qGeom - logAspect(sample));
-      const d = dShape + gw * g;
+      // Add class-level geometry penalty based on difference from the
+      // per-letter mean aspect. This is constant across samples for a given
+      // letter, stabilizing noisy per-sample geometry.
+      const d = dShape + geomPenalty;
       dists.push(d);
     }
     dists.sort((a, b) => a - b);

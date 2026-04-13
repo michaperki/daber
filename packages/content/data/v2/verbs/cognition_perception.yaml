@@ -8,6 +8,11 @@ entries:
       f_sg: מתכוננת
       m_pl: מתכוננים
       f_pl: מתכוננות
+    present_he:
+      m_sg: "הוא מתכונן"
+      f_sg: "היא מתכוננת"
+      m_pl: "הם מתכוננים"
+      f_pl: "הן מתכוננות"
     present_en:
       m_sg: "he gets ready"
       f_sg: "she gets ready"
@@ -23,6 +28,16 @@ entries:
       2pl_m: התכוננתם
       2pl_f: התכוננתן
       3pl: התכוננו
+    past_he:
+      1sg: "אני התכוננתי"
+      2sg_m: "אתה התכוננת"
+      2sg_f: "את התכוננת"
+      3sg_m: "הוא התכונן"
+      3sg_f: "היא התכוננה"
+      1pl: "אנחנו התכוננו"
+      2pl_m: "אתם התכוננתם"
+      2pl_f: "אתן התכוננתן"
+      3pl: "הם התכוננו"
     past_en:
       1sg: "I got ready"
       2sg_m: "you got ready (m)"
@@ -43,6 +58,16 @@ entries:
       2pl_m: תתכוננו
       2pl_f: תתכוננו
       3pl: יתכוננו
+    future_he:
+      1sg: "אני אתכונן"
+      2sg_m: "אתה תתכונן"
+      2sg_f: "את תתכונני"
+      3sg_m: "הוא יתכונן"
+      3sg_f: "היא תתכונן"
+      1pl: "אנחנו נתכונן"
+      2pl_m: "אתם תתכוננו"
+      2pl_f: "אתן תתכוננו"
+      3pl: "הם יתכוננו"
     future_en:
       1sg: "I will get ready"
       2sg_m: "you will get ready (m)"
@@ -58,6 +83,11 @@ entries:
       sg_f: התכונני
       pl_m: התכוננו
       pl_f: התכוננו
+    imperative_he:
+      sg_m: "התכונן"
+      sg_f: "התכונני"
+      pl_m: "התכוננו"
+      pl_f: "התכוננו"
     imperative_en:
       sg_m: "get ready! (m)"
       sg_f: "get ready! (f)"
@@ -83,6 +113,11 @@ entries:
       f_sg: שוכחת
       m_pl: שוכחים
       f_pl: שוכחות
+    present_he:
+      m_sg: "הוא שוכח"
+      f_sg: "היא שוכחת"
+      m_pl: "הם שוכחים"
+      f_pl: "הן שוכחות"
     present_en:
       m_sg: "he forgets"
       f_sg: "she forgets"
@@ -98,6 +133,16 @@ entries:
       2pl_m: שכחתם
       2pl_f: שכחתן
       3pl: שכחו
+    past_he:
+      1sg: "אני שכחתי"
+      2sg_m: "אתה שכחת"
+      2sg_f: "את שכחת"
+      3sg_m: "הוא שכח"
+      3sg_f: "היא שכחה"
+      1pl: "אנחנו שכחנו"
+      2pl_m: "אתם שכחתם"
+      2pl_f: "אתן שכחתן"
+      3pl: "הם שכחו"
     past_en:
       1sg: "I forgot"
       2sg_m: "you forgot (m)"
@@ -118,6 +163,16 @@ entries:
       2pl_m: תשכחו
       2pl_f: תשכחו
       3pl: ישכחו
+    future_he:
+      1sg: "אני אשכח"
+      2sg_m: "אתה תשכח"
+      2sg_f: "את תשכחי"
+      3sg_m: "הוא ישכח"
+      3sg_f: "היא תשכח"
+      1pl: "אנחנו נשכח"
+      2pl_m: "אתם תשכחו"
+      2pl_f: "אתן תשכחו"
+      3pl: "הם ישכחו"
     future_en:
       1sg: "I will forget"
       2sg_m: "you will forget (m)"
@@ -133,6 +188,11 @@ entries:
       sg_f: שכחי
       pl_m: שכחו
       pl_f: שכחו
+    imperative_he:
+      sg_m: "שכח"
+      sg_f: "שכחי"
+      pl_m: "שכחו"
+      pl_f: "שכחו"
     imperative_en:
       sg_m: "forget! (m)"
       sg_f: "forget! (f)"
@@ -158,6 +218,11 @@ entries:
       f_sg: רואה
       m_pl: רואים
       f_pl: רואות
+    present_he:
+      m_sg: "הוא רואה"
+      f_sg: "היא רואה"
+      m_pl: "הם רואים"
+      f_pl: "הן רואות"
     present_en:
       m_sg: "he sees"
       f_sg: "she sees"
@@ -173,6 +238,16 @@ entries:
       2pl_m: ראיתם
       2pl_f: ראיתן
       3pl: ראו
+    past_he:
+      1sg: "אני ראיתי"
+      2sg_m: "אתה ראית"
+      2sg_f: "את ראית"
+      3sg_m: "הוא ראה"
+      3sg_f: "היא ראתה"
+      1pl: "אנחנו ראינו"
+      2pl_m: "אתם ראיתם"
+      2pl_f: "אתן ראיתן"
+      3pl: "הם ראו"
     past_en:
       1sg: "I saw"
       2sg_m: "you saw (m)"
@@ -193,6 +268,16 @@ entries:
       2pl_m: תראו
       2pl_f: תראו
       3pl: יראו
+    future_he:
+      1sg: "אני אראה"
+      2sg_m: "אתה תראה"
+      2sg_f: "את תראי"
+      3sg_m: "הוא יראה"
+      3sg_f: "היא תראה"
+      1pl: "אנחנו נראה"
+      2pl_m: "אתם תראו"
+      2pl_f: "אתן תראו"
+      3pl: "הם יראו"
     future_en:
       1sg: "I will see"
       2sg_m: "you will see (m)"
@@ -208,6 +293,11 @@ entries:
       sg_f: ראי
       pl_m: ראו
       pl_f: ראו
+    imperative_he:
+      sg_m: "ראה"
+      sg_f: "ראי"
+      pl_m: "ראו"
+      pl_f: "ראו"
     imperative_en:
       sg_m: "see! (m)"
       sg_f: "see! (f)"
@@ -235,6 +325,11 @@ entries:
       f_sg: קוראת
       m_pl: קוראים
       f_pl: קוראות
+    present_he:
+      m_sg: "הוא קורא"
+      f_sg: "היא קוראת"
+      m_pl: "הם קוראים"
+      f_pl: "הן קוראות"
     present_en:
       m_sg: "he reads"
       f_sg: "she reads"
@@ -250,6 +345,16 @@ entries:
       2sg_f: קראת
       2pl_m: קראתם
       2pl_f: קראתן
+    past_he:
+      1sg: "אני קראתי"
+      3sg_m: "הוא קרא"
+      3sg_f: "היא קראה"
+      1pl: "אנחנו קראנו"
+      3pl: "הם קראו"
+      2sg_m: "אתה קראת"
+      2sg_f: "את קראת"
+      2pl_m: "אתם קראתם"
+      2pl_f: "אתן קראתן"
     past_en:
       1sg: "I read"
       3sg_m: "he read"
@@ -270,6 +375,16 @@ entries:
       3pl: יקראו
       3sg_f: תקרא
       2pl_f: תקראו
+    future_he:
+      1sg: "אני אקרא"
+      2sg_m: "אתה תקרא"
+      2sg_f: "את תקראי"
+      3sg_m: "הוא יקרא"
+      1pl: "אנחנו נקרא"
+      2pl_m: "אתם תקראו"
+      3pl: "הם יקראו"
+      3sg_f: "היא תקרא"
+      2pl_f: "אתן תקראו"
     future_en:
       1sg: "I will read"
       2sg_m: "you will read (m)"
@@ -301,6 +416,11 @@ entries:
       sg_f: קראי
       pl_m: קראו
       pl_f: קראו
+    imperative_he:
+      sg_m: "קרא"
+      sg_f: "קראי"
+      pl_m: "קראו"
+      pl_f: "קראו"
     imperative_en:
       sg_m: "read! (m)"
       sg_f: "read! (f)"
@@ -314,6 +434,11 @@ entries:
       f_sg: שומעת
       m_pl: שומעים
       f_pl: שומעות
+    present_he:
+      m_sg: "הוא שומע"
+      f_sg: "היא שומעת"
+      m_pl: "הם שומעים"
+      f_pl: "הן שומעות"
     present_en:
       m_sg: "he hears"
       f_sg: "she hears"
@@ -329,6 +454,16 @@ entries:
       2sg_f: שמעת
       2pl_m: שמעתם
       2pl_f: שמעתן
+    past_he:
+      1sg: "אני שמעתי"
+      3sg_m: "הוא שמע"
+      3sg_f: "היא שמעה"
+      1pl: "אנחנו שמענו"
+      3pl: "הם שמעו"
+      2sg_m: "אתה שמעת"
+      2sg_f: "את שמעת"
+      2pl_m: "אתם שמעתם"
+      2pl_f: "אתן שמעתן"
     past_en:
       1sg: "I heard"
       3sg_m: "he heard"
@@ -349,6 +484,16 @@ entries:
       3pl: ישמעו
       3sg_f: תשמע
       2pl_f: תשמעו
+    future_he:
+      1sg: "אני אשמע"
+      2sg_m: "אתה תשמע"
+      2sg_f: "את תשמעי"
+      3sg_m: "הוא ישמע"
+      1pl: "אנחנו נשמע"
+      2pl_m: "אתם תשמעו"
+      3pl: "הם ישמעו"
+      3sg_f: "היא תשמע"
+      2pl_f: "אתן תשמעו"
     future_en:
       1sg: "I will hear"
       2sg_m: "you will hear (m)"
@@ -364,6 +509,11 @@ entries:
       sg_f: שמעי
       pl_m: שמעו
       pl_f: שמעו
+    imperative_he:
+      sg_m: "שמע"
+      sg_f: "שמעי"
+      pl_m: "שמעו"
+      pl_f: "שמעו"
     imperative_en:
       sg_m: "hear! (m)"
       sg_f: "hear! (f)"

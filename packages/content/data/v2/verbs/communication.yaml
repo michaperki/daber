@@ -8,6 +8,11 @@ entries:
       f_sg: צועקת
       m_pl: צועקים
       f_pl: צועקות
+    present_he:
+      m_sg: "הוא צועק"
+      f_sg: "היא צועקת"
+      m_pl: "הם צועקים"
+      f_pl: "הן צועקות"
     present_en:
       m_sg: "he shouts"
       f_sg: "she shouts"
@@ -23,6 +28,16 @@ entries:
       2pl_m: צעקתם
       2pl_f: צעקתן
       3pl: צעקו
+    past_he:
+      1sg: "אני צעקתי"
+      2sg_m: "אתה צעקת"
+      2sg_f: "את צעקת"
+      3sg_m: "הוא צעק"
+      3sg_f: "היא צעקה"
+      1pl: "אנחנו צעקנו"
+      2pl_m: "אתם צעקתם"
+      2pl_f: "אתן צעקתן"
+      3pl: "הם צעקו"
     past_en:
       1sg: "I shouted"
       2sg_m: "you shouted (m)"
@@ -43,6 +58,16 @@ entries:
       2pl_m: תצעקו
       2pl_f: תצעקו
       3pl: יצעקו
+    future_he:
+      1sg: "אני אצעק"
+      2sg_m: "אתה תצעק"
+      2sg_f: "את תצעקי"
+      3sg_m: "הוא יצעק"
+      3sg_f: "היא תצעק"
+      1pl: "אנחנו נצעק"
+      2pl_m: "אתם תצעקו"
+      2pl_f: "אתן תצעקו"
+      3pl: "הם יצעקו"
     future_en:
       1sg: "I will shout"
       2sg_m: "you will shout (m)"
@@ -58,6 +83,11 @@ entries:
       sg_f: צעקי
       pl_m: צעקו
       pl_f: צעקו
+    imperative_he:
+      sg_m: "צעק"
+      sg_f: "צעקי"
+      pl_m: "צעקו"
+      pl_f: "צעקו"
     imperative_en:
       sg_m: "shout! (m)"
       sg_f: "shout! (f)"
@@ -83,6 +113,11 @@ entries:
       f_sg: פוגשת
       m_pl: פוגשים
       f_pl: פוגשות
+    present_he:
+      m_sg: "הוא פוגש"
+      f_sg: "היא פוגשת"
+      m_pl: "הם פוגשים"
+      f_pl: "הן פוגשות"
     present_en:
       m_sg: "he meets"
       f_sg: "she meets"
@@ -98,6 +133,16 @@ entries:
       2pl_m: פגשתם
       2pl_f: פגשתן
       3pl: פגשו
+    past_he:
+      1sg: "אני פגשתי"
+      2sg_m: "אתה פגשת"
+      2sg_f: "את פגשת"
+      3sg_m: "הוא פגש"
+      3sg_f: "היא פגשה"
+      1pl: "אנחנו פגשנו"
+      2pl_m: "אתם פגשתם"
+      2pl_f: "אתן פגשתן"
+      3pl: "הם פגשו"
     past_en:
       1sg: "I met"
       2sg_m: "you met (m)"
@@ -118,6 +163,16 @@ entries:
       2pl_m: תפגשו
       2pl_f: תפגשו
       3pl: יפגשו
+    future_he:
+      1sg: "אני אפגוש"
+      2sg_m: "אתה תפגוש"
+      2sg_f: "את תפגשי"
+      3sg_m: "הוא יפגוש"
+      3sg_f: "היא תפגוש"
+      1pl: "אנחנו נפגוש"
+      2pl_m: "אתם תפגשו"
+      2pl_f: "אתן תפגשו"
+      3pl: "הם יפגשו"
     future_en:
       1sg: "I will meet"
       2sg_m: "you will meet (m)"
@@ -149,6 +204,11 @@ entries:
       sg_f: פגשי
       pl_m: פגשו
       pl_f: פגשו
+    imperative_he:
+      sg_m: "פגוש"
+      sg_f: "פגשי"
+      pl_m: "פגשו"
+      pl_f: "פגשו"
     imperative_en:
       sg_m: "meet! (m)"
       sg_f: "meet! (f)"
@@ -162,6 +222,11 @@ entries:
       f_sg: מדברת
       m_pl: מדברים
       f_pl: מדברות
+    present_he:
+      m_sg: "הוא מדבר"
+      f_sg: "היא מדברת"
+      m_pl: "הם מדברים"
+      f_pl: "הן מדברות"
     present_en:
       m_sg: "he speaks"
       f_sg: "she speaks"
@@ -177,6 +242,16 @@ entries:
       2sg_f: דיברת
       2pl_m: דיברתם
       2pl_f: דיברתן
+    past_he:
+      1sg: "אני דיברתי"
+      3sg_m: "הוא דיבר"
+      3sg_f: "היא דיברה"
+      1pl: "אנחנו דיברנו"
+      3pl: "הם דיברו"
+      2sg_m: "אתה דיברת"
+      2sg_f: "את דיברת"
+      2pl_m: "אתם דיברתם"
+      2pl_f: "אתן דיברתן"
     past_en:
       1sg: "I spoke"
       3sg_m: "he spoke"
@@ -197,6 +272,16 @@ entries:
       3pl: ידברו
       3sg_f: תדבר
       2pl_f: תדברו
+    future_he:
+      1sg: "אני אדבר"
+      2sg_m: "אתה תדבר"
+      2sg_f: "את תדברי"
+      3sg_m: "הוא ידבר"
+      1pl: "אנחנו נדבר"
+      2pl_m: "אתם תדברו"
+      3pl: "הם ידברו"
+      3sg_f: "היא תדבר"
+      2pl_f: "אתן תדברו"
     future_en:
       1sg: "I will speak"
       2sg_m: "you will speak (m)"
@@ -212,6 +297,11 @@ entries:
       sg_f: דברי
       pl_m: דברו
       pl_f: דברו
+    imperative_he:
+      sg_m: "דבר"
+      sg_f: "דברי"
+      pl_m: "דברו"
+      pl_f: "דברו"
     imperative_en:
       sg_m: "speak! (m)"
       sg_f: "speak! (f)"

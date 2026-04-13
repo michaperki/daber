@@ -8,6 +8,11 @@ entries:
       f_sg: שורפת
       m_pl: שורפים
       f_pl: שורפות
+    present_he:
+      m_sg: "הוא שורף"
+      f_sg: "היא שורפת"
+      m_pl: "הם שורפים"
+      f_pl: "הן שורפות"
     present_en:
       m_sg: "he burns"
       f_sg: "she burns"
@@ -23,6 +28,16 @@ entries:
       2pl_m: נשרפתם
       2pl_f: נשרפתן
       3pl: שרפו
+    past_he:
+      2sg_f: "את שרפת…"
+      1sg: "אני נשרפתי"
+      2sg_m: "אתה נשרפת"
+      3sg_m: "הוא נשרף"
+      3sg_f: "היא נשרפה"
+      1pl: "אנחנו נשרפנו"
+      2pl_m: "אתם נשרפתם"
+      2pl_f: "אתן נשרפתן"
+      3pl: "הם שרפו"
     past_en:
       2sg_f: "you burned (f)"
       1sg: "I burned"
@@ -43,6 +58,16 @@ entries:
       2pl_m: תשרפו
       2pl_f: תשרפו
       3pl: ישרפו
+    future_he:
+      1sg: "אני אשרוף"
+      2sg_m: "אתה תשרוף"
+      2sg_f: "את תשרפי"
+      3sg_m: "הוא ישרוף"
+      3sg_f: "היא תשרוף"
+      1pl: "אנחנו נשרוף"
+      2pl_m: "אתם תשרפו"
+      2pl_f: "אתן תשרפו"
+      3pl: "הם ישרפו"
     future_en:
       1sg: "I will burn"
       2sg_m: "you will burn (m)"
@@ -70,6 +95,11 @@ entries:
       sg_f: שרפי
       pl_m: שרפו
       pl_f: שרפו
+    imperative_he:
+      sg_m: "שרוף"
+      sg_f: "שרפי"
+      pl_m: "שרפו"
+      pl_f: "שרפו"
     imperative_en:
       sg_m: "burn! (m)"
       sg_f: "burn! (f)"
@@ -83,6 +113,11 @@ entries:
       f_sg: מתעוררת..
       m_pl: מתעוררים
       f_pl: מתעוררות
+    present_he:
+      m_sg: "הוא מתעורר"
+      f_sg: "היא מתעוררת.."
+      m_pl: "הם מתעוררים"
+      f_pl: "הן מתעוררות"
     present_en:
       m_sg: "he wakes up"
       f_sg: "she wakes up"
@@ -98,6 +133,16 @@ entries:
       2pl_m: התעוררתם
       2pl_f: התעוררתן
       3pl: התעוררו
+    past_he:
+      1sg: "אני התעוררתי"
+      2sg_m: "אתה התעוררת"
+      2sg_f: "את התעוררת"
+      3sg_m: "הוא התעורר"
+      3sg_f: "היא התעוררה"
+      1pl: "אנחנו התעוררנו"
+      2pl_m: "אתם התעוררתם"
+      2pl_f: "אתן התעוררתן"
+      3pl: "הם התעוררו"
     past_en:
       1sg: "I woke up"
       2sg_m: "you woke up (m)"
@@ -118,6 +163,16 @@ entries:
       2pl_m: תתעוררו
       2pl_f: תתעוררו
       3pl: יתעוררו
+    future_he:
+      1sg: "אני אתעורר"
+      2sg_m: "אתה תתעורר"
+      2sg_f: "את תתעוררי"
+      3sg_m: "הוא יתעורר"
+      3sg_f: "היא תתעורר"
+      1pl: "אנחנו נתעורר"
+      2pl_m: "אתם תתעוררו"
+      2pl_f: "אתן תתעוררו"
+      3pl: "הם יתעוררו"
     future_en:
       1sg: "I will wake up"
       2sg_m: "you will wake up (m)"
@@ -133,6 +188,11 @@ entries:
       sg_f: התעוררי
       pl_m: התעוררו
       pl_f: התעוררו
+    imperative_he:
+      sg_m: "התעורר"
+      sg_f: "התעוררי"
+      pl_m: "התעוררו"
+      pl_f: "התעוררו"
     imperative_en:
       sg_m: "wake up! (m)"
       sg_f: "wake up! (f)"
@@ -158,6 +218,11 @@ entries:
       f_sg: סומכת
       m_pl: סומכים
       f_pl: סומכות
+    present_he:
+      m_sg: "הוא סומך"
+      f_sg: "היא סומכת"
+      m_pl: "הם סומכים"
+      f_pl: "הן סומכות"
     present_en:
       m_sg: "he relies"
       f_sg: "she relies"
@@ -173,6 +238,16 @@ entries:
       2pl_m: סמכתם
       2pl_f: סמכתן
       3pl: סמכו
+    past_he:
+      1sg: "אני סמכתי"
+      2sg_m: "אתה סמכת"
+      2sg_f: "את סמכת"
+      3sg_m: "הוא סמך"
+      3sg_f: "היא סמכה"
+      1pl: "אנחנו סמכנו"
+      2pl_m: "אתם סמכתם"
+      2pl_f: "אתן סמכתן"
+      3pl: "הם סמכו"
     past_en:
       1sg: "I relied"
       2sg_m: "you relied (m)"
@@ -193,6 +268,16 @@ entries:
       2pl_m: תסמכו
       2pl_f: תסמכו
       3pl: יסמכו
+    future_he:
+      1sg: "אני אסמוך"
+      2sg_m: "אתה תסמוך"
+      2sg_f: "את תסמכי"
+      3sg_m: "הוא יסמוך"
+      3sg_f: "היא תסמוך"
+      1pl: "אנחנו נסמוך"
+      2pl_m: "אתם תסמכו"
+      2pl_f: "אתן תסמכו"
+      3pl: "הם יסמכו"
     future_en:
       1sg: "I will rely"
       2sg_m: "you will rely (m)"
@@ -208,6 +293,11 @@ entries:
       sg_f: סמכי
       pl_m: סמכו
       pl_f: סמכו
+    imperative_he:
+      sg_m: "סמוך"
+      sg_f: "סמכי"
+      pl_m: "סמכו"
+      pl_f: "סמכו"
     imperative_en:
       sg_m: "rely! (m)"
       sg_f: "rely! (f)"
@@ -233,6 +323,11 @@ entries:
       f_sg: נפגשת
       m_pl: נפגשים
       f_pl: נפגשות
+    present_he:
+      m_sg: "הוא נפגש"
+      f_sg: "היא נפגשת"
+      m_pl: "הם נפגשים"
+      f_pl: "הן נפגשות"
     present_en:
       m_sg: "he meets"
       f_sg: "she meets"
@@ -248,6 +343,16 @@ entries:
       2pl_m: נפגשתם
       2pl_f: נפגשתן
       3pl: נפגשו
+    past_he:
+      1sg: "אני נפגשתי"
+      2sg_m: "אתה נפגשת"
+      2sg_f: "את נפגשת"
+      3sg_m: "הוא נפגש"
+      3sg_f: "היא נפגשה"
+      1pl: "אנחנו נפגשנו"
+      2pl_m: "אתם נפגשתם"
+      2pl_f: "אתן נפגשתן"
+      3pl: "הם נפגשו"
     past_en:
       1sg: "I met"
       2sg_m: "you met (m)"
@@ -268,6 +373,16 @@ entries:
       2pl_m: תפגשו
       2pl_f: תפגשו
       3pl: יפגשו
+    future_he:
+      1sg: "אני אפגש"
+      2sg_m: "אתה תפגש"
+      2sg_f: "את תפגשי"
+      3sg_m: "הוא יפגש"
+      3sg_f: "היא תפגש"
+      1pl: "אנחנו נפגש"
+      2pl_m: "אתם תפגשו"
+      2pl_f: "אתן תפגשו"
+      3pl: "הם יפגשו"
     future_en:
       1sg: "I will meet"
       2sg_m: "you will meet (m)"
@@ -283,6 +398,11 @@ entries:
       sg_f: היפגשי
       pl_m: היפגשו
       pl_f: היפגשו
+    imperative_he:
+      sg_m: "היפגש"
+      sg_f: "היפגשי"
+      pl_m: "היפגשו"
+      pl_f: "היפגשו"
     imperative_en:
       sg_m: "meet! (m)"
       sg_f: "meet! (f)"
@@ -308,6 +428,11 @@ entries:
       f_sg: מחכה
       m_pl: מחכים
       f_pl: מחכות
+    present_he:
+      m_sg: "הוא מחכה"
+      f_sg: "היא מחכה"
+      m_pl: "הם מחכים"
+      f_pl: "הן מחכות"
     present_en:
       m_sg: "he waits"
       f_sg: "she waits"
@@ -323,6 +448,16 @@ entries:
       2pl_m: חיכיתם
       2pl_f: חיכיתן
       3pl: חיכו
+    past_he:
+      1sg: "אני חיכיתי"
+      2sg_m: "אתה חיכית"
+      2sg_f: "את חיכית"
+      3sg_m: "הוא חיכה"
+      3sg_f: "היא חיכתה"
+      1pl: "אנחנו חיכינו"
+      2pl_m: "אתם חיכיתם"
+      2pl_f: "אתן חיכיתן"
+      3pl: "הם חיכו"
     past_en:
       1sg: "I waited"
       2sg_m: "you waited (m)"
@@ -343,6 +478,16 @@ entries:
       2pl_m: תחכו
       2pl_f: תחכו
       3pl: יחכו
+    future_he:
+      1sg: "אני אחכה"
+      2sg_m: "אתה תחכה"
+      2sg_f: "את תחכי"
+      3sg_m: "הוא יחכה"
+      3sg_f: "היא תחכה"
+      1pl: "אנחנו נחכה"
+      2pl_m: "אתם תחכו"
+      2pl_f: "אתן תחכו"
+      3pl: "הם יחכו"
     future_en:
       1sg: "I will wait"
       2sg_m: "you will wait (m)"
@@ -358,6 +503,11 @@ entries:
       sg_f: חכי
       pl_m: חכו
       pl_f: חכו
+    imperative_he:
+      sg_m: "חכה"
+      sg_f: "חכי"
+      pl_m: "חכו"
+      pl_f: "חכו"
     imperative_en:
       sg_m: "wait! (m)"
       sg_f: "wait! (f)"
@@ -387,6 +537,11 @@ entries:
       f_sg: נזהרת
       m_pl: נזהרים
       f_pl: נזהרות
+    present_he:
+      m_sg: "הוא נזהר"
+      f_sg: "היא נזהרת"
+      m_pl: "הם נזהרים"
+      f_pl: "הן נזהרות"
     present_en:
       m_sg: "he is careful"
       f_sg: "she is careful"
@@ -402,6 +557,16 @@ entries:
       2pl_m: נזהרתם
       2pl_f: נזהרתן
       3pl: נזהרו
+    past_he:
+      1sg: "אני נזהרתי"
+      2sg_m: "אתה נזהרת"
+      2sg_f: "את נזהרת"
+      3sg_m: "הוא נזהר"
+      3sg_f: "היא נזהרה"
+      1pl: "אנחנו נזהרנו"
+      2pl_m: "אתם נזהרתם"
+      2pl_f: "אתן נזהרתן"
+      3pl: "הם נזהרו"
     past_en:
       1sg: "I was careful"
       2sg_m: "you were careful (m)"
@@ -422,6 +587,16 @@ entries:
       2pl_m: תזהרו
       2pl_f: תזהרו
       3pl: יזהרו
+    future_he:
+      1sg: "אני אזהר"
+      2sg_m: "אתה תזהר"
+      2sg_f: "את תזהרי"
+      3sg_m: "הוא יזהר"
+      3sg_f: "היא תזהר"
+      1pl: "אנחנו נזהר"
+      2pl_m: "אתם תזהרו"
+      2pl_f: "אתן תזהרו"
+      3pl: "הם יזהרו"
     future_en:
       1sg: "I will be careful"
       2sg_m: "you will be careful (m)"
@@ -437,6 +612,11 @@ entries:
       sg_f: היזהרי
       pl_m: היזהרו
       pl_f: היזהרו
+    imperative_he:
+      sg_m: "היזהר"
+      sg_f: "היזהרי"
+      pl_m: "היזהרו"
+      pl_f: "היזהרו"
     imperative_en:
       sg_m: "be careful! (m)"
       sg_f: "be careful! (f)"
@@ -462,6 +642,11 @@ entries:
       f_sg: לוקחת
       m_pl: לוקחים
       f_pl: לוקחות
+    present_he:
+      m_sg: "הוא לוקח"
+      f_sg: "היא לוקחת"
+      m_pl: "הם לוקחים"
+      f_pl: "הן לוקחות"
     present_en:
       m_sg: "he takes"
       f_sg: "she takes"
@@ -477,6 +662,16 @@ entries:
       2pl_m: לקחתם
       2pl_f: לקחתן
       3pl: לקחו
+    past_he:
+      1sg: "אני לקחתי"
+      2sg_m: "אתה לקחת"
+      2sg_f: "את לקחת"
+      3sg_m: "הוא לקח"
+      3sg_f: "היא לקחה"
+      1pl: "אנחנו לקחנו"
+      2pl_m: "אתם לקחתם"
+      2pl_f: "אתן לקחתן"
+      3pl: "הם לקחו"
     past_en:
       1sg: "I took"
       2sg_m: "you took (m)"
@@ -497,6 +692,16 @@ entries:
       2pl_m: תיקחו
       2pl_f: תיקחו
       3pl: ייקחו
+    future_he:
+      1sg: "אני אקח"
+      2sg_m: "אתה תיקח"
+      2sg_f: "את תיקחי"
+      3sg_m: "הוא ייקח"
+      3sg_f: "היא תיקח"
+      1pl: "אנחנו ניקח"
+      2pl_m: "אתם תיקחו"
+      2pl_f: "אתן תיקחו"
+      3pl: "הם ייקחו"
     future_en:
       1sg: "I will take"
       2sg_m: "you will take (m)"
@@ -512,6 +717,11 @@ entries:
       sg_f: קחי
       pl_m: קחו
       pl_f: קחו
+    imperative_he:
+      sg_m: "קח"
+      sg_f: "קחי"
+      pl_m: "קחו"
+      pl_f: "קחו"
     imperative_en:
       sg_m: "take! (m)"
       sg_f: "take! (f)"
@@ -537,6 +747,11 @@ entries:
       f_sg: לוחצת
       m_pl: לוחצים
       f_pl: לוחצות
+    present_he:
+      m_sg: "הוא לוחץ"
+      f_sg: "היא לוחצת"
+      m_pl: "הם לוחצים"
+      f_pl: "הן לוחצות"
     present_en:
       m_sg: "he presses"
       f_sg: "she presses"
@@ -552,6 +767,16 @@ entries:
       2pl_m: לחצתם
       2pl_f: לחצתן
       3pl: לחצו
+    past_he:
+      1sg: "אני לחצתי"
+      2sg_m: "אתה לחצת"
+      2sg_f: "את לחצת"
+      3sg_m: "הוא לחץ"
+      3sg_f: "היא לחצה"
+      1pl: "אנחנו לחצנו"
+      2pl_m: "אתם לחצתם"
+      2pl_f: "אתן לחצתן"
+      3pl: "הם לחצו"
     past_en:
       1sg: "I pressed"
       2sg_m: "you pressed (m)"
@@ -572,6 +797,16 @@ entries:
       2pl_m: תלחצו
       2pl_f: תלחצו
       3pl: ילחצו
+    future_he:
+      1sg: "אני אלחץ"
+      2sg_m: "אתה תלחץ"
+      2sg_f: "את תלחצי"
+      3sg_m: "הוא ילחץ"
+      3sg_f: "היא תלחץ"
+      1pl: "אנחנו נלחץ"
+      2pl_m: "אתם תלחצו"
+      2pl_f: "אתן תלחצו"
+      3pl: "הם ילחצו"
     future_en:
       1sg: "I will press"
       2sg_m: "you will press (m)"
@@ -587,6 +822,11 @@ entries:
       sg_f: לחצי
       pl_m: לחצו
       pl_f: לחצו
+    imperative_he:
+      sg_m: "לחץ"
+      sg_f: "לחצי"
+      pl_m: "לחצו"
+      pl_f: "לחצו"
     imperative_en:
       sg_m: "press! (m)"
       sg_f: "press! (f)"

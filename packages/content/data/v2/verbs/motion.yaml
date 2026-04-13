@@ -8,6 +8,11 @@ entries:
       f_sg: נכנסת
       m_pl: נכנסים
       f_pl: נכנסות
+    present_he:
+      m_sg: "הוא נכנס"
+      f_sg: "היא נכנסת"
+      m_pl: "הם נכנסים"
+      f_pl: "הן נכנסות"
     present_en:
       m_sg: "he enters"
       f_sg: "she enters"
@@ -23,6 +28,16 @@ entries:
       2pl_m: נכנסתם
       2pl_f: נכנסתן
       3pl: נכנסו
+    past_he:
+      1sg: "אני נכנסתי"
+      2sg_m: "אתה נכנסת"
+      2sg_f: "את נכנסת"
+      3sg_m: "הוא נכנס"
+      3sg_f: "היא נכנסה"
+      1pl: "אנחנו נכנסנו"
+      2pl_m: "אתם נכנסתם"
+      2pl_f: "אתן נכנסתן"
+      3pl: "הם נכנסו"
     past_en:
       1sg: "I entered"
       2sg_m: "you entered (m)"
@@ -43,6 +58,16 @@ entries:
       2pl_m: תכנסו
       2pl_f: תכנסו
       3pl: יכנסו
+    future_he:
+      1sg: "אני אכנס"
+      2sg_m: "אתה תכנס"
+      2sg_f: "את תכנסי"
+      3sg_m: "הוא יכנס"
+      3sg_f: "היא תכנס"
+      1pl: "אנחנו נכנס"
+      2pl_m: "אתם תכנסו"
+      2pl_f: "אתן תכנסו"
+      3pl: "הם יכנסו"
     future_en:
       1sg: "I will enter"
       2sg_m: "you will enter (m)"
@@ -58,6 +83,11 @@ entries:
       sg_f: היכנסי
       pl_m: היכנסו
       pl_f: היכנסו
+    imperative_he:
+      sg_m: "היכנס"
+      sg_f: "היכנסי"
+      pl_m: "היכנסו"
+      pl_f: "היכנסו"
     imperative_en:
       sg_m: "enter! (m)"
       sg_f: "enter! (f)"
@@ -83,6 +113,11 @@ entries:
       f_sg: רצה
       m_pl: רצים
       f_pl: רצות
+    present_he:
+      m_sg: "הוא רץ"
+      f_sg: "היא רצה"
+      m_pl: "הם רצים"
+      f_pl: "הן רצות"
     present_en:
       m_sg: "he runs"
       f_sg: "she runs"
@@ -98,6 +133,16 @@ entries:
       2pl_m: רצתם
       2pl_f: רצתן
       3pl: רצו
+    past_he:
+      1sg: "אני רצתי"
+      2sg_m: "אתה רצת"
+      2sg_f: "את רצת"
+      3sg_m: "הוא רץ"
+      3sg_f: "היא רצה"
+      1pl: "אנחנו רצנו"
+      2pl_m: "אתם רצתם"
+      2pl_f: "אתן רצתן"
+      3pl: "הם רצו"
     past_en:
       1sg: "I ran"
       2sg_m: "you ran (m)"
@@ -118,6 +163,16 @@ entries:
       2pl_m: תרוצו
       2pl_f: תרוצו
       3pl: ירוצו
+    future_he:
+      1sg: "אני ארוץ"
+      2sg_m: "אתה תרוץ"
+      2sg_f: "את תרוצי"
+      3sg_m: "הוא ירוץ"
+      3sg_f: "היא תרוץ"
+      1pl: "אנחנו נרוץ"
+      2pl_m: "אתם תרוצו"
+      2pl_f: "אתן תרוצו"
+      3pl: "הם ירוצו"
     future_en:
       1sg: "I will run"
       2sg_m: "you will run (m)"
@@ -133,6 +188,11 @@ entries:
       sg_f: רוצי
       pl_m: רוצו
       pl_f: רוצו
+    imperative_he:
+      sg_m: "רוץ"
+      sg_f: "רוצי"
+      pl_m: "רוצו"
+      pl_f: "רוצו"
     imperative_en:
       sg_m: "run! (m)"
       sg_f: "run! (f)"
@@ -157,6 +217,11 @@ entries:
       f_sg: יוצאת
       m_pl: יוצאים
       f_pl: יוצאות
+    present_he:
+      m_sg: "הוא יוצא"
+      f_sg: "היא יוצאת"
+      m_pl: "הם יוצאים"
+      f_pl: "הן יוצאות"
     present_en:
       m_sg: "he goes out"
       f_sg: "she goes out"
@@ -172,6 +237,16 @@ entries:
       2pl_m: יצאתם
       2pl_f: יצאתן
       3pl: יצאו
+    past_he:
+      1sg: "אני יצאתי"
+      2sg_m: "אתה יצאת"
+      2sg_f: "את יצאת"
+      3sg_m: "הוא יצא"
+      3sg_f: "היא יצאה"
+      1pl: "אנחנו יצאנו"
+      2pl_m: "אתם יצאתם"
+      2pl_f: "אתן יצאתן"
+      3pl: "הם יצאו"
     past_en:
       1sg: "I went out"
       2sg_m: "you went out (m)"
@@ -192,6 +267,16 @@ entries:
       2pl_m: תצאו
       2pl_f: תצאו
       3pl: יצאו
+    future_he:
+      1sg: "אני אצא"
+      2sg_m: "אתה תצא"
+      2sg_f: "את תצאי"
+      3sg_m: "הוא יצא"
+      3sg_f: "היא תצא"
+      1pl: "אנחנו נצא"
+      2pl_m: "אתם תצאו"
+      2pl_f: "אתן תצאו"
+      3pl: "הם יצאו"
     future_en:
       1sg: "I will go out"
       2sg_m: "you will go out (m)"
@@ -207,6 +292,11 @@ entries:
       sg_f: צאי
       pl_m: צאו
       pl_f: צאו
+    imperative_he:
+      sg_m: "צא"
+      sg_f: "צאי"
+      pl_m: "צאו"
+      pl_f: "צאו"
     imperative_en:
       sg_m: "go out! (m)"
       sg_f: "go out! (f)"

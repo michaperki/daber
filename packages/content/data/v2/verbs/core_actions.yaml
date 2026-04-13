@@ -8,6 +8,11 @@ entries:
       f_sg: פותחת
       m_pl: פותחים
       f_pl: פותחות
+    present_he:
+      m_sg: "הוא פותח"
+      f_sg: "היא פותחת"
+      m_pl: "הם פותחים"
+      f_pl: "הן פותחות"
     present_en:
       m_sg: "he opens"
       f_sg: "she opens"
@@ -23,6 +28,16 @@ entries:
       2pl_m: פתחתם
       2pl_f: פתחתן
       3pl: פתחו
+    past_he:
+      1sg: "אני פתחתי"
+      2sg_m: "אתה פתחת"
+      2sg_f: "את פתחת"
+      3sg_m: "הוא פתח"
+      3sg_f: "היא פתחה"
+      1pl: "אנחנו פתחנו"
+      2pl_m: "אתם פתחתם"
+      2pl_f: "אתן פתחתן"
+      3pl: "הם פתחו"
     past_en:
       1sg: "I opened"
       2sg_m: "you opened (m)"
@@ -43,6 +58,16 @@ entries:
       2pl_m: תפתחו
       2pl_f: תפתחו
       3pl: יפתחו
+    future_he:
+      1sg: "אני אפתח"
+      2sg_m: "אתה תפתח"
+      2sg_f: "את תפתחי"
+      3sg_m: "הוא יפתח"
+      3sg_f: "היא תפתח"
+      1pl: "אנחנו נפתח"
+      2pl_m: "אתם תפתחו"
+      2pl_f: "אתן תפתחו"
+      3pl: "הם יפתחו"
     future_en:
       1sg: "I will open"
       2sg_m: "you will open (m)"
@@ -58,6 +83,11 @@ entries:
       sg_f: פתחי
       pl_m: פתחו
       pl_f: פתחו
+    imperative_he:
+      sg_m: "פתח"
+      sg_f: "פתחי"
+      pl_m: "פתחו"
+      pl_f: "פתחו"
     imperative_en:
       sg_m: "open! (m)"
       sg_f: "open! (f)"
@@ -83,6 +113,11 @@ entries:
       f_sg: מחזיקה…
       m_pl: מחזיקים
       f_pl: מחזיקות
+    present_he:
+      m_sg: "הוא מחזיק"
+      f_sg: "היא מחזיקה…"
+      m_pl: "הם מחזיקים"
+      f_pl: "הן מחזיקות"
     present_en:
       m_sg: "he holds"
       f_sg: "she holds"
@@ -98,6 +133,16 @@ entries:
       2pl_m: החזקתם
       2pl_f: החזקתן
       3pl: החזיקו
+    past_he:
+      1sg: "אני החזקתי"
+      2sg_m: "אתה החזקת"
+      2sg_f: "את החזקת"
+      3sg_m: "הוא החזיק"
+      3sg_f: "היא החזיקה"
+      1pl: "אנחנו החזקנו"
+      2pl_m: "אתם החזקתם"
+      2pl_f: "אתן החזקתן"
+      3pl: "הם החזיקו"
     past_en:
       1sg: "I held"
       2sg_m: "you held (m)"
@@ -118,6 +163,16 @@ entries:
       2pl_m: תחזיקו
       2pl_f: תחזיקו
       3pl: יחזיקו
+    future_he:
+      1sg: "אני אחזיק"
+      2sg_m: "אתה תחזיק"
+      2sg_f: "את תחזיקי"
+      3sg_m: "הוא יחזיק"
+      3sg_f: "היא תחזיק"
+      1pl: "אנחנו נחזיק"
+      2pl_m: "אתם תחזיקו"
+      2pl_f: "אתן תחזיקו"
+      3pl: "הם יחזיקו"
     future_en:
       1sg: "I will hold"
       2sg_m: "you will hold (m)"
@@ -133,6 +188,11 @@ entries:
       sg_f: החזיקי
       pl_m: החזיקו
       pl_f: החזיקו
+    imperative_he:
+      sg_m: "החזק"
+      sg_f: "החזיקי"
+      pl_m: "החזיקו"
+      pl_f: "החזיקו"
     imperative_en:
       sg_m: "hold! (m)"
       sg_f: "hold! (f)"
@@ -162,6 +222,11 @@ entries:
       f_sg: עוזרת
       m_pl: עוזרים
       f_pl: עוזרות
+    present_he:
+      m_sg: "הוא עוזר"
+      f_sg: "היא עוזרת"
+      m_pl: "הם עוזרים"
+      f_pl: "הן עוזרות"
     present_en:
       m_sg: "he helps"
       f_sg: "she helps"
@@ -177,6 +242,16 @@ entries:
       2pl_m: עזרתם
       2pl_f: עזרתן
       3pl: עזרו
+    past_he:
+      1sg: "אני עזרתי"
+      2sg_m: "אתה עזרת"
+      2sg_f: "את עזרת"
+      3sg_m: "הוא עזר"
+      3sg_f: "היא עזרה"
+      1pl: "אנחנו עזרנו"
+      2pl_m: "אתם עזרתם"
+      2pl_f: "אתן עזרתן"
+      3pl: "הם עזרו"
     past_en:
       1sg: "I helped"
       2sg_m: "you helped (m)"
@@ -197,6 +272,16 @@ entries:
       2pl_m: תעזרו
       2pl_f: תעזרו
       3pl: יעזרו
+    future_he:
+      1sg: "אני אעזור"
+      2sg_m: "אתה תעזור"
+      2sg_f: "את תעזרי"
+      3sg_m: "הוא יעזור"
+      3sg_f: "היא תעזור"
+      1pl: "אנחנו נעזור"
+      2pl_m: "אתם תעזרו"
+      2pl_f: "אתן תעזרו"
+      3pl: "הם יעזרו"
     future_en:
       1sg: "I will help"
       2sg_m: "you will help (m)"
@@ -212,6 +297,11 @@ entries:
       sg_f: עזרי
       pl_m: עזרו
       pl_f: עזרו
+    imperative_he:
+      sg_m: "עזור"
+      sg_f: "עזרי"
+      pl_m: "עזרו"
+      pl_f: "עזרו"
     imperative_en:
       sg_m: "help! (m)"
       sg_f: "help! (f)"
@@ -241,6 +331,11 @@ entries:
       f_sg: עושה
       m_pl: עושים
       f_pl: עושות
+    present_he:
+      m_sg: "הוא עושה"
+      f_sg: "היא עושה"
+      m_pl: "הם עושים"
+      f_pl: "הן עושות"
     present_en:
       m_sg: "he does"
       f_sg: "she does"
@@ -256,6 +351,16 @@ entries:
       2pl_m: עשיתם
       2pl_f: עשיתן
       3pl: עשו
+    past_he:
+      1sg: "אני עשיתי"
+      2sg_m: "אתה עשית"
+      2sg_f: "את עשית"
+      3sg_m: "הוא עשה"
+      3sg_f: "היא עשתה"
+      1pl: "אנחנו עשינו"
+      2pl_m: "אתם עשיתם"
+      2pl_f: "אתן עשיתן"
+      3pl: "הם עשו"
     past_en:
       1sg: "I did"
       2sg_m: "you did (m)"
@@ -276,6 +381,16 @@ entries:
       2pl_m: תעשו
       2pl_f: תעשו
       3pl: יעשו
+    future_he:
+      1sg: "אני אעשה"
+      2sg_m: "אתה תעשה"
+      2sg_f: "את תעשי"
+      3sg_m: "הוא יעשה"
+      3sg_f: "היא תעשה"
+      1pl: "אנחנו נעשה"
+      2pl_m: "אתם תעשו"
+      2pl_f: "אתן תעשו"
+      3pl: "הם יעשו"
     future_en:
       1sg: "I will do"
       2sg_m: "you will do (m)"
@@ -291,6 +406,11 @@ entries:
       sg_f: עשי
       pl_m: עשו
       pl_f: עשו
+    imperative_he:
+      sg_m: "עשה"
+      sg_f: "עשי"
+      pl_m: "עשו"
+      pl_f: "עשו"
     imperative_en:
       sg_m: "do! (m)"
       sg_f: "do! (f)"
@@ -318,6 +438,11 @@ entries:
       f_sg: קונה
       m_pl: קונים
       f_pl: קונות
+    present_he:
+      m_sg: "הוא קונה"
+      f_sg: "היא קונה"
+      m_pl: "הם קונים"
+      f_pl: "הן קונות"
     present_en:
       m_sg: "he buys"
       f_sg: "she buys"
@@ -333,6 +458,16 @@ entries:
       2pl_m: קניתם
       2pl_f: קניתן
       3pl: קנו
+    past_he:
+      1sg: "אני קניתי"
+      2sg_m: "אתה קנית"
+      2sg_f: "את קנית"
+      3sg_m: "הוא קנה"
+      3sg_f: "היא קנתה"
+      1pl: "אנחנו קנינו"
+      2pl_m: "אתם קניתם"
+      2pl_f: "אתן קניתן"
+      3pl: "הם קנו"
     past_en:
       1sg: "I bought"
       2sg_m: "you bought (m)"
@@ -353,6 +488,16 @@ entries:
       2pl_m: תקנו
       2pl_f: תקנו
       3pl: יקנו
+    future_he:
+      1sg: "אני אקנה"
+      2sg_m: "אתה תקנה"
+      2sg_f: "את תקני"
+      3sg_m: "הוא יקנה"
+      3sg_f: "היא תקנה"
+      1pl: "אנחנו נקנה"
+      2pl_m: "אתם תקנו"
+      2pl_f: "אתן תקנו"
+      3pl: "הם יקנו"
     future_en:
       1sg: "I will buy"
       2sg_m: "you will buy (m)"
@@ -368,6 +513,11 @@ entries:
       sg_f: קני
       pl_m: קנו
       pl_f: קנו
+    imperative_he:
+      sg_m: "קנה"
+      sg_f: "קני"
+      pl_m: "קנו"
+      pl_f: "קנו"
     imperative_en:
       sg_m: "buy! (m)"
       sg_f: "buy! (f)"
@@ -397,6 +547,11 @@ entries:
       f_sg: שולחת
       m_pl: שולחים
       f_pl: שולחות
+    present_he:
+      m_sg: "הוא שולח"
+      f_sg: "היא שולחת"
+      m_pl: "הם שולחים"
+      f_pl: "הן שולחות"
     present_en:
       m_sg: "he sends"
       f_sg: "she sends"
@@ -412,6 +567,16 @@ entries:
       2pl_m: שלחתם
       2pl_f: שלחתן
       3pl: שלחו
+    past_he:
+      1sg: "אני שלחתי"
+      2sg_m: "אתה שלחת"
+      2sg_f: "את שלחת"
+      3sg_m: "הוא שלח"
+      3sg_f: "היא שלחה"
+      1pl: "אנחנו שלחנו"
+      2pl_m: "אתם שלחתם"
+      2pl_f: "אתן שלחתן"
+      3pl: "הם שלחו"
     past_en:
       1sg: "I sent"
       2sg_m: "you sent (m)"
@@ -432,6 +597,16 @@ entries:
       2pl_m: תשלחו
       2pl_f: תשלחו
       3pl: ישלחו
+    future_he:
+      1sg: "אני אשלח"
+      2sg_m: "אתה תשלח"
+      2sg_f: "את תשלחי"
+      3sg_m: "הוא ישלח"
+      3sg_f: "היא תשלח"
+      1pl: "אנחנו נשלח"
+      2pl_m: "אתם תשלחו"
+      2pl_f: "אתן תשלחו"
+      3pl: "הם ישלחו"
     future_en:
       1sg: "I will send"
       2sg_m: "you will send (m)"
@@ -447,6 +622,11 @@ entries:
       sg_f: שלחי
       pl_m: שלחו
       pl_f: שלחו
+    imperative_he:
+      sg_m: "שלח"
+      sg_f: "שלחי"
+      pl_m: "שלחו"
+      pl_f: "שלחו"
     imperative_en:
       sg_m: "send! (m)"
       sg_f: "send! (f)"
@@ -480,6 +660,11 @@ entries:
       f_sg: כותבת
       m_pl: כותבים
       f_pl: כותבות
+    present_he:
+      m_sg: "הוא כותב"
+      f_sg: "היא כותבת"
+      m_pl: "הם כותבים"
+      f_pl: "הן כותבות"
     present_en:
       m_sg: "he writes"
       f_sg: "she writes"
@@ -495,6 +680,16 @@ entries:
       2sg_f: כתבת
       2pl_m: כתבתם
       2pl_f: כתבתן
+    past_he:
+      1sg: "אני כתבתי"
+      3sg_m: "הוא כתב"
+      3sg_f: "היא כתבה"
+      1pl: "אנחנו כתבנו"
+      3pl: "הם כתבו"
+      2sg_m: "אתה כתבת"
+      2sg_f: "את כתבת"
+      2pl_m: "אתם כתבתם"
+      2pl_f: "אתן כתבתן"
     past_en:
       1sg: "I wrote"
       3sg_m: "he wrote"
@@ -515,6 +710,16 @@ entries:
       3pl: יכתבו
       3sg_f: תכתוב
       2pl_f: תכתבו
+    future_he:
+      1sg: "אני אכתוב"
+      2sg_m: "אתה תכתוב"
+      2sg_f: "את תכתבי"
+      3sg_m: "הוא יכתוב"
+      1pl: "אנחנו נכתוב"
+      2pl_m: "אתם תכתבו"
+      3pl: "הם יכתבו"
+      3sg_f: "היא תכתוב"
+      2pl_f: "אתן תכתבו"
     future_en:
       1sg: "I will write"
       2sg_m: "you will write (m)"
@@ -530,6 +735,11 @@ entries:
       sg_f: כתבי
       pl_m: כתבו
       pl_f: כתבו
+    imperative_he:
+      sg_m: "כתוב"
+      sg_f: "כתבי"
+      pl_m: "כתבו"
+      pl_f: "כתבו"
     imperative_en:
       sg_m: "write! (m)"
       sg_f: "write! (f)"

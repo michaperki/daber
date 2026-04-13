@@ -6,6 +6,9 @@ import { emptyProgress } from '../storage/progress';
 import { getCalibration, getProgress, putCalibration, putProgress } from '../storage/sync';
 import { commitCalibration, commitProgress } from '../storage/mutations';
 import styles from './SettingsPanel.module.css';
+import { strokeSamples } from '../state/strokes';
+import { predictByStroke } from '../recognizer/stroke';
+import type { LetterGlyph } from '../recognizer/types';
 
 // Device handoff flow (per USER_FLOW.md):
 //  - Every device mints a local UUID on first boot.
@@ -169,6 +172,67 @@ export function SettingsPanel() {
             device code. Cannot be undone.
           </div>
         </div>
+
+        {/* Dev-only: quick confusion check for י/ו/ן with and without geometry */}
+        {typeof window !== 'undefined' && /(?:^|[?&])dev=1(?:&|$)/.test(window.location.search) && (
+          <>
+            <div class={styles.divider} />
+            <div>
+              <div class={styles.label}>Dev: Stroke confusion check</div>
+              <div class={styles.hint}>Compare base vs geometry-weighted stroke scoring for י/ו/ן</div>
+              <div class={styles.row}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      const targets: LetterGlyph[] = ['י','ו','ן'];
+                      const sdb = strokeSamples.value as any as Record<LetterGlyph, any[]>;
+                      const stats = {
+                        base: { correct: 0, total: 0, conf: {} as Record<string, number> },
+                        geom: { correct: 0, total: 0, conf: {} as Record<string, number> },
+                      };
+                      for (const L of targets) {
+                        const arr = (sdb[L] || []) as any[];
+                        if (!arr || arr.length < 2) continue;
+                        for (let i = 0; i < arr.length; i++) {
+                          const held = arr[i];
+                          const hold: any = {};
+                          for (const LL of targets) {
+                            const a2 = (sdb[LL] || []).slice();
+                            if (LL === L) a2.splice(i, 1);
+                            hold[LL] = a2;
+                          }
+                          const p0 = predictByStroke(held, hold, { topN: 1, geometryWeight: 0 });
+                          const bTop = p0[0]?.letter as LetterGlyph | undefined;
+                          stats.base.total++;
+                          if (bTop === L) stats.base.correct++; else if (bTop) {
+                            const k = `${L}->${bTop}`; stats.base.conf[k] = (stats.base.conf[k] || 0) + 1;
+                          }
+                          const p1 = predictByStroke(held, hold, { topN: 1, geometryWeight: 0.06 });
+                          const gTop = p1[0]?.letter as LetterGlyph | undefined;
+                          stats.geom.total++;
+                          if (gTop === L) stats.geom.correct++; else if (gTop) {
+                            const k = `${L}->${gTop}`; stats.geom.conf[k] = (stats.geom.conf[k] || 0) + 1;
+                          }
+                        }
+                      }
+                      const pct = (c: number, t: number) => (t ? Math.round((100 * c) / t) : 0);
+                      const top5 = (m: Record<string, number>) => Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k}(${v})`).join(' · ') || '—';
+                      alert(
+                        `Base (λ=0): ${pct(stats.base.correct, stats.base.total)}%  conf: ${top5(stats.base.conf)}\n` +
+                        `Geom (λ=0.06): ${pct(stats.geom.correct, stats.geom.total)}%  conf: ${top5(stats.geom.conf)}`
+                      );
+                    } catch (e) {
+                      alert('Confusion check failed. Collect stroke samples first.');
+                    }
+                  }}
+                >
+                  Run stroke confusion check
+                </button>
+              </div>
+            </div>
+          </>
+        )}
 
         {msg ? (
           <div class={styles.hint} style={{ color: msg.kind === 'ok' ? 'var(--accent-2)' : 'var(--danger)' }}>

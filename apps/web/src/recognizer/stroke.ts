@@ -1,5 +1,6 @@
 import type { LetterGlyph, Ranked, Stroke } from './types';
 import { LETTERS } from './types';
+import { measureBounds } from './raster';
 
 export type StrokeDB = Record<LetterGlyph, Stroke[][]>;
 
@@ -51,6 +52,16 @@ export function resampleStroke(strokes: Stroke[], N = 96): Float32Array {
   return out;
 }
 
+// Simple geometry descriptor capturing verticality/length information that is
+// invariant to translations but sensitive to scale: log(height/width).
+function logAspect(strokes: Stroke[]): number {
+  const b = measureBounds(strokes);
+  if (!b) return 0;
+  const w = Math.max(1e-3, b.width);
+  const h = Math.max(1e-3, b.height);
+  return Math.log(h / w);
+}
+
 function l2(a: Float32Array, b: Float32Array): number {
   let s = 0;
   for (let i = 0; i < a.length; i++) { const d = a[i] - b[i]; s += d * d; }
@@ -60,11 +71,13 @@ function l2(a: Float32Array, b: Float32Array): number {
 export function predictByStroke(
   strokes: Stroke[],
   db: StrokeDB,
-  opts: { topN?: number; N?: number; temperature?: number } = {},
+  opts: { topN?: number; N?: number; temperature?: number; geometryWeight?: number } = {},
 ): Ranked[] {
   const N = opts.N ?? 96;
   const temp = opts.temperature ?? 20; // scale distances → exp(-d*temp)
+  const gw = opts.geometryWeight ?? 0.06; // penalty weight for |Δ log-aspect|
   const q = resampleStroke(strokes, N);
+  const qGeom = logAspect(strokes);
   const scores: { letter: LetterGlyph; score: number }[] = [];
   for (const L of LETTERS) {
     const arr = db[L] || [];
@@ -74,8 +87,13 @@ export function predictByStroke(
     // Take up to k nearest
     const dists: number[] = [];
     for (let i = 0; i < arr.length; i++) {
-      const f = resampleStroke(arr[i]!, N);
-      dists.push(l2(q, f));
+      const sample = arr[i]!;
+      const f = resampleStroke(sample, N);
+      const dShape = l2(q, f);
+      // Add gentle geometry penalty based on difference in log(height/width)
+      const g = Math.abs(qGeom - logAspect(sample));
+      const d = dShape + gw * g;
+      dists.push(d);
     }
     dists.sort((a, b) => a - b);
     for (let i = 0; i < k; i++) accum += Math.exp(-dists[i]! * temp);

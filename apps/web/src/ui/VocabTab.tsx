@@ -31,6 +31,9 @@ type VocabState = {
   pos: number;
   output: string;
   revealed: boolean;
+  // Track wrong attempts per character index and per-tile hints
+  wrongCounts: Record<number, number>;
+  hints: Record<number, boolean>;
 };
 
 const EMPTY_STATE: VocabState = {
@@ -38,6 +41,8 @@ const EMPTY_STATE: VocabState = {
   pos: 0,
   output: '',
   revealed: false,
+  wrongCounts: {},
+  hints: {},
 };
 
 // Whether `drawn` (the recognizer's top-1 letter) is acceptable for the
@@ -76,6 +81,12 @@ export function VocabTab() {
   });
   const [lastReject, setLastReject] = useState<Float32Array | null>(null);
   const busyRef = useRef(false);
+  // Track whether the current word attempt had any mistakes, user reveal, or force-accepts
+  const attemptRef = useRef<{ mistake: boolean; reveal: boolean; force: boolean }>({
+    mistake: false,
+    reveal: false,
+    force: false,
+  });
 
   const prefs = progress.value.prefs;
 
@@ -83,8 +94,9 @@ export function VocabTab() {
     setFeedback({ kind: 'idle', text: '' });
     setLastReject(null);
     const entry = randomVocabEntry();
-    setState({ current: entry, pos: 0, output: '', revealed: false });
+    setState({ current: entry, pos: 0, output: '', revealed: false, wrongCounts: {}, hints: {} });
     canvasRef.current?.clear();
+    attemptRef.current = { mistake: false, reveal: false, force: false };
   }
 
   // First-mount: pick a word.
@@ -183,14 +195,16 @@ export function VocabTab() {
       const skip = advancePastSpaces(cur.he, nextPos, newOutput);
       nextPos = skip.pos;
       newOutput = skip.out;
-      setState((s) => ({ ...s, pos: nextPos, output: newOutput }));
+      // On position advance, reset wrong-attempt counts and any hints
+      setState((s) => ({ ...s, pos: nextPos, output: newOutput, wrongCounts: {}, hints: {} }));
       navigator.vibrate?.(30);
       canvasRef.current?.flashAccept();
       canvasRef.current?.clear();
       setCanvasKey((k) => k + 1);
       if (nextPos >= cur.he.length) {
         setFeedback({ kind: 'ok', text: '✓ Correct' });
-        bumpVocabWord(cur.he);
+        const attemptClean = !(attemptRef.current.mistake || attemptRef.current.reveal || attemptRef.current.force);
+        bumpVocabWord(cur.he, attemptClean);
         busyRef.current = true;
         window.setTimeout(() => {
           busyRef.current = false;
@@ -205,6 +219,15 @@ export function VocabTab() {
       setLastReject(vec);
       navigator.vibrate?.([40]);
       canvasRef.current?.shake();
+      attemptRef.current.mistake = true;
+      // Track wrong attempts for this character position. After 2 in a row, reveal this letter's tile.
+      setState((s) => {
+        const idx = advanced.pos;
+        const count = (s.wrongCounts[idx] || 0) + 1;
+        const nextCounts = { ...s.wrongCounts, [idx]: count };
+        const nextHints = count >= 2 ? { ...s.hints, [idx]: true } : s.hints;
+        return { ...s, wrongCounts: nextCounts, hints: nextHints };
+      });
       cancelWrongTimer();
       wrongTimerRef.current = window.setTimeout(() => {
         wrongTimerRef.current = null;
@@ -217,6 +240,7 @@ export function VocabTab() {
   function onIdk() {
     if (!state.current) return;
     // Reveal the full word but stay on this item so the user can trace it.
+    attemptRef.current.reveal = true;
     setState((s) => ({ ...s, revealed: true }));
   }
   function onSkip() {
@@ -243,16 +267,19 @@ export function VocabTab() {
     }
     bumpVocabLetter(true);
     setLastReject(null);
+    attemptRef.current.force = true;
     const nextPos = state.pos + 1;
     const newOutput = state.output + display;
-    setState((s) => ({ ...s, pos: nextPos, output: newOutput }));
+    // On position advance via force-accept, also reset wrong-attempt counts and hints
+    setState((s) => ({ ...s, pos: nextPos, output: newOutput, wrongCounts: {}, hints: {} }));
     navigator.vibrate?.(30);
     canvasRef.current?.flashAccept();
     canvasRef.current?.clear();
     setCanvasKey((k) => k + 1);
     if (nextPos >= cur.he.length) {
       setFeedback({ kind: 'ok', text: '✓ Correct' });
-      bumpVocabWord(cur.he);
+      const attemptClean = !(attemptRef.current.mistake || attemptRef.current.reveal || attemptRef.current.force);
+      bumpVocabWord(cur.he, attemptClean);
       busyRef.current = true;
       window.setTimeout(() => {
         busyRef.current = false;
@@ -305,7 +332,14 @@ export function VocabTab() {
 
   return (
     <>
-      <div class={study.topWord}>{state.current?.en ?? '—'}</div>
+      <div class={study.topWord}>
+        {(() => {
+          const cur = state.current;
+          if (!cur) return '—';
+          const badge = cur.variant === 'f_sg' ? ' ♀' : '';
+          return cur.en + badge;
+        })()}
+      </div>
       {/* Tiles: one per Hebrew letter, skip spaces */}
       <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>
         {(() => {
@@ -317,7 +351,7 @@ export function VocabTab() {
           return chars.map((ch, i) => {
             if (ch === ' ') return <div key={`sp-${i}`} class={study.spacer} aria-hidden="true" />;
             const filled = accepted > idx;
-            const show = revealAll || filled;
+            const show = revealAll || filled || !!state.hints[i];
             idx++;
             return (
               <div key={`t-${i}`} class={`${study.tile} ${filled ? study.tileOk : ''}`}>{show ? ch : ''}</div>

@@ -10,7 +10,13 @@ export const ExampleSchema = z.object({
 export const VerbEntrySchema = z.object({
   lemma: z.string().min(1),
   gloss: z.string().min(1),
-  // Other fields are ignored by MVP extractor
+  present: z
+    .object({
+      m_sg: z.string().optional(),
+      f_sg: z.string().optional(),
+    })
+    .partial()
+    .optional(),
 });
 
 export const NounEntrySchema = z.object({
@@ -31,6 +37,7 @@ export const AdjectiveEntrySchema = z.object({
   forms: z
     .object({
       m_sg: z.string().optional(),
+      f_sg: z.string().optional(),
       base: z.string().optional(),
     })
     .partial()
@@ -48,5 +55,4 @@ export const FileSchema = z.object({
   entries: z.array(z.unknown()),
 });
 
-export type VocabRow = { he: string; en: string; pos: string };
-
+export type VocabRow = { he: string; en: string; pos: string; variant?: string };

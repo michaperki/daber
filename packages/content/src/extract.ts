@@ -32,7 +32,13 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
       switch (pos) {
         case 'verb': {
           const v = VerbEntrySchema.parse(entry);
+          // Base infinitive
           rows.push({ he: v.lemma, en: v.gloss, pos });
+          // Present feminine singular (if available)
+          const fs = v.present?.f_sg;
+          if (typeof fs === 'string' && fs.trim().length > 0) {
+            rows.push({ he: fs, en: v.gloss, pos, variant: 'f_sg' });
+          }
           break;
         }
         case 'noun': {
@@ -45,6 +51,10 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
           const a = AdjectiveEntrySchema.parse(entry);
           const he = a.forms?.m_sg || a.forms?.base || a.lemma;
           rows.push({ he, en: a.gloss, pos });
+          const fsg = a.forms?.f_sg;
+          if (typeof fsg === 'string' && fsg.trim().length > 0) {
+            rows.push({ he: fsg, en: a.gloss, pos, variant: 'f_sg' });
+          }
           break;
         }
         case 'adverb':
@@ -99,4 +109,3 @@ export function dedupeAndSort(rows: VocabRow[]): VocabRow[] {
   out.sort((a, b) => a.he.localeCompare(b.he));
   return out;
 }
-

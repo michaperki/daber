@@ -10,7 +10,8 @@ export type ProgressV1 = {
   };
   practice_stats: { correct: number; total: number };
   vocab_stats: { correct_letters: number; total_letters: number; words_completed: number };
-  seen_words: Record<string, { count: number; last_seen_at: string }>;
+  // Per-word performance stats
+  seen_words: Record<string, { seen: number; clean: number; attempted: number }>;
   updated_at: string;
 };
 
@@ -35,8 +36,24 @@ export function loadProgress(): ProgressV1 {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return emptyProgress();
-    const parsed = JSON.parse(raw) as ProgressV1;
-    if (parsed && parsed.version === 1) return parsed;
+    const parsed = JSON.parse(raw) as any;
+    if (parsed && parsed.version === 1) {
+      // Migrate legacy seen_words shape { count, last_seen_at } → { seen, clean, attempted }
+      const sw = parsed.seen_words || {};
+      const migrated: Record<string, { seen: number; clean: number; attempted: number }> = {};
+      for (const [he, v] of Object.entries(sw)) {
+        if (v && typeof v === 'object' && 'seen' in (v as any)) {
+          migrated[he] = v as any;
+        } else if (v && typeof v === 'object' && 'count' in (v as any)) {
+          const count = Math.max(0, Number((v as any).count) || 0);
+          migrated[he] = { seen: count, clean: count, attempted: count };
+        } else {
+          migrated[he] = { seen: 0, clean: 0, attempted: 0 };
+        }
+      }
+      parsed.seen_words = migrated;
+      return parsed as ProgressV1;
+    }
     return emptyProgress();
   } catch {
     return emptyProgress();

@@ -1,10 +1,4 @@
-import {
-  addSample,
-  loadCalibration,
-  nowIso,
-  saveCalibration,
-  type CalibrationV1,
-} from './calibration';
+import { addSample, loadCalibration, nowIso, saveCalibration, type CalibrationV1 } from './calibration';
 import { loadProgress, saveProgress, type ProgressV1 } from './progress';
 import { schedulePutCalibration, schedulePutProgress } from './sync';
 import {
@@ -139,16 +133,20 @@ export function bumpVocabLetter(correct: boolean) {
   commitProgress({ ...p, vocab_stats: stats });
 }
 
-export function bumpVocabWord(he: string) {
+export function bumpVocabWord(he: string, cleanAttempt: boolean) {
   const p = progress.value;
-  const prev = p.seen_words[he] || { count: 0, last_seen_at: '' };
-  const seen = {
+  const prev = p.seen_words[he] || { seen: 0, clean: 0, attempted: 0 };
+  const next = {
     ...p.seen_words,
-    [he]: { count: prev.count + 1, last_seen_at: nowIso() },
+    [he]: {
+      seen: prev.seen + 1,
+      attempted: prev.attempted + 1,
+      clean: prev.clean + (cleanAttempt ? 1 : 0),
+    },
   };
   commitProgress({
     ...p,
-    seen_words: seen,
+    seen_words: next,
     vocab_stats: {
       ...p.vocab_stats,
       words_completed: p.vocab_stats.words_completed + 1,

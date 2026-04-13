@@ -361,10 +361,10 @@ export function VocabTab() {
                 return <span aria-label="feminine" title="feminine"> ♀</span>;
               }
               if (v === 'present_m_pl' || v === 'm_pl') {
-                return <span aria-label="masculine plural" title="masculine plural"> ♂ pl</span>;
+                return <span aria-label="masculine plural" title="masculine plural"> ♂</span>;
               }
               if (v === 'present_f_pl' || v === 'f_pl') {
-                return <span aria-label="feminine plural" title="feminine plural"> ♀ pl</span>;
+                return <span aria-label="feminine plural" title="feminine plural"> ♀</span>;
               }
               // present_m_sg or m_sg → no badge
               return null;

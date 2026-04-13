@@ -17,6 +17,8 @@ import { playCorrect, playWrong, playWordComplete, playReveal, playPerfect, prim
 import { progress } from '../state/signals';
 import panels from './panels.module.css';
 import study from './study.module.css';
+import { appendLocalSample } from '../storage/strokes_store';
+import { strokeSamples } from '../state/strokes';
 
 // Heuristic: consider the current position to be at the end of a word if the
 // next character is missing or a separator (space/punctuation/maqaf).
@@ -188,6 +190,9 @@ export function VocabTab() {
       addCalibrationSample(top1.letter, vec);
       // Also capture raw strokes to server for continued training (best-effort)
       if (strokes && strokes.length) {
+        // Append to canonical stroke dataset immediately
+        const updated = appendLocalSample(top1.letter, strokes);
+        strokeSamples.value = updated.samples as any;
         import('../storage/strokes').then(m => m.captureStroke(top1.letter, strokes).catch(() => {}));
       }
       setLastReject(null);

@@ -5,6 +5,7 @@ import { getCalibration, getProgress } from './sync';
 import { getStrokes } from './strokes_fetch';
 import { calibration, deviceId, offline, progress, syncStatus } from '../state/signals';
 import { strokeSamples } from '../state/strokes';
+import { emptyStrokes, loadLocalStrokes, mergeStrokes, saveLocalStrokes } from './strokes_store';
 
 // Boot sequence:
 // 1. Synchronously hydrate signals from localStorage so the UI renders with
@@ -20,6 +21,13 @@ export async function bootSync() {
   // Local hydrate first.
   calibration.value = loadCalibration();
   progress.value = loadProgress();
+  // Hydrate local strokes first so recognizer is usable offline immediately
+  try {
+    const local = loadLocalStrokes();
+    strokeSamples.value = local.samples as any;
+  } catch {
+    strokeSamples.value = emptyStrokes().samples as any;
+  }
 
   syncStatus.value = 'loading';
   try {
@@ -35,7 +43,11 @@ export async function bootSync() {
       progress.value = prog;
     }
     if (strokes && strokes.version === 1) {
-      strokeSamples.value = strokes.samples as any;
+      // Merge server strokes into local, deduping and capping
+      const local = loadLocalStrokes();
+      const merged = mergeStrokes(local, { version: 1, samples: strokes.samples as any, updated_at: new Date().toISOString() });
+      saveLocalStrokes(merged);
+      strokeSamples.value = merged.samples as any;
     }
     offline.value = false;
     syncStatus.value = 'idle';

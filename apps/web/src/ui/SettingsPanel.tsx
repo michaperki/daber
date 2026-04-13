@@ -4,6 +4,8 @@ import { emptyCalibration } from '../storage/calibration';
 import { emptyProgress } from '../storage/progress';
 import { putCalibration, putProgress } from '../storage/sync';
 import { commitCalibration, commitProgress, updatePrefs } from '../storage/mutations';
+import { clearLocalStrokes, emptyStrokes } from '../storage/strokes_store';
+import { strokeSamples } from '../state/strokes';
 import styles from './SettingsPanel.module.css';
 
 export function SettingsPanel() {
@@ -33,6 +35,9 @@ export function SettingsPanel() {
     try {
       const emptyCal = emptyCalibration();
       const emptyProg = emptyProgress();
+      // Clear local canonical stroke dataset
+      clearLocalStrokes();
+      strokeSamples.value = emptyStrokes().samples as any;
       calibration.value = emptyCal;
       progress.value = emptyProg;
       try {

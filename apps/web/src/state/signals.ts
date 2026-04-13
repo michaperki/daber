@@ -5,6 +5,7 @@ import type { ProgressV1 } from '../storage/progress';
 import { emptyProgress } from '../storage/progress';
 import type { LetterGlyph } from '../recognizer/types';
 import { LETTERS } from '../recognizer/types';
+import { strokeSamples } from './strokes';
 
 // ---- Top-level signals ----
 
@@ -29,9 +30,10 @@ export const settingsOpen = signal<boolean>(false);
 // ---- Derived ----
 
 export const sampleCounts = computed<Record<LetterGlyph, number>>(() => {
-  const cal = calibration.value;
+  // Canonical: counts from the stroke dataset used by the recognizer
+  const db = strokeSamples.value as Record<LetterGlyph, any>;
   const out = {} as Record<LetterGlyph, number>;
-  for (const L of LETTERS) out[L] = (cal.samples[L] || []).length;
+  for (const L of LETTERS) out[L] = ((db && db[L]) ? db[L].length : 0);
   return out;
 });
 
@@ -42,8 +44,6 @@ export const setupCount = computed<number>(() => {
   return n;
 });
 
-export const setupComplete = computed<boolean>(
-  () => setupCount.value >= LETTERS.length,
-);
+export const setupComplete = computed<boolean>(() => setupCount.value >= LETTERS.length);
 
 // No calibratedLetters computed; onboarding uses counts directly.

@@ -13,6 +13,8 @@ import {
   addCalibrationSample,
   clearLetterSamples,
 } from '../storage/mutations';
+import { appendLocalSample } from '../storage/strokes_store';
+import { strokeSamples } from '../state/strokes';
 import { LettersGrid } from './LettersGrid';
 import panels from './panels.module.css';
 
@@ -75,9 +77,12 @@ export function Onboarding() {
     if (sum < 1e-3) return;
 
     addCalibrationSample(targetLetter, vec);
-    // Best-effort capture of raw strokes to the API for training
+    // Append to canonical stroke dataset immediately for runtime recognition
     const strokes: Stroke[] | undefined = c.getStrokes?.();
     if (strokes && strokes.length) {
+      const updated = appendLocalSample(targetLetter, strokes);
+      strokeSamples.value = updated.samples as any;
+      // Best-effort capture of raw strokes to the API for training
       import('../storage/strokes')
         .then((m) => m.captureStroke(targetLetter, strokes).catch(() => {}))
         .catch(() => {});

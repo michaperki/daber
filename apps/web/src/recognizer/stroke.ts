@@ -28,23 +28,42 @@ export function resampleStroke(strokes: Stroke[], N = 96): Float32Array {
     poly.push([(p.x - minX) / scale, (p.y - minY) / scale]);
     lastSid = p.sid;
   }
-  // Arc-length resample
-  const S = new Float32Array(poly.length);
+  // Curvature-weighted resample: accumulate per-segment weighted length
+  // weight_i = |seg_i| * (1 + beta * kappa_i), where kappa_i is the absolute
+  // turn angle at the segment (normalized by PI).
+  const beta = 0.5;
+  const segLen = new Float32Array(Math.max(0, poly.length - 1));
+  const segAng = new Float32Array(Math.max(0, poly.length - 1));
   for (let i = 1; i < poly.length; i++) {
     const dx = poly[i]![0] - poly[i - 1]![0];
     const dy = poly[i]![1] - poly[i - 1]![1];
-    S[i] = S[i - 1] + Math.hypot(dx, dy);
+    segLen[i - 1] = Math.hypot(dx, dy);
+    segAng[i - 1] = Math.atan2(dy, dx);
   }
-  const total = S[S.length - 1] || 1;
+  // Curvature proxy at segment i is the turn from previous segment to this one
+  const kappa = new Float32Array(segLen.length);
+  for (let i = 1; i < segLen.length; i++) {
+    let d = segAng[i] - segAng[i - 1];
+    // Wrap to [-PI, PI]
+    while (d > Math.PI) d -= 2 * Math.PI;
+    while (d < -Math.PI) d += 2 * Math.PI;
+    kappa[i] = Math.abs(d) / Math.PI; // [0,1]
+  }
+  const W = new Float32Array(poly.length);
+  for (let i = 1; i < poly.length; i++) {
+    const wseg = segLen[i - 1] * (1 + beta * kappa[i - 1]);
+    W[i] = W[i - 1] + wseg;
+  }
+  const total = W[W.length - 1] || 1;
   const out = new Float32Array(N * 2);
   for (let i = 0; i < N; i++) {
     const t = (total * i) / (N - 1);
     // find segment
     let j = 1;
-    while (j < S.length && S[j] < t) j++;
+    while (j < W.length && W[j] < t) j++;
     const j0 = Math.max(0, j - 1);
-    const j1 = Math.min(S.length - 1, j);
-    const s0 = S[j0], s1 = S[j1];
+    const j1 = Math.min(W.length - 1, j);
+    const s0 = W[j0], s1 = W[j1];
     const u = s1 > s0 ? (t - s0) / (s1 - s0) : 0;
     const x = poly[j0]![0] + u * (poly[j1]![0] - poly[j0]![0]);
     const y = poly[j0]![1] + u * (poly[j1]![1] - poly[j0]![1]);

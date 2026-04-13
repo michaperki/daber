@@ -1,0 +1,7 @@
+verbs: []
+waves:
+  - id: starter_present
+    title: "Starter: lemmas + present"
+    unlocked: true
+    forms: [lemma, present_*]
+    files: [all, cognition_perception, communication, core_actions, motion]

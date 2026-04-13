@@ -4,7 +4,7 @@
 // run build`. If that build hasn't run yet we fall back to an empty array so
 // Vite doesn't fail to start — the Vocab tab will just show an empty state.
 
-export type VocabEntry = { he: string; en: string; pos: string; variant?: string };
+export type VocabEntry = { he: string; en: string; pos: string; variant?: string; lemma?: string };
 
 // Vite's import.meta.glob with `eager: true` statically bundles matching
 // files, but tolerates zero matches (it yields an empty record). This gives
@@ -16,6 +16,15 @@ const modules = import.meta.glob('../../../packages/content/dist/vocab.json', {
 
 const first = Object.values(modules)[0];
 export const vocab: VocabEntry[] = Array.isArray(first) ? first : [];
+
+// Optional curriculum import; tolerates absence during dev
+const currMods = import.meta.glob('../../../packages/content/dist/curriculum.json', {
+  eager: true,
+  import: 'default',
+}) as Record<string, { verbs: Record<string, string[]>; tokens: string[] }>;
+const firstCurr = Object.values(currMods)[0];
+const curriculum = firstCurr || { verbs: {}, tokens: [] };
+export const curriculumData = curriculum;
 
 import { progress } from './state/signals';
 

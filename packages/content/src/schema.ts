@@ -37,24 +37,12 @@ export const VerbEntrySchema = z.object({
     })
     .partial()
     .optional(),
-  past_he: z
-    .object({
-      m_sg: z.string().optional(),
-      f_sg: z.string().optional(),
-      m_pl: z.string().optional(),
-      f_pl: z.string().optional(),
-    })
-    .partial()
-    .optional(),
-  past_en: z
-    .object({
-      m_sg: z.string().optional(),
-      f_sg: z.string().optional(),
-      m_pl: z.string().optional(),
-      f_pl: z.string().optional(),
-    })
-    .partial()
-    .optional(),
+  past_he: z.record(z.string(), z.string()).optional(),
+  past_en: z.record(z.string(), z.string()).optional(),
+  future_he: z.record(z.string(), z.string()).optional(),
+  future_en: z.record(z.string(), z.string()).optional(),
+  imperative_he: z.record(z.string(), z.string()).optional(),
+  imperative_en: z.record(z.string(), z.string()).optional(),
 });
 
 export const NounEntrySchema = z.object({
@@ -104,4 +92,4 @@ export const FileSchema = z.object({
   entries: z.array(z.unknown()),
 });
 
-export type VocabRow = { he: string; en: string; pos: string; variant?: string };
+export type VocabRow = { he: string; en: string; pos: string; variant?: string; lemma?: string };

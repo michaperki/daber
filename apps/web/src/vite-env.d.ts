@@ -8,7 +8,13 @@ declare module '*.module.css' {
 
 // Ambient typing for the raw vocab.json artifact (generated at content build).
 declare module '*/packages/content/dist/vocab.json' {
-  const value: { he: string; en: string; pos: string; variant?: string }[];
+  const value: { he: string; en: string; pos: string; variant?: string; lemma?: string }[];
+  export default value;
+}
+
+// Ambient typing for curriculum.json (generated at content build).
+declare module '*/packages/content/dist/curriculum.json' {
+  const value: { verbs: Record<string, string[]>; tokens: string[] };
   export default value;
 }
 

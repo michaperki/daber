@@ -32,32 +32,51 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
       switch (pos) {
         case 'verb': {
           const v = VerbEntrySchema.parse(entry);
-          // Base infinitive
-          rows.push({ he: v.lemma, en: v.gloss, pos });
-          // Present forms with English labels (emit only if both sides exist)
-          const presHe = (v as any).present_he || {};
-          const presEn = v.present_en || {};
-          const add = (
-            he: unknown,
-            en: unknown,
-            variant: 'present_m_sg' | 'present_f_sg' | 'present_m_pl' | 'present_f_pl' |
-                     'past_m_sg' | 'past_f_sg' | 'past_m_pl' | 'past_f_pl',
-          ) => {
+          // Base infinitive row
+          rows.push({ he: v.lemma, en: v.gloss, pos, lemma: v.lemma });
+
+          // Helper to add a conjugated form only if both he+en exist
+          const add = (he: unknown, en: unknown, variant: string) => {
             if (typeof he === 'string' && he.trim() && typeof en === 'string' && en.trim()) {
-              rows.push({ he, en, pos, variant });
+              rows.push({ he, en, pos, variant, lemma: v.lemma });
             }
           };
+
+          // Present (gender/number)
+          const presHe = (v as any).present_he || {};
+          const presEn = (v as any).present_en || {};
           add(presHe.m_sg, presEn.m_sg, 'present_m_sg');
           add(presHe.f_sg, presEn.f_sg, 'present_f_sg');
           add(presHe.m_pl, presEn.m_pl, 'present_m_pl');
           add(presHe.f_pl, presEn.f_pl, 'present_f_pl');
-          // Past forms (emit only if both he+en exist)
+
+          // Past (person)
           const pastHe = (v as any).past_he || {};
           const pastEn = (v as any).past_en || {};
-          add(pastHe.m_sg, pastEn.m_sg, 'past_m_sg');
-          add(pastHe.f_sg, pastEn.f_sg, 'past_f_sg');
-          add(pastHe.m_pl, pastEn.m_pl, 'past_m_pl');
-          add(pastHe.f_pl, pastEn.f_pl, 'past_f_pl');
+          const pastKeys = [
+            '1sg',
+            '2sg_m',
+            '2sg_f',
+            '3sg_m',
+            '3sg_f',
+            '1pl',
+            '2pl_m',
+            '2pl_f',
+            '3pl',
+          ] as const;
+          for (const k of pastKeys) add(pastHe[k], pastEn[k], `past_${k}`);
+
+          // Future (person)
+          const futHe = (v as any).future_he || {};
+          const futEn = (v as any).future_en || {};
+          const futKeys = pastKeys; // same shape
+          for (const k of futKeys) add(futHe[k], futEn[k], `future_${k}`);
+
+          // Imperative (gender/number)
+          const impHe = (v as any).imperative_he || {};
+          const impEn = (v as any).imperative_en || {};
+          const impKeys = ['sg_m', 'sg_f', 'pl_m', 'pl_f'] as const;
+          for (const k of impKeys) add(impHe[k], impEn[k], `imperative_${k}`);
           break;
         }
         case 'noun': {

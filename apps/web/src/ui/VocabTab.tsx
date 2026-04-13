@@ -13,6 +13,7 @@ import {
   bumpVocabWord,
 } from '../storage/mutations';
 import { randomVocabEntry, vocab, type VocabEntry } from '../content';
+import { playCorrect, playWrong, playWordComplete, playReveal } from '../audio';
 import panels from './panels.module.css';
 import study from './study.module.css';
 
@@ -195,6 +196,12 @@ export function VocabTab() {
       const skip = advancePastSpaces(cur.he, nextPos, newOutput);
       nextPos = skip.pos;
       newOutput = skip.out;
+      // Sound: play word-complete chime if finishing, else per-letter tick
+      if (nextPos >= cur.he.length) {
+        playWordComplete();
+      } else {
+        playCorrect();
+      }
       // On position advance, reset wrong-attempt counts and any hints
       setState((s) => ({ ...s, pos: nextPos, output: newOutput, wrongCounts: {}, hints: {} }));
       navigator.vibrate?.(30);
@@ -219,6 +226,7 @@ export function VocabTab() {
       setLastReject(vec);
       navigator.vibrate?.([40]);
       canvasRef.current?.shake();
+      playWrong();
       attemptRef.current.mistake = true;
       // Track wrong attempts for this character position. After 2 in a row, reveal this letter's tile.
       setState((s) => {
@@ -242,6 +250,7 @@ export function VocabTab() {
     // Reveal the full word but stay on this item so the user can trace it.
     attemptRef.current.reveal = true;
     setState((s) => ({ ...s, revealed: true }));
+    playReveal();
   }
   function onSkip() {
     pickNext();
@@ -270,6 +279,12 @@ export function VocabTab() {
     attemptRef.current.force = true;
     const nextPos = state.pos + 1;
     const newOutput = state.output + display;
+    // Sounds
+    if (nextPos >= cur.he.length) {
+      playWordComplete();
+    } else {
+      playCorrect();
+    }
     // On position advance via force-accept, also reset wrong-attempt counts and hints
     setState((s) => ({ ...s, pos: nextPos, output: newOutput, wrongCounts: {}, hints: {} }));
     navigator.vibrate?.(30);
@@ -333,12 +348,16 @@ export function VocabTab() {
   return (
     <>
       <div class={study.topWord}>
-        {(() => {
-          const cur = state.current;
-          if (!cur) return '—';
-          const badge = cur.variant === 'f_sg' ? ' ♀' : '';
-          return cur.en + badge;
-        })()}
+        {state.current ? (
+          <>
+            <span>{state.current.en}</span>
+            {state.current.variant === 'f_sg' ? (
+              <span aria-label="feminine" title="feminine"> ♀</span>
+            ) : null}
+          </>
+        ) : (
+          '—'
+        )}
       </div>
       {/* Tiles: one per Hebrew letter, skip spaces */}
       <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>

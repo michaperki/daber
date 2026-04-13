@@ -351,28 +351,7 @@ export function VocabTab() {
   return (
     <>
       <div class={study.topWord}>
-        {state.current ? (
-          <>
-            <span>{state.current.en}</span>
-            {(() => {
-              const v = state.current?.variant;
-              if (!v) return null;
-              if (v === 'present_f_sg' || v === 'f_sg') {
-                return <span aria-label="feminine" title="feminine"> ♀</span>;
-              }
-              if (v === 'present_m_pl' || v === 'm_pl') {
-                return <span aria-label="masculine plural" title="masculine plural"> ♂</span>;
-              }
-              if (v === 'present_f_pl' || v === 'f_pl') {
-                return <span aria-label="feminine plural" title="feminine plural"> ♀</span>;
-              }
-              // present_m_sg or m_sg → no badge
-              return null;
-            })()}
-          </>
-        ) : (
-          '—'
-        )}
+        {state.current ? <span>{state.current.en}</span> : '—'}
       </div>
       {/* Tiles: one per Hebrew letter, skip spaces */}
       <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>

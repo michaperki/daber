@@ -29,6 +29,7 @@ export function SettingsPanel() {
   const [entered, setEntered] = useState('');
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ kind: 'ok' | 'bad'; text: string } | null>(null);
+  const [devOutput, setDevOutput] = useState('');
 
   function close() {
     settingsOpen.value = false;
@@ -211,9 +212,9 @@ export function SettingsPanel() {
                     try {
                       const res = await fetch('/version');
                       const json = await res.json();
-                      alert(`Backend: ${json?.version || '(none)'}\nFrontend: ${FRONTEND_VERSION}`);
+                      setDevOutput(`Backend: ${json?.version || '(none)'}\nFrontend: ${FRONTEND_VERSION}`);
                     } catch {
-                      alert('Failed to fetch /version');
+                      setDevOutput('Failed to fetch /version');
                     }
                   }}
                 >
@@ -318,13 +319,13 @@ export function SettingsPanel() {
                       }
                       const pct = (c: number, t: number) => (t ? Math.round((100 * c) / t) : 0);
                       const top5 = (m: Record<string, number>) => Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k}(${v})`).join(' · ') || '—';
-                      alert([
+                      setDevOutput([
                         `Base (λ=0):    ${pct(stats.base.correct, stats.base.total)}%  conf: ${top5(stats.base.conf)}`,
                         `Geom (λ=0.5):  ${pct(stats.g05.correct, stats.g05.total)}%  conf: ${top5(stats.g05.conf)}`,
                         `Geom (λ=1.0):  ${pct(stats.g10.correct, stats.g10.total)}%  conf: ${top5(stats.g10.conf)}`,
                       ].join('\n'));
                     } catch (e) {
-                      alert('Confusion check failed. Collect stroke samples first.');
+                      setDevOutput('Confusion check failed. Collect stroke samples first.');
                     }
                   }}
                 >
@@ -355,9 +356,9 @@ export function SettingsPanel() {
                         const max = Math.max(...vals);
                         lines.push(`${L}: n=${n}  mean=${mean.toFixed(3)}  sd=${sd.toFixed(3)}  min=${min.toFixed(3)}  max=${max.toFixed(3)}`);
                       }
-                      alert(lines.join('\n'));
+                      setDevOutput(lines.join('\n'));
                     } catch (e) {
-                      alert('Aspect stats failed.');
+                      setDevOutput('Aspect stats failed.');
                     }
                   }}
                   style={{ marginLeft: '8px' }}
@@ -365,6 +366,18 @@ export function SettingsPanel() {
                   Aspect stats (י/ו/ן)
                 </button>
               </div>
+              {devOutput ? (
+                <div class={styles.row}>
+                  <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', flex: 1 }}>{devOutput}</pre>
+                  <button
+                    type="button"
+                    onClick={async () => { try { await navigator.clipboard.writeText(devOutput); } catch {} }}
+                    style={{ marginLeft: '8px', alignSelf: 'flex-start' }}
+                  >
+                    Copy
+                  </button>
+                </div>
+              ) : null}
             </div>
           </>
         )}

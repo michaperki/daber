@@ -1,9 +1,11 @@
 import type { FastifyInstance } from 'fastify';
-import { VERSION } from '../version.js';
 
 export async function registerVersionRoute(app: FastifyInstance) {
   app.get('/version', async (_req, reply) => {
-    return reply.send({ version: VERSION });
+    const rel = process.env.HEROKU_RELEASE_VERSION || '';
+    let version = '0';
+    if (/^v\d+$/i.test(rel)) version = rel.slice(1);
+    else if (/^\d+$/.test(rel)) version = rel;
+    return reply.send({ version });
   });
 }
-

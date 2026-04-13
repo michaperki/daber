@@ -7,7 +7,7 @@ import { getCalibration, getProgress, putCalibration, putProgress } from '../sto
 import { getStrokes } from '../storage/strokes_fetch';
 import { commitCalibration, commitProgress } from '../storage/mutations';
 import styles from './SettingsPanel.module.css';
-import { VERSION as FRONTEND_VERSION } from '../version';
+import { useEffect } from 'preact/hooks';
 import { strokeSamples } from '../state/strokes';
 import { predictByStroke } from '../recognizer/stroke';
 import { measureBounds } from '../recognizer/raster';
@@ -30,6 +30,22 @@ export function SettingsPanel() {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ kind: 'ok' | 'bad'; text: string } | null>(null);
   const [devOutput, setDevOutput] = useState('');
+  const [version, setVersion] = useState<string>('…');
+
+  // Fetch backend version at runtime so it works on Heroku (HEROKU_RELEASE_VERSION)
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/version');
+        const json = await res.json();
+        if (!cancelled) setVersion(json?.version || '0');
+      } catch {
+        if (!cancelled) setVersion('0');
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   function close() {
     settingsOpen.value = false;
@@ -199,10 +215,10 @@ export function SettingsPanel() {
 
         <div class={styles.divider} />
 
-        {/* Always show simple build number */}
+        {/* Version: runtime from backend /version */}
         <div>
           <div class={styles.label}>Version</div>
-          <div class={styles.hint}>{FRONTEND_VERSION}</div>
+          <div class={styles.hint}>{version}</div>
         </div>
 
         <div class={styles.divider} />

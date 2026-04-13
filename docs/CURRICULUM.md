@@ -11,9 +11,27 @@ This document describes the lightweight curriculum design and progression logic 
 
 ## Structure
 
+- Layers:
+  - Breadth: which content is in scope (chapters/domains/POS).
+  - Depth: how a lemma expands over time (tiers for verbs; simple for others).
+  - Selection: how a session is composed (light, intentional rules).
 - Chapters (breadth): YAML groupings (e.g., verbs/core_actions.yaml, adjectives/core.yaml, nouns/core_people_objects.yaml). Chapters define which lemmas are in scope.
 - Per‑lemma tiers (depth): a small, fixed sequence per verb that unlocks fuller expression as you stabilize current forms.
 - Cell states: `introduced → practicing → mastered`, with simple streak thresholds that you already have.
+
+## Breadth (Chapters)
+
+- Unit of a chapter: a small, coherent set that fits on one mental shelf.
+  - Target size: ~12–18 lemmas total per chapter (aim 4–6 verbs, 8–12 nouns/adjectives).
+  - POS mix per chapter:
+    - Verbs: anchor expression (most chapters include 4–6 core verbs).
+    - Nouns: scene content (people/objects/places tied to the theme).
+    - Adjectives: qualities that fit the theme.
+- Active chapters at once: 1–3. More feels noisy; fewer can feel narrow.
+- How new content enters:
+  - You activate a chapter in curriculum → its lemmas become eligible immediately.
+  - Verbs enter at Tier 1 (present) only; deeper tiers are locked until suggested/unlocked per lemma.
+  - Nouns and adjectives enter with their full forms (see below), no tiering.
 
 ## Verb Tiers (Per‑Lemma)
 
@@ -53,17 +71,20 @@ Four tiers per verb, no micro‑steps:
 
 ## Selector Philosophy (Simple & Intentional)
 
-- State weights only: `introduced` > `practicing` > `mastered`, with light recency/difficulty bias.
+- Mix & ratios (default): ~60% verbs, 25% nouns, 15% adjectives per session.
+- New vs review: introduce 2–4 new cells per session; rest is review weighted by state and recency (`introduced` > `practicing` > `mastered`).
 - Basic guardrails:
-  - Breadth floor: ensure at least 3 distinct lemmas in any 10 items.
-  - Depth cap: avoid more than 3 cells from the same lemma back‑to‑back.
-  - Novelty budget: introduce ≤ 2–4 new cells per session.
+  - Breadth floor: touch ≥ 4 distinct lemmas every 10 items.
+  - Depth cap: ≤ 3 consecutive items from the same lemma.
+  - Chapter balance: if multiple chapters are active, see at least 2 in a session.
+  - Warm‑up: open with 2–3 easy items (short nouns/adj or verb present forms).
 - No complex SRS or due‑date math.
 
 ## Chapters as Breadth
 
 - Chapters define the candidate lemma pool. You unlock/lock chapters manually via curriculum files.
 - Per‑lemma suggestions operate only within the active chapter set. This keeps depth focused and sessions coherent.
+- Adjust chapter activation anytime; the next session adapts automatically.
 
 ## What We Keep vs Remove
 
@@ -72,10 +93,9 @@ Four tiers per verb, no micro‑steps:
 
 ## Notes for Other POS (Future)
 
-- Adjectives: treat the 4 forms (`m_sg`, `f_sg`, `m_pl`, `f_pl`) as a single tier; suggestions not needed initially.
-- Nouns: treat `sg` and `pl` as a single tier; suggestions not needed initially.
+- Adjectives: a single tier — introduce `m_sg`, `f_sg`, `m_pl`, `f_pl` together; practice drives mastery; no suggestions needed initially.
+- Nouns: a single tier — introduce `sg` and `pl` together; practice drives mastery; no suggestions needed initially.
 
 ## Rationale
 
 This design gives you intentional breadth via chapters and organic depth via per‑lemma tiers. The 2/3 readiness threshold leverages your existing cell states, avoids perfectionism, and keeps the experience moving without opaque automation or heavy scheduling.
-

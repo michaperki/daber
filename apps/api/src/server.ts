@@ -7,6 +7,7 @@ import { registerCalibrationRoutes } from './routes/calibration.js';
 import { registerProgressRoutes } from './routes/progress.js';
 import { registerHealthRoute } from './routes/health.js';
 import { registerStrokesRoutes } from './routes/strokes.js';
+import { registerVersionRoute } from './routes/version.js';
 import fs from 'node:fs';
 
 const PORT = Number(process.env.PORT || 3000);
@@ -22,6 +23,7 @@ async function buildServer() {
   await registerCalibrationRoutes(app);
   await registerProgressRoutes(app);
   await registerStrokesRoutes(app);
+  await registerVersionRoute(app);
 
   // In production, serve the built SPA if present
   const webDist = path.resolve(process.cwd(), 'apps/web/dist');

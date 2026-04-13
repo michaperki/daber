@@ -11,7 +11,7 @@
     "node": "24.x"
   },
   "scripts": {
-    "build": "npm run build:content && npm run build:web && npm run build:api",
+    "build": "node scripts/write_version.cjs && npm run build:content && npm run build:web && npm run build:api",
     "build:content": "npm -w packages/content run build",
     "build:web": "npm -w apps/web run build",
     "build:api": "npm -w apps/api run build",

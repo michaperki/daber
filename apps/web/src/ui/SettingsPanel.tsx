@@ -7,6 +7,7 @@ import { getCalibration, getProgress, putCalibration, putProgress } from '../sto
 import { getStrokes } from '../storage/strokes_fetch';
 import { commitCalibration, commitProgress } from '../storage/mutations';
 import styles from './SettingsPanel.module.css';
+import { VERSION as FRONTEND_VERSION } from '../version';
 import { strokeSamples } from '../state/strokes';
 import { predictByStroke } from '../recognizer/stroke';
 import { measureBounds } from '../recognizer/raster';
@@ -196,6 +197,32 @@ export function SettingsPanel() {
             </button>
           </div>
         </div>
+
+        {typeof window !== 'undefined' && /(?:^|[?&])dev=1(?:&|$)/.test(window.location.search) && (
+          <>
+            <div class={styles.divider} />
+            <div>
+              <div class={styles.label}>Dev: Version</div>
+              <div class={styles.hint}>Frontend: {FRONTEND_VERSION}</div>
+              <div class={styles.row}>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      const res = await fetch('/version');
+                      const json = await res.json();
+                      alert(`Backend: ${json?.version || '(none)'}\nFrontend: ${FRONTEND_VERSION}`);
+                    } catch {
+                      alert('Failed to fetch /version');
+                    }
+                  }}
+                >
+                  Check backend /version
+                </button>
+              </div>
+            </div>
+          </>
+        )}
 
         <div class={styles.divider} />
 

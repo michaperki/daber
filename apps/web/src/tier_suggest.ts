@@ -83,7 +83,8 @@ export function acceptTierUnlock() {
   if (!s) return;
   unlockTier(s.lemma, s.tier);
   tierSuggestion.value = null;
-  tierToast.value = `${TIER_LABEL[s.tier]} unlocked for ${s.lemma}`;
+  const added = tierTokens(s.tier).length;
+  tierToast.value = `${TIER_LABEL[s.tier]} unlocked for ${s.lemma} — +${added} forms added`;
   clearToastSoon();
 }
 

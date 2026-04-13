@@ -54,6 +54,12 @@ export function randomVocabEntry(): VocabEntry | null {
 }
 
 function randomVocabEntryByCell(): VocabEntry | null {
+  // Session guardrails
+  const recentLemmas: string[] = (randomVocabEntryByCell as any)._recentLemmas || [];
+  const seenCells: Set<string> = (randomVocabEntryByCell as any)._seenCells || new Set();
+  let pickCount: number = (randomVocabEntryByCell as any)._pickCount || 0;
+  let newCells: number = (randomVocabEntryByCell as any)._newCells || 0;
+
   // Build lemma+token → row index per POS
   const vmap = new Map<string, VocabEntry>();
   const amap = new Map<string, VocabEntry>();
@@ -122,10 +128,61 @@ function randomVocabEntryByCell(): VocabEntry | null {
   };
   const difficulty = (streak?: number) => 1 + Math.max(0, 3 - (streak || 0));
 
-  const weighted = items.map(({ key, row }) => {
+  // Guardrails
+  const last1 = recentLemmas[recentLemmas.length - 1];
+  const last2 = recentLemmas[recentLemmas.length - 2];
+  const wouldViolateDepthCap = (lemma: string) => last1 === lemma && last2 === lemma;
+  const breadthCheck = (lemma: string) => {
+    if (pickCount < 9) return true;
+    const arr = [...recentLemmas.slice(-9), lemma];
+    return new Set(arr).size >= 3;
+  };
+  const noveltyBudget = 3; // 2–4 target; pick 3 as default
+  const isNewCell = (key: string) => !cells[key] && !seenCells.has(key);
+  const isEasy = (row: VocabEntry) => {
+    const short = (row.he || '').replace(/\s/g, '').length <= 4;
+    if (row.pos === 'noun' || row.pos === 'adjective') return short;
+    if (row.pos === 'verb') return short && (!!row.variant && row.variant.startsWith('present_') || row.variant === 'lemma');
+    return short;
+  };
+
+  const applyGuards = ({ key, row }: { key: string; row: VocabEntry }) => {
+    const parts = key.split(':');
+    const lemma = parts[1] || row.lemma || row.he;
+    if (!lemma) return false;
+    if (wouldViolateDepthCap(lemma)) return false;
+    if (!breadthCheck(lemma)) return false;
+    if (isNewCell(key) && newCells >= noveltyBudget) return false;
+    if (pickCount < 2 && !isEasy(row)) return false; // warm-up
+    return true;
+  };
+
+  const filtered = items.filter(applyGuards);
+
+  const source = filtered.length ? filtered : items;
+
+  const weighted = source.map(({ key, row }) => {
     const c = cells[key];
     const w = stateWeight(c?.state) * recency(c?.last_seen_at) * difficulty(c?.streak);
     return { item: row, weight: w };
   });
-  return pickWeighted(weighted);
+  const picked = pickWeighted(weighted);
+  if (!picked) return null;
+  // Update session trackers
+  const pos = picked.pos;
+  const lemma = picked.lemma || (picked.variant ? undefined : picked.he);
+  const token = picked.variant || (pos === 'verb' ? 'lemma' : pos === 'noun' ? 'sg' : 'm_sg');
+  if (lemma && token) {
+    const key = `${pos}:${lemma}:${token}`;
+    if (!cells[key] && !seenCells.has(key)) newCells++;
+    seenCells.add(key);
+    recentLemmas.push(lemma);
+    if (recentLemmas.length > 10) recentLemmas.shift();
+  }
+  pickCount++;
+  (randomVocabEntryByCell as any)._recentLemmas = recentLemmas;
+  (randomVocabEntryByCell as any)._seenCells = seenCells;
+  (randomVocabEntryByCell as any)._pickCount = pickCount;
+  (randomVocabEntryByCell as any)._newCells = newCells;
+  return picked;
 }

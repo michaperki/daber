@@ -93,6 +93,23 @@ export function VocabTab() {
     force: false,
   });
 
+  // Session-level seen verbs to show a tiny intro chip once
+  const seenVerbsRef = useRef<Set<string>>(new Set());
+  const [newVerbChip, setNewVerbChip] = useState<string | null>(null);
+  // Show tier label only after an attempt (avoid answer leakage)
+  const [tierLabelVisible, setTierLabelVisible] = useState(false);
+  // Slight delay before rendering a suggestion to avoid interruptiveness
+  const [showSuggestion, setShowSuggestion] = useState(false);
+  useEffect(() => {
+    let t: number | null = null;
+    if (tierSuggestion.value) {
+      t = window.setTimeout(() => setShowSuggestion(true), 550);
+    } else {
+      setShowSuggestion(false);
+    }
+    return () => { if (t) window.clearTimeout(t); };
+  }, [tierSuggestion.value]);
+
   // no prefs used here after simplification
 
   function pickNext() {
@@ -102,6 +119,13 @@ export function VocabTab() {
     setState({ current: entry, pos: 0, output: '', revealed: false, wrongCounts: {}, hints: {} });
     canvasRef.current?.clear();
     attemptRef.current = { mistake: false, reveal: false, force: false };
+    setTierLabelVisible(false);
+    // New verb intro chip (one-time per lemma per session)
+    if (entry && entry.pos === 'verb' && entry.lemma && !seenVerbsRef.current.has(entry.lemma)) {
+      seenVerbsRef.current.add(entry.lemma);
+      setNewVerbChip(`New verb: ${entry.lemma}`);
+      window.setTimeout(() => setNewVerbChip((v) => (v === `New verb: ${entry.lemma}` ? null : v)), 1400);
+    }
   }
 
   // First-mount: pick a word.
@@ -218,6 +242,7 @@ export function VocabTab() {
       setCanvasKey((k) => k + 1);
       if (nextPos >= cur.he.length) {
         setFeedback({ kind: 'ok', text: '✓ Correct' });
+        setTierLabelVisible(true);
         const attemptClean = !(attemptRef.current.mistake || attemptRef.current.reveal || attemptRef.current.force);
         bumpVocabWord(cur.he, attemptClean);
         const token = cur.variant || (cur.pos === 'verb' ? 'lemma' : cur.pos === 'noun' ? 'sg' : 'm_sg');
@@ -262,6 +287,7 @@ export function VocabTab() {
     setState((s) => ({ ...s, revealed: true }));
     void primeAudio();
     playReveal();
+    setTierLabelVisible(true);
   }
   function onSkip() {
     pickNext();
@@ -363,31 +389,34 @@ export function VocabTab() {
       {tierToast.value && (
         <div class={panels.feedback + ' ' + panels.feedbackOk}>{tierToast.value}</div>
       )}
-      {/* Small inline verb/tier awareness */}
-      {state.current && state.current.pos === 'verb' && state.current.lemma && (
+      {/* New verb intro chip */}
+      {newVerbChip && (
+        <div class={panels.feedback}>{newVerbChip}</div>
+      )}
+      {/* Small inline verb/tier awareness (only after attempt to avoid leakage) */}
+      {tierLabelVisible && state.current && state.current.pos === 'verb' && state.current.lemma && (
         <div class={panels.progress}>
           {(() => {
             const lemma = state.current!.lemma!;
             const eff = getActiveVerbTokens(curriculumData.verbs || {});
             const tier = currentTierFromTokens(eff[lemma] || []);
             const label = tier === 4 ? 'Imperative' : tier === 3 ? 'Future' : tier === 2 ? 'Past' : 'Present';
-            return `${lemma} — ${label}`;
+            return label;
           })()}
         </div>
       )}
       <div class={study.topWord}>
         {state.current ? <span>{state.current.en}</span> : '—'}
       </div>
-      {/* Inline minimal prompt when a tier is ready */}
-      {tierSuggestion.value && (
+      {/* Inline minimal prompt when a tier is ready (slight delay) */}
+      {tierSuggestion.value && showSuggestion && (
         <div class={panels.panel}>
           <div class={panels.row}>
             <div class={panels.promptLabel}>
               {(() => {
                 const s = tierSuggestion.value!;
                 const tier = s.tier === 2 ? 'Past' : s.tier === 3 ? 'Future' : 'Imperative';
-                const why = s && (s as any).achieved && (s as any).needed ? ` — ${(s as any).achieved}/${(s as any).needed} stabilized` : '';
-                return `${tier} forms for ‘${s.lemma}’ are ready${why}. Unlock now?`;
+                return `${tier} forms for ‘${s.lemma}’ are ready. Unlock now?`;
               })()}
             </div>
             <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>

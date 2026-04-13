@@ -5,3 +5,28 @@ waves:
     unlocked: true
     forms: [lemma, present_*]
     files: [all, cognition_perception, communication, core_actions, motion]
+  - id: past_3rd
+    title: "Past — 3rd person"
+    unlocked: false
+    forms: [past_3sg_m, past_3sg_f, past_3pl]
+    files: [all, cognition_perception, communication, core_actions, motion]
+  - id: past_full
+    title: "Past — full"
+    unlocked: false
+    forms: [past_*]
+    files: [all, cognition_perception, communication, core_actions, motion]
+  - id: future_3rd
+    title: "Future — 3rd person"
+    unlocked: false
+    forms: [future_3sg_m, future_3sg_f, future_3pl]
+    files: [all, cognition_perception, communication, core_actions, motion]
+  - id: future_full
+    title: "Future — full"
+    unlocked: false
+    forms: [future_*]
+    files: [all, cognition_perception, communication, core_actions, motion]
+  - id: imperative
+    title: "Imperative"
+    unlocked: false
+    forms: [imperative_*]
+    files: [all, cognition_perception, communication, core_actions, motion]

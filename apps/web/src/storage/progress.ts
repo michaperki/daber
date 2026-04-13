@@ -1,13 +1,26 @@
+export type CellState = 'introduced' | 'practicing' | 'mastered';
+
+export type CellProgress = {
+  state: CellState;
+  streak: number;
+  correct: number;
+  attempts: number;
+  last_seen_at?: string;
+};
+
 export type ProgressV1 = {
   version: 1;
   prefs: {
     sound_enabled: boolean;
     haptics_enabled: boolean;
+    cell_selector_enabled?: boolean;
   };
   practice_stats: { correct: number; total: number };
   vocab_stats: { correct_letters: number; total_letters: number; words_completed: number };
   // Per-word performance stats
   seen_words: Record<string, { seen: number; clean: number; attempted: number }>;
+  // Per-cell progress (verb:<lemma>:<token>)
+  cells?: Record<string, CellProgress>;
   updated_at: string;
 };
 
@@ -20,10 +33,11 @@ export function nowIso() {
 export function emptyProgress(): ProgressV1 {
   return {
     version: 1,
-    prefs: { sound_enabled: true, haptics_enabled: true },
+    prefs: { sound_enabled: true, haptics_enabled: true, cell_selector_enabled: false },
     practice_stats: { correct: 0, total: 0 },
     vocab_stats: { correct_letters: 0, total_letters: 0, words_completed: 0 },
     seen_words: {},
+    cells: {},
     updated_at: nowIso(),
   };
 }
@@ -48,12 +62,14 @@ export function loadProgress(): ProgressV1 {
         }
       }
       parsed.seen_words = migrated;
-      // Migrate prefs: drop legacy fields and add sound/haptics with defaults
+      // Migrate prefs: ensure sound/haptics present; add cell selector flag default
       const p = parsed.prefs || {};
       parsed.prefs = {
         sound_enabled: typeof p.sound_enabled === 'boolean' ? p.sound_enabled : true,
         haptics_enabled: typeof p.haptics_enabled === 'boolean' ? p.haptics_enabled : true,
+        cell_selector_enabled: typeof p.cell_selector_enabled === 'boolean' ? p.cell_selector_enabled : false,
       };
+      if (!parsed.cells) parsed.cells = {};
       return parsed as ProgressV1;
     }
     return emptyProgress();

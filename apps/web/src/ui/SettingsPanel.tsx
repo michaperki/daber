@@ -87,6 +87,20 @@ export function SettingsPanel() {
 
         <div class={styles.divider} />
 
+        {/* Drill mode */}
+        <div>
+          <div class={styles.label}>Drill mode</div>
+          <label class="inline">
+            Use cell-based selector
+            <input
+              type="checkbox"
+              checked={!!prefs.cell_selector_enabled}
+              onChange={(e) => updatePrefs({ cell_selector_enabled: (e.target as HTMLInputElement).checked })}
+            />
+          </label>
+          <div class={styles.hint}>When enabled, drills sample verb cells (lemma/forms) using curriculum and per-cell progress.</div>
+        </div>
+
         {/* Danger zone */}
         <div>
           <div class={styles.label}>Danger zone</div>

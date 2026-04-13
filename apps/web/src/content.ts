@@ -41,6 +41,9 @@ function pickWeighted<T>(items: { item: T; weight: number }[]): T | null {
 
 export function randomVocabEntry(): VocabEntry | null {
   if (!vocab.length) return null;
+  if (progress.value.prefs?.cell_selector_enabled) {
+    return randomVocabEntryByCell();
+  }
   // Only surface entries with at least 3 Hebrew characters (excluding spaces)
   const eligible = vocab.filter((v) => v.he.replace(/\s/g, '').length >= 3);
   if (!eligible.length) return null;
@@ -78,4 +81,49 @@ export function randomVocabEntry(): VocabEntry | null {
 
   // If both buckets somehow empty, fall back to uniform from eligible
   return eligible[Math.floor(Math.random() * eligible.length)];
+}
+
+function randomVocabEntryByCell(): VocabEntry | null {
+  // Build lemma+token → row index for verbs
+  const map = new Map<string, VocabEntry>();
+  for (const e of vocab) {
+    if (e.pos !== 'verb') continue;
+    const lemma = e.lemma || (e.variant ? undefined : e.he);
+    const token = e.variant || 'lemma';
+    if (!lemma) continue;
+    map.set(`verb:${lemma}:${token}`, e);
+  }
+
+  // Eligible cells from curriculum that have a corresponding vocab row
+  const items: { key: string; row: VocabEntry }[] = [];
+  for (const [lemma, tokens] of Object.entries(curriculumData.verbs || {})) {
+    for (const token of tokens) {
+      const key = `verb:${lemma}:${token}`;
+      const row = map.get(key);
+      if (!row) continue; // skip if no built row (missing labels)
+      if (row.he.replace(/\s/g, '').length < 3) continue; // skip short
+      items.push({ key, row });
+    }
+  }
+  if (!items.length) return null;
+
+  // Weighting: state (introduced=6, practicing=3, mastered=1) × recency × difficulty
+  const p = progress.value;
+  const cells = p.cells || {};
+  const now = Date.now();
+  const stateWeight = (s: string | undefined) => (s === 'mastered' ? 1 : s === 'practicing' ? 3 : 6);
+  const recency = (ts?: string) => {
+    if (!ts) return 4; // unseen
+    const ms = Math.max(0, now - Date.parse(ts));
+    const hours = ms / 3.6e6;
+    return 1 + Math.min(3, Math.floor(hours / 12));
+  };
+  const difficulty = (streak?: number) => 1 + Math.max(0, 3 - (streak || 0));
+
+  const weighted = items.map(({ key, row }) => {
+    const c = cells[key];
+    const w = stateWeight(c?.state) * recency(c?.last_seen_at) * difficulty(c?.streak);
+    return { item: row, weight: w };
+  });
+  return pickWeighted(weighted);
 }

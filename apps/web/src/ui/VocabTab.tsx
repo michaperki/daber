@@ -10,6 +10,7 @@ import {
   addCalibrationSample,
   bumpVocabLetter,
   bumpVocabWord,
+  bumpCell,
 } from '../storage/mutations';
 import { randomVocabEntry, vocab, type VocabEntry } from '../content';
 import { playCorrect, playWrong, playWordComplete, playReveal, playPerfect, primeAudio } from '../audio';
@@ -213,6 +214,8 @@ export function VocabTab() {
         setFeedback({ kind: 'ok', text: '✓ Correct' });
         const attemptClean = !(attemptRef.current.mistake || attemptRef.current.reveal || attemptRef.current.force);
         bumpVocabWord(cur.he, attemptClean);
+        const token = cur.variant || 'lemma';
+        if (cur.lemma) bumpCell(cur.lemma, token, attemptClean);
         busyRef.current = true;
         window.setTimeout(() => {
           busyRef.current = false;

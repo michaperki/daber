@@ -1,5 +1,5 @@
 import { addSample, loadCalibration, nowIso, saveCalibration, type CalibrationV1 } from './calibration';
-import { loadProgress, saveProgress, type ProgressV1 } from './progress';
+import { loadProgress, saveProgress, type ProgressV1, type CellProgress, type CellState } from './progress';
 import { schedulePutCalibration, schedulePutProgress } from './sync';
 import {
   calibration,
@@ -99,6 +99,7 @@ export function commitProgress(next: ProgressV1) {
     practice_stats: { ...next.practice_stats },
     vocab_stats: { ...next.vocab_stats },
     seen_words: { ...next.seen_words },
+    cells: { ...(next.cells || {}) },
   };
   schedulePutProgress(deviceId.value, next);
   markSyncing();
@@ -141,6 +142,53 @@ export function bumpVocabWord(he: string, cleanAttempt: boolean) {
     },
   });
 }
+
+// ---- Cells (verb:<lemma>:<token>) ----
+
+function cellKey(lemma: string, token: string) {
+  return `verb:${lemma}:${token}`;
+}
+
+export function bumpCell(lemma?: string, token?: string, cleanAttempt?: boolean) {
+  if (!lemma || !token) return;
+  const p = progress.value;
+  const key = cellKey(lemma, token);
+  const cells = { ...(p.cells || {}) } as Record<string, CellProgress>;
+  const prev: CellProgress = cells[key] || { state: 'introduced', streak: 0, correct: 0, attempts: 0 };
+  const nowIsoStr = nowIso();
+  const next: CellProgress = { ...prev, attempts: prev.attempts + 1, last_seen_at: nowIsoStr };
+  const clean = !!cleanAttempt;
+  if (clean) next.correct = prev.correct + 1;
+
+  // Transitions
+  if (!clean) {
+    // Demote mastered on miss, reset streak
+    if (prev.state === 'mastered') next.state = 'practicing';
+    next.streak = 0;
+  } else {
+    if (prev.state === 'introduced') {
+      next.streak = prev.streak + 1;
+      if (next.streak >= 3) {
+        next.state = 'practicing';
+        next.streak = 0;
+      }
+    } else if (prev.state === 'practicing') {
+      next.streak = prev.streak + 1;
+      if (next.streak >= 5) {
+        next.state = 'mastered';
+        next.streak = 0;
+      }
+    } else if (prev.state === 'mastered') {
+      // Stay mastered on clean; keep streak at 0 (unused in mastered)
+      next.streak = 0;
+    }
+  }
+
+  cells[key] = next;
+  commitProgress({ ...p, cells });
+}
+
+export { cellKey };
 
 // Re-hydrate local signals from localStorage. Used by the Settings reset
 // flow when the user wants a completely clean slate after wiping local data.

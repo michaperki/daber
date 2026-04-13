@@ -104,7 +104,7 @@ export function VocabTab() {
     if (sum < 1e-3) return;
 
     if (!strokes || strokes.length === 0) return;
-    const top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10, geometryWeight: 0.06 });
+    const top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10, geometryWeight: 0.5 });
     if (!top.length) return;
     const top1 = top[0];
     const margin = topMargin(top);

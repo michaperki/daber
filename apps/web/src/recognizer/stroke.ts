@@ -75,7 +75,7 @@ export function predictByStroke(
 ): Ranked[] {
   const N = opts.N ?? 96;
   const temp = opts.temperature ?? 20; // scale distances → exp(-d*temp)
-  const gw = opts.geometryWeight ?? 0.06; // penalty weight for |Δ log-aspect|
+  const gw = opts.geometryWeight ?? 0.5; // penalty weight for |Δ log-aspect|
   const q = resampleStroke(strokes, N);
   const qGeom = logAspect(strokes);
   const scores: { letter: LetterGlyph; score: number }[] = [];

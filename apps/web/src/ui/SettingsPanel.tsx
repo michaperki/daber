@@ -245,7 +245,7 @@ export function SettingsPanel() {
             <div class={styles.divider} />
             <div>
               <div class={styles.label}>Dev: Stroke confusion check</div>
-              <div class={styles.hint}>Compare base vs geometry-weighted stroke scoring for י/ו/ן</div>
+              <div class={styles.hint}>Compare base vs geometry-weighted stroke scoring for י/ו/ן (λ∈{0,0.5,1.0})</div>
               <div class={styles.row}>
                 <button
                   type="button"
@@ -255,7 +255,8 @@ export function SettingsPanel() {
                       const sdb = strokeSamples.value as any as Record<LetterGlyph, any[]>;
                       const stats = {
                         base: { correct: 0, total: 0, conf: {} as Record<string, number> },
-                        geom: { correct: 0, total: 0, conf: {} as Record<string, number> },
+                        g05: { correct: 0, total: 0, conf: {} as Record<string, number> },
+                        g10: { correct: 0, total: 0, conf: {} as Record<string, number> },
                       };
                       for (const L of targets) {
                         const arr = (sdb[L] || []) as any[];
@@ -274,20 +275,27 @@ export function SettingsPanel() {
                           if (bTop === L) stats.base.correct++; else if (bTop) {
                             const k = `${L}->${bTop}`; stats.base.conf[k] = (stats.base.conf[k] || 0) + 1;
                           }
-                          const p1 = predictByStroke(held, hold, { topN: 1, geometryWeight: 0.06 });
-                          const gTop = p1[0]?.letter as LetterGlyph | undefined;
-                          stats.geom.total++;
-                          if (gTop === L) stats.geom.correct++; else if (gTop) {
-                            const k = `${L}->${gTop}`; stats.geom.conf[k] = (stats.geom.conf[k] || 0) + 1;
+                          const p05 = predictByStroke(held, hold, { topN: 1, geometryWeight: 0.5 });
+                          const g05Top = p05[0]?.letter as LetterGlyph | undefined;
+                          stats.g05.total++;
+                          if (g05Top === L) stats.g05.correct++; else if (g05Top) {
+                            const k = `${L}->${g05Top}`; stats.g05.conf[k] = (stats.g05.conf[k] || 0) + 1;
+                          }
+                          const p10 = predictByStroke(held, hold, { topN: 1, geometryWeight: 1.0 });
+                          const g10Top = p10[0]?.letter as LetterGlyph | undefined;
+                          stats.g10.total++;
+                          if (g10Top === L) stats.g10.correct++; else if (g10Top) {
+                            const k = `${L}->${g10Top}`; stats.g10.conf[k] = (stats.g10.conf[k] || 0) + 1;
                           }
                         }
                       }
                       const pct = (c: number, t: number) => (t ? Math.round((100 * c) / t) : 0);
                       const top5 = (m: Record<string, number>) => Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k}(${v})`).join(' · ') || '—';
-                      alert(
-                        `Base (λ=0): ${pct(stats.base.correct, stats.base.total)}%  conf: ${top5(stats.base.conf)}\n` +
-                        `Geom (λ=0.06): ${pct(stats.geom.correct, stats.geom.total)}%  conf: ${top5(stats.geom.conf)}`
-                      );
+                      alert([
+                        `Base (λ=0):    ${pct(stats.base.correct, stats.base.total)}%  conf: ${top5(stats.base.conf)}`,
+                        `Geom (λ=0.5):  ${pct(stats.g05.correct, stats.g05.total)}%  conf: ${top5(stats.g05.conf)}`,
+                        `Geom (λ=1.0):  ${pct(stats.g10.correct, stats.g10.total)}%  conf: ${top5(stats.g10.conf)}`,
+                      ].join('\n'));
                     } catch (e) {
                       alert('Confusion check failed. Collect stroke samples first.');
                     }

@@ -110,7 +110,17 @@ export function VocabTab() {
     const margin = topMargin(top);
     const threshold = prefs.practice_threshold;
     const atEnd = isEndOfWord(cur.he, state.pos);
-    const ok = lettersMatch(top1.letter, expected, atEnd) && margin >= threshold;
+    let ok = lettersMatch(top1.letter, expected, atEnd) && margin >= threshold;
+
+    // Forgiveness rule: י/ו/ן are visually similar; accept any within the set.
+    if (!ok) {
+      const F = new Set<LetterGlyph>(['י','ו','ן']);
+      // Treat end-of-word base nun as final for forgiveness purposes
+      const expectedForForgive = (atEnd ? (baseToFinal(expected) as LetterGlyph) : (expected as LetterGlyph));
+      if (F.has(expectedForForgive) && F.has(top1.letter)) {
+        ok = true;
+      }
+    }
 
     bumpVocabLetter(ok);
 

@@ -56,13 +56,22 @@ export function SettingsPanel() {
       setDeviceId(next);
       deviceId.value = next;
       syncStatus.value = 'loading';
-      const [cal, prog] = await Promise.all([getCalibration(next), getProgress(next)]);
+      const [cal, prog, strokes] = await Promise.all([
+        getCalibration(next),
+        getProgress(next),
+        getStrokes(next),
+      ]);
       // Replace local state with whatever the server has for that device.
       // Fall back to empty blobs if the server has nothing stored yet (new
       // code). commitCalibration/commitProgress also persist locally + push
       // back up under the new device id.
       commitCalibration(cal && cal.version === 1 ? cal : emptyCalibration());
       commitProgress(prog && prog.version === 1 ? prog : emptyProgress());
+      if (strokes && strokes.version === 1) {
+        strokeSamples.value = strokes.samples as any;
+      } else {
+        strokeSamples.value = {} as any;
+      }
       syncStatus.value = 'idle';
       setMsg({ kind: 'ok', text: 'Loaded profile from server.' });
       setEntered('');

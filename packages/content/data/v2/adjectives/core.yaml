@@ -7,6 +7,11 @@ entries:
       f_sg: טובה
       m_pl: טובים
       f_pl: טובות
+    forms_en:
+      m_sg: "good"
+      f_sg: "good (f)"
+      m_pl: "good (pl)"
+      f_pl: "good (f pl)"
     examples:
       - he: הבית טוב
         en: The house is good.
@@ -19,6 +24,11 @@ entries:
       f_sg: יפה
       m_pl: יפים
       f_pl: יפות
+    forms_en:
+      m_sg: "beautiful"
+      f_sg: "beautiful (f)"
+      m_pl: "beautiful (pl)"
+      f_pl: "beautiful (f pl)"
     examples:
       - he: הבית יפה
         en: The house is beautiful.
@@ -31,6 +41,11 @@ entries:
       f_sg: קטנה
       m_pl: קטנים
       f_pl: קטנות
+    forms_en:
+      m_sg: "small"
+      f_sg: "small (f)"
+      m_pl: "small (pl)"
+      f_pl: "small (f pl)"
     examples:
       - he: הבית קטן
         en: The house is small.
@@ -43,6 +58,11 @@ entries:
       f_sg: נוחה
       m_pl: נוחים
       f_pl: נוחות
+    forms_en:
+      m_sg: "comfortable"
+      f_sg: "comfortable (f)"
+      m_pl: "comfortable (pl)"
+      f_pl: "comfortable (f pl)"
     examples:
       - he: הבית נוח
         en: The house is comfortable.
@@ -55,6 +75,11 @@ entries:
       f_sg: קלה
       m_pl: קלים
       f_pl: קלות
+    forms_en:
+      m_sg: "easy"
+      f_sg: "easy (f)"
+      m_pl: "easy (pl)"
+      f_pl: "easy (f pl)"
     examples:
       - he: הבית קל
         en: The house is easy, light.
@@ -67,6 +92,11 @@ entries:
       f_sg: קשה
       m_pl: קשים
       f_pl: קשות
+    forms_en:
+      m_sg: "hard"
+      f_sg: "hard (f)"
+      m_pl: "hard (pl)"
+      f_pl: "hard (f pl)"
     examples:
       - he: הבית קשה
         en: The house is hard, difficult.
@@ -79,6 +109,11 @@ entries:
       f_sg: גדולה
       m_pl: גדולים
       f_pl: גדולות
+    forms_en:
+      m_sg: "big"
+      f_sg: "big (f)"
+      m_pl: "big (pl)"
+      f_pl: "big (f pl)"
     examples:
       - he: הבית גדול
         en: The house is big.
@@ -91,6 +126,11 @@ entries:
       f_sg: חדשה
       m_pl: חדשים
       f_pl: חדשות
+    forms_en:
+      m_sg: "new"
+      f_sg: "new (f)"
+      m_pl: "new (pl)"
+      f_pl: "new (f pl)"
     examples:
       - he: הבית חדש
         en: The house is new.
@@ -103,6 +143,11 @@ entries:
       f_sg: ישנה
       m_pl: ישנים
       f_pl: ישנות
+    forms_en:
+      m_sg: "old"
+      f_sg: "old (f)"
+      m_pl: "old (pl)"
+      f_pl: "old (f pl)"
     examples:
       - he: הבית ישן
         en: The house is old.
@@ -115,6 +160,11 @@ entries:
       f_sg: ארוכה
       m_pl: ארוכים
       f_pl: ארוכות
+    forms_en:
+      m_sg: "long"
+      f_sg: "long (f)"
+      m_pl: "long (pl)"
+      f_pl: "long (f pl)"
     examples:
       - he: הרחוב ארוך
         en: The street is long.
@@ -125,6 +175,11 @@ entries:
       f_sg: קצרה
       m_pl: קצרים
       f_pl: קצרות
+    forms_en:
+      m_sg: "short"
+      f_sg: "short (f)"
+      m_pl: "short (pl)"
+      f_pl: "short (f pl)"
     examples:
       - he: זה סרט קצר
         en: This is a short film.
@@ -135,6 +190,11 @@ entries:
       f_sg: חמה
       m_pl: חמים
       f_pl: חמות
+    forms_en:
+      m_sg: "hot"
+      f_sg: "hot (f)"
+      m_pl: "hot (pl)"
+      f_pl: "hot (f pl)"
     examples:
       - he: היום חם
         en: It is hot today.
@@ -145,6 +205,11 @@ entries:
       f_sg: קרה
       m_pl: קרים
       f_pl: קרות
+    forms_en:
+      m_sg: "cold"
+      f_sg: "cold (f)"
+      m_pl: "cold (pl)"
+      f_pl: "cold (f pl)"
     examples:
       - he: המים קרים
         en: The water is cold.
@@ -155,6 +220,11 @@ entries:
       f_sg: מהירה
       m_pl: מהירים
       f_pl: מהירות
+    forms_en:
+      m_sg: "fast"
+      f_sg: "fast (f)"
+      m_pl: "fast (pl)"
+      f_pl: "fast (f pl)"
     examples:
       - he: הרכב מהיר
         en: The vehicle is fast.
@@ -165,6 +235,11 @@ entries:
       f_sg: איטית
       m_pl: איטיים
       f_pl: איטיות
+    forms_en:
+      m_sg: "slow"
+      f_sg: "slow (f)"
+      m_pl: "slow (pl)"
+      f_pl: "slow (f pl)"
     examples:
       - he: הקצב איטי
         en: The pace is slow.
@@ -175,6 +250,11 @@ entries:
       f_sg: יקרה
       m_pl: יקרים
       f_pl: יקרות
+    forms_en:
+      m_sg: "expensive"
+      f_sg: "expensive (f)"
+      m_pl: "expensive (pl)"
+      f_pl: "expensive (f pl)"
     examples:
       - he: זה יקר
         en: This is expensive.
@@ -185,6 +265,11 @@ entries:
       f_sg: זולה
       m_pl: זולים
       f_pl: זולות
+    forms_en:
+      m_sg: "cheap"
+      f_sg: "cheap (f)"
+      m_pl: "cheap (pl)"
+      f_pl: "cheap (f pl)"
     examples:
       - he: זה זול
         en: This is cheap.
@@ -195,6 +280,11 @@ entries:
       f_sg: נקייה
       m_pl: נקיים
       f_pl: נקיות
+    forms_en:
+      m_sg: "clean"
+      f_sg: "clean (f)"
+      m_pl: "clean (pl)"
+      f_pl: "clean (f pl)"
     examples:
       - he: החדר נקי
         en: The room is clean.
@@ -205,6 +295,11 @@ entries:
       f_sg: מלוכלכת
       m_pl: מלוכלכים
       f_pl: מלוכלכות
+    forms_en:
+      m_sg: "dirty"
+      f_sg: "dirty (f)"
+      m_pl: "dirty (pl)"
+      f_pl: "dirty (f pl)"
     examples:
       - he: הרצפה מלוכלכת
         en: The floor is dirty.
@@ -215,6 +310,11 @@ entries:
       f_sg: פתוחה
       m_pl: פתוחים
       f_pl: פתוחות
+    forms_en:
+      m_sg: "open"
+      f_sg: "open (f)"
+      m_pl: "open (pl)"
+      f_pl: "open (f pl)"
     examples:
       - he: החנות פתוחה
         en: The shop is open.
@@ -225,6 +325,11 @@ entries:
       f_sg: סגורה
       m_pl: סגורים
       f_pl: סגורות
+    forms_en:
+      m_sg: "closed"
+      f_sg: "closed (f)"
+      m_pl: "closed (pl)"
+      f_pl: "closed (f pl)"
     examples:
       - he: הדלת סגורה
         en: The door is closed.
@@ -235,6 +340,11 @@ entries:
       f_sg: עייפה
       m_pl: עייפים
       f_pl: עייפות
+    forms_en:
+      m_sg: "tired"
+      f_sg: "tired (f)"
+      m_pl: "tired (pl)"
+      f_pl: "tired (f pl)"
     examples:
       - he: אני עייף
         en: I am tired.
@@ -245,6 +355,11 @@ entries:
       f_sg: בריאה
       m_pl: בריאים
       f_pl: בריאות
+    forms_en:
+      m_sg: "healthy"
+      f_sg: "healthy (f)"
+      m_pl: "healthy (pl)"
+      f_pl: "healthy (f pl)"
     examples:
       - he: הילד בריא
         en: The child is healthy.
@@ -255,6 +370,11 @@ entries:
       f_sg: חולה
       m_pl: חולים
       f_pl: חולות
+    forms_en:
+      m_sg: "sick"
+      f_sg: "sick (f)"
+      m_pl: "sick (pl)"
+      f_pl: "sick (f pl)"
     examples:
       - he: אני חולה היום
         en: I am sick today.
@@ -265,6 +385,11 @@ entries:
       f_sg: שמחה
       m_pl: שמחים
       f_pl: שמחות
+    forms_en:
+      m_sg: "happy"
+      f_sg: "happy (f)"
+      m_pl: "happy (pl)"
+      f_pl: "happy (f pl)"
     examples:
       - he: אני שמח
         en: I am happy.
@@ -275,6 +400,11 @@ entries:
       f_sg: עצובה
       m_pl: עצובים
       f_pl: עצובות
+    forms_en:
+      m_sg: "sad"
+      f_sg: "sad (f)"
+      m_pl: "sad (pl)"
+      f_pl: "sad (f pl)"
     examples:
       - he: זה עצוב
         en: This is sad.
@@ -285,6 +415,11 @@ entries:
       f_sg: ריקה
       m_pl: ריקים
       f_pl: ריקות
+    forms_en:
+      m_sg: "empty"
+      f_sg: "empty (f)"
+      m_pl: "empty (pl)"
+      f_pl: "empty (f pl)"
     examples:
       - he: הבקבוק ריק
         en: The bottle is empty.
@@ -295,6 +430,11 @@ entries:
       f_sg: מלאה
       m_pl: מלאים
       f_pl: מלאות
+    forms_en:
+      m_sg: "full"
+      f_sg: "full (f)"
+      m_pl: "full (pl)"
+      f_pl: "full (f pl)"
     examples:
       - he: הכוס מלאה
         en: The cup is full.

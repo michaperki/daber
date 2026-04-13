@@ -7,6 +7,11 @@ entries:
       f_sg: אדומה
       m_pl: אדומים
       f_pl: אדומות
+    forms_en:
+      m_sg: "red"
+      f_sg: "red (f)"
+      m_pl: "red (pl)"
+      f_pl: "red (f pl)"
     examples:
       - he: הבית אדום
         en: The house is red.
@@ -19,6 +24,11 @@ entries:
       f_sg: ירוקה
       m_pl: ירוקים
       f_pl: ירוקות
+    forms_en:
+      m_sg: "green"
+      f_sg: "green (f)"
+      m_pl: "green (pl)"
+      f_pl: "green (f pl)"
     examples:
       - he: הבית ירוק
         en: The house is green.
@@ -31,6 +41,11 @@ entries:
       f_sg: צהובה
       m_pl: צהובים
       f_pl: צהובות
+    forms_en:
+      m_sg: "yellow"
+      f_sg: "yellow (f)"
+      m_pl: "yellow (pl)"
+      f_pl: "yellow (f pl)"
     examples:
       - he: הבית צהוב
         en: The house is yellow.
@@ -43,6 +58,11 @@ entries:
       f_sg: כחולה
       m_pl: כחולים
       f_pl: כחולות
+    forms_en:
+      m_sg: "blue"
+      f_sg: "blue (f)"
+      m_pl: "blue (pl)"
+      f_pl: "blue (f pl)"
     examples:
       - he: הבית כחול
         en: The house is blue.
@@ -55,6 +75,11 @@ entries:
       f_sg: שחורה
       m_pl: שחורים
       f_pl: שחורות
+    forms_en:
+      m_sg: "black"
+      f_sg: "black (f)"
+      m_pl: "black (pl)"
+      f_pl: "black (f pl)"
     examples:
       - he: הבית שחור
         en: The house is black.

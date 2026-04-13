@@ -7,6 +7,11 @@ entries:
       f_sg: סגורה
       m_pl: סגורים
       f_pl: סגורות
+    forms_en:
+      m_sg: "closed"
+      f_sg: "closed (f)"
+      m_pl: "closed (pl)"
+      f_pl: "closed (f pl)"
     examples:
       - he: הבית סגור
         en: The house is closed.
@@ -19,6 +24,11 @@ entries:
       f_sg: מטומטמת
       m_pl: מטומטמים
       f_pl: מטומטמות
+    forms_en:
+      m_sg: "stupid"
+      f_sg: "stupid (f)"
+      m_pl: "stupid (pl)"
+      f_pl: "stupid (f pl)"
     examples:
       - he: הבית מטומטם
         en: The house is stupid (slang).
@@ -31,6 +41,11 @@ entries:
       f_sg: כתובה
       m_pl: כתובים
       f_pl: כתובות
+    forms_en:
+      m_sg: "written"
+      f_sg: "written (f)"
+      m_pl: "written (pl)"
+      f_pl: "written (f pl)"
     examples:
       - he: הבית כתוב
         en: The house is written.
@@ -43,6 +58,11 @@ entries:
       f_sg: עמוסה
       m_pl: עמוסים
       f_pl: עמוסות
+    forms_en:
+      m_sg: "busy"
+      f_sg: "busy (f)"
+      m_pl: "busy (pl)"
+      f_pl: "busy (f pl)"
     examples:
       - he: הבית עמוס
         en: The house is busy, loaded.
@@ -55,6 +75,11 @@ entries:
       f_sg: עצבנית
       m_pl: עצבניים
       f_pl: עצבניות
+    forms_en:
+      m_sg: "nervous"
+      f_sg: "nervous (f)"
+      m_pl: "nervous (pl)"
+      f_pl: "nervous (f pl)"
     examples:
       - he: הבית עצבני
         en: The house is nervous, irritable.
@@ -67,6 +92,11 @@ entries:
       f_sg: פתוחה
       m_pl: פתוחים
       f_pl: פתוחות
+    forms_en:
+      m_sg: "open"
+      f_sg: "open (f)"
+      m_pl: "open (pl)"
+      f_pl: "open (f pl)"
     examples:
       - he: הבית פתוח
         en: The house is open.
@@ -79,6 +109,11 @@ entries:
       f_sg: שכוחה
       m_pl: שכוחים
       f_pl: שכוחות
+    forms_en:
+      m_sg: "forgetful"
+      f_sg: "forgetful (f)"
+      m_pl: "forgetful (pl)"
+      f_pl: "forgetful (f pl)"
     examples:
       - he: הבית שכוח
         en: The house is forgotten.
@@ -91,6 +126,11 @@ entries:
       f_sg: נשואה
       m_pl: נשואים
       f_pl: נשואות
+    forms_en:
+      m_sg: "married"
+      f_sg: "married (f)"
+      m_pl: "married (pl)"
+      f_pl: "married (f pl)"
     examples:
       - he: הבית נשוי
         en: The house is married.
@@ -103,6 +143,11 @@ entries:
       f_sg: טיפשה
       m_pl: טיפשים
       f_pl: טיפשות
+    forms_en:
+      m_sg: "stupid"
+      f_sg: "stupid (f)"
+      m_pl: "stupid (pl)"
+      f_pl: "stupid (f pl)"
     examples:
       - he: הבית טיפש
         en: The house is stupid, dumb.
@@ -115,6 +160,11 @@ entries:
       f_sg: שבורה
       m_pl: שבורים
       f_pl: שבורות
+    forms_en:
+      m_sg: "broken"
+      f_sg: "broken (f)"
+      m_pl: "broken (pl)"
+      f_pl: "broken (f pl)"
     examples:
       - he: הבית שבור
         en: The house is broken.
@@ -127,6 +177,11 @@ entries:
       f_sg: אחרת
       m_pl: אחרים
       f_pl: אחרות
+    forms_en:
+      m_sg: "other"
+      f_sg: "other (f)"
+      m_pl: "other (pl)"
+      f_pl: "other (f pl)"
     examples:
       - he: הבית אחר
         en: The house is other.
@@ -139,6 +194,11 @@ entries:
       f_sg: אלרגית
       m_pl: אלרגיים
       f_pl: אלרגיות
+    forms_en:
+      m_sg: "allergic"
+      f_sg: "allergic (f)"
+      m_pl: "allergic (pl)"
+      f_pl: "allergic (f pl)"
     examples:
       - he: הבית אלרגי
         en: The house is allergic.
@@ -151,6 +211,11 @@ entries:
       f_sg: פנויה
       m_pl: פנויים
       f_pl: פנויות
+    forms_en:
+      m_sg: "available"
+      f_sg: "available (f)"
+      m_pl: "available (pl)"
+      f_pl: "available (f pl)"
     examples:
       - he: הבית פנוי
         en: The house is available, free.
@@ -163,6 +228,11 @@ entries:
       f_sg: אפשרית
       m_pl: אפשריים
       f_pl: אפשריות
+    forms_en:
+      m_sg: "possible"
+      f_sg: "possible (f)"
+      m_pl: "possible (pl)"
+      f_pl: "possible (f pl)"
     examples:
       - he: הבית אפשרי
         en: The house is possible.
@@ -175,6 +245,11 @@ entries:
       f_sg: ארוכה
       m_pl: ארוכים
       f_pl: ארוכות
+    forms_en:
+      m_sg: "long"
+      f_sg: "long (f)"
+      m_pl: "long (pl)"
+      f_pl: "long (f pl)"
     examples:
       - he: הבית ארוך
         en: The house is long.
@@ -187,6 +262,11 @@ entries:
       f_sg: מהירה
       m_pl: מהירים
       f_pl: מהירות
+    forms_en:
+      m_sg: "fast"
+      f_sg: "fast (f)"
+      m_pl: "fast (pl)"
+      f_pl: "fast (f pl)"
     examples:
       - he: הבית מהיר
         en: The house is fast.
@@ -199,6 +279,11 @@ entries:
       f_sg: חמודה
       m_pl: חמודים
       f_pl: חמודות
+    forms_en:
+      m_sg: "cute"
+      f_sg: "cute (f)"
+      m_pl: "cute (pl)"
+      f_pl: "cute (f pl)"
     examples:
       - he: הבית חמוד
         en: The house is cute.
@@ -211,6 +296,11 @@ entries:
       f_sg: חמה
       m_pl: חמים
       f_pl: חמות
+    forms_en:
+      m_sg: "hot"
+      f_sg: "hot (f)"
+      m_pl: "hot (pl)"
+      f_pl: "hot (f pl)"
     examples:
       - he: הבית חם
         en: The house is hot.
@@ -223,6 +313,11 @@ entries:
       f_sg: קרה
       m_pl: קרים
       f_pl: קרות
+    forms_en:
+      m_sg: "cold"
+      f_sg: "cold (f)"
+      m_pl: "cold (pl)"
+      f_pl: "cold (f pl)"
     examples:
       - he: הבית קר
         en: The house is cold.
@@ -235,6 +330,11 @@ entries:
       f_sg: הפוכה
       m_pl: הפוכים
       f_pl: הפוכות
+    forms_en:
+      m_sg: "opposite"
+      f_sg: "opposite (f)"
+      m_pl: "opposite (pl)"
+      f_pl: "opposite (f pl)"
     examples:
       - he: הבית הפוך
         en: The house is upside down, reverse.
@@ -247,6 +347,11 @@ entries:
       f_sg: ראשונה
       m_pl: ראשונים
       f_pl: ראשונות
+    forms_en:
+      m_sg: "first"
+      f_sg: "first (f)"
+      m_pl: "first (pl)"
+      f_pl: "first (f pl)"
     examples:
       - he: הבית ראשון
         en: The house is first.
@@ -259,6 +364,11 @@ entries:
       f_sg: מסטולה
       m_pl: מסטולים
       f_pl: מסטולות
+    forms_en:
+      m_sg: "stoned"
+      f_sg: "stoned (f)"
+      m_pl: "stoned (pl)"
+      f_pl: "stoned (f pl)"
     examples:
       - he: הבית מסטול
         en: The house is stoned (slang).
@@ -271,6 +381,11 @@ entries:
       f_sg: עקומה
       m_pl: עקומים
       f_pl: עקומות
+    forms_en:
+      m_sg: "crooked"
+      f_sg: "crooked (f)"
+      m_pl: "crooked (pl)"
+      f_pl: "crooked (f pl)"
     examples:
       - he: הבית עקום
         en: The house is crooked, bent.
@@ -283,6 +398,11 @@ entries:
       f_sg: חריפה
       m_pl: חריפים
       f_pl: חריפות
+    forms_en:
+      m_sg: "spicy"
+      f_sg: "spicy (f)"
+      m_pl: "spicy (pl)"
+      f_pl: "spicy (f pl)"
     examples:
       - he: הבית חריף
         en: The house is spicy, sharp.
@@ -295,6 +415,11 @@ entries:
       f_sg: מתוקה
       m_pl: מתוקים
       f_pl: מתוקות
+    forms_en:
+      m_sg: "sweet"
+      f_sg: "sweet (f)"
+      m_pl: "sweet (pl)"
+      f_pl: "sweet (f pl)"
     examples:
       - he: הבית מתוק
         en: The house is sweet.
@@ -307,6 +432,11 @@ entries:
       f_sg: חכמה
       m_pl: חכמים
       f_pl: חכמות
+    forms_en:
+      m_sg: "smart"
+      f_sg: "smart (f)"
+      m_pl: "smart (pl)"
+      f_pl: "smart (f pl)"
     examples:
       - he: הבית חכם
         en: The house is smart.
@@ -319,6 +449,11 @@ entries:
       f_sg: רצינית
       m_pl: רציניים
       f_pl: רציניות
+    forms_en:
+      m_sg: "serious"
+      f_sg: "serious (f)"
+      m_pl: "serious (pl)"
+      f_pl: "serious (f pl)"
     examples:
       - he: הבית רציני
         en: The house is serious.
@@ -331,6 +466,11 @@ entries:
       f_sg: עדיפה
       m_pl: עדיפים
       f_pl: עדיפות
+    forms_en:
+      m_sg: "preferable"
+      f_sg: "preferable (f)"
+      m_pl: "preferable (pl)"
+      f_pl: "preferable (f pl)"
     examples:
       - he: הבית עדיף
         en: The house is preferable.

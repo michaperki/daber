@@ -28,8 +28,8 @@ export const calibrateLetterIdx = signal<number>(0);
 export const settingsOpen = signal<boolean>(false);
 // Allow entering calibration mode even after setup is complete
 export const calibrationMode = signal<boolean>(false);
-// Lightweight focus panel visibility (breadth + verbs in progress)
-export const focusOpen = signal<boolean>(false);
+// Selected lesson (id) to scope drill; null = free practice
+export const selectedLessonId = signal<string | null>(null);
 
 // ---- Derived ----
 

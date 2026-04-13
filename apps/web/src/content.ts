@@ -17,25 +17,25 @@ const modules = import.meta.glob('../../../packages/content/dist/vocab.json', {
 const first = Object.values(modules)[0];
 export const vocab: VocabEntry[] = Array.isArray(first) ? first : [];
 
-// Optional curriculum import; tolerates absence during dev
-const currMods = import.meta.glob('../../../packages/content/dist/curriculum.json', {
+// Optional lessons import; tolerates absence during dev
+type LessonJSON = {
+  id: string;
+  title: string;
+  tagline?: string;
+  estimated_minutes?: number;
+  endpoint?: { description?: string };
+  core?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> };
+  supporting?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> };
+  phases?: { id: string; title?: string; goal?: string }[];
+  wishlist?: string[];
+};
+const lessonMods = import.meta.glob('../../../packages/content/dist/lessons.json', {
   eager: true,
   import: 'default',
-}) as Record<string, { verbs: Record<string, string[]>; adjectives: Record<string, string[]>; nouns: Record<string, string[]>; tokens: { verb: string[]; adjective: string[]; noun: string[] }; chapters?: { verbs?: string[]; adjectives?: string[]; nouns?: string[] } }>;
-const firstCurr = Object.values(currMods)[0];
-const curriculum = firstCurr || { verbs: {}, tokens: [] };
-export const curriculumData = curriculum;
-export const activeChapters: string[] = (() => {
-  const set = new Set<string>();
-  const ch = (curriculum as any)?.chapters || {};
-  for (const s of ch.verbs || []) set.add(String(s));
-  for (const s of ch.adjectives || []) set.add(String(s));
-  for (const s of ch.nouns || []) set.add(String(s));
-  return Array.from(set);
-})();
+}) as Record<string, LessonJSON[]>;
+export const lessons: LessonJSON[] = Array.isArray(Object.values(lessonMods)[0]) ? (Object.values(lessonMods)[0] as LessonJSON[]) : [];
 
-import { progress } from './state/signals';
-import { getActiveVerbTokens } from './curriculum_active';
+import { progress, selectedLessonId } from './state/signals';
 
 function pickWeighted<T>(items: { item: T; weight: number }[]): T | null {
   const total = items.reduce((s, x) => s + x.weight, 0);
@@ -80,11 +80,49 @@ function randomVocabEntryByCell(): VocabEntry | null {
     }
   }
 
-  // Eligible cells from curriculum across POS with a corresponding vocab row
+  // Build scope: prefer active lesson (core+supporting); else derive from dataset
+  const activeLesson = selectedLessonId.value ? lessons.find((l) => l.id === selectedLessonId.value) : null;
+  const scoped: { verbs: Record<string, string[]>; adjectives: Record<string, string[]>; nouns: Record<string, string[]> } = {
+    verbs: {}, adjectives: {}, nouns: {},
+  };
+  if (activeLesson) {
+    const merge = (dst: Record<string, string[]>, src?: Record<string, string[]>) => {
+      for (const [lemma, toks] of Object.entries(src || {})) {
+        if (!dst[lemma]) dst[lemma] = [];
+        const set = new Set(dst[lemma]);
+        for (const t of toks) set.add(t);
+        dst[lemma] = Array.from(set);
+      }
+    };
+    merge(scoped.verbs, activeLesson.core?.verbs);
+    merge(scoped.verbs, activeLesson.supporting?.verbs);
+    merge(scoped.adjectives, activeLesson.core?.adjectives);
+    merge(scoped.adjectives, activeLesson.supporting?.adjectives);
+    merge(scoped.nouns, activeLesson.core?.nouns);
+    merge(scoped.nouns, activeLesson.supporting?.nouns);
+  } else {
+    // Derive a broad baseline from the dataset itself: include all tokens present.
+    for (const e of vocab) {
+      const lemma = e.lemma || (e.variant ? undefined : e.he);
+      const token = e.variant || (e.pos === 'verb' ? 'lemma' : e.pos === 'noun' ? 'sg' : 'm_sg');
+      if (!lemma || !token) continue;
+      if (e.pos === 'verb') {
+        if (!scoped.verbs[lemma]) scoped.verbs[lemma] = [];
+        if (!scoped.verbs[lemma].includes(token)) scoped.verbs[lemma].push(token);
+      } else if (e.pos === 'adjective') {
+        if (!scoped.adjectives[lemma]) scoped.adjectives[lemma] = [];
+        if (!scoped.adjectives[lemma].includes(token)) scoped.adjectives[lemma].push(token);
+      } else if (e.pos === 'noun') {
+        if (!scoped.nouns[lemma]) scoped.nouns[lemma] = [];
+        if (!scoped.nouns[lemma].includes(token)) scoped.nouns[lemma].push(token);
+      }
+    }
+  }
+
+  // Eligible cells from scope across POS with a corresponding vocab row
   const items: { key: string; row: VocabEntry }[] = [];
   // Verbs
-  const effectiveVerbs = getActiveVerbTokens(curriculumData.verbs || {});
-  for (const [lemma, tokens] of Object.entries(effectiveVerbs || {})) {
+  for (const [lemma, tokens] of Object.entries(scoped.verbs || {})) {
     for (const token of tokens) {
       const key = `verb:${lemma}:${token}`;
       const row = vmap.get(key);
@@ -94,7 +132,7 @@ function randomVocabEntryByCell(): VocabEntry | null {
     }
   }
   // Adjectives
-  for (const [lemma, tokens] of Object.entries(curriculumData.adjectives || {})) {
+  for (const [lemma, tokens] of Object.entries(scoped.adjectives || {})) {
     for (const token of tokens) {
       const key = `adjective:${lemma}:${token}`;
       const row = amap.get(key);
@@ -104,7 +142,7 @@ function randomVocabEntryByCell(): VocabEntry | null {
     }
   }
   // Nouns
-  for (const [lemma, tokens] of Object.entries(curriculumData.nouns || {})) {
+  for (const [lemma, tokens] of Object.entries(scoped.nouns || {})) {
     for (const token of tokens) {
       const key = `noun:${lemma}:${token}`;
       const row = nmap.get(key);

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'preact/hooks';
-import { curriculumData, vocab, type VocabEntry } from '../content';
+import { vocab, type VocabEntry } from '../content';
 
 type Token = string;
 
@@ -21,9 +21,7 @@ function tokensForLemma(entries: VocabEntry[], lemma: string): Map<Token, VocabE
 }
 
 function canonicalTokens(): Token[] {
-  const t = (curriculumData?.tokens || []) as string[];
-  if (t.length) return t;
-  // Fallback to tokens seen in vocab
+  // Tokens seen in vocab
   const seen = new Set<string>();
   for (const e of vocab) if (e.pos === 'verb') seen.add(e.variant || 'lemma');
   return Array.from(seen).sort();
@@ -32,7 +30,7 @@ function canonicalTokens(): Token[] {
 export function VerbInspector() {
   const lemmas = useMemo(() => uniqueVerbs(vocab), []);
   const [lemma, setLemma] = useState<string>(lemmas[0] || '');
-  const introduced = (curriculumData?.verbs || {})[lemma] || [];
+  const introduced: string[] = [];
   const tokenMap = useMemo(() => tokensForLemma(vocab, lemma), [lemma]);
   const tokens = useMemo(() => canonicalTokens(), []);
 
@@ -76,4 +74,3 @@ export function VerbInspector() {
     </div>
   );
 }
-

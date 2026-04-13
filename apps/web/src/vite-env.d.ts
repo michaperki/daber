@@ -13,8 +13,8 @@ declare module '*/packages/content/dist/vocab.json' {
 }
 
 // Ambient typing for curriculum.json (generated at content build).
-declare module '*/packages/content/dist/curriculum.json' {
-  const value: { verbs: Record<string, string[]>; adjectives: Record<string, string[]>; nouns: Record<string, string[]>; tokens: { verb: string[]; adjective: string[]; noun: string[] } };
+declare module '*/packages/content/dist/lessons.json' {
+  const value: { id: string; title: string; tagline?: string; estimated_minutes?: number; endpoint?: { description?: string }; core?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> }; supporting?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> }; phases?: { id: string; title?: string; goal?: string }[]; wishlist?: string[] }[];
   export default value;
 }
 

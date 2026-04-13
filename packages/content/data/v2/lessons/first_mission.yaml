@@ -1,0 +1,30 @@
+id: shopping_basics_1
+title: Quick stop at the store
+tagline: Ask for items and say what you need
+estimated_minutes: 8
+endpoint:
+  description: A short micro-scene buying milk and bread.
+core:
+  verbs:
+    need: [present_m_sg, present_f_sg]
+    go: [present_m_sg, present_f_sg]
+  nouns:
+    milk: [sg]
+    bread: [sg]
+supporting:
+  adjectives:
+    fresh: [m_sg]
+  nouns:
+    store: [sg]
+phases:
+  - id: warmup
+    title: Warm-up
+    goal: Review core tokens
+  - id: combine
+    title: Combine
+    goal: Use core with support
+  - id: perform
+    title: Performance
+    goal: Deliver the micro-scene
+wishlist:
+  - Add audio for ‘fresh’ examples

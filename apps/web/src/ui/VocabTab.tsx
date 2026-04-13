@@ -12,14 +12,14 @@ import {
   bumpVocabWord,
   bumpCell,
 } from '../storage/mutations';
-import { randomVocabEntry, vocab, type VocabEntry, curriculumData } from '../content';
+import { randomVocabEntry, vocab, type VocabEntry } from '../content';
 import { playCorrect, playWrong, playWordComplete, playReveal, playPerfect, primeAudio } from '../audio';
 import { progress } from '../state/signals';
 import panels from './panels.module.css';
 import study from './study.module.css';
 import { appendLocalSample } from '../storage/strokes_store';
 import { tierSuggestion, tierToast, acceptTierUnlock, snoozeTierSuggestion } from '../tier_suggest';
-import { getActiveVerbTokens, currentTierFromTokens } from '../curriculum_active';
+import { getUnlockedTier } from '../curriculum_active';
 
 // Heuristic: consider the current position to be at the end of a word if the
 // next character is missing or a separator (space/punctuation/maqaf).
@@ -398,9 +398,8 @@ export function VocabTab() {
         <div class={panels.progress}>
           {(() => {
             const lemma = state.current!.lemma!;
-            const eff = getActiveVerbTokens(curriculumData.verbs || {});
-            const tier = currentTierFromTokens(eff[lemma] || []);
-            const label = tier === 4 ? 'Imperative' : tier === 3 ? 'Future' : tier === 2 ? 'Past' : 'Present';
+            const t = getUnlockedTier(lemma);
+            const label = t === 4 ? 'Imperative' : t === 3 ? 'Future' : t === 2 ? 'Past' : 'Present';
             return label;
           })()}
         </div>

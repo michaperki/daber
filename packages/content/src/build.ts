@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { collectYamlFiles, dedupeAndSort, extractVocabFromFile } from './extract.js';
-import { writeCurriculumDist } from './curriculum.js';
+import { writeLessonsDist } from './lessons.js';
 import type { VocabRow } from './schema.js';
 
 // Build script: YAML → dist/vocab.json
@@ -27,8 +27,8 @@ function main() {
   fs.writeFileSync(OUT_FILE, JSON.stringify(out, null, 2), 'utf8');
   // eslint-disable-next-line no-console
   console.log(`Wrote ${out.length} vocab rows → ${path.relative(ROOT, OUT_FILE)}`);
-  // Also emit curriculum projection (if present)
-  writeCurriculumDist(ROOT);
+  // Also emit lessons projection (if present)
+  writeLessonsDist(ROOT);
 }
 try {
   main();

@@ -1,6 +1,6 @@
 import { signal } from '@preact/signals';
 import { progress } from './state/signals';
-import { curriculumData, vocab } from './content';
+import { vocab } from './content';
 import {
   getActiveVerbTokens,
   currentTierFromTokens,
@@ -49,11 +49,8 @@ export function maybeTriggerTierSuggestion(lemma: string, cleanAttempt: boolean)
   if (!cleanAttempt) return;
   if (promptUsed) return;
   if (snoozed.has(lemma)) return;
-  // Must be in active curriculum breadth
-  if (!(curriculumData.verbs || {})[lemma]) return;
-
-  // Determine current tier from effective tokens (baseline + unlocks)
-  const effective = getActiveVerbTokens(curriculumData.verbs || {});
+  // Determine current tier from unlock store (no curriculum dependency)
+  const effective = getActiveVerbTokens({ [lemma]: ['present_m_sg','present_f_sg','present_m_pl','present_f_pl'] });
   const currentTokens = effective[lemma] || [];
   const currentTier = currentTierFromTokens(currentTokens);
   if (currentTier >= 4) return; // nothing beyond imperative

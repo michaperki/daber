@@ -35,7 +35,7 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
           // Base infinitive
           rows.push({ he: v.lemma, en: v.gloss, pos });
           // Present forms with English labels (emit only if both sides exist)
-          const pres = v.present || {};
+          const presHe = (v as any).present_he || {};
           const presEn = v.present_en || {};
           const add = (
             he: unknown,
@@ -46,10 +46,10 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
               rows.push({ he, en, pos, variant });
             }
           };
-          add(pres.m_sg, presEn.m_sg, 'present_m_sg');
-          add(pres.f_sg, presEn.f_sg, 'present_f_sg');
-          add(pres.m_pl, presEn.m_pl, 'present_m_pl');
-          add(pres.f_pl, presEn.f_pl, 'present_f_pl');
+          add(presHe.m_sg, presEn.m_sg, 'present_m_sg');
+          add(presHe.f_sg, presEn.f_sg, 'present_f_sg');
+          add(presHe.m_pl, presEn.m_pl, 'present_m_pl');
+          add(presHe.f_pl, presEn.f_pl, 'present_f_pl');
           break;
         }
         case 'noun': {

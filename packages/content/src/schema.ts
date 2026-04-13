@@ -19,6 +19,15 @@ export const VerbEntrySchema = z.object({
     })
     .partial()
     .optional(),
+  present_he: z
+    .object({
+      m_sg: z.string().optional(),
+      f_sg: z.string().optional(),
+      m_pl: z.string().optional(),
+      f_pl: z.string().optional(),
+    })
+    .partial()
+    .optional(),
   present_en: z
     .object({
       m_sg: z.string().optional(),

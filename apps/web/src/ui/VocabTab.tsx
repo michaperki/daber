@@ -93,6 +93,19 @@ export function VocabTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Always auto-advance past spaces at the current position so the user never
+  // needs to input a space. This runs on state changes too (e.g., reveal or
+  // after accept) and is idempotent.
+  useEffect(() => {
+    const cur = state.current;
+    if (!cur) return;
+    const adv = advancePastSpaces(cur.he, state.pos, state.output);
+    if (adv.pos !== state.pos || adv.out !== state.output) {
+      setState((s) => ({ ...s, pos: adv.pos, output: adv.out }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.current, state.pos, state.output]);
+
   // Helper: skip over spaces in the Hebrew word and prefill them in the output
   function advancePastSpaces(he: string, from: number, currentOut: string): { pos: number; out: string } {
     let pos = from;

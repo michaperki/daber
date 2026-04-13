@@ -1,12 +1,14 @@
-import { useEffect } from 'preact/hooks';
+import { useState } from 'preact/hooks';
+import { Route, Router, useLocation } from 'preact-iso';
 import styles from './app.module.css';
 import { settingsOpen, syncStatus, setupComplete, calibrationMode } from './state/signals';
 import { Onboarding } from './ui/Onboarding';
-import { VocabTab } from './ui/VocabTab';
 import { VerbInspector } from './ui/VerbInspector';
-import { useState } from 'preact/hooks';
 import { SettingsPanel } from './ui/SettingsPanel';
 import { LessonsHome } from './ui/LessonsHome';
+import { LessonEntry } from './ui/LessonEntry';
+import { DrillScreen } from './ui/DrillScreen';
+import { LessonComplete } from './ui/LessonComplete';
 
 function SyncDot() {
   const s = syncStatus.value;
@@ -25,70 +27,84 @@ function SyncDot() {
   return <span class={cls} title={title} aria-label={title} />;
 }
 
-function useWakeLockWhenStudying(studying: boolean) {
-  useEffect(() => {
-    if (!studying) return;
-    if (!navigator.wakeLock) return;
-    let sentinel: WakeLockSentinel | null = null;
-    let cancelled = false;
-    navigator.wakeLock.request('screen').then(
-      (s) => {
-        if (cancelled) { s.release(); return; }
-        sentinel = s;
-      },
-      () => {},
-    );
-    return () => {
-      cancelled = true;
-      sentinel?.release();
-    };
-  }, [studying]);
+/** Returns true when the current route is a full-screen drill (no header chrome). */
+function useIsDrillRoute(): boolean {
+  const { path } = useLocation();
+  return path.endsWith('/drill') || path === '/practice';
 }
 
 export function App() {
   const studying = setupComplete.value;
   const calibrating = calibrationMode.value;
-  useWakeLockWhenStudying(studying);
   const [inspect, setInspect] = useState(false);
+
+  // Gate: onboarding / calibration
+  if (!studying || calibrating) {
+    return (
+      <div class={styles.shell}>
+        <header class={styles.topBar}>
+          <div class={styles.brand}>
+            <SyncDot />
+            <h1>Daber</h1>
+          </div>
+        </header>
+        <main class={styles.main}>
+          <section class={styles.left}>
+            <Onboarding />
+          </section>
+        </main>
+      </div>
+    );
+  }
+
+  return <AppShell inspect={inspect} setInspect={setInspect} />;
+}
+
+function AppShell({ inspect, setInspect }: { inspect: boolean; setInspect: (v: boolean | ((p: boolean) => boolean)) => void }) {
+  const isDrill = useIsDrillRoute();
 
   return (
     <div class={styles.shell}>
-      {/* Top bar */}
-      <header class={styles.topBar}>
-        <div class={styles.brand}>
-          <SyncDot />
-          <h1>Daber</h1>
-        </div>
+      {/* Hide header during drill for immersion */}
+      {!isDrill && (
+        <header class={styles.topBar}>
+          <div class={styles.brand}>
+            <SyncDot />
+            <h1>Daber</h1>
+          </div>
+          <div class={styles.topBarActions}>
+            <button
+              class={styles.modeSelect}
+              onClick={() => setInspect((v) => !v)}
+              title={inspect ? 'Back to Drill' : 'Open Verb Inspector'}
+              aria-label={inspect ? 'Back to Drill' : 'Open Verb Inspector'}
+            >
+              {inspect ? 'Drill' : 'Inspect'}
+            </button>
+            <button
+              class={styles.gear}
+              onClick={() => { settingsOpen.value = true; }}
+              title="Settings"
+              aria-label="Open settings"
+            >
+              ⚙
+            </button>
+          </div>
+        </header>
+      )}
 
-        <div class={styles.topBarActions}>
-          <button
-            class={styles.modeSelect}
-            onClick={() => setInspect((v) => !v)}
-            title={inspect ? 'Back to Drill' : 'Open Verb Inspector'}
-            aria-label={inspect ? 'Back to Drill' : 'Open Verb Inspector'}
-          >
-            {inspect ? 'Drill' : 'Inspect'}
-          </button>
-          <button
-            class={styles.gear}
-            onClick={() => { settingsOpen.value = true; }}
-            title="Settings"
-            aria-label="Open settings"
-          >
-            ⚙
-          </button>
-        </div>
-      </header>
-
-      {/* Main content */}
-      <main class={styles.main}>
-        <section class={styles.left}>
-          {calibrating
-            ? <Onboarding />
-            : (!studying
-              ? <Onboarding />
-              : (inspect ? <VerbInspector /> : <LessonsHome />))}
-        </section>
+      <main class={isDrill ? undefined : styles.main}>
+        {inspect && !isDrill ? (
+          <section class={styles.left}><VerbInspector /></section>
+        ) : (
+          <Router>
+            <Route path="/" component={LessonsHome} />
+            <Route path="/lesson/:id" component={LessonEntry} />
+            <Route path="/lesson/:id/drill" component={DrillScreen} />
+            <Route path="/practice" component={DrillScreen} />
+            <Route path="/lesson/:id/complete" component={LessonComplete} />
+          </Router>
+        )}
       </main>
 
       {settingsOpen.value && <SettingsPanel />}

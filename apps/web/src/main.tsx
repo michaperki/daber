@@ -1,4 +1,5 @@
 import { render } from 'preact';
+import { LocationProvider } from 'preact-iso';
 import './styles.css';
 import { App } from './app';
 import { bootSync } from './storage/boot';
@@ -9,4 +10,9 @@ void bootSync();
 
 const root = document.getElementById('app');
 if (!root) throw new Error('#app root element missing');
-render(<App />, root);
+render(
+  <LocationProvider>
+    <App />
+  </LocationProvider>,
+  root,
+);

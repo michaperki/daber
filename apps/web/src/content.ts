@@ -18,7 +18,7 @@ const first = Object.values(modules)[0];
 export const vocab: VocabEntry[] = Array.isArray(first) ? first : [];
 
 // Optional lessons import; tolerates absence during dev
-type LessonJSON = {
+export type LessonJSON = {
   id: string;
   title: string;
   tagline?: string;

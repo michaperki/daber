@@ -12,7 +12,8 @@
   "dependencies": {
     "@daber/content": "*",
     "@preact/signals": "^1.2.3",
-    "preact": "^10.22.0"
+    "preact": "^10.22.0",
+    "preact-iso": "^2.11.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.2",

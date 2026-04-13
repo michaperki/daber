@@ -273,7 +273,7 @@ export function SettingsPanel() {
             <div class={styles.divider} />
             <div>
               <div class={styles.label}>Dev: Stroke confusion check</div>
-              <div class={styles.hint}>Compare base vs geometry-weighted stroke scoring for י/ו/ן (λ∈{0,0.5,1.0})</div>
+              <div class={styles.hint}>Compare base vs geometry-weighted stroke scoring for י/ו/ן (λ∈[0,0.5,1.0])</div>
               <div class={styles.row}>
                 <button
                   type="button"

@@ -18,12 +18,14 @@ export function resampleStroke(strokes: Stroke[], N = 96): Float32Array {
   // Build concatenated polyline with segment separators by duplicating last point
   const poly: [number, number][] = [];
   let lastSid = pts[0]!.sid;
+  const scale = Math.max(1e-6, w);
   for (const p of pts) {
     if (p.sid !== lastSid && poly.length > 0) {
       // separator: duplicate last point
       poly.push(poly[poly.length - 1]!);
     }
-    poly.push([(p.x - minX) / Math.max(w, h), (p.y - minY) / Math.max(w, h)]);
+    // Normalize both axes by width to preserve h/w in the y-extent.
+    poly.push([(p.x - minX) / scale, (p.y - minY) / scale]);
     lastSid = p.sid;
   }
   // Arc-length resample

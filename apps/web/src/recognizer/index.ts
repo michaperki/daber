@@ -1,52 +1,4 @@
-import type { Ranked, LetterGlyph } from './types';
-import { predictByKnn, type KnnDb } from './knn';
-import { predictByCentroid, type Prototypes } from './centroid';
-import { predictByHybrid, getRawCnnProbs, predictByCnn, debugHybridContribs } from './hybrid';
-export { getRawCnnProbs, debugHybridContribs };
-
-export type PredictMode = 'knn' | 'centroid' | 'hybrid' | 'cnn' | 'stroke';
-
-export type PredictOpts = {
-  mode: PredictMode;
-  k?: number;
-  augment?: boolean;
-  prototypes: Prototypes; // per-letter calibration samples
-  topN?: number;
-  // Optional expected-letter prior. All modes use this to give a small bias
-  // toward the expected glyph in Practice/Vocab flows. This helps close calls
-  // without accepting arbitrary scribbles (the margin threshold still gates).
-  expectedLetter?: LetterGlyph;
-};
-
-export function predictTop(vec: Float32Array, opts: PredictOpts): Ranked[] {
-  if (opts.mode === 'stroke') {
-    // Stroke mode needs raw strokes; call predictTopStroke from callers.
-    return [];
-  }
-  if (opts.mode === 'centroid') {
-    return predictByCentroid(vec, opts.prototypes, {
-      augment: opts.augment,
-      topN: opts.topN ?? 5,
-      expectedLetter: opts.expectedLetter,
-    });
-  }
-  if (opts.mode === 'cnn') {
-    return predictByCnn(vec, { topN: opts.topN ?? 5 });
-  }
-  if (opts.mode === 'hybrid') {
-    return predictByHybrid(vec, opts.prototypes, {
-      augment: opts.augment,
-      topN: opts.topN ?? 5,
-      expectedLetter: opts.expectedLetter,
-    });
-  }
-  return predictByKnn(vec, opts.prototypes as KnnDb, {
-    k: opts.k ?? 5,
-    augment: opts.augment,
-    topN: opts.topN ?? 5,
-    expectedLetter: opts.expectedLetter,
-  });
-}
+import type { Ranked } from './types';
 
 // Convenience: top-1 prob minus top-2 prob. Used as the margin threshold for
 // accept/reject in Practice + Vocab.
@@ -58,5 +10,3 @@ export function topMargin(ranked: Ranked[]): number {
 export * from './types';
 export * from './features';
 export * from './final-forms';
-export type { Prototypes } from './centroid';
-export type { KnnDb } from './knn';

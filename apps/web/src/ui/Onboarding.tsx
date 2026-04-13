@@ -5,7 +5,6 @@ import { LETTERS, type LetterGlyph } from '../recognizer/types';
 import {
   calibrateLetterIdx,
   calibration,
-  progress,
   sampleCounts,
   setupComplete,
   setupCount,
@@ -13,12 +12,8 @@ import {
 import {
   addCalibrationSample,
   clearLetterSamples,
-  deleteLastSample,
-  mergeCalibration,
-  resetCalibration,
-  updatePrefs,
 } from '../storage/mutations';
-import type { CalibrationV1 } from '../storage/calibration';
+import { LettersGrid } from './LettersGrid';
 import panels from './panels.module.css';
 
 // Hebrew right-to-left order for next/prev navigation matches the order
@@ -35,14 +30,13 @@ function nextIncompleteIndex(
   return null;
 }
 
-export function CalibrateTab() {
+export function Onboarding() {
   const canvasRef = useRef<DrawCanvasHandle | null>(null);
   const lastVecRef = useRef<Float32Array | null>(null);
 
   const idx = calibrateLetterIdx.value;
   const targetLetter = LETTERS[idx];
   const counts = sampleCounts.value;
-  const samplesPerLetter = progress.value.prefs.samples_per_letter;
   // Reference calibration for memo invalidation; `cal` itself isn't used
   // directly in render but must be depended on.
   const cal = calibration.value;
@@ -68,12 +62,8 @@ export function CalibrateTab() {
     calibrateLetterIdx.value = ((i % n) + n) % n;
     resetCanvas();
   }
-  function nextLetter() {
-    setIdx(idx + 1);
-  }
-  function prevLetter() {
-    setIdx(idx - 1);
-  }
+  // Also reset if the active index changes externally (e.g., via LettersGrid)
+  useEffect(() => { resetCanvas(); }, [idx]);
 
   function saveSample() {
     const c = canvasRef.current;
@@ -93,65 +83,19 @@ export function CalibrateTab() {
         .catch(() => {});
     }
 
-    // Auto-advance: during setup, jump to the next incomplete letter;
-    // otherwise advance once the per-letter target is reached.
+    // Auto-advance: during setup, jump to the next incomplete letter.
     const nextCounts = {
       ...sampleCounts.value,
       [targetLetter]: (sampleCounts.value[targetLetter] || 0) + 1,
     } as Record<LetterGlyph, number>;
-    if (!setupComplete.value) {
-      const ni = nextIncompleteIndex(nextCounts, idx + 1);
-      if (ni !== null) setIdx(ni);
-      else resetCanvas();
-    } else if ((nextCounts[targetLetter] || 0) >= samplesPerLetter) {
-      nextLetter();
-    } else {
-      resetCanvas();
-    }
+    const ni = nextIncompleteIndex(nextCounts, idx + 1);
+    if (ni !== null) setIdx(ni);
   }
 
   function onStroke(vec: Float32Array) {
     lastVecRef.current = vec;
   }
 
-  // ---- Export / Import / Reset ----
-  function exportCalibration() {
-    const payload = calibration.value;
-    const blob = new Blob([JSON.stringify(payload, null, 2)], {
-      type: 'application/json',
-    });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'daber_calibration.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  }
-
-  async function importCalibration(e: Event) {
-    const input = e.currentTarget as HTMLInputElement;
-    const file = input.files?.[0];
-    input.value = '';
-    if (!file) return;
-    try {
-      const text = await file.text();
-      const parsed = JSON.parse(text) as CalibrationV1;
-      if (parsed.version !== 1 || !parsed.samples) throw new Error('bad shape');
-      mergeCalibration(parsed);
-    } catch {
-      alert('Import failed: invalid JSON');
-    }
-  }
-
-  function onReset() {
-    if (!confirm('Clear all calibration samples?')) return;
-    resetCalibration();
-    resetCanvas();
-  }
-
-  function onDeleteLast() {
-    deleteLastSample(targetLetter);
-    resetCanvas();
-  }
   function onClearLetter() {
     const n = counts[targetLetter] || 0;
     if (!n) return;
@@ -165,18 +109,9 @@ export function CalibrateTab() {
     function onKey(e: KeyboardEvent) {
       const t = (e.target as HTMLElement | null)?.tagName;
       if (t === 'INPUT' || t === 'SELECT' || t === 'TEXTAREA') return;
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        saveSample();
-      } else if (e.key === ' ') {
+      if (e.key === ' ') {
         e.preventDefault();
         resetCanvas();
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        nextLetter();
-      } else if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        prevLetter();
       } else if ((e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         canvasRef.current?.undo();
@@ -188,11 +123,12 @@ export function CalibrateTab() {
   });
 
   const progressLine = useMemo(() => {
-    return LETTERS.map((L) => `${L}: ${counts[L] || 0}/${samplesPerLetter}`).join('  ');
-  }, [counts, samplesPerLetter]);
+    return LETTERS.map((L) => `${L}: ${counts[L] || 0}/1`).join('  ');
+  }, [counts]);
 
   return (
     <>
+      <LettersGrid />
       <DrawCanvas ref={canvasRef} onStrokeComplete={onStroke} watermarkLetter={targetLetter} />
       <div class={panels.row}>
         <button onClick={() => canvasRef.current?.clear()}>Clear</button>
@@ -206,34 +142,9 @@ export function CalibrateTab() {
         </div>
         <div class={panels.row}>
           <button onClick={saveSample}>Save Sample</button>
-          <button onClick={nextLetter}>Next Letter</button>
-          <button onClick={onDeleteLast} title="Remove the last saved sample">
-            Delete Last
-          </button>
           <button onClick={onClearLetter} title="Remove all samples for this letter">
             Clear Letter
           </button>
-          <label class="inline">
-            Samples/letter
-            <input
-              type="number"
-              min={1}
-              max={20}
-              value={samplesPerLetter}
-              onChange={(e) => {
-                const v = Math.max(1, Math.min(20, Number((e.target as HTMLInputElement).value) || 5));
-                updatePrefs({ samples_per_letter: v });
-              }}
-            />
-          </label>
-        </div>
-        <div class={panels.row}>
-          <button onClick={exportCalibration}>Export Calibration</button>
-          <label class={panels.fileInput}>
-            Import
-            <input type="file" accept="application/json" onChange={importCalibration} />
-          </label>
-          <button onClick={onReset}>Reset</button>
         </div>
         <div
           class={`${panels.progress} ${setupComplete.value ? panels.progressOk : ''}`}
@@ -244,7 +155,7 @@ export function CalibrateTab() {
         </div>
         <div class={panels.progress}>{progressLine}</div>
         <div class={panels.shortcuts}>
-          Enter = save · Space = clear · ← → = prev/next letter · Ctrl+Z = undo. Click a tile on the right to jump.
+          Space = clear · Ctrl+Z = undo. Tap a tile to redo a letter.
         </div>
       </div>
     </>

@@ -109,19 +109,7 @@ export function updatePrefs(patch: Partial<ProgressV1['prefs']>) {
   commitProgress({ ...p, prefs: { ...p.prefs, ...patch } });
 }
 
-export function bumpPracticeStats(correct: boolean) {
-  const p = progress.value;
-  const stats = {
-    correct: p.practice_stats.correct + (correct ? 1 : 0),
-    total: p.practice_stats.total + 1,
-  };
-  commitProgress({ ...p, practice_stats: stats });
-}
-
-export function resetPracticeStats() {
-  const p = progress.value;
-  commitProgress({ ...p, practice_stats: { correct: 0, total: 0 } });
-}
+// Practice stats helpers removed with PracticeTab.
 
 export function bumpVocabLetter(correct: boolean) {
   const p = progress.value;

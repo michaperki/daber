@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
-import { topMargin } from '../recognizer';
+// Stroke-only recognizer; margin gating removed.
 import { predictByStroke } from '../recognizer/stroke';
 import type { LetterGlyph } from '../recognizer/types';
 import type { Stroke } from '../recognizer/types';
 import { baseToFinal, isFinalForm, toBaseForm } from '../recognizer/final-forms';
-import { progress } from '../state/signals';
 import { strokeSamples } from '../state/strokes';
 import {
   addCalibrationSample,
@@ -89,7 +88,7 @@ export function VocabTab() {
     force: false,
   });
 
-  const prefs = progress.value.prefs;
+  // no prefs used here after simplification
 
   function pickNext() {
     setFeedback({ kind: 'idle', text: '' });
@@ -165,10 +164,8 @@ export function VocabTab() {
     const top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
     if (!top.length) return;
     const top1 = top[0];
-    const margin = topMargin(top);
-    const threshold = prefs.practice_threshold;
     const atEnd = isEndOfWord(cur.he, advanced.pos);
-    let ok = lettersMatch(top1.letter, expected, atEnd) && margin >= threshold;
+    let ok = lettersMatch(top1.letter, expected, atEnd);
 
     // Forgiveness rule: י/ו/ן are visually similar; accept any within the set.
     if (!ok) {

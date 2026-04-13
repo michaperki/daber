@@ -113,31 +113,4 @@ export function predictByStroke(
 
 // Fuse existing hybrid rankings with stroke rankings. Adds a centered stroke
 // score to the hybrid raw score and re-normalizes.
-export function fuseHybridWithStroke(
-  hybrid: { letter: LetterGlyph; raw: number }[],
-  stroke: Ranked[],
-  strokeDb: StrokeDB,
-): Ranked[] {
-  const UNIFORM_P = 1 / (hybrid.length || 27);
-  // Reliability from stroke margin
-  const strokeMargin = stroke.length >= 2 ? Math.max(0, stroke[0]!.prob - stroke[1]!.prob) : 0;
-  // Scale by how much stroke data we have
-  let total = 0;
-  for (const k of Object.keys(strokeDb)) total += (strokeDb as any)[k]?.length || 0;
-  const dataScale = Math.min(1, Math.sqrt(total / 100)); // saturate around 100 samples
-  const gamma = 0.35 * strokeMargin * (0.3 + 0.7 * dataScale); // max ~0.35
-  const strokeMap: Record<LetterGlyph, number> = {} as any;
-  for (const r of stroke) strokeMap[r.letter] = r.prob;
-  const fused = hybrid.map((h) => {
-    const p = strokeMap[h.letter] ?? 0;
-    const add = gamma * (p - UNIFORM_P);
-    return { letter: h.letter, raw: h.raw + add } as Ranked;
-  });
-  fused.sort((a, b) => b.raw - a.raw);
-  // Softmax for probs
-  const temp = 10;
-  const exps = fused.map((s) => Math.exp(s.raw * temp));
-  const sum = exps.reduce((a, b) => a + b, 0) || 1;
-  for (let i = 0; i < fused.length; i++) (fused[i] as any).prob = exps[i] / sum;
-  return fused.slice(0, 5);
-}
+// Hybrid fusion removed; stroke-only recognizer retained.

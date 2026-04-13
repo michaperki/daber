@@ -1,12 +1,8 @@
 export type ProgressV1 = {
   version: 1;
   prefs: {
-    mode: 'knn' | 'centroid' | 'hybrid' | 'cnn' | 'stroke';
-    k: number;
-    augment: boolean;
-    samples_per_letter: number;
-    practice_threshold: number; // 0..1
-    pilot_wizard_done: boolean;
+    sound_enabled: boolean;
+    haptics_enabled: boolean;
   };
   practice_stats: { correct: number; total: number };
   vocab_stats: { correct_letters: number; total_letters: number; words_completed: number };
@@ -24,7 +20,7 @@ export function nowIso() {
 export function emptyProgress(): ProgressV1 {
   return {
     version: 1,
-    prefs: { mode: 'stroke', k: 5, augment: true, samples_per_letter: 5, practice_threshold: 0.5, pilot_wizard_done: false },
+    prefs: { sound_enabled: true, haptics_enabled: true },
     practice_stats: { correct: 0, total: 0 },
     vocab_stats: { correct_letters: 0, total_letters: 0, words_completed: 0 },
     seen_words: {},
@@ -52,6 +48,12 @@ export function loadProgress(): ProgressV1 {
         }
       }
       parsed.seen_words = migrated;
+      // Migrate prefs: drop legacy fields and add sound/haptics with defaults
+      const p = parsed.prefs || {};
+      parsed.prefs = {
+        sound_enabled: typeof p.sound_enabled === 'boolean' ? p.sound_enabled : true,
+        haptics_enabled: typeof p.haptics_enabled === 'boolean' ? p.haptics_enabled : true,
+      };
       return parsed as ProgressV1;
     }
     return emptyProgress();

@@ -1,15 +1,9 @@
 import { useEffect } from 'preact/hooks';
 import styles from './app.module.css';
-import { activeTab, rightRailOpen, settingsOpen, syncStatus, setupComplete, progress, type TabId } from './state/signals';
-import { CalibrateTab } from './ui/CalibrateTab';
+import { settingsOpen, syncStatus, setupComplete } from './state/signals';
+import { Onboarding } from './ui/Onboarding';
 import { VocabTab } from './ui/VocabTab';
-import { RightRail } from './ui/RightRail';
 import { SettingsPanel } from './ui/SettingsPanel';
-
-const ALL_TABS: { id: TabId; label: string }[] = [
-  { id: 'calibrate', label: 'Calibrate' },
-  { id: 'vocab', label: 'Vocab' },
-];
 
 function SyncDot() {
   const s = syncStatus.value;
@@ -28,9 +22,9 @@ function SyncDot() {
   return <span class={cls} title={title} aria-label={title} />;
 }
 
-function useWakeLock(tab: TabId) {
+function useWakeLockWhenStudying(studying: boolean) {
   useEffect(() => {
-    if (tab !== 'vocab') return;
+    if (!studying) return;
     if (!navigator.wakeLock) return;
     let sentinel: WakeLockSentinel | null = null;
     let cancelled = false;
@@ -45,27 +39,12 @@ function useWakeLock(tab: TabId) {
       cancelled = true;
       sentinel?.release();
     };
-  }, [tab]);
+  }, [studying]);
 }
 
 export function App() {
-  const tab = activeTab.value;
-  const drawerOpen = rightRailOpen.value;
-  const onboardingDone = progress.value.prefs.pilot_wizard_done || setupComplete.value;
-  const TABS = onboardingDone ? ALL_TABS.filter(t => t.id !== 'calibrate') : ALL_TABS;
-
-  useWakeLock(tab);
-
-  function selectTab(id: TabId) {
-    activeTab.value = id;
-  }
-
-  // If onboarding completes, ensure we don't stay on a hidden tab
-  useEffect(() => {
-    if (onboardingDone && activeTab.value === 'calibrate') {
-      activeTab.value = 'vocab';
-    }
-  }, [onboardingDone]);
+  const studying = setupComplete.value;
+  useWakeLockWhenStudying(studying);
 
   return (
     <div class={styles.shell}>
@@ -76,28 +55,7 @@ export function App() {
           <h1>Daber</h1>
         </div>
 
-        {/* Desktop nav */}
-        <nav class={styles.desktopNav}>
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              class={`${styles.tab} ${tab === t.id ? styles.tabActive : ''}`}
-              onClick={() => selectTab(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </nav>
-
         <div class={styles.topBarActions}>
-          <button
-            class={styles.railToggle}
-            onClick={() => { rightRailOpen.value = !drawerOpen; }}
-            title="Toggle letters panel"
-            aria-label="Toggle letters panel"
-          >
-            ⊞
-          </button>
           <button
             class={styles.gear}
             onClick={() => { settingsOpen.value = true; }}
@@ -112,40 +70,9 @@ export function App() {
       {/* Main content */}
       <main class={styles.main}>
         <section class={styles.left}>
-          {tab === 'calibrate' && <CalibrateTab />}
-          {tab === 'vocab' && <VocabTab />}
-        </section>
-        <section class={styles.right}>
-          <RightRail />
+          {!studying ? <Onboarding /> : <VocabTab />}
         </section>
       </main>
-
-      {/* Bottom nav — mobile only */}
-      {TABS.length > 1 && (
-        <nav class={styles.bottomNav}>
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              class={`${styles.bottomTab} ${tab === t.id ? styles.bottomTabActive : ''}`}
-              onClick={() => selectTab(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </nav>
-      )}
-
-      {/* RightRail drawer — mobile overlay */}
-      {drawerOpen && (
-        <div
-          class={styles.drawerBackdrop}
-          onClick={() => { rightRailOpen.value = false; }}
-        >
-          <div class={styles.drawer} onClick={(e) => e.stopPropagation()}>
-            <RightRail />
-          </div>
-        </div>
-      )}
 
       {settingsOpen.value && <SettingsPanel />}
     </div>

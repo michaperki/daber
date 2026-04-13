@@ -6,11 +6,8 @@ import { emptyProgress } from '../storage/progress';
 import type { LetterGlyph } from '../recognizer/types';
 import { LETTERS } from '../recognizer/types';
 
-export type TabId = 'calibrate' | 'recognize' | 'practice' | 'vocab' | 'bench';
-
 // ---- Top-level signals ----
 
-export const activeTab = signal<TabId>('calibrate');
 export const deviceId = signal<string>('');
 
 // Calibration and progress are loaded from localStorage synchronously at boot
@@ -28,9 +25,6 @@ export const calibrateLetterIdx = signal<number>(0);
 
 // Settings panel visibility
 export const settingsOpen = signal<boolean>(false);
-
-// RightRail drawer visibility (mobile bottom-sheet)
-export const rightRailOpen = signal<boolean>(false);
 
 // ---- Derived ----
 
@@ -52,7 +46,4 @@ export const setupComplete = computed<boolean>(
   () => setupCount.value >= LETTERS.length,
 );
 
-export const calibratedLetters = computed<LetterGlyph[]>(() => {
-  const counts = sampleCounts.value;
-  return LETTERS.filter((L) => counts[L] > 0);
-});
+// No calibratedLetters computed; onboarding uses counts directly.

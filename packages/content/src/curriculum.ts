@@ -202,6 +202,31 @@ export function writeCurriculumDist(contentRoot: string) {
   const distDir = path.join(contentRoot, 'dist');
   if (!fs.existsSync(distDir)) fs.mkdirSync(distDir, { recursive: true });
   const introduced = loadCurriculumIntroduced(dataDirV2);
+  // Derive active chapter identifiers from unlocked waves across POS
+  const curFile = path.join(dataDirV2, 'curriculum', 'verbs.yaml');
+  let chapters = { verbs: [] as string[], adjectives: [] as string[], nouns: [] as string[] };
+  try {
+    const raw = readYaml(curFile) as any;
+    const vfiles = new Set<string>();
+    const afiles = new Set<string>();
+    const nfiles = new Set<string>();
+    if (raw && Array.isArray(raw.waves)) {
+      for (const w of raw.waves) {
+        if (w && w.unlocked && Array.isArray(w.files)) for (const f of w.files) vfiles.add(String(f));
+      }
+    }
+    if (raw && Array.isArray(raw.adj_waves)) {
+      for (const w of raw.adj_waves) {
+        if (w && w.unlocked && Array.isArray(w.files)) for (const f of w.files) afiles.add(String(f));
+      }
+    }
+    if (raw && Array.isArray(raw.noun_waves)) {
+      for (const w of raw.noun_waves) {
+        if (w && w.unlocked && Array.isArray(w.files)) for (const f of w.files) nfiles.add(String(f));
+      }
+    }
+    chapters = { verbs: Array.from(vfiles), adjectives: Array.from(afiles), nouns: Array.from(nfiles) };
+  } catch {}
   const outPath = path.join(distDir, 'curriculum.json');
   fs.writeFileSync(
     outPath,
@@ -210,6 +235,7 @@ export function writeCurriculumDist(contentRoot: string) {
       adjectives: introduced.adjectives,
       nouns: introduced.nouns,
       tokens: { verb: VERB_FORMS, adjective: ADJ_FORMS, noun: NOUN_FORMS },
+      chapters,
       generated_at: new Date().toISOString(),
     }),
     'utf8',

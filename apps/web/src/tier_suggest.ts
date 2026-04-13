@@ -14,7 +14,7 @@ import {
 let promptUsed = false;
 const snoozed = new Set<string>();
 
-export const tierSuggestion = signal<null | { lemma: string; tier: TierNumber }>(null);
+export const tierSuggestion = signal<null | { lemma: string; tier: TierNumber; achieved?: number; needed?: number }>(null);
 export const tierToast = signal<string>('');
 
 function clearToastSoon() {
@@ -73,7 +73,7 @@ export function maybeTriggerTierSuggestion(lemma: string, cleanAttempt: boolean)
   if (!tokensPresentForLemma(lemma, toUnlock)) return;
 
   // Queue minimal prompt
-  tierSuggestion.value = { lemma, tier: nextTier };
+  tierSuggestion.value = { lemma, tier: nextTier, achieved: count, needed };
   // Only once per session
   promptUsed = true;
 }
@@ -93,4 +93,3 @@ export function snoozeTierSuggestion() {
   snoozed.add(s.lemma);
   tierSuggestion.value = null;
 }
-

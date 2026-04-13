@@ -21,10 +21,18 @@ export const vocab: VocabEntry[] = Array.isArray(first) ? first : [];
 const currMods = import.meta.glob('../../../packages/content/dist/curriculum.json', {
   eager: true,
   import: 'default',
-}) as Record<string, { verbs: Record<string, string[]>; adjectives: Record<string, string[]>; nouns: Record<string, string[]>; tokens: { verb: string[]; adjective: string[]; noun: string[] } }>;
+}) as Record<string, { verbs: Record<string, string[]>; adjectives: Record<string, string[]>; nouns: Record<string, string[]>; tokens: { verb: string[]; adjective: string[]; noun: string[] }; chapters?: { verbs?: string[]; adjectives?: string[]; nouns?: string[] } }>;
 const firstCurr = Object.values(currMods)[0];
 const curriculum = firstCurr || { verbs: {}, tokens: [] };
 export const curriculumData = curriculum;
+export const activeChapters: string[] = (() => {
+  const set = new Set<string>();
+  const ch = (curriculum as any)?.chapters || {};
+  for (const s of ch.verbs || []) set.add(String(s));
+  for (const s of ch.adjectives || []) set.add(String(s));
+  for (const s of ch.nouns || []) set.add(String(s));
+  return Array.from(set);
+})();
 
 import { progress } from './state/signals';
 import { getActiveVerbTokens } from './curriculum_active';

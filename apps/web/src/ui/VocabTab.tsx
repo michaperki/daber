@@ -12,13 +12,14 @@ import {
   bumpVocabWord,
   bumpCell,
 } from '../storage/mutations';
-import { randomVocabEntry, vocab, type VocabEntry } from '../content';
+import { randomVocabEntry, vocab, type VocabEntry, curriculumData } from '../content';
 import { playCorrect, playWrong, playWordComplete, playReveal, playPerfect, primeAudio } from '../audio';
 import { progress } from '../state/signals';
 import panels from './panels.module.css';
 import study from './study.module.css';
 import { appendLocalSample } from '../storage/strokes_store';
 import { tierSuggestion, tierToast, acceptTierUnlock, snoozeTierSuggestion } from '../tier_suggest';
+import { getActiveVerbTokens, currentTierFromTokens } from '../curriculum_active';
 
 // Heuristic: consider the current position to be at the end of a word if the
 // next character is missing or a separator (space/punctuation/maqaf).
@@ -362,6 +363,18 @@ export function VocabTab() {
       {tierToast.value && (
         <div class={panels.feedback + ' ' + panels.feedbackOk}>{tierToast.value}</div>
       )}
+      {/* Small inline verb/tier awareness */}
+      {state.current && state.current.pos === 'verb' && state.current.lemma && (
+        <div class={panels.progress}>
+          {(() => {
+            const lemma = state.current!.lemma!;
+            const eff = getActiveVerbTokens(curriculumData.verbs || {});
+            const tier = currentTierFromTokens(eff[lemma] || []);
+            const label = tier === 4 ? 'Imperative' : tier === 3 ? 'Future' : tier === 2 ? 'Past' : 'Present';
+            return `${lemma} — ${label}`;
+          })()}
+        </div>
+      )}
       <div class={study.topWord}>
         {state.current ? <span>{state.current.en}</span> : '—'}
       </div>
@@ -373,7 +386,8 @@ export function VocabTab() {
               {(() => {
                 const s = tierSuggestion.value!;
                 const tier = s.tier === 2 ? 'Past' : s.tier === 3 ? 'Future' : 'Imperative';
-                return `${tier} forms for ‘${s.lemma}’ are ready. Unlock now?`;
+                const why = s && (s as any).achieved && (s as any).needed ? ` — ${(s as any).achieved}/${(s as any).needed} stabilized` : '';
+                return `${tier} forms for ‘${s.lemma}’ are ready${why}. Unlock now?`;
               })()}
             </div>
             <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>

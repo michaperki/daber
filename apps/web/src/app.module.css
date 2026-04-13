@@ -57,29 +57,7 @@
   font-size: 16px;
 }
 
-.railToggle {
-  font-size: 16px;
-}
-
-/* ---- Desktop nav (hidden on mobile) ---- */
-.desktopNav {
-  display: none;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.tab {
-  background: var(--panel);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font: inherit;
-}
-.tab:hover { border-color: var(--accent); }
-.tabActive {
-  outline: 2px solid var(--accent);
-}
+/* Removed legacy nav styles (.desktopNav, .tab, .tabActive, .railToggle) */
 
 /* ---- Main ---- */
 .main {
@@ -93,57 +71,11 @@
 }
 .left { display: flex; flex-direction: column; gap: 12px; }
 
-/* RightRail column: hidden on mobile (shown in drawer instead) */
-.right { display: none; }
+/* Removed RightRail column */
 
-/* ---- Bottom nav — mobile ---- */
-.bottomNav {
-  display: flex;
-  flex-shrink: 0;
-  border-top: 1px solid var(--border);
-  background: var(--panel);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-.bottomTab {
-  flex: 1;
-  min-height: 52px;
-  border: none;
-  border-radius: 0;
-  background: var(--panel);
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  border-top: 3px solid transparent;
-}
-.bottomTabActive {
-  color: var(--accent);
-  border-top-color: var(--accent);
-  background: var(--panel-2);
-}
+/* Removed bottom nav styles */
 
-/* ---- RightRail drawer overlay (mobile) ---- */
-.drawerBackdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 100;
-  display: flex;
-  align-items: flex-end;
-}
-.drawer {
-  background: var(--panel);
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  width: 100%;
-  max-height: 70vh;
-  overflow-y: auto;
-  padding: 16px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+/* Removed mobile drawer styles */
 
 /* ---- Desktop: 861px+ ---- */
 @media (min-width: 861px) {
@@ -153,16 +85,7 @@
   }
   .brand h1 { font-size: 18px; }
 
-  .desktopNav { display: flex; }
-  .railToggle { display: none; }
-  .bottomNav { display: none; }
-
-  .main {
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    gap: 16px;
-    padding: 16px;
-  }
-  .left { display: flex; flex-direction: column; gap: 12px; }
-  .right { display: flex; flex-direction: column; gap: 12px; }
+  /* Desktop layout adjustments no longer needed; keep default flex main */
+  .topBar { padding: 12px 16px; padding-top: 12px; }
+  .brand h1 { font-size: 18px; }
 }

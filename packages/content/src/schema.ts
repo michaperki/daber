@@ -37,6 +37,24 @@ export const VerbEntrySchema = z.object({
     })
     .partial()
     .optional(),
+  past_he: z
+    .object({
+      m_sg: z.string().optional(),
+      f_sg: z.string().optional(),
+      m_pl: z.string().optional(),
+      f_pl: z.string().optional(),
+    })
+    .partial()
+    .optional(),
+  past_en: z
+    .object({
+      m_sg: z.string().optional(),
+      f_sg: z.string().optional(),
+      m_pl: z.string().optional(),
+      f_pl: z.string().optional(),
+    })
+    .partial()
+    .optional(),
 });
 
 export const NounEntrySchema = z.object({

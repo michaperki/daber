@@ -12,7 +12,8 @@ import {
   bumpVocabWord,
 } from '../storage/mutations';
 import { randomVocabEntry, vocab, type VocabEntry } from '../content';
-import { playCorrect, playWrong, playWordComplete, playReveal, primeAudio } from '../audio';
+import { playCorrect, playWrong, playWordComplete, playReveal, playPerfect, primeAudio } from '../audio';
+import { progress } from '../state/signals';
 import panels from './panels.module.css';
 import study from './study.module.css';
 
@@ -195,15 +196,16 @@ export function VocabTab() {
       const skip = advancePastSpaces(cur.he, nextPos, newOutput);
       nextPos = skip.pos;
       newOutput = skip.out;
-      // Sound: play word-complete chime if finishing, else per-letter tick
+      // Sound: play special chime on perfect attempt, else normal chime
       if (nextPos >= cur.he.length) {
-        playWordComplete();
+        const clean = !(attemptRef.current.mistake || attemptRef.current.reveal || attemptRef.current.force);
+        if (clean) playPerfect(); else playWordComplete();
       } else {
         playCorrect();
       }
       // On position advance, reset wrong-attempt counts and any hints
       setState((s) => ({ ...s, pos: nextPos, output: newOutput, wrongCounts: {}, hints: {} }));
-      navigator.vibrate?.(30);
+      if (progress.value.prefs?.haptics_enabled) navigator.vibrate?.(30);
       canvasRef.current?.flashAccept();
       canvasRef.current?.clear();
       setCanvasKey((k) => k + 1);
@@ -223,7 +225,7 @@ export function VocabTab() {
       // On wrong: brief red flash, schedule auto-clear after idle; cancel if a new stroke starts
       setFeedback({ kind: 'bad', text: '' });
       setLastReject(vec);
-      navigator.vibrate?.([40]);
+      if (progress.value.prefs?.haptics_enabled) navigator.vibrate?.([40]);
       canvasRef.current?.shake();
       playWrong();
       attemptRef.current.mistake = true;
@@ -281,13 +283,14 @@ export function VocabTab() {
     const newOutput = state.output + display;
     // Sounds
     if (nextPos >= cur.he.length) {
-      playWordComplete();
+      const clean = !(attemptRef.current.mistake || attemptRef.current.reveal || attemptRef.current.force);
+      if (clean) playPerfect(); else playWordComplete();
     } else {
       playCorrect();
     }
     // On position advance via force-accept, also reset wrong-attempt counts and hints
     setState((s) => ({ ...s, pos: nextPos, output: newOutput, wrongCounts: {}, hints: {} }));
-    navigator.vibrate?.(30);
+    if (progress.value.prefs?.haptics_enabled) navigator.vibrate?.(30);
     canvasRef.current?.flashAccept();
     canvasRef.current?.clear();
     setCanvasKey((k) => k + 1);

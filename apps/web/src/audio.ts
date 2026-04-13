@@ -1,6 +1,7 @@
 // Minimal Web Audio helpers for short UI sounds. No external libs.
 // Lazily initializes a single AudioContext on first user gesture-triggered call.
 
+import { progress } from './state/signals';
 type Ctx = AudioContext;
 let ctx: Ctx | null = null;
 let unlocked = false;
@@ -64,22 +65,34 @@ function playTone(opts: { freq: number; durationMs: number; type?: OscillatorTyp
 }
 
 export function playCorrect() {
+  if (!progress.value.prefs?.sound_enabled) return;
   // Short high tick
   playTone({ freq: 880, durationMs: 120, type: 'triangle', volume: 0.15 });
 }
 
 export function playWrong() {
+  if (!progress.value.prefs?.sound_enabled) return;
   // Short low thud with slight downward sweep
   playTone({ freq: 180, freqEnd: 140, durationMs: 160, type: 'sine', volume: 0.18 });
 }
 
 export function playWordComplete() {
+  if (!progress.value.prefs?.sound_enabled) return;
   // Two-note chime: E5 -> A5, quick, pleasant
   playTone({ freq: 659.25, durationMs: 220, type: 'sine', volume: 0.16 });
   playTone({ freq: 880, durationMs: 260, type: 'triangle', volume: 0.14, startAt: 0.16 });
 }
 
 export function playReveal() {
+  if (!progress.value.prefs?.sound_enabled) return;
   // Soft neutral tone
   playTone({ freq: 440, durationMs: 180, type: 'sine', volume: 0.12 });
+}
+
+export function playPerfect() {
+  if (!progress.value.prefs?.sound_enabled) return;
+  // Short celebratory arpeggio: C6 → E6 → A6 with bright timbre
+  playTone({ freq: 1046.50, durationMs: 180, type: 'triangle', volume: 0.18 });
+  playTone({ freq: 1318.51, durationMs: 180, type: 'sine', volume: 0.16, startAt: 0.14 });
+  playTone({ freq: 1760.00, durationMs: 220, type: 'triangle', volume: 0.16, startAt: 0.28 });
 }

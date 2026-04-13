@@ -40,7 +40,8 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
           const add = (
             he: unknown,
             en: unknown,
-            variant: 'present_m_sg' | 'present_f_sg' | 'present_m_pl' | 'present_f_pl',
+            variant: 'present_m_sg' | 'present_f_sg' | 'present_m_pl' | 'present_f_pl' |
+                     'past_m_sg' | 'past_f_sg' | 'past_m_pl' | 'past_f_pl',
           ) => {
             if (typeof he === 'string' && he.trim() && typeof en === 'string' && en.trim()) {
               rows.push({ he, en, pos, variant });
@@ -50,6 +51,13 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
           add(presHe.f_sg, presEn.f_sg, 'present_f_sg');
           add(presHe.m_pl, presEn.m_pl, 'present_m_pl');
           add(presHe.f_pl, presEn.f_pl, 'present_f_pl');
+          // Past forms (emit only if both he+en exist)
+          const pastHe = (v as any).past_he || {};
+          const pastEn = (v as any).past_en || {};
+          add(pastHe.m_sg, pastEn.m_sg, 'past_m_sg');
+          add(pastHe.f_sg, pastEn.f_sg, 'past_f_sg');
+          add(pastHe.m_pl, pastEn.m_pl, 'past_m_pl');
+          add(pastHe.f_pl, pastEn.f_pl, 'past_f_pl');
           break;
         }
         case 'noun': {

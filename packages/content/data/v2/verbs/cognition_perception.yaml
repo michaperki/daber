@@ -535,6 +535,16 @@ entries:
   - lemma: לדעת
     gloss: to know
     primary_prep: et
+    present_he:
+      m_sg: "הוא יודע"
+      f_sg: "היא יודעת"
+      m_pl: "הם יודעים"
+      f_pl: "הן יודעות"
+    present_en:
+      m_sg: "he knows"
+      f_sg: "she knows"
+      m_pl: "they know (m)"
+      f_pl: "they know (f)"
     examples:
       - he: אני יודע את התשובה
         en: I know the answer.
@@ -544,6 +554,16 @@ entries:
   - lemma: לחשוב
     gloss: to think
     primary_prep: al
+    present_he:
+      m_sg: "הוא חושב"
+      f_sg: "היא חושבת"
+      m_pl: "הם חושבים"
+      f_pl: "הן חושבות"
+    present_en:
+      m_sg: "he thinks"
+      f_sg: "she thinks"
+      m_pl: "they think (m)"
+      f_pl: "they think (f)"
     examples:
       - he: אני חושב על זה
         en: I am thinking about it.
@@ -553,6 +573,16 @@ entries:
   - lemma: להרגיש
     gloss: to feel
     primary_prep: et
+    present_he:
+      m_sg: "הוא מרגיש"
+      f_sg: "היא מרגישה"
+      m_pl: "הם מרגישים"
+      f_pl: "הן מרגישות"
+    present_en:
+      m_sg: "he feels"
+      f_sg: "she feels"
+      m_pl: "they feel (m)"
+      f_pl: "they feel (f)"
     examples:
       - he: אני מרגיש טוב
         en: I feel well.

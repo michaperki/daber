@@ -765,6 +765,16 @@ entries:
   - lemma: לאכול
     gloss: to eat
     primary_prep: et
+    present_he:
+      m_sg: "הוא אוכל"
+      f_sg: "היא אוכלת"
+      m_pl: "הם אוכלים"
+      f_pl: "הן אוכלות"
+    present_en:
+      m_sg: "he eats"
+      f_sg: "she eats"
+      m_pl: "they eat (m)"
+      f_pl: "they eat (f)"
     examples:
       - he: אני אוהב לאכול פסטה
         en: I like to eat pasta.
@@ -774,6 +784,16 @@ entries:
   - lemma: לשתות
     gloss: to drink
     primary_prep: et
+    present_he:
+      m_sg: "הוא שותה"
+      f_sg: "היא שותה"
+      m_pl: "הם שותים"
+      f_pl: "הן שותות"
+    present_en:
+      m_sg: "he drinks"
+      f_sg: "she drinks"
+      m_pl: "they drink (m)"
+      f_pl: "they drink (f)"
     examples:
       - he: אני שותה מים
         en: I drink water.
@@ -782,6 +802,16 @@ entries:
 
   - lemma: לעבוד
     gloss: to work
+    present_he:
+      m_sg: "הוא עובד"
+      f_sg: "היא עובדת"
+      m_pl: "הם עובדים"
+      f_pl: "הן עובדות"
+    present_en:
+      m_sg: "he works"
+      f_sg: "she works"
+      m_pl: "they work (m)"
+      f_pl: "they work (f)"
     examples:
       - he: אני עובד מהבית
         en: I work from home.
@@ -790,6 +820,16 @@ entries:
 
   - lemma: לשבת
     gloss: to sit
+    present_he:
+      m_sg: "הוא יושב"
+      f_sg: "היא יושבת"
+      m_pl: "הם יושבים"
+      f_pl: "הן יושבות"
+    present_en:
+      m_sg: "he sits"
+      f_sg: "she sits"
+      m_pl: "they sit (m)"
+      f_pl: "they sit (f)"
     examples:
       - he: תושב כאן בבקשה
         en: Please sit here.
@@ -798,6 +838,16 @@ entries:
 
   - lemma: לעמוד
     gloss: to stand
+    present_he:
+      m_sg: "הוא עומד"
+      f_sg: "היא עומדת"
+      m_pl: "הם עומדים"
+      f_pl: "הן עומדות"
+    present_en:
+      m_sg: "he stands"
+      f_sg: "she stands"
+      m_pl: "they stand (m)"
+      f_pl: "they stand (f)"
     examples:
       - he: אני עומד בתור
         en: I am standing in line.
@@ -807,6 +857,16 @@ entries:
   - lemma: לשחק
     gloss: to play
     primary_prep: b
+    present_he:
+      m_sg: "הוא משחק"
+      f_sg: "היא משחקת"
+      m_pl: "הם משחקים"
+      f_pl: "הן משחקות"
+    present_en:
+      m_sg: "he plays"
+      f_sg: "she plays"
+      m_pl: "they play (m)"
+      f_pl: "they play (f)"
     examples:
       - he: הילדים משחקים בכדור
         en: The kids are playing ball.
@@ -816,6 +876,16 @@ entries:
   - lemma: לשלם
     gloss: to pay
     primary_prep: et
+    present_he:
+      m_sg: "הוא משלם"
+      f_sg: "היא משלמת"
+      m_pl: "הם משלמים"
+      f_pl: "הן משלמות"
+    present_en:
+      m_sg: "he pays"
+      f_sg: "she pays"
+      m_pl: "they pay (m)"
+      f_pl: "they pay (f)"
     examples:
       - he: אני משלם במזומן
         en: I pay in cash.
@@ -825,6 +895,16 @@ entries:
   - lemma: לבשל
     gloss: to cook
     primary_prep: et
+    present_he:
+      m_sg: "הוא מבשל"
+      f_sg: "היא מבשלת"
+      m_pl: "הם מבשלים"
+      f_pl: "הן מבשלות"
+    present_en:
+      m_sg: "he cooks"
+      f_sg: "she cooks"
+      m_pl: "they cook (m)"
+      f_pl: "they cook (f)"
     examples:
       - he: אני מבשל מרק
         en: I am cooking soup.
@@ -834,6 +914,16 @@ entries:
   - lemma: לנקות
     gloss: to clean
     primary_prep: et
+    present_he:
+      m_sg: "הוא מנקה"
+      f_sg: "היא מנקה"
+      m_pl: "הם מנקים"
+      f_pl: "הן מנקות"
+    present_en:
+      m_sg: "he cleans"
+      f_sg: "she cleans"
+      m_pl: "they clean (m)"
+      f_pl: "they clean (f)"
     examples:
       - he: אני מנקה את הבית
         en: I clean the house.
@@ -842,6 +932,16 @@ entries:
 
   - lemma: לישון
     gloss: to sleep
+    present_he:
+      m_sg: "הוא ישן"
+      f_sg: "היא ישנה"
+      m_pl: "הם ישנים"
+      f_pl: "הן ישנות"
+    present_en:
+      m_sg: "he sleeps"
+      f_sg: "she sleeps"
+      m_pl: "they sleep (m)"
+      f_pl: "they sleep (f)"
     examples:
       - he: אני ישן שמונה שעות
         en: I sleep eight hours.
@@ -851,6 +951,16 @@ entries:
   - lemma: לאהוב
     gloss: to love; to like
     primary_prep: et
+    present_he:
+      m_sg: "הוא אוהב"
+      f_sg: "היא אוהבת"
+      m_pl: "הם אוהבים"
+      f_pl: "הן אוהבות"
+    present_en:
+      m_sg: "he loves"
+      f_sg: "she loves"
+      m_pl: "they love (m)"
+      f_pl: "they love (f)"
     examples:
       - he: אני אוהב מוזיקה
         en: I like music.
@@ -860,6 +970,16 @@ entries:
   - lemma: לרצות
     gloss: to want
     primary_prep: et
+    present_he:
+      m_sg: "הוא רוצה"
+      f_sg: "היא רוצה"
+      m_pl: "הם רוצים"
+      f_pl: "הן רוצות"
+    present_en:
+      m_sg: "he wants"
+      f_sg: "she wants"
+      m_pl: "they want (m)"
+      f_pl: "they want (f)"
     examples:
       - he: אני רוצה קפה
         en: I want coffee.
@@ -869,6 +989,16 @@ entries:
   - lemma: לקחת
     gloss: to take
     primary_prep: et
+    present_he:
+      m_sg: "הוא לוקח"
+      f_sg: "היא לוקחת"
+      m_pl: "הם לוקחים"
+      f_pl: "הן לוקחות"
+    present_en:
+      m_sg: "he takes"
+      f_sg: "she takes"
+      m_pl: "they take (m)"
+      f_pl: "they take (f)"
     examples:
       - he: קח את הספר
         en: Take the book.
@@ -878,6 +1008,16 @@ entries:
   - lemma: לתת
     gloss: to give
     primary_prep: l
+    present_he:
+      m_sg: "הוא נותן"
+      f_sg: "היא נותנת"
+      m_pl: "הם נותנים"
+      f_pl: "הן נותנות"
+    present_en:
+      m_sg: "he gives"
+      f_sg: "she gives"
+      m_pl: "they give (m)"
+      f_pl: "they give (f)"
     examples:
       - he: תן לי רגע
         en: Give me a moment.
@@ -887,6 +1027,16 @@ entries:
   - lemma: למצוא
     gloss: to find
     primary_prep: et
+    present_he:
+      m_sg: "הוא מוצא"
+      f_sg: "היא מוצאת"
+      m_pl: "הם מוצאים"
+      f_pl: "הן מוצאות"
+    present_en:
+      m_sg: "he finds"
+      f_sg: "she finds"
+      m_pl: "they find (m)"
+      f_pl: "they find (f)"
     examples:
       - he: מצאתי את המפתח
         en: I found the key.

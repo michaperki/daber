@@ -317,6 +317,16 @@ entries:
 
   - lemma: ללכת
     gloss: to go; to walk
+    present_he:
+      m_sg: "הוא הולך"
+      f_sg: "היא הולכת"
+      m_pl: "הם הולכים"
+      f_pl: "הן הולכות"
+    present_en:
+      m_sg: "he goes"
+      f_sg: "she goes"
+      m_pl: "they go (m)"
+      f_pl: "they go (f)"
     examples:
       - he: אני הולך לעבודה
         en: I am going to work.
@@ -325,6 +335,16 @@ entries:
 
   - lemma: לבוא
     gloss: to come
+    present_he:
+      m_sg: "הוא בא"
+      f_sg: "היא באה"
+      m_pl: "הם באים"
+      f_pl: "הן באות"
+    present_en:
+      m_sg: "he comes"
+      f_sg: "she comes"
+      m_pl: "they come (m)"
+      f_pl: "they come (f)"
     examples:
       - he: תבוא מחר
         en: Come tomorrow.
@@ -333,6 +353,16 @@ entries:
 
   - lemma: לנסוע
     gloss: to travel; to drive (as passenger)
+    present_he:
+      m_sg: "הוא נוסע"
+      f_sg: "היא נוסעת"
+      m_pl: "הם נוסעים"
+      f_pl: "הן נוסעות"
+    present_en:
+      m_sg: "he travels"
+      f_sg: "she travels"
+      m_pl: "they travel (m)"
+      f_pl: "they travel (f)"
     examples:
       - he: אני נוסע באוטובוס
         en: I ride the bus.
@@ -341,6 +371,16 @@ entries:
 
   - lemma: לנהוג
     gloss: to drive (operate a vehicle)
+    present_he:
+      m_sg: "הוא נוהג"
+      f_sg: "היא נוהגת"
+      m_pl: "הם נוהגים"
+      f_pl: "הן נוהגות"
+    present_en:
+      m_sg: "he drives"
+      f_sg: "she drives"
+      m_pl: "they drive (m)"
+      f_pl: "they drive (f)"
     examples:
       - he: הוא נוהג לעבודה כל יום
         en: He drives to work every day.

@@ -327,6 +327,16 @@ entries:
   - lemma: לומר
     gloss: to say
     primary_prep: none
+    present_he:
+      m_sg: "הוא אומר"
+      f_sg: "היא אומרת"
+      m_pl: "הם אומרים"
+      f_pl: "הן אומרות"
+    present_en:
+      m_sg: "he says"
+      f_sg: "she says"
+      m_pl: "they say (m)"
+      f_pl: "they say (f)"
     examples:
       - he: יש לו מה לומר
         en: He has something to say.
@@ -336,6 +346,16 @@ entries:
   - lemma: לשאול
     gloss: to ask (a question)
     primary_prep: et
+    present_he:
+      m_sg: "הוא שואל"
+      f_sg: "היא שואלת"
+      m_pl: "הם שואלים"
+      f_pl: "הן שואלות"
+    present_en:
+      m_sg: "he asks"
+      f_sg: "she asks"
+      m_pl: "they ask (m)"
+      f_pl: "they ask (f)"
     examples:
       - he: אפשר לשאול שאלה?
         en: May I ask a question?

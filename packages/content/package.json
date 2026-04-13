@@ -7,6 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "node --loader ts-node/esm src/build.ts",
+    "report": "node --loader ts-node/esm src/report.ts",
     "clean": "rimraf dist && mkdir -p dist"
   },
   "dependencies": {
@@ -19,4 +20,3 @@
     "rimraf": "^5.0.5"
   }
 }
-

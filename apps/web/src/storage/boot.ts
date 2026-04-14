@@ -3,7 +3,7 @@ import { loadCalibration } from './calibration';
 import { loadProgress } from './progress';
 import { getCalibration, getProgress } from './sync';
 import { getStrokes } from './strokes_fetch';
-import { calibration, deviceId, offline, progress, syncStatus } from '../state/signals';
+import { calibration, deviceId, offline, progress, syncStatus, syncError } from '../state/signals';
 import { strokeSamples } from '../state/strokes';
 import { emptyStrokes, loadLocalStrokes, mergeStrokes, saveLocalStrokes } from './strokes_store';
 
@@ -30,29 +30,39 @@ export async function bootSync() {
   }
 
   syncStatus.value = 'loading';
+  let step = 'fetch';
   try {
     const [cal, prog, strokes] = await Promise.all([
       getCalibration(id),
       getProgress(id),
       getStrokes(id),
     ]);
+    step = 'apply-calibration';
     if (cal && cal.version === 1) {
       calibration.value = cal;
     }
+    step = 'apply-progress';
     if (prog && prog.version === 1) {
       progress.value = prog;
     }
+    step = 'merge-strokes';
     if (strokes && strokes.version === 1) {
       // Merge server strokes into local, deduping and capping
       const local = loadLocalStrokes();
+      step = 'merge-strokes-compute';
       const merged = mergeStrokes(local, { version: 1, samples: strokes.samples as any, updated_at: new Date().toISOString() });
+      step = 'merge-strokes-save';
       saveLocalStrokes(merged);
+      step = 'merge-strokes-signal';
       strokeSamples.value = merged.samples as any;
     }
     offline.value = false;
     syncStatus.value = 'idle';
-  } catch {
+  } catch (err) {
     offline.value = true;
     syncStatus.value = 'error';
+    const msg = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+    syncError.value = `[${step}] ${msg}`;
+    console.error('[bootSync]', msg, err);
   }
 }

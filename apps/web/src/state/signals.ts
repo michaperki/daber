@@ -19,6 +19,7 @@ export const progress = signal<ProgressV1>(emptyProgress());
 // Lightweight sync status for an inline offline indicator in the header.
 export type SyncStatus = 'idle' | 'loading' | 'error' | 'saving';
 export const syncStatus = signal<SyncStatus>('idle');
+export const syncError = signal<string>('');
 export const offline = signal<boolean>(false);
 
 // Current letter index inside the Calibrate tab (0..LETTERS.length-1).

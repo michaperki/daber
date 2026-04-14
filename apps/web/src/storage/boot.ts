@@ -6,6 +6,7 @@ import { getStrokes } from './strokes_fetch';
 import { calibration, deviceId, offline, progress, syncStatus, syncError } from '../state/signals';
 import { strokeSamples } from '../state/strokes';
 import { emptyStrokes, loadLocalStrokes, mergeStrokes, saveLocalStrokes } from './strokes_store';
+import { toPrototypes } from './calibration';
 
 // Boot sequence:
 // 1. Synchronously hydrate signals from localStorage so the UI renders with
@@ -30,43 +31,75 @@ export async function bootSync() {
   }
 
   syncStatus.value = 'loading';
-  let step = 'fetch';
+  syncError.value = '';
   try {
-    const [cal, prog, strokes] = await Promise.all([
+    const [calRes, progRes, strokesRes] = await Promise.allSettled([
       getCalibration(id),
       getProgress(id),
       getStrokes(id),
     ]);
-    step = 'apply-calibration';
-    if (cal && cal.version === 1) {
-      calibration.value = cal;
+
+    const errors: string[] = [];
+
+    if (calRes.status === 'fulfilled' && calRes.value && calRes.value.version === 1) {
+      calibration.value = calRes.value;
+    } else if (calRes.status === 'rejected') {
+      const msg = calRes.reason instanceof Error ? `${calRes.reason.name}: ${calRes.reason.message}` : String(calRes.reason);
+      errors.push(`[calibration] ${msg}`);
     }
-    step = 'apply-progress';
-    if (prog && prog.version === 1) {
-      progress.value = prog;
+
+    if (progRes.status === 'fulfilled' && progRes.value && progRes.value.version === 1) {
+      progress.value = progRes.value;
+    } else if (progRes.status === 'rejected') {
+      const msg = progRes.reason instanceof Error ? `${progRes.reason.name}: ${progRes.reason.message}` : String(progRes.reason);
+      errors.push(`[progress] ${msg}`);
     }
-    step = 'merge-strokes';
-    if (strokes && strokes.version === 1) {
-      // Merge server strokes into local, deduping and capping.
-      // Stroke merge is best-effort — if localStorage is full the app still works
-      // because strokes are persisted server-side.
+
+    if (strokesRes.status === 'fulfilled' && strokesRes.value && strokesRes.value.version === 1) {
+      // Merge server strokes into local, deduping and capping. This remains
+      // best-effort because localStorage can hit Safari quota limits.
       try {
         const local = loadLocalStrokes();
-        const merged = mergeStrokes(local, { version: 1, samples: strokes.samples as any, updated_at: new Date().toISOString() });
+        const merged = mergeStrokes(local, { version: 1, samples: strokesRes.value.samples as any, updated_at: new Date().toISOString() });
         saveLocalStrokes(merged);
         strokeSamples.value = merged.samples as any;
       } catch {
         // Fall back to server strokes in memory only (no local cache)
-        strokeSamples.value = strokes.samples as any;
+        strokeSamples.value = strokesRes.value.samples as any;
       }
     }
-    offline.value = false;
-    syncStatus.value = 'idle';
+
+    const anyFulfilled = [calRes, progRes, strokesRes].some((r) => r.status === 'fulfilled');
+    offline.value = !anyFulfilled;
+    syncStatus.value = anyFulfilled ? 'idle' : 'error';
+
+    // When all requests fail but we still have local recognizer data, keep the
+    // app in usable state and avoid a false "broken" signal.
+    if (!anyFulfilled) {
+      let strokeLetters = 0;
+      const local = loadLocalStrokes();
+      for (const k in local.samples) {
+        if ((local.samples as any)[k]?.length) strokeLetters++;
+      }
+      const prototypes = toPrototypes(calibration.value);
+      let protoLetters = 0;
+      for (const k in prototypes) {
+        if ((prototypes as any)[k]?.length) protoLetters++;
+      }
+      if (strokeLetters > 0 || protoLetters > 0) {
+        syncStatus.value = 'idle';
+      }
+    }
+
+    if (syncStatus.value === 'error' && errors.length) {
+      syncError.value = errors.join('\n');
+      console.error('[bootSync]', syncError.value);
+    }
   } catch (err) {
     offline.value = true;
     syncStatus.value = 'error';
     const msg = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
-    syncError.value = `[${step}] ${msg}`;
+    syncError.value = `[bootSync] ${msg}`;
     console.error('[bootSync]', msg, err);
   }
 }

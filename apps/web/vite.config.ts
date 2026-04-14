@@ -22,7 +22,13 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,json}'],
+        cleanupOutdatedCaches: true,
+        // Keep core assets precached for offline usage.
+        globPatterns: ['**/*.{js,css,html,png,json,svg,ico,webmanifest,woff,woff2,ttf,bin,wasm}'],
+        // Models are large; avoid precaching and let runtime cache handle them.
+        globIgnores: ['**/models/**'],
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
             urlPattern: /\/api\//,
@@ -30,6 +36,22 @@ export default defineConfig({
             options: {
               cacheName: 'api-cache',
               expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 },
+            },
+          },
+          {
+            urlPattern: /\/models\/.*\.(?:json|bin)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'tfjs-models',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/npm\/@tensorflow\/tfjs.*/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'tfjs-cdn',
+              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 30 },
             },
           },
         ],

@@ -18,6 +18,9 @@ import { progress } from '../state/signals';
 import panels from './panels.module.css';
 import study from './study.module.css';
 import { appendLocalSample } from '../storage/strokes_store';
+import { toPrototypes } from '../storage/calibration';
+import { calibration } from '../state/signals';
+import { predictByPrototypesFromStrokes } from '../recognizer/proto';
 import { tierSuggestion, tierToast, acceptTierUnlock, snoozeTierSuggestion } from '../tier_suggest';
 import { getUnlockedTier } from '../curriculum_active';
 
@@ -190,7 +193,15 @@ export function VocabTab() {
     if (sum < 1e-3) return;
 
     if (!strokes || strokes.length === 0) return;
-    const top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
+    let top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
+    if (!top.length) {
+      try {
+        const prot = toPrototypes(calibration.value);
+        top = predictByPrototypesFromStrokes(strokes, prot, { topN: 10 });
+      } catch {
+        // Best-effort fallback only.
+      }
+    }
     if (!top.length) return;
     const top1 = top[0];
     const atEnd = isEndOfWord(cur.he, advanced.pos);
@@ -447,8 +458,9 @@ export function VocabTab() {
           });
 
           // Split into word groups on spaces
-          const groups: Info[][] = [];
-          let cur: Info[] = [];
+          type LetterInfo = Extract<Info, { kind: 'letter' }>;
+          const groups: LetterInfo[][] = [];
+          let cur: LetterInfo[] = [];
           for (const item of info) {
             if (item.kind === 'space') {
               if (cur.length) groups.push(cur);

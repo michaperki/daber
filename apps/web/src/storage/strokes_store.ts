@@ -10,7 +10,7 @@ export type StrokesPayload = {
 };
 
 const KEY = 'daber_strokes_v1';
-const MAX_SAMPLES_PER_LETTER = 200;
+const MAX_SAMPLES_PER_LETTER = 30;
 
 function nowIso() { return new Date().toISOString(); }
 
@@ -34,9 +34,26 @@ export function loadLocalStrokes(): StrokesPayload {
   }
 }
 
-export function saveLocalStrokes(p: StrokesPayload) {
+export function saveLocalStrokes(p: StrokesPayload): boolean {
   p.updated_at = nowIso();
-  localStorage.setItem(KEY, JSON.stringify(p));
+  try {
+    localStorage.setItem(KEY, JSON.stringify(p));
+    return true;
+  } catch {
+    // QuotaExceededError — trim each letter to half and retry once
+    for (const L of LETTERS) {
+      const arr = p.samples[L];
+      if (arr && arr.length > 5) {
+        p.samples[L] = arr.slice(-Math.ceil(arr.length / 2));
+      }
+    }
+    try {
+      localStorage.setItem(KEY, JSON.stringify(p));
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }
 
 // Basic sample validity: at least one stroke, enough points, non-trivial bounds

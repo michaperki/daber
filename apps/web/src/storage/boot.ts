@@ -47,14 +47,18 @@ export async function bootSync() {
     }
     step = 'merge-strokes';
     if (strokes && strokes.version === 1) {
-      // Merge server strokes into local, deduping and capping
-      const local = loadLocalStrokes();
-      step = 'merge-strokes-compute';
-      const merged = mergeStrokes(local, { version: 1, samples: strokes.samples as any, updated_at: new Date().toISOString() });
-      step = 'merge-strokes-save';
-      saveLocalStrokes(merged);
-      step = 'merge-strokes-signal';
-      strokeSamples.value = merged.samples as any;
+      // Merge server strokes into local, deduping and capping.
+      // Stroke merge is best-effort — if localStorage is full the app still works
+      // because strokes are persisted server-side.
+      try {
+        const local = loadLocalStrokes();
+        const merged = mergeStrokes(local, { version: 1, samples: strokes.samples as any, updated_at: new Date().toISOString() });
+        saveLocalStrokes(merged);
+        strokeSamples.value = merged.samples as any;
+      } catch {
+        // Fall back to server strokes in memory only (no local cache)
+        strokeSamples.value = strokes.samples as any;
+      }
     }
     offline.value = false;
     syncStatus.value = 'idle';

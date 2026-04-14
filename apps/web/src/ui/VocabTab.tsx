@@ -53,9 +53,6 @@ const EMPTY_STATE: VocabState = {
   hints: {},
 };
 
-const FIRST_STROKE_SETTLE_MS = 220;
-const WRONG_SETTLE_MS = 200;
-
 // Whether `drawn` (the recognizer's top-1 letter) is acceptable for the
 // `expected` letter at position `pos` in the word. Final-form rules:
 //   - At the last position of the word: accept either the base or the final.
@@ -92,7 +89,6 @@ export function VocabTab() {
   });
   const [lastReject, setLastReject] = useState<Float32Array | null>(null);
   const busyRef = useRef(false);
-  const settleTimerRef = useRef<number | null>(null);
   // Track whether the current word attempt had any mistakes, user reveal, or force-accepts
   const attemptRef = useRef<{ mistake: boolean; reveal: boolean; force: boolean }>({
     mistake: false,
@@ -120,7 +116,6 @@ export function VocabTab() {
   // no prefs used here after simplification
 
   function pickNext() {
-    cancelSettleTimer();
     setFeedback({ kind: 'idle', text: '' });
     setLastReject(null);
     const entry = randomVocabEntry();
@@ -168,13 +163,6 @@ export function VocabTab() {
 
   const wrongTimerRef = useRef<number | null>(null);
 
-  function cancelSettleTimer() {
-    if (settleTimerRef.current) {
-      window.clearTimeout(settleTimerRef.current);
-      settleTimerRef.current = null;
-    }
-  }
-
   function cancelWrongTimer() {
     if (wrongTimerRef.current) {
       window.clearTimeout(wrongTimerRef.current);
@@ -182,34 +170,13 @@ export function VocabTab() {
     }
   }
 
-  useEffect(() => {
-    return () => {
-      cancelSettleTimer();
-      cancelWrongTimer();
-    };
-  }, []);
-
   function onPenDown() {
-    cancelSettleTimer();
     cancelWrongTimer();
     // Prime Web Audio on first user gesture to satisfy iOS Safari
     void primeAudio();
   }
 
   function onStroke(vec: Float32Array, strokes?: Stroke[]) {
-    cancelSettleTimer();
-    const settledStrokes = strokes ? strokes.map((s) => [...s]) : undefined;
-    if ((settledStrokes?.length ?? 0) === 1) {
-      settleTimerRef.current = window.setTimeout(() => {
-        settleTimerRef.current = null;
-        evaluateStroke(vec, settledStrokes, true);
-      }, FIRST_STROKE_SETTLE_MS);
-      return;
-    }
-    evaluateStroke(vec, settledStrokes, true);
-  }
-
-  function evaluateStroke(vec: Float32Array, strokes?: Stroke[], deferWrong = false) {
     if (busyRef.current) return;
     const cur = state.current;
     if (!cur) return;
@@ -248,14 +215,6 @@ export function VocabTab() {
       if (F.has(expectedForForgive) && F.has(top1.letter)) {
         ok = true;
       }
-    }
-
-    if (!ok && deferWrong) {
-      settleTimerRef.current = window.setTimeout(() => {
-        settleTimerRef.current = null;
-        evaluateStroke(vec, strokes);
-      }, WRONG_SETTLE_MS);
-      return;
     }
 
     bumpVocabLetter(ok);
@@ -334,7 +293,6 @@ export function VocabTab() {
 
   function onIdk() {
     if (!state.current) return;
-    cancelSettleTimer();
     // Reveal the full word but stay on this item so the user can trace it.
     attemptRef.current.reveal = true;
     setState((s) => ({ ...s, revealed: true }));
@@ -348,7 +306,6 @@ export function VocabTab() {
 
   function forceAccept() {
     if (!lastReject || !state.current) return;
-    cancelSettleTimer();
     const cur = state.current;
     const expected = cur.he[state.pos];
     if (!expected) return;
@@ -407,7 +364,6 @@ export function VocabTab() {
         onSkip();
       } else if (e.key === ' ') {
         e.preventDefault();
-        cancelSettleTimer();
         canvasRef.current?.clear();
       } else if ((e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();

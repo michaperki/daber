@@ -51,6 +51,7 @@ export const NounEntrySchema = z.object({
   forms: z
     .object({
       sg: z.string().optional(),
+      pl: z.string().optional(),
       base: z.string().optional(),
     })
     .partial()

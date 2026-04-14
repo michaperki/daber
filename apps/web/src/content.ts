@@ -127,7 +127,6 @@ function randomVocabEntryByCell(): VocabEntry | null {
       const key = `verb:${lemma}:${token}`;
       const row = vmap.get(key);
       if (!row) continue;
-      if (row.he.replace(/\s/g, '').length < 3) continue;
       items.push({ key, row });
     }
   }
@@ -137,7 +136,6 @@ function randomVocabEntryByCell(): VocabEntry | null {
       const key = `adjective:${lemma}:${token}`;
       const row = amap.get(key);
       if (!row) continue;
-      if (row.he.replace(/\s/g, '').length < 3) continue;
       items.push({ key, row });
     }
   }
@@ -147,7 +145,6 @@ function randomVocabEntryByCell(): VocabEntry | null {
       const key = `noun:${lemma}:${token}`;
       const row = nmap.get(key);
       if (!row) continue;
-      if (row.he.replace(/\s/g, '').length < 3) continue;
       items.push({ key, row });
     }
   }

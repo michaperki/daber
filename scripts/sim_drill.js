@@ -9,6 +9,8 @@
  * Usage examples:
  *   node scripts/sim_drill.js --n 100 --behavior perfect
  *   node scripts/sim_drill.js --n 50 --behavior reveal --lesson cafe_ordering_1
+ *   node scripts/sim_drill.js --n 12 --lesson cafe_ordering_1 --prompts
+ *   node scripts/sim_drill.js --all-lessons --n 25 --behavior mixed --seed 42
  *   node scripts/sim_drill.js --n 100 --behavior mixed --seed 42
  *
  * Multiple runs (comma-separated):
@@ -20,7 +22,16 @@ const path = require('path');
 
 // ---------- CLI args ----------
 function parseArgs(argv) {
-  const out = { nList: [100], behavior: 'perfect', lesson: null, seed: null, verbose: false };
+  const out = {
+    nList: [100],
+    behavior: 'perfect',
+    lesson: null,
+    seed: null,
+    verbose: false,
+    prompts: false,
+    allLessons: false,
+    listLessons: false,
+  };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--n' || a === '-n') {
@@ -30,11 +41,17 @@ function parseArgs(argv) {
       out.behavior = String(argv[++i]).toLowerCase();
     } else if (a === '--lesson' || a === '-l') {
       out.lesson = String(argv[++i]);
+    } else if (a === '--all-lessons') {
+      out.allLessons = true;
+    } else if (a === '--list-lessons') {
+      out.listLessons = true;
     } else if (a === '--seed' || a === '-s') {
       const v = Number(argv[++i]);
       out.seed = Number.isFinite(v) ? v : null;
     } else if (a === '--verbose' || a === '-v') {
       out.verbose = true;
+    } else if (a === '--prompts' || a === '-p') {
+      out.prompts = true;
     } else if (a === '--help' || a === '-h') {
       usage();
       process.exit(0);
@@ -61,8 +78,11 @@ Args:
   --n, -n         Number of prompts (e.g., 100 or 20,50,100). Default: 100
   --behavior, -b  perfect | skip | reveal | mixed. Default: perfect
   --lesson, -l    Lesson id for lesson-scoped drill. Omit for free practice.
+  --all-lessons   Run the same simulation for every lesson in lessons.json.
+  --list-lessons  Print lessons, eligible cell counts, and exit.
   --seed, -s      Seed for deterministic RNG (number). Optional.
   --verbose, -v   Print the ordered item sequence.
+  --prompts, -p   Print learner-facing prompt transcript (English prompt, Hebrew answer, outcome).
 `);
 }
 
@@ -216,7 +236,6 @@ function buildItemsFromScope(scope, vmap, amap, nmap) {
       const key = `verb:${lemma}:${token}`;
       const row = vmap.get(key);
       if (!row) continue;
-      if (row.he.replace(/\s/g, '').length < 3) continue;
       items.push({ key, row });
     }
   }
@@ -225,7 +244,6 @@ function buildItemsFromScope(scope, vmap, amap, nmap) {
       const key = `adjective:${lemma}:${token}`;
       const row = amap.get(key);
       if (!row) continue;
-      if (row.he.replace(/\s/g, '').length < 3) continue;
       items.push({ key, row });
     }
   }
@@ -234,11 +252,67 @@ function buildItemsFromScope(scope, vmap, amap, nmap) {
       const key = `noun:${lemma}:${token}`;
       const row = nmap.get(key);
       if (!row) continue;
-      if (row.he.replace(/\s/g, '').length < 3) continue;
       items.push({ key, row });
     }
   }
   return items;
+}
+
+function countScopeTokens(scope) {
+  const counts = { verbs: 0, adjectives: 0, nouns: 0, total: 0 };
+  for (const [kind, dst] of [
+    ['verbs', scope.verbs || {}],
+    ['adjectives', scope.adjectives || {}],
+    ['nouns', scope.nouns || {}],
+  ]) {
+    for (const tokens of Object.values(dst)) {
+      counts[kind] += Array.isArray(tokens) ? tokens.length : 0;
+    }
+  }
+  counts.total = counts.verbs + counts.adjectives + counts.nouns;
+  return counts;
+}
+
+function countItemsByPos(items) {
+  const counts = {};
+  for (const { row } of items) counts[row.pos] = (counts[row.pos] || 0) + 1;
+  return counts;
+}
+
+function lessonById(lessons, lessonId) {
+  return lessons.find((l) => l.id === lessonId) || null;
+}
+
+function lessonScopeSummary(content, lessonId) {
+  const lesson = lessonById(content.lessons, lessonId);
+  if (!lesson) return null;
+  const { vmap, amap, nmap } = buildMaps(content.vocab);
+  const scope = scopeFromLesson(content.lessons, lessonId) || { verbs: {}, adjectives: {}, nouns: {} };
+  const items = buildItemsFromScope(scope, vmap, amap, nmap);
+  return {
+    lesson,
+    declared: countScopeTokens(scope),
+    eligible: items.length,
+    eligibleByPos: countItemsByPos(items),
+  };
+}
+
+function printLessons(content) {
+  if (!Array.isArray(content.lessons) || !content.lessons.length) {
+    console.log('No lessons found in packages/content/dist/lessons.json. Run: npm -w packages/content run build');
+    return;
+  }
+  console.log('Lessons:');
+  for (const lesson of content.lessons) {
+    const summary = lessonScopeSummary(content, lesson.id);
+    const declared = summary?.declared.total ?? 0;
+    const eligible = summary?.eligible ?? 0;
+    const byPos = JSON.stringify(summary?.eligibleByPos || {});
+    console.log(`- ${lesson.id}: ${lesson.title}`);
+    if (lesson.tagline) console.log(`  Tagline: ${lesson.tagline}`);
+    if (lesson.endpoint?.description) console.log(`  Endpoint: ${lesson.endpoint.description}`);
+    console.log(`  Eligible cells: ${eligible}/${declared} ${byPos}`);
+  }
 }
 
 function pickWeighted(rng, items) {
@@ -340,7 +414,7 @@ function makeSelector(vocab, lessons, lessonId, progress, rng) {
 }
 
 // ---------- Behavior policy ----------
-function decideClean(behavior, progress, row) {
+function decideClean(behavior, progress, row, rng = Math.random) {
   if (behavior === 'perfect') return true;
   if (behavior === 'reveal') return false;
   if (behavior === 'skip') return null; // null = do not bump progress
@@ -358,7 +432,14 @@ function decideClean(behavior, progress, row) {
   // Slight bias: very short/easy items are easier to be clean
   const short = (row.he || '').replace(/\s/g, '').length <= 4;
   if (short) pClean = Math.min(0.98, pClean + 0.05);
-  return Math.random() < pClean;
+  return rng() < pClean;
+}
+
+function outcomeLabel(clean, behavior) {
+  if (clean === null) return 'skipped_no_progress';
+  if (clean) return 'completed_clean';
+  if (behavior === 'reveal') return 'revealed_then_completed_unclean';
+  return 'completed_unclean';
 }
 
 // ---------- Metrics ----------
@@ -413,19 +494,15 @@ function analyzeRun(seq, progress, scopeTotal) {
     repeatsByLemma: Object.fromEntries(topLemmas),
     minUniqueLemmasPer10: Number.isFinite(minUniqueLemmas) ? minUniqueLemmas : seq.length,
     stalledAt,
+    scopeTotal,
     coverageOfScope: scopeTotal ? (seenCells.size / scopeTotal) : 0,
     sequence: seq.map((x) => x.key),
   };
 }
 
 function runOne({ vocab, lessons }, { n, behavior, lesson, seed, verbose }) {
-  // Seed RNG for weighted-choice, but behavior.mixed uses Math.random; make both deterministic if seed provided
   const rng = seed == null ? Math.random : mulberry32(seed >>> 0);
-  if (seed != null) {
-    // Monkey-patch Math.random to align mixed behavior randomness
-    const seeded = mulberry32((seed + 1337) >>> 0);
-    Math.random = seeded;
-  }
+  const behaviorRng = seed == null ? Math.random : mulberry32((seed + 1337) >>> 0);
 
   const progress = emptyProgress();
   const selector = makeSelector(vocab, lessons, lesson, progress, rng);
@@ -437,8 +514,17 @@ function runOne({ vocab, lessons }, { n, behavior, lesson, seed, verbose }) {
     const lemma = row.lemma || (row.variant ? undefined : row.he);
     const token = row.variant || (pos === 'verb' ? 'lemma' : pos === 'noun' ? 'sg' : 'm_sg');
     const key = lemma && token ? `${pos}:${lemma}:${token}` : `${pos}:${row.he}`;
-    seq.push({ key, pos, lemma: lemma || row.he });
-    const clean = decideClean(behavior, progress, row);
+    const clean = decideClean(behavior, progress, row, behaviorRng);
+    seq.push({
+      key,
+      pos,
+      lemma: lemma || row.he,
+      token,
+      prompt: row.en || '-',
+      answer: row.he || '-',
+      clean,
+      outcome: outcomeLabel(clean, behavior),
+    });
     if (clean === null) {
       // skip: do not bump
     } else {
@@ -446,6 +532,7 @@ function runOne({ vocab, lessons }, { n, behavior, lesson, seed, verbose }) {
     }
   }
   const report = analyzeRun(seq, progress, selector.itemsTotal);
+  report.prompts = seq;
   if (verbose) {
     console.log('Sequence:');
     for (let i = 0; i < report.sequence.length; i++) console.log(`${i+1}. ${report.sequence[i]}`);
@@ -453,22 +540,66 @@ function runOne({ vocab, lessons }, { n, behavior, lesson, seed, verbose }) {
   return report;
 }
 
+function printPromptTranscript(report) {
+  console.log('Prompt transcript:');
+  for (let i = 0; i < report.prompts.length; i++) {
+    const p = report.prompts[i];
+    console.log(`${i + 1}. [${p.outcome}] English: ${p.prompt} | Hebrew: ${p.answer} | Cell: ${p.key}`);
+  }
+}
+
+function validateArgs(args, content) {
+  const allowed = new Set(['perfect', 'skip', 'reveal', 'mixed']);
+  if (!allowed.has(args.behavior)) {
+    console.error(`Unknown behavior: ${args.behavior}`);
+    usage();
+    process.exit(1);
+  }
+  if (args.lesson && args.allLessons) {
+    console.error('Use either --lesson or --all-lessons, not both.');
+    process.exit(1);
+  }
+  if (args.lesson && !lessonById(content.lessons, args.lesson)) {
+    console.error(`Unknown lesson id: ${args.lesson}`);
+    printLessons(content);
+    process.exit(1);
+  }
+}
+
 function main() {
   const args = parseArgs(process.argv);
   const content = loadContent();
-  const scenarios = [args.behavior];
-  for (const n of args.nList) {
-    const report = runOne(content, { n, behavior: args.behavior, lesson: args.lesson, seed: args.seed, verbose: args.verbose });
-    const scopeLabel = args.lesson ? `lesson:${args.lesson}` : 'free';
-    console.log(`\n=== Simulation: n=${n}, behavior=${args.behavior}, scope=${scopeLabel} ===`);
-    console.log(`Delivered: ${report.totalDelivered}`);
-    console.log(`Distinct lemmas: ${report.distinctLemmas}`);
-    console.log(`Distinct cells: ${report.distinctCells} (scope total: ${report.coverageOfScope ? Math.round(report.coverageOfScope*100)+'% coverage' : 'n/a'})`);
-    console.log(`POS distribution: ${JSON.stringify(report.posDistribution)}`);
-    console.log(`Top repeats (item): ${JSON.stringify(report.repeatsByItem)}`);
-    console.log(`Top repeats (lemma): ${JSON.stringify(report.repeatsByLemma)}`);
-    console.log(`Min unique lemmas per 10-pick window: ${report.minUniqueLemmasPer10}`);
-    console.log(`Loop/stall heuristic: ${report.stalledAt ? `stalled after ~${report.stalledAt} picks` : 'no obvious stall'}`);
+  validateArgs(args, content);
+  if (args.listLessons) {
+    printLessons(content);
+    return;
+  }
+
+  const lessonIds = args.allLessons ? content.lessons.map((l) => l.id) : [args.lesson];
+  if (args.allLessons && !lessonIds.length) {
+    console.error('No lessons found in packages/content/dist/lessons.json. Run: npm -w packages/content run build');
+    process.exit(2);
+  }
+
+  for (const lessonId of lessonIds) {
+    const lesson = lessonId ? lessonById(content.lessons, lessonId) : null;
+    for (const n of args.nList) {
+      const report = runOne(content, { n, behavior: args.behavior, lesson: lessonId, seed: args.seed, verbose: args.verbose });
+      const scopeLabel = lessonId ? `lesson:${lessonId}` : 'free';
+      const title = lesson ? ` (${lesson.title})` : '';
+      console.log(`\n=== Simulation: n=${n}, behavior=${args.behavior}, scope=${scopeLabel}${title} ===`);
+      if (lesson?.endpoint?.description) console.log(`Endpoint: ${lesson.endpoint.description}`);
+      console.log(`Delivered: ${report.totalDelivered}`);
+      console.log(`Distinct lemmas: ${report.distinctLemmas}`);
+      const coverageLabel = report.scopeTotal ? `${Math.round(report.coverageOfScope * 100)}% of ${report.scopeTotal} eligible cells` : 'n/a';
+      console.log(`Distinct cells: ${report.distinctCells} (coverage: ${coverageLabel})`);
+      console.log(`POS distribution: ${JSON.stringify(report.posDistribution)}`);
+      console.log(`Top repeats (item): ${JSON.stringify(report.repeatsByItem)}`);
+      console.log(`Top repeats (lemma): ${JSON.stringify(report.repeatsByLemma)}`);
+      console.log(`Min unique lemmas per 10-pick window: ${report.minUniqueLemmasPer10}`);
+      console.log(`Loop/stall heuristic: ${report.stalledAt ? `stalled after ~${report.stalledAt} picks` : 'no obvious stall'}`);
+      if (args.prompts) printPromptTranscript(report);
+    }
   }
 }
 

@@ -110,12 +110,12 @@ entries:
     primary_prep: none
     present:
       m_sg: מתעורר
-      f_sg: מתעוררת..
+      f_sg: מתעוררת
       m_pl: מתעוררים
       f_pl: מתעוררות
     present_he:
       m_sg: "הוא מתעורר"
-      f_sg: "היא מתעוררת.."
+      f_sg: "היא מתעוררת"
       m_pl: "הם מתעוררים"
       f_pl: "הן מתעוררות"
     present_en:

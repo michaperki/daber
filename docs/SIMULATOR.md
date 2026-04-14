@@ -18,17 +18,24 @@ Quick Start
   - Always reveal: `npm run sim -- --n 50 --behavior reveal`
   - Mixed user: `npm run sim -- --n 100 --behavior mixed --seed 42`
   - Lesson scope: `npm run sim -- --n 50 --behavior perfect --lesson cafe_ordering_1`
+  - Lesson prompt transcript: `npm run sim -- --n 12 --lesson cafe_ordering_1 --behavior reveal --prompts --seed 7`
+  - Every lesson: `npm run sim -- --all-lessons --n 25 --behavior mixed --seed 42`
+  - Lesson inventory: `npm run sim -- --list-lessons`
 - Show ordered sequence: add `--verbose`.
 
 Args
 - `--n`       Number of prompts (single or comma‑separated list). Default: 100
 - `--behavior` One of `perfect`, `skip`, `reveal`, `mixed`. Default: `perfect`
 - `--lesson`  Lesson id to scope selection; omit for free practice
+- `--all-lessons` Run the same simulation once for every lesson in `lessons.json`
+- `--list-lessons` Print lesson ids, titles, endpoint descriptions, and eligible cell counts
 - `--seed`    Seed for deterministic RNG (optional)
 - `--verbose` Print the ordered sequence of delivered items
+- `--prompts` Print learner-facing prompt rows: English prompt, Hebrew answer, selected cell, and simulated outcome
 
 Reports
 - Ordered sequence (with `--verbose`)
+- Prompt transcript (with `--prompts`)
 - Distinct lemmas and cells
 - Repeat counts by exact item and by lemma
 - POS distribution
@@ -42,4 +49,3 @@ Implementation Notes
 Interpreting Results
 - Diversity improves when distinct cells/lemmas grow steadily across 20 → 50 → 100 and the stall/loop heuristic does not trigger early.
 - Lesson‑scoped runs should reach high coverage of the lesson’s cells without obvious loops.
-

@@ -53,7 +53,8 @@ const EMPTY_STATE: VocabState = {
   hints: {},
 };
 
-const LETTER_SETTLE_MS = 650;
+const FIRST_STROKE_SETTLE_MS = 220;
+const WRONG_SETTLE_MS = 200;
 
 // Whether `drawn` (the recognizer's top-1 letter) is acceptable for the
 // `expected` letter at position `pos` in the word. Final-form rules:
@@ -198,13 +199,17 @@ export function VocabTab() {
   function onStroke(vec: Float32Array, strokes?: Stroke[]) {
     cancelSettleTimer();
     const settledStrokes = strokes ? strokes.map((s) => [...s]) : undefined;
-    settleTimerRef.current = window.setTimeout(() => {
-      settleTimerRef.current = null;
-      evaluateStroke(vec, settledStrokes);
-    }, LETTER_SETTLE_MS);
+    if ((settledStrokes?.length ?? 0) === 1) {
+      settleTimerRef.current = window.setTimeout(() => {
+        settleTimerRef.current = null;
+        evaluateStroke(vec, settledStrokes, true);
+      }, FIRST_STROKE_SETTLE_MS);
+      return;
+    }
+    evaluateStroke(vec, settledStrokes, true);
   }
 
-  function evaluateStroke(vec: Float32Array, strokes?: Stroke[]) {
+  function evaluateStroke(vec: Float32Array, strokes?: Stroke[], deferWrong = false) {
     if (busyRef.current) return;
     const cur = state.current;
     if (!cur) return;
@@ -243,6 +248,14 @@ export function VocabTab() {
       if (F.has(expectedForForgive) && F.has(top1.letter)) {
         ok = true;
       }
+    }
+
+    if (!ok && deferWrong) {
+      settleTimerRef.current = window.setTimeout(() => {
+        settleTimerRef.current = null;
+        evaluateStroke(vec, strokes);
+      }, WRONG_SETTLE_MS);
+      return;
     }
 
     bumpVocabLetter(ok);

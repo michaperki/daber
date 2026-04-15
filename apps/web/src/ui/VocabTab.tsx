@@ -12,6 +12,9 @@ import {
   bumpVocabLetter,
   bumpVocabWord,
   bumpCell,
+  markLessonSessionCompleted,
+  markLessonSessionProgress,
+  markLessonSessionStarted,
 } from '../storage/mutations';
 import { vocab, type VocabEntry } from '../content';
 import { playCorrect, playWrong, playWordComplete, playReveal, playPerfect, primeAudio } from '../audio';
@@ -137,6 +140,7 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     ) {
       activeSession.value = createDrillSession(mode, lessonId, progress.value);
       lastSessionSummary.value = null;
+      if (activeSession.value.mode === 'lesson') markLessonSessionStarted(activeSession.value);
     }
     return activeSession.value!;
   }
@@ -145,6 +149,7 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     if (!session) return;
     const completed = { ...session, completed: true };
     activeSession.value = completed;
+    if (completed.mode === 'lesson') markLessonSessionCompleted(completed);
     lastSessionSummary.value = finalSummary(completed);
     if (completed.mode === 'lesson' && completed.lessonId) {
       route(`/lesson/${completed.lessonId}/complete`);
@@ -186,6 +191,7 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     const session = activeSession.value || ensureSession();
     const next = recordSessionResult(session, result);
     activeSession.value = next;
+    if (next.mode === 'lesson') markLessonSessionProgress(next);
     busyRef.current = true;
     window.setTimeout(() => {
       if (next.completed) {

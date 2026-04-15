@@ -1,7 +1,23 @@
 import { useLocation } from 'preact-iso';
 import { lessons } from '../content';
+import { progress } from '../state/signals';
+import { lessonProgressFor, type LessonProgress } from '../storage/progress';
 import panels from './panels.module.css';
 import study from './study.module.css';
+
+function statusLabel(status: LessonProgress['status']) {
+  if (status === 'completed') return 'Completed';
+  if (status === 'in_progress') return 'In progress';
+  return 'Not started';
+}
+
+function statusDetail(p: LessonProgress) {
+  if (p.status === 'completed' && p.last_completed_at) {
+    return `Done ${new Date(p.last_completed_at).toLocaleDateString()}`;
+  }
+  if (p.target_count > 0) return `${Math.min(p.items_completed, p.target_count)}/${p.target_count} items`;
+  return 'Untouched';
+}
 
 export function LessonsHome() {
   const { route } = useLocation();
@@ -13,22 +29,31 @@ export function LessonsHome() {
         <div class={panels.muted}>Short, curated lessons with a clear payoff.</div>
       </div>
       {lessons.length ? (
-        lessons.map((l) => (
-          <button
-            key={l.id}
-            class={panels.panel}
-            onClick={() => route(`/lesson/${l.id}`)}
-            style={{ textAlign: 'left' }}
-          >
-            <div class={panels.row}>
-              <div style={{ fontWeight: 600 }}>{l.title}</div>
-              <div style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--muted)' }}>
-                {l.estimated_minutes ? `${l.estimated_minutes} min` : ''}
+        lessons.map((l) => {
+          const lessonProgress = lessonProgressFor(progress.value, l.id);
+          return (
+            <button
+              key={l.id}
+              class={panels.panel}
+              onClick={() => route(`/lesson/${l.id}`)}
+              style={{ textAlign: 'left' }}
+            >
+              <div class={panels.row}>
+                <div style={{ fontWeight: 600 }}>{l.title}</div>
+                <div style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--muted)' }}>
+                  {l.estimated_minutes ? `${l.estimated_minutes} min` : ''}
+                </div>
               </div>
-            </div>
-            {l.tagline && <div class={panels.muted}>{l.tagline}</div>}
-          </button>
-        ))
+              {l.tagline && <div class={panels.muted}>{l.tagline}</div>}
+              <div class={panels.row}>
+                <div style={{ fontSize: 12, fontWeight: 600 }}>
+                  {statusLabel(lessonProgress.status)}
+                </div>
+                <div class={panels.progress}>{statusDetail(lessonProgress)}</div>
+              </div>
+            </button>
+          );
+        })
       ) : (
         <div class={panels.panel}>No lessons found. Build content or add data under packages/content/data/v2/lessons.</div>
       )}

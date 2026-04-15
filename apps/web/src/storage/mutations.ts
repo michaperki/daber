@@ -1,5 +1,12 @@
 import { addSample, loadCalibration, nowIso, saveCalibration, type CalibrationV1 } from './calibration';
-import { loadProgress, saveProgress, type ProgressV1, type CellProgress, type CellState } from './progress';
+import {
+  loadProgress,
+  saveProgress,
+  type ProgressV1,
+  type CellProgress,
+  type LessonProgress,
+  type LessonStageProgress,
+} from './progress';
 import { schedulePutCalibration, schedulePutProgress } from './sync';
 import {
   calibration,
@@ -9,6 +16,7 @@ import {
   syncStatus,
 } from '../state/signals';
 import type { LetterGlyph } from '../recognizer/types';
+import type { DrillSession } from '../session_planner';
 
 // Helpers that tabs call when they mutate local state. Each one:
 //   1. updates the in-memory signal (so Preact re-renders)
@@ -100,6 +108,7 @@ export function commitProgress(next: ProgressV1) {
     vocab_stats: { ...next.vocab_stats },
     seen_words: { ...next.seen_words },
     cells: { ...(next.cells || {}) },
+    lessons: { ...(next.lessons || {}) },
   };
   schedulePutProgress(deviceId.value, next);
   markSyncing();
@@ -195,6 +204,84 @@ export function bumpCell(pos?: string, lemma?: string, token?: string, cleanAtte
 }
 
 export { cellKeyFor as cellKey };
+
+// ---- Lesson progress ----
+
+function stageProgressFor(session: DrillSession): LessonStageProgress[] {
+  return session.stages.map((stage) => ({
+    id: stage.id,
+    label: stage.label,
+    count: stage.count,
+    completed: Math.min(stage.count, Math.max(0, session.currentIndex - stage.start)),
+  }));
+}
+
+function mergeLessonProgress(
+  prev: LessonProgress | undefined,
+  session: DrillSession,
+  patch: Partial<LessonProgress>,
+): LessonProgress {
+  const now = nowIso();
+  const previousStatus = prev?.status || 'not_started';
+  const nextStatus = patch.status || (previousStatus === 'completed' ? 'completed' : 'in_progress');
+  const preserveCompletedCoverage = previousStatus === 'completed' && patch.status !== 'completed';
+  return {
+    status: previousStatus === 'completed' && nextStatus !== 'completed' ? 'completed' : nextStatus,
+    first_started_at: prev?.first_started_at || now,
+    last_practiced_at: patch.last_practiced_at || now,
+    last_completed_at: patch.last_completed_at || prev?.last_completed_at,
+    sessions_started: patch.sessions_started ?? prev?.sessions_started ?? 0,
+    sessions_completed: patch.sessions_completed ?? prev?.sessions_completed ?? 0,
+    items_completed: preserveCompletedCoverage ? (prev?.items_completed || session.targetCount) : (patch.items_completed ?? session.currentIndex),
+    target_count: preserveCompletedCoverage ? (prev?.target_count || session.targetCount) : (patch.target_count ?? session.targetCount),
+    stages: preserveCompletedCoverage ? (prev?.stages || stageProgressFor(session)) : (patch.stages || stageProgressFor(session)),
+  };
+}
+
+export function markLessonSessionStarted(session: DrillSession) {
+  if (session.mode !== 'lesson' || !session.lessonId) return;
+  const p = progress.value;
+  const lessons = { ...(p.lessons || {}) };
+  const prev = lessons[session.lessonId];
+  lessons[session.lessonId] = mergeLessonProgress(prev, session, {
+    status: prev?.status === 'completed' ? 'completed' : 'in_progress',
+    sessions_started: (prev?.sessions_started || 0) + 1,
+    items_completed: session.currentIndex,
+    target_count: session.targetCount,
+    stages: stageProgressFor(session),
+  });
+  commitProgress({ ...p, lessons });
+}
+
+export function markLessonSessionProgress(session: DrillSession) {
+  if (session.mode !== 'lesson' || !session.lessonId) return;
+  const p = progress.value;
+  const lessons = { ...(p.lessons || {}) };
+  const prev = lessons[session.lessonId];
+  lessons[session.lessonId] = mergeLessonProgress(prev, session, {
+    status: prev?.status === 'completed' ? 'completed' : 'in_progress',
+    items_completed: session.currentIndex,
+    target_count: session.targetCount,
+    stages: stageProgressFor(session),
+  });
+  commitProgress({ ...p, lessons });
+}
+
+export function markLessonSessionCompleted(session: DrillSession) {
+  if (session.mode !== 'lesson' || !session.lessonId) return;
+  const p = progress.value;
+  const lessons = { ...(p.lessons || {}) };
+  const prev = lessons[session.lessonId];
+  lessons[session.lessonId] = mergeLessonProgress(prev, { ...session, currentIndex: session.targetCount }, {
+    status: 'completed',
+    last_completed_at: nowIso(),
+    sessions_completed: (prev?.sessions_completed || 0) + 1,
+    items_completed: session.targetCount,
+    target_count: session.targetCount,
+    stages: session.stages.map((stage) => ({ id: stage.id, label: stage.label, count: stage.count, completed: stage.count })),
+  });
+  commitProgress({ ...p, lessons });
+}
 
 // Re-hydrate local signals from localStorage. Used by the Settings reset
 // flow when the user wants a completely clean slate after wiping local data.

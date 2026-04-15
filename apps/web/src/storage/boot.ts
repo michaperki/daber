@@ -1,6 +1,6 @@
 import { getOrCreateDeviceId } from './device';
 import { loadCalibration } from './calibration';
-import { loadProgress } from './progress';
+import { loadProgress, normalizeProgress } from './progress';
 import { getCalibration, getProgress } from './sync';
 import { getStrokes } from './strokes_fetch';
 import { calibration, deviceId, offline, progress, syncStatus, syncError } from '../state/signals';
@@ -49,7 +49,7 @@ export async function bootSync() {
     }
 
     if (progRes.status === 'fulfilled' && progRes.value && progRes.value.version === 1) {
-      progress.value = progRes.value;
+      progress.value = normalizeProgress(progRes.value);
     } else if (progRes.status === 'rejected') {
       const msg = progRes.reason instanceof Error ? `${progRes.reason.name}: ${progRes.reason.message}` : String(progRes.reason);
       errors.push(`[progress] ${msg}`);

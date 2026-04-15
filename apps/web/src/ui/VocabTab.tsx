@@ -496,7 +496,7 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
               </div>
               <div class={panels.progress}>
                 Session {sessionPos}/{session.targetCount}
-                {stage ? ` · Stage ${stage.ordinal}/${session.stages.length + 1}: ${stage.label} ${stagePos}/${stage.count}` : ''}
+                {stage ? ` · Stage ${stage.ordinal}/${session.stages.length}: ${stage.label} ${stagePos}/${stage.count}` : ''}
               </div>
             </div>
             <div class={panels.progress} style={{ marginLeft: 'auto' }}>

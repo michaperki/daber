@@ -72,7 +72,9 @@ export type DrillSession = {
 };
 
 const FREE_TARGET = 14;
-const LESSON_STAGE_TARGET = 6;
+const LESSON_PRIMER_TARGET = 4;
+const LESSON_PHRASE_TARGET = 6;
+const LESSON_REVIEW_TARGET = 4;
 
 function sessionId(mode: SessionMode, lessonId?: string) {
   return `${mode}:${lessonId || 'free'}:${Date.now().toString(36)}:${Math.random().toString(36).slice(2, 7)}`;
@@ -170,6 +172,21 @@ function buildAuthoredPhraseItems(lesson: LessonJSON, all: CellItem[], count: nu
   }));
 }
 
+function appendPhraseStage(
+  out: PlannedItem[],
+  stages: SessionStage[],
+  lesson: LessonJSON,
+  sourceItems: CellItem[],
+  count: number,
+) {
+  const start = out.length;
+  const phraseItems = buildAuthoredPhraseItems(lesson, sourceItems, count);
+  out.push(...phraseItems);
+  if (phraseItems.length > 0) {
+    stages.push({ id: 'supporting_build', label: 'Build/use', start, count: phraseItems.length });
+  }
+}
+
 function makeSummary(session: Omit<DrillSession, 'summary'>): DrillSession['summary'] {
   return {
     id: session.id,
@@ -235,24 +252,31 @@ export function createLessonSession(lessonId: string, progress: ProgressV1): Dri
   const items: PlannedItem[] = [];
   const stages: SessionStage[] = [];
 
-  const addStage = (id: SessionStageId, label: string, candidates: CellItem[], purpose: SessionPurpose, allowDuplicateKeys = false) => {
+  const addStage = (
+    id: SessionStageId,
+    label: string,
+    candidates: CellItem[],
+    purpose: SessionPurpose,
+    count: number,
+    allowDuplicateKeys = false,
+  ) => {
     const start = items.length;
-    const count = Math.min(LESSON_STAGE_TARGET, candidates.length || all.length);
-    appendPlanned(items, candidates.length ? candidates : all, count, progress, purpose, { stageId: id, stageLabel: label }, { allowDuplicateKeys });
+    const source = candidates.length ? candidates : all;
+    const targetCount = Math.min(count, source.length);
+    appendPlanned(items, source, targetCount, progress, purpose, { stageId: id, stageLabel: label }, { allowDuplicateKeys });
     const actual = items.length - start;
     if (actual > 0) stages.push({ id, label, start, count: actual });
   };
 
-  addStage('core_exposure', 'Core exposure', core, 'new');
-  addStage('core_reinforcement', 'Core reinforcement', core, 'review', true);
+  addStage('core_exposure', 'Quick primer', core, 'new', LESSON_PRIMER_TARGET);
 
-  const buildStart = items.length;
-  const phraseItems = buildAuthoredPhraseItems(lesson, supporting.length ? [...supporting, ...core] : all, LESSON_STAGE_TARGET);
-  items.push(...phraseItems);
-  if (phraseItems.length > 0) {
-    stages.push({ id: 'supporting_build', label: 'Build/use', start: buildStart, count: phraseItems.length });
+  const reviewPool = supporting.length ? [...supporting, ...core] : all;
+  appendPhraseStage(items, stages, lesson, reviewPool, LESSON_PHRASE_TARGET);
+
+  if (stages.some((stage) => stage.id === 'supporting_build')) {
+    addStage('core_reinforcement', 'Mixed review', reviewPool, 'review', LESSON_REVIEW_TARGET);
   } else {
-    addStage('supporting_build', 'Build/use', supporting.length ? supporting : all, 'build');
+    addStage('supporting_build', 'Build/use', reviewPool, 'build', LESSON_PHRASE_TARGET);
   }
 
   const base: Omit<DrillSession, 'summary'> = {

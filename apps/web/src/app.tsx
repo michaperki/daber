@@ -9,6 +9,8 @@ import { LessonsHome } from './ui/LessonsHome';
 import { LessonEntry } from './ui/LessonEntry';
 import { DrillScreen } from './ui/DrillScreen';
 import { LessonComplete } from './ui/LessonComplete';
+import { SongLessonEntry } from './ui/SongLessonEntry';
+import { SongLessonStudy } from './ui/SongLessonStudy';
 
 function SyncDot() {
   const s = syncStatus.value;
@@ -110,6 +112,8 @@ function AppShell({ inspect, setInspect }: { inspect: boolean; setInspect: (v: b
             <Route path="/practice" component={DrillScreen} />
             <Route path="/lesson/:id/complete" component={LessonComplete} />
             <Route path="/practice/complete" component={LessonComplete} />
+            <Route path="/song/:id" component={SongLessonEntry} />
+            <Route path="/song/:id/study" component={SongLessonStudy} />
           </Router>
         )}
       </main>

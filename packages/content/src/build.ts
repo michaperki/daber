@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { collectYamlFiles, dedupeAndSort, extractVocabFromFile } from './extract.js';
 import { writeLessonsDist } from './lessons.js';
+import { writeSongLessonsDist } from './song_lessons.js';
 import type { VocabRow } from './schema.js';
 
 // Build script: YAML → dist/vocab.json
@@ -29,6 +30,7 @@ function main() {
   console.log(`Wrote ${out.length} vocab rows → ${path.relative(ROOT, OUT_FILE)}`);
   // Also emit lessons projection (if present)
   writeLessonsDist(ROOT);
+  writeSongLessonsDist(ROOT);
 }
 try {
   main();

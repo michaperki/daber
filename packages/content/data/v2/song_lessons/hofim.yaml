@@ -1,0 +1,736 @@
+id: hofim
+title: Hofim
+status: draft
+source:
+  file: HOFIM.md
+  normalized_hebrew_note: "The lyric surface כמוהרוח is treated as כמו הרוח for teaching."
+lyrics:
+  en: >-
+    Shores shores are sometimes longing for sand. i once saw a shore that was left by a river with a broken heart of sand and stone. and the man, the man sometimes can too be abandoned and without energy just like a shore. the seashells as well like shores, like the wind the seashells too are sometimes a longing for a house we always loved that was and only the sea sings its song alone there. and so between the seashells of his heart his youth are singing to him.
+  he: >-
+    חופים חופים הם לפעמים געגועים לנחל. ראיתי פעם חוף שנחל עזבו עם לב שבור של חול ואבן. והאדם, והאדם הוא לפעמים גם כן יכול להישאר נטוש ובלי כוחות ממש כמו חוף. גם הצדפים כמו חופים, כמו הרוח גם הצדפים הם לפעמים געגועים לבית שתמיד אהבנו אשר היה ורק הים שר לבדו שם את שיריו. כך בין צדפי ליבו של האדם שרים לו נעוריו.
+teachable_units:
+  - id: noun_hof
+    unit_type: noun
+    priority: core
+    base_form: חוף
+    gender: m
+    family:
+      singular: חוף
+      definite: החוף
+      plural: חופים
+    normal_usage:
+      - he: זה חוף
+        en: "This is a beach."
+    flexibility_forms: [חוף, החוף, חופים]
+    grammar_pattern: "noun as subject in a nominal sentence"
+    lyric_unlocks:
+      - he: חופים הם לפעמים
+        en: "Beaches are sometimes"
+
+  - id: verb_hitgaagea_l
+    unit_type: verb
+    priority: core
+    base_form: להתגעגע ל
+    family:
+      infinitive: להתגעגע
+      present: [מתגעגע, מתגעגעת, מתגעגעים]
+      past: [התגעגעתי]
+      noun_forms: [געגוע, געגועים]
+    normal_usage:
+      - he: אני מתגעגע לבית
+        en: "I miss home."
+    flexibility_forms: [אני מתגעגע, היא מתגעגעת, הם מתגעגעים, התגעגעתי, געגוע, געגועים]
+    grammar_pattern: "verb plus ל complement; noun געגוע can carry the same complement"
+    governance:
+      marker: ל
+      frame_he: להתגעגע ל___
+    lyric_unlocks:
+      - he: געגועים לנחל
+        en: "longing for a stream"
+      - he: געגועים לבית
+        en: "longing for a home"
+
+  - id: function_lifamim
+    unit_type: function_word
+    priority: core
+    base_form: לפעמים
+    function: "frequency adverb"
+    usage_pattern: "לפעמים before or after the subject/predicate"
+    normal_usage:
+      - he: לפעמים אני מתגעגע
+        en: "Sometimes I miss things."
+    flexibility_forms: [לפעמים, מדי פעם]
+    prerequisites: [verb_hitgaagea_l]
+    lyric_unlocks:
+      - he: הם לפעמים געגועים
+        en: "they are sometimes longings"
+
+  - id: noun_nachal
+    unit_type: noun
+    priority: core
+    base_form: נחל
+    gender: m
+    family:
+      singular: נחל
+      definite: הנחל
+      plural: נחלים
+      directional_or_prefixed: [לנחל]
+    normal_usage:
+      - he: זה נחל
+        en: "This is a stream."
+    flexibility_forms: [נחל, הנחל, נחלים, לנחל]
+    grammar_pattern: "ל + definite/common noun as complement"
+    prerequisites: [verb_hitgaagea_l]
+    lyric_unlocks:
+      - he: געגועים לנחל
+        en: "longing for a stream"
+
+  - id: pattern_nominal_sentence
+    unit_type: grammar_pattern
+    priority: core
+    pattern_name: "nominal sentence with pronoun support"
+    pattern: "plural noun + הם + predicate noun/adverbial"
+    building_blocks: [חופים, הם, לפעמים, געגועים]
+    normal_usage:
+      - he: חופים הם מקומות יפים
+        en: "Beaches are beautiful places."
+    flexible_slots: [noun plural, הם, adjective or noun predicate, optional adverb]
+    prerequisites: [noun_hof, function_lifamim, verb_hitgaagea_l, noun_nachal]
+    lyric_unlocks:
+      - he: חופים הם לפעמים געגועים לנחל
+        en: "beaches are sometimes longing for a stream"
+
+  - id: verb_lirot_et
+    unit_type: verb
+    priority: core
+    base_form: לראות את
+    family:
+      infinitive: לראות
+      present: [רואה, רואה, רואים]
+      past: [ראיתי]
+    normal_usage:
+      - he: אני רואה את החוף
+        en: "I see the beach."
+      - he: ראיתי חוף
+        en: "I saw a beach."
+    flexibility_forms: [לראות, רואה, ראיתי]
+    grammar_pattern: "past first person plus object"
+    governance:
+      marker: את
+      frame_he: לראות את ___
+    prerequisites: [noun_hof]
+    lyric_unlocks:
+      - he: ראיתי פעם חוף
+        en: "I once saw a beach"
+
+  - id: noun_paam
+    unit_type: noun
+    priority: supporting
+    base_form: פעם
+    gender: f
+    family:
+      singular: פעם
+      plural: פעמים
+    normal_usage:
+      - he: פעם אחת ראיתי חוף
+        en: "One time I saw a beach."
+    flexibility_forms: [פעם, פעם אחת, פעמים]
+    grammar_pattern: "פעם as time/once adverbial"
+    prerequisites: [verb_lirot_et]
+    lyric_unlocks:
+      - he: ראיתי פעם חוף
+        en: "I once saw a beach"
+
+  - id: verb_laazov_et
+    unit_type: verb
+    priority: core
+    base_form: לעזוב את
+    family:
+      infinitive: לעזוב
+      present: [עוזב, עוזבת, עוזבים]
+      past: [עזב, עזבה, עזבו]
+    normal_usage:
+      - he: הוא עזב את החוף
+        en: "He left the beach."
+    flexibility_forms: [לעזוב, עוזב, עוזבת, עזב, עזבו]
+    grammar_pattern: "transitive verb with את for definite objects"
+    governance:
+      marker: את
+      frame_he: לעזוב את ___
+    prerequisites: [noun_hof, noun_nachal]
+    lyric_unlocks:
+      - he: חוף שנחל עזבו
+        en: "a shore that a stream left"
+        note: "The surface עזבו is later treated as עזב + object suffix, not as the ordinary they-left form."
+
+  - id: literary_azavo_suffix
+    unit_type: literary_form
+    priority: advanced
+    surface_form: עזבו
+    ordinary_equivalent: עזב אותו
+    literary_function: "third person masculine object suffix on a past verb"
+    recognition_family: [עזב אותו, עזבו]
+    ordinary_usage:
+      - he: הנחל עזב את החוף
+        en: "The stream left the shore."
+    prerequisites: [verb_laazov_et]
+    lyric_unlocks:
+      - he: שנחל עזבו
+        en: "that a stream left it"
+
+  - id: noun_lev
+    unit_type: noun
+    priority: core
+    base_form: לב
+    gender: m
+    family:
+      singular: לב
+      definite: הלב
+      possessive: [ליבו]
+    normal_usage:
+      - he: יש לו לב טוב
+        en: "He has a good heart."
+    flexibility_forms: [לב, הלב, ליבו]
+    grammar_pattern: "possession with יש ל and later suffix possession"
+    lyric_unlocks:
+      - he: לב שבור
+        en: "a broken heart"
+
+  - id: adjective_shavur
+    unit_type: adjective_participle
+    priority: core
+    base_form: שבור
+    linked_verb: לשבור
+    agreement_family:
+      m_sg: שבור
+      f_sg: שבורה
+      m_pl: שבורים
+      f_pl: שבורות
+    normal_usage:
+      - he: החלון שבור
+        en: "The window is broken."
+      - he: הילד שבר את החלון
+        en: "The child broke the window."
+    flexibility_forms: [שבור, שבורה, שבורים, שבורות, שבר]
+    grammar_pattern: "adjective/participle agreement after a noun"
+    prerequisites: [noun_lev]
+    lyric_unlocks:
+      - he: לב שבור
+        en: "a broken heart"
+
+  - id: noun_hol
+    unit_type: noun
+    priority: supporting
+    base_form: חול
+    gender: m
+    family:
+      singular: חול
+      definite: החול
+    normal_usage:
+      - he: יש חול על החוף
+        en: "There is sand on the beach."
+    flexibility_forms: [חול, החול]
+    grammar_pattern: "material noun after של"
+    prerequisites: [noun_hof]
+    lyric_unlocks:
+      - he: של חול
+        en: "of sand"
+
+  - id: noun_even
+    unit_type: noun
+    priority: supporting
+    base_form: אבן
+    gender: f
+    family:
+      singular: אבן
+      definite: האבן
+      plural: אבנים
+    normal_usage:
+      - he: זו אבן קטנה
+        en: "This is a small stone."
+    flexibility_forms: [אבן, האבן, אבנים]
+    grammar_pattern: "coordinated material noun with ו"
+    prerequisites: [noun_hol]
+    lyric_unlocks:
+      - he: חול ואבן
+        en: "sand and stone"
+
+  - id: noun_adam
+    unit_type: noun
+    priority: core
+    base_form: אדם
+    gender: m
+    family:
+      singular: אדם
+      definite: האדם
+    normal_usage:
+      - he: זה אדם
+        en: "This is a person."
+    flexibility_forms: [אדם, האדם, של האדם]
+    grammar_pattern: "definite noun phrase with ה and possession with של"
+    lyric_unlocks:
+      - he: והאדם הוא לפעמים
+        en: "and the person is sometimes"
+      - he: של האדם
+        en: "of the person"
+
+  - id: pattern_modal_yachol_infinitive
+    unit_type: grammar_pattern
+    priority: core
+    pattern_name: "יכול + infinitive"
+    pattern: "subject + יכול/יכולה/יכולים + infinitive"
+    building_blocks: [יכול, יכולה, יכולים, להישאר]
+    normal_usage:
+      - he: הוא יכול להישאר
+        en: "He can stay."
+    flexible_slots: [הוא יכול, היא יכולה, הם יכולים, infinitive after יכול]
+    prerequisites: [noun_adam]
+    lyric_unlocks:
+      - he: יכול להישאר
+        en: "can remain"
+
+  - id: verb_lehishaer
+    unit_type: verb
+    priority: core
+    base_form: להישאר
+    family:
+      infinitive: להישאר
+      present: [נשאר, נשארת, נשארים]
+      past: [נשאר]
+    normal_usage:
+      - he: הוא נשאר
+        en: "He stays."
+    flexibility_forms: [להישאר, נשאר, נשארת, נשארים]
+    grammar_pattern: "להישאר plus adjective or prepositional complement"
+    prerequisites: [pattern_modal_yachol_infinitive]
+    lyric_unlocks:
+      - he: להישאר
+        en: "to remain"
+
+  - id: adjective_natush
+    unit_type: adjective_participle
+    priority: core
+    base_form: נטוש
+    agreement_family:
+      m_sg: נטוש
+      f_sg: נטושה
+      m_pl: נטושים
+      f_pl: נטושות
+    normal_usage:
+      - he: הבית נטוש
+        en: "The house is abandoned."
+    flexibility_forms: [נטוש, נטושה, נטושים, נטושות]
+    grammar_pattern: "predicate adjective after נשאר"
+    prerequisites: [verb_lehishaer]
+    lyric_unlocks:
+      - he: להישאר נטוש
+        en: "to remain abandoned"
+
+  - id: function_bli
+    unit_type: function_word
+    priority: core
+    base_form: בלי
+    function: "preposition meaning without"
+    usage_pattern: "בלי + noun"
+    normal_usage:
+      - he: אני בלי טלפון
+        en: "I am without a phone."
+    flexibility_forms: [בלי, בלי כוח, בלי כוחות]
+    prerequisites: [verb_lehishaer]
+    lyric_unlocks:
+      - he: בלי
+        en: "without"
+
+  - id: noun_koach
+    unit_type: noun
+    priority: core
+    base_form: כוח
+    gender: m
+    family:
+      singular: כוח
+      definite: הכוח
+      plural: כוחות
+    normal_usage:
+      - he: יש לי כוח
+        en: "I have strength."
+    flexibility_forms: [כוח, הכוח, כוחות]
+    grammar_pattern: "abstract noun in singular/plural, often with יש ל or בלי"
+    prerequisites: [function_bli]
+    lyric_unlocks:
+      - he: בלי כוחות
+        en: "without strength"
+
+  - id: pattern_lehishaer_complements
+    unit_type: grammar_pattern
+    priority: core
+    pattern_name: "להישאר + state complement"
+    pattern: "להישאר + adjective/prepositional complement"
+    building_blocks: [להישאר, נטוש, בלי כוחות]
+    normal_usage:
+      - he: הוא נשאר עייף ובלי כוח
+        en: "He remains tired and without strength."
+    flexible_slots: [להישאר + adjective, להישאר + בלי + noun]
+    prerequisites: [verb_lehishaer, adjective_natush, function_bli, noun_koach]
+    lyric_unlocks:
+      - he: להישאר נטוש ובלי כוחות
+        en: "to remain abandoned and without strength"
+
+  - id: function_kmo
+    unit_type: function_word
+    priority: core
+    base_form: כמו
+    function: "comparison marker"
+    usage_pattern: "כמו + noun phrase"
+    normal_usage:
+      - he: הוא כמו אח שלי
+        en: "He is like my brother."
+      - he: זה כמו בית
+        en: "It is like a home."
+    flexibility_forms: [כמו חוף, כמו חופים, כמו הרוח]
+    prerequisites: [noun_hof]
+    lyric_unlocks:
+      - he: ממש כמו חוף
+        en: "just like a shore"
+      - he: כמו חופים
+        en: "like shores"
+
+  - id: noun_tzedaf
+    unit_type: noun
+    priority: core
+    base_form: צדף
+    gender: m
+    family:
+      singular: צדף
+      definite: הצדף
+      plural: צדפים
+      construct: [צדפי]
+    normal_usage:
+      - he: יש צדף על החוף
+        en: "There is a seashell on the beach."
+    flexibility_forms: [צדף, הצדף, צדפים, הצדפים, צדפי]
+    grammar_pattern: "plural noun and construct plural"
+    prerequisites: [noun_hof]
+    lyric_unlocks:
+      - he: הצדפים
+        en: "the seashells"
+
+  - id: noun_ruach
+    unit_type: noun
+    priority: supporting
+    base_form: רוח
+    gender: f
+    family:
+      singular: רוח
+      definite: הרוח
+    normal_usage:
+      - he: הרוח חזקה
+        en: "The wind is strong."
+    flexibility_forms: [רוח, הרוח, כמו הרוח]
+    grammar_pattern: "definite noun after כמו"
+    prerequisites: [function_kmo]
+    lyric_unlocks:
+      - he: כמו הרוח
+        en: "like the wind"
+
+  - id: function_gam
+    unit_type: function_word
+    priority: supporting
+    base_form: גם
+    function: "additive focus particle"
+    usage_pattern: "גם before the focused noun or clause"
+    normal_usage:
+      - he: גם אני בבית
+        en: "I am also at home."
+    flexibility_forms: [גם, גם כן, גם הצדפים]
+    prerequisites: [noun_tzedaf, function_kmo]
+    lyric_unlocks:
+      - he: גם הצדפים כמו חופים
+        en: "the seashells too are like shores"
+      - he: גם כן
+        en: "also"
+
+  - id: noun_bayit
+    unit_type: noun
+    priority: core
+    base_form: בית
+    gender: m
+    family:
+      singular: בית
+      definite: הבית
+      plural: בתים
+      directional_or_prefixed: [לבית]
+    normal_usage:
+      - he: זה בית
+        en: "This is a house."
+    flexibility_forms: [בית, הבית, בתים, לבית]
+    grammar_pattern: "ל + noun as direction or object of longing"
+    prerequisites: [verb_hitgaagea_l]
+    lyric_unlocks:
+      - he: געגועים לבית
+        en: "longing for a home"
+
+  - id: verb_leehov_et
+    unit_type: verb
+    priority: core
+    base_form: לאהוב את
+    family:
+      infinitive: לאהוב
+      present: [אוהב, אוהבת, אוהבים]
+      past: [אהבתי, אהבנו]
+    normal_usage:
+      - he: אני אוהב את הבית
+        en: "I love the house."
+    flexibility_forms: [לאהוב, אוהב, אוהבת, אוהבים, אהבנו]
+    grammar_pattern: "transitive verb with את for definite objects"
+    governance:
+      marker: את
+      frame_he: לאהוב את ___
+    lyric_unlocks:
+      - he: אהבנו
+        en: "we loved"
+
+  - id: function_tamid
+    unit_type: function_word
+    priority: core
+    base_form: תמיד
+    function: "frequency adverb"
+    usage_pattern: "תמיד before the verb or predicate"
+    normal_usage:
+      - he: אני תמיד אוהב את הבית
+        en: "I always love the house."
+    flexibility_forms: [תמיד, שתמיד]
+    prerequisites: [verb_leehov_et]
+    lyric_unlocks:
+      - he: שתמיד אהבנו
+        en: "that we always loved"
+
+  - id: pattern_relative_she
+    unit_type: grammar_pattern
+    priority: core
+    pattern_name: "relative clause with ש"
+    pattern: "noun + ש + clause"
+    building_blocks: [בית, ש, תמיד, אהבנו]
+    normal_usage:
+      - he: זה הבית שאנחנו אוהבים
+        en: "This is the house that we love."
+    flexible_slots: [שאני, שאתה, שאנחנו, שתמיד]
+    prerequisites: [noun_bayit, function_tamid, verb_leehov_et]
+    lyric_unlocks:
+      - he: לבית שתמיד אהבנו
+        en: "for a home that we always loved"
+
+  - id: literary_asher
+    unit_type: literary_form
+    priority: advanced
+    surface_form: אשר
+    ordinary_equivalent: ש
+    literary_function: "elevated relative marker"
+    recognition_family: [ש, אשר]
+    ordinary_usage:
+      - he: זה הבית שהיה שם
+        en: "This is the house that was there."
+    prerequisites: [pattern_relative_she]
+    lyric_unlocks:
+      - he: אשר היה
+        en: "which was"
+
+  - id: noun_yam
+    unit_type: noun
+    priority: core
+    base_form: ים
+    gender: m
+    family:
+      singular: ים
+      definite: הים
+      plural: ימים
+    normal_usage:
+      - he: הים כחול
+        en: "The sea is blue."
+    flexibility_forms: [ים, הים, ימים]
+    grammar_pattern: "definite noun as subject"
+    lyric_unlocks:
+      - he: הים
+        en: "the sea"
+
+  - id: function_rak
+    unit_type: function_word
+    priority: supporting
+    base_form: רק
+    function: "exclusive focus particle"
+    usage_pattern: "רק before the focused noun phrase"
+    normal_usage:
+      - he: רק הים כאן
+        en: "Only the sea is here."
+    flexibility_forms: [רק, ורק, רק הים]
+    prerequisites: [noun_yam]
+    lyric_unlocks:
+      - he: ורק הים
+        en: "and only the sea"
+
+  - id: verb_lashir
+    unit_type: verb
+    priority: core
+    base_form: לשיר
+    family:
+      infinitive: לשיר
+      present: [שר, שרה, שרים]
+      past: [שרנו]
+    normal_usage:
+      - he: הוא שר
+        en: "He sings."
+      - he: הם שרים יחד
+        en: "They sing together."
+    flexibility_forms: [לשיר, שר, שרה, שרים, שרנו]
+    grammar_pattern: "intransitive verb; can take שיר as a cognate object"
+    prerequisites: [noun_yam]
+    lyric_unlocks:
+      - he: הים שר
+        en: "the sea sings"
+
+  - id: bound_levado
+    unit_type: bound_form
+    priority: advanced
+    surface_form: לבדו
+    base_form: לבד
+    formation: "לבד + third masculine singular suffix"
+    family: [לבד, לבדי, לבדך, לבדו]
+    normal_usage:
+      - he: הוא לבד
+        en: "He is alone."
+    flexibility_forms: [לבד, לבדו]
+    grammar_pattern: "adverb with pronominal suffix"
+    prerequisites: [verb_lashir]
+    lyric_unlocks:
+      - he: שר לבדו
+        en: "sings by himself"
+
+  - id: function_sham
+    unit_type: function_word
+    priority: supporting
+    base_form: שם
+    function: "place adverb"
+    usage_pattern: "שם after the predicate or at clause edge"
+    normal_usage:
+      - he: הוא שם
+        en: "He is there."
+    flexibility_forms: [שם]
+    prerequisites: [bound_levado]
+    lyric_unlocks:
+      - he: שר לבדו שם
+        en: "sings there alone"
+
+  - id: bound_shirav
+    unit_type: bound_form
+    priority: advanced
+    surface_form: שיריו
+    base_form: שיר
+    formation: "plural noun שירים + third masculine singular possessive suffix"
+    family: [שיר, שירים, השירים שלו, שיריו]
+    normal_usage:
+      - he: השירים שלו יפים
+        en: "His songs are beautiful."
+    flexibility_forms: [שיר, שירים, שיריו]
+    grammar_pattern: "possessive suffix on a plural noun"
+    prerequisites: [verb_lashir]
+    lyric_unlocks:
+      - he: את שיריו
+        en: "his songs"
+
+  - id: function_bein
+    unit_type: function_word
+    priority: core
+    base_form: בין
+    function: "locative preposition"
+    usage_pattern: "בין + plural/compound noun phrase"
+    normal_usage:
+      - he: הכדור בין הכיסאות
+        en: "The ball is between the chairs."
+    flexibility_forms: [בין, ביני, בינך]
+    prerequisites: [noun_tzedaf]
+    lyric_unlocks:
+      - he: בין
+        en: "between / among"
+
+  - id: bound_tzidfei
+    unit_type: bound_form
+    priority: advanced
+    surface_form: צדפי
+    base_form: צדף
+    formation: "construct plural of צדף"
+    family: [צדף, צדפים, צדפי]
+    normal_usage:
+      - he: צדפי ים יפים
+        en: "Sea shells are beautiful."
+    flexibility_forms: [צדף, צדפים, צדפי]
+    grammar_pattern: "construct plural before another noun"
+    prerequisites: [function_bein, noun_tzedaf]
+    lyric_unlocks:
+      - he: בין צדפי
+        en: "among the shells of"
+
+  - id: bound_libo
+    unit_type: bound_form
+    priority: advanced
+    surface_form: ליבו
+    base_form: לב
+    formation: "לב + third masculine singular possessive suffix"
+    family: [לב, הלב שלו, ליבו]
+    normal_usage:
+      - he: הלב שלו טוב
+        en: "His heart is good."
+    flexibility_forms: [לב, הלב שלו, ליבו]
+    grammar_pattern: "possessive suffix plus optional של phrase"
+    prerequisites: [noun_lev, bound_tzidfei, noun_adam]
+    lyric_unlocks:
+      - he: בין צדפי ליבו
+        en: "among the shells of his heart"
+      - he: ליבו של האדם
+        en: "the person's heart"
+
+  - id: function_l_dative
+    unit_type: function_word
+    priority: supporting
+    base_form: ל
+    function: "dative preposition with suffix"
+    usage_pattern: "verb + ל + person"
+    normal_usage:
+      - he: אני נותן לו ספר
+        en: "I give him a book."
+    flexibility_forms: [לי, לך, לו, לה, לנו, להם]
+    prerequisites: [verb_lashir]
+    lyric_unlocks:
+      - he: שרים לו
+        en: "sing to him"
+
+  - id: bound_neurav
+    unit_type: bound_form
+    priority: advanced
+    surface_form: נעוריו
+    base_form: נעורים
+    formation: "abstract plural noun + third masculine singular possessive suffix"
+    family: [נעורים, הנעורים שלו, נעוריו]
+    normal_usage:
+      - he: הנעורים שלו רחוקים
+        en: "His youth is far away."
+    flexibility_forms: [נעורים, נעוריו]
+    grammar_pattern: "possessive suffix on an abstract plural"
+    prerequisites: [function_l_dative]
+    lyric_unlocks:
+      - he: שרים לו נעוריו
+        en: "his youth sings to him"
+
+  - id: pattern_construct_possession_chain
+    unit_type: grammar_pattern
+    priority: advanced
+    pattern_name: "construct plus possessive chain"
+    pattern: "construct plural + possessive noun + של phrase"
+    building_blocks: [צדפי, ליבו, של האדם]
+    normal_usage:
+      - he: ספרי הילד על השולחן
+        en: "The child's books are on the table."
+    flexible_slots: [construct plural, possessed noun, של possessor]
+    prerequisites: [bound_tzidfei, bound_libo, noun_adam]
+    lyric_unlocks:
+      - he: בין צדפי ליבו של האדם
+        en: "among the shells of the person's heart"

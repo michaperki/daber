@@ -1,0 +1,3 @@
+Shores shores are sometimes longing for sand. i once saw a shore that was left by a river with a broken heart of sand and stone. and the man, the man sometimes can too be abandoned and without energy just like a shore. the seashells as well like shores, like the wind the seashells too are sometimes a longing for a house we always loved that was and only the sea sings its song alone there. and so between the seashells of his heart his youth are singing to him. 
+
+חופים חופים הם לפעמים געגועים לנחל. ראיתי פעם חוף שנחל עזבו עם לב שבור של חול ואבן. והאדם, והאדם הוא לפעמים גם כן יכול להישאר נטוש ובלי כוחות ממש כמו חוף. גם הצדפים כמו חופים, כמוהרוח גם הצדפים הם לפעמים געגועים לבית שתמיד אהבנו אשר היה ורק הים שר לבדו שם את שיריו. כך בין צדפי ליבו של האדם שרים לו נעוריו.

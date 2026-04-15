@@ -1,5 +1,5 @@
 import { useLocation } from 'preact-iso';
-import { lessons } from '../content';
+import { lessons, songLessons } from '../content';
 import { progress } from '../state/signals';
 import { lessonProgressFor, type LessonProgress } from '../storage/progress';
 import panels from './panels.module.css';
@@ -68,6 +68,32 @@ export function LessonsHome() {
           </div>
         </div>
       </div>
+      {songLessons.length > 0 && (
+        <>
+          <div class={panels.panel}>
+            <div style={{ fontWeight: 600, marginBottom: 6 }}>Songs</div>
+            <div class={panels.muted}>Teachable units before lyric payoff.</div>
+          </div>
+          {songLessons.map((song) => (
+            <button
+              key={song.id}
+              class={panels.panel}
+              onClick={() => route(`/song/${song.id}`)}
+              style={{ textAlign: 'left' }}
+            >
+              <div class={panels.row}>
+                <div style={{ fontWeight: 600 }}>{song.title}</div>
+                <div style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--muted)' }}>
+                  {song.teachable_units.length} units
+                </div>
+              </div>
+              <div class={panels.muted}>
+                {song.status === 'ready' ? 'Ready' : 'Draft'} curriculum inventory
+              </div>
+            </button>
+          ))}
+        </>
+      )}
     </>
   );
 }

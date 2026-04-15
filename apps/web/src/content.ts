@@ -48,6 +48,111 @@ const lessonMods = import.meta.glob('../../../packages/content/dist/lessons.json
 }) as Record<string, LessonJSON[]>;
 export const lessons: LessonJSON[] = Array.isArray(Object.values(lessonMods)[0]) ? (Object.values(lessonMods)[0] as LessonJSON[]) : [];
 
+export type Priority = 'core' | 'supporting' | 'advanced';
+export type LyricUnlock = { he: string; en: string; note?: string };
+export type Example = { he: string; en: string };
+type UnitBase = {
+  id: string;
+  priority: Priority;
+  prerequisites?: string[];
+  lyric_unlocks: LyricUnlock[];
+};
+export type VerbUnit = UnitBase & {
+  unit_type: 'verb';
+  base_form: string;
+  family: {
+    infinitive: string;
+    present?: string[];
+    past?: string[];
+    noun_forms?: string[];
+    adjective_bridge?: string[];
+  };
+  normal_usage: Example[];
+  flexibility_forms: string[];
+  grammar_pattern: string;
+  governance?: { marker: string; frame_he: string };
+};
+export type NounUnit = UnitBase & {
+  unit_type: 'noun';
+  base_form: string;
+  family: {
+    singular?: string;
+    definite?: string;
+    plural?: string;
+    directional_or_prefixed?: string[];
+    construct?: string[];
+    possessive?: string[];
+  };
+  normal_usage: Example[];
+  flexibility_forms: string[];
+  grammar_pattern: string;
+  gender?: 'm' | 'f' | 'plural' | 'unknown';
+};
+export type AdjectiveParticipleUnit = UnitBase & {
+  unit_type: 'adjective_participle';
+  base_form: string;
+  linked_verb?: string;
+  agreement_family: { m_sg: string; f_sg: string; m_pl: string; f_pl: string };
+  normal_usage: Example[];
+  flexibility_forms: string[];
+  grammar_pattern: string;
+};
+export type FunctionWordUnit = UnitBase & {
+  unit_type: 'function_word';
+  base_form: string;
+  function: string;
+  usage_pattern: string;
+  normal_usage: Example[];
+  flexibility_forms: string[];
+};
+export type GrammarPatternUnit = UnitBase & {
+  unit_type: 'grammar_pattern';
+  pattern_name: string;
+  pattern: string;
+  building_blocks: string[];
+  normal_usage: Example[];
+  flexible_slots: string[];
+};
+export type BoundFormUnit = UnitBase & {
+  unit_type: 'bound_form';
+  surface_form: string;
+  base_form: string;
+  formation: string;
+  family: string[];
+  normal_usage: Example[];
+  flexibility_forms: string[];
+  grammar_pattern: string;
+};
+export type LiteraryFormUnit = UnitBase & {
+  unit_type: 'literary_form';
+  surface_form: string;
+  ordinary_equivalent: string;
+  literary_function: string;
+  recognition_family: string[];
+  ordinary_usage: Example[];
+};
+export type TeachableUnit =
+  | VerbUnit
+  | NounUnit
+  | AdjectiveParticipleUnit
+  | FunctionWordUnit
+  | GrammarPatternUnit
+  | BoundFormUnit
+  | LiteraryFormUnit;
+export type SongLessonJSON = {
+  id: string;
+  title: string;
+  status?: 'draft' | 'ready';
+  source?: { file?: string; normalized_hebrew_note?: string };
+  lyrics: { he: string; en?: string };
+  teachable_units: TeachableUnit[];
+};
+const songLessonMods = import.meta.glob('../../../packages/content/dist/song_lessons.json', {
+  eager: true,
+  import: 'default',
+}) as Record<string, SongLessonJSON[]>;
+export const songLessons: SongLessonJSON[] = Array.isArray(Object.values(songLessonMods)[0]) ? (Object.values(songLessonMods)[0] as SongLessonJSON[]) : [];
+
 import { progress, selectedLessonId } from './state/signals';
 
 function emptyLessonScope(): LessonScope {

@@ -18,6 +18,11 @@ declare module '*/packages/content/dist/lessons.json' {
   export default value;
 }
 
+declare module '*/packages/content/dist/song_lessons.json' {
+  const value: unknown[];
+  export default value;
+}
+
 // Screen Wake Lock API
 interface WakeLockSentinel extends EventTarget {
   readonly released: boolean;

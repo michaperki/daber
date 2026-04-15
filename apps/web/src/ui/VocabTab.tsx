@@ -3,6 +3,7 @@ import { useLocation } from 'preact-iso';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
 // Stroke-only recognizer; margin gating removed.
 import { predictByStroke } from '../recognizer/stroke';
+import { isIncompleteExpectedLetter } from '../recognizer/stroke-count';
 import type { LetterGlyph } from '../recognizer/types';
 import type { Stroke } from '../recognizer/types';
 import { baseToFinal, isFinalForm, toBaseForm } from '../recognizer/final-forms';
@@ -87,6 +88,10 @@ function normalizedExpected(expected: string, atEnd: boolean): string {
   // Force final form at end if a base form is given.
   if (isFinalForm(expected)) return expected;
   return baseToFinal(expected);
+}
+
+function expectedRecognitionLetter(expected: string, atEnd: boolean): LetterGlyph {
+  return (atEnd ? normalizedExpected(expected, atEnd) : toBaseForm(expected as LetterGlyph)) as LetterGlyph;
 }
 
 export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string | null }) {
@@ -260,6 +265,13 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     if (sum < 1e-3) return;
 
     if (!strokes || strokes.length === 0) return;
+    const atEnd = isEndOfWord(cur.he, advanced.pos);
+    const expectedLetter = expectedRecognitionLetter(expected, atEnd);
+    if (isIncompleteExpectedLetter(expectedLetter, strokes, strokeSamples.value as any)) {
+      setFeedback({ kind: 'idle', text: '' });
+      return;
+    }
+
     let top = predictByStroke(strokes, strokeSamples.value as any, { topN: 10 });
     if (!top.length) {
       try {
@@ -271,7 +283,6 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     }
     if (!top.length) return;
     const top1 = top[0];
-    const atEnd = isEndOfWord(cur.he, advanced.pos);
     let ok = lettersMatch(top1.letter, expected, atEnd);
 
     // Forgiveness rule: י/ו/ן are visually similar; accept any within the set.

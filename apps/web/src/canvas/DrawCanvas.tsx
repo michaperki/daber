@@ -113,9 +113,9 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
       fullRedraw();
     }
 
-    function getPos(e: PointerEvent): { x: number; y: number } {
+    function getPos(e: PointerEvent): { x: number; y: number; t: number } {
       const rect = canvasRef.current!.getBoundingClientRect();
-      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top, t: performance.now() };
     }
 
     function onDown(e: PointerEvent) {

@@ -7,7 +7,6 @@ endpoint:
 core:
   verbs:
     להיפגש: [future_1pl]
-    לבוא: [present_m_sg, present_f_sg]
   nouns:
     בוקר: [sg]
     ערב: [sg]
@@ -23,12 +22,12 @@ build_phrases:
   - he: אנחנו נפגש בפארק
     en: we will meet in the park
     pieces: [אנחנו נפגש, בפארק]
-  - he: הוא בא בבוקר
-    en: he comes in the morning
-    pieces: [הוא בא, בבוקר]
-  - he: היא באה בערב
-    en: she comes in the evening
-    pieces: [היא באה, בערב]
+  - he: כל בוקר הוא בא לפארק
+    en: every morning he comes to the park
+    pieces: [כל בוקר, הוא בא, לפארק]
+  - he: כל ערב היא באה לתחנה
+    en: every evening she comes to the station
+    pieces: [כל ערב, היא באה, לתחנה]
   - he: הוא מחכה בתחנה
     en: he waits at the station
     pieces: [הוא מחכה, בתחנה]
@@ -41,7 +40,7 @@ build_phrases:
 phases:
   - id: warmup
     title: Warm-up
-    goal: Review present of לבוא and time words.
+    goal: Review clear time/place phrases for לבוא and time words.
   - id: propose
     title: Propose & confirm
     goal: Use ניפגש + time/place to make a plan.

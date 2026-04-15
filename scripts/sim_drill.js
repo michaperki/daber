@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
- * Drill simulation harness for Daber
+ * Drill cell-selection simulation harness for Daber
  *
- * - Uses the same selection logic as apps/web/src/content.ts (ported to Node)
+ * - Uses the legacy cell-selection logic from apps/web/src/content.ts (ported to Node)
  * - Uses the same progress cell transitions as apps/web/src/storage/mutations.ts
  * - Loads actual built content from packages/content/dist/{vocab,lessons}.json
+ * - Does not model the finite session_planner.ts flow or authored phrase stages
  *
  * Usage examples:
  *   node scripts/sim_drill.js --n 100 --behavior perfect
@@ -66,7 +67,12 @@ function parseArgs(argv) {
 
 function usage() {
   console.log(`
-Drill simulation harness
+Drill cell-selection simulation harness
+
+Scope:
+  Simulates free-practice and lesson-scoped vocab/cell pools.
+  Does not simulate the current finite session planner or authored phrase
+  handwriting stages.
 
 Required artifacts:
   packages/content/dist/vocab.json
@@ -82,7 +88,7 @@ Args:
   --list-lessons  Print lessons, eligible cell counts, and exit.
   --seed, -s      Seed for deterministic RNG (number). Optional.
   --verbose, -v   Print the ordered item sequence.
-  --prompts, -p   Print learner-facing prompt transcript (English prompt, Hebrew answer, outcome).
+  --prompts, -p   Print cell prompt transcript (English prompt, Hebrew answer, outcome).
 `);
 }
 
@@ -541,7 +547,7 @@ function runOne({ vocab, lessons }, { n, behavior, lesson, seed, verbose }) {
 }
 
 function printPromptTranscript(report) {
-  console.log('Prompt transcript:');
+  console.log('Cell prompt transcript:');
   for (let i = 0; i < report.prompts.length; i++) {
     const p = report.prompts[i];
     console.log(`${i + 1}. [${p.outcome}] English: ${p.prompt} | Hebrew: ${p.answer} | Cell: ${p.key}`);

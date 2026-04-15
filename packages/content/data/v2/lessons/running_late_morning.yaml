@@ -7,7 +7,6 @@ endpoint:
 core:
   verbs:
     להתעורר: [present_m_sg, present_f_sg]
-    לרוץ: [present_m_sg, present_f_sg]
     לאחר: [present_m_sg, present_f_sg]
   nouns:
     בוקר: [sg]
@@ -23,12 +22,12 @@ build_phrases:
   - he: היא מתעוררת בבוקר
     en: she wakes up in the morning
     pieces: [היא מתעוררת, בבוקר]
-  - he: הוא רץ לאוטובוס
-    en: he runs to the bus
-    pieces: [הוא רץ, לאוטובוס]
-  - he: היא רצה לאוטובוס
-    en: she runs to the bus
-    pieces: [היא רצה, לאוטובוס]
+  - he: עכשיו הוא רץ לאוטובוס
+    en: now he is running to the bus
+    pieces: [עכשיו, הוא רץ, לאוטובוס]
+  - he: עכשיו היא רצה לאוטובוס
+    en: now she is running to the bus
+    pieces: [עכשיו, היא רצה, לאוטובוס]
   - he: הוא מאחר לעבודה
     en: he is late to work
     pieces: [הוא מאחר, לעבודה]
@@ -38,7 +37,7 @@ build_phrases:
 phases:
   - id: warmup
     title: Warm-up
-    goal: Present forms for להתעורר/לרוץ with בוקר.
+    goal: Present forms for להתעורר with בוקר and contextualized לרוץ phrases.
   - id: scramble
     title: Scramble
     goal: Use לאחר + אוטובוס/עבודה in the present.

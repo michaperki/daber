@@ -4,17 +4,19 @@ import { z } from 'zod';
 
 import {
   collectYamlFiles,
+  dedupeAndSort,
   extractVocabFromFile,
   readYamlFile,
 } from './extract.js';
+import type { VocabRow } from './schema.js';
 import {
   FileSchema,
   VerbEntrySchema,
   NounEntrySchema,
   AdjectiveEntrySchema,
   SimpleEntrySchema,
-  type VocabRow,
 } from './schema.js';
+import { loadLessons, type Lesson } from './lessons.js';
 
 type POS = 'verb' | 'noun' | 'adjective' | 'adverb' | 'pronoun' | 'preposition';
 
@@ -30,6 +32,48 @@ type VerbBlock =
 
 type AdjectiveBlock = 'forms' | 'forms_en';
 type PrepositionBlock = 'suffixes_en';
+type TenseBucket = 'lemma' | 'present' | 'past' | 'future' | 'imperative';
+
+type VerbSurfaceForm = {
+  lemma: string;
+  he: string;
+  en: string;
+  variant: string;
+  bucket: TenseBucket;
+  file: string;
+};
+
+type AmbiguousVerbSurface = {
+  lemma: string;
+  he: string;
+  buckets: TenseBucket[];
+  forms: VerbSurfaceForm[];
+};
+
+type LessonAmbiguousCell = {
+  lessonId: string;
+  title: string;
+  lemma: string;
+  token: string;
+  he: string;
+  en: string;
+  buckets: TenseBucket[];
+};
+
+type LessonAmbiguousPhrase = {
+  lessonId: string;
+  title: string;
+  he: string;
+  en: string;
+  matchedSurfaces: Array<{
+    lemma: string;
+    he: string;
+    buckets: TenseBucket[];
+  }>;
+  contextCues: string[];
+  weakContextCues: string[];
+  reason: string;
+};
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const DATA_DIR = path.join(ROOT, 'data', 'v2');
@@ -89,6 +133,201 @@ function summarizeZodError(err: unknown): string {
   return (err as Error)?.message || String(err);
 }
 
+function normalizeHebrewSurface(v: unknown): string | null {
+  if (typeof v !== 'string') return null;
+  const out = v.replace(/\s+/g, ' ').trim();
+  return out.length ? out : null;
+}
+
+function surfaceKey(lemma: string, he: string): string {
+  return `${lemma}::${he}`;
+}
+
+function formKey(lemma: string, variant: string): string {
+  return `${lemma}::${variant}`;
+}
+
+function addVerbSurface(
+  surfaces: Map<string, VerbSurfaceForm[]>,
+  formsByLemmaVariant: Map<string, VerbSurfaceForm>,
+  form: VerbSurfaceForm,
+) {
+  const key = surfaceKey(form.lemma, form.he);
+  const existing = surfaces.get(key) || [];
+  const dupe = existing.some((f) => (
+    f.variant === form.variant &&
+    f.en === form.en &&
+    f.file === form.file
+  ));
+  if (!dupe) existing.push(form);
+  surfaces.set(key, existing);
+  if (!formsByLemmaVariant.has(formKey(form.lemma, form.variant))) {
+    formsByLemmaVariant.set(formKey(form.lemma, form.variant), form);
+  }
+}
+
+function collectVerbSurfaces(
+  entry: any,
+  lemma: string | undefined,
+  file: string,
+  surfaces: Map<string, VerbSurfaceForm[]>,
+  formsByLemmaVariant: Map<string, VerbSurfaceForm>,
+) {
+  if (!lemma) return;
+  addVerbSurface(surfaces, formsByLemmaVariant, {
+    lemma,
+    he: lemma,
+    en: typeof entry?.gloss === 'string' ? entry.gloss : '',
+    variant: 'lemma',
+    bucket: 'lemma',
+    file,
+  });
+
+  const blocks: Array<{ bucket: TenseBucket; he: VerbBlock; en: VerbBlock; keys: string[] }> = [
+    { bucket: 'present', he: 'present_he', en: 'present_en', keys: ['m_sg', 'f_sg', 'm_pl', 'f_pl'] },
+    {
+      bucket: 'past',
+      he: 'past_he',
+      en: 'past_en',
+      keys: ['1sg', '2sg_m', '2sg_f', '3sg_m', '3sg_f', '1pl', '2pl_m', '2pl_f', '3pl'],
+    },
+    {
+      bucket: 'future',
+      he: 'future_he',
+      en: 'future_en',
+      keys: ['1sg', '2sg_m', '2sg_f', '3sg_m', '3sg_f', '1pl', '2pl_m', '2pl_f', '3pl'],
+    },
+    { bucket: 'imperative', he: 'imperative_he', en: 'imperative_en', keys: ['sg_m', 'sg_f', 'pl_m', 'pl_f'] },
+  ];
+
+  for (const block of blocks) {
+    for (const key of block.keys) {
+      const he = normalizeHebrewSurface(entry?.[block.he]?.[key]);
+      const en = typeof entry?.[block.en]?.[key] === 'string' ? entry[block.en][key].trim() : '';
+      if (!he || !en) continue;
+      const variant = `${block.bucket}_${key}`;
+      addVerbSurface(surfaces, formsByLemmaVariant, {
+        lemma,
+        he,
+        en,
+        variant,
+        bucket: block.bucket,
+        file,
+      });
+    }
+  }
+}
+
+const STRONG_CONTEXT_CUES = [
+  'עכשיו',
+  'כרגע',
+  'כל בוקר',
+  'כל ערב',
+  'כל יום',
+  'כל שבוע',
+  'תמיד',
+  'בדרך כלל',
+  'אתמול',
+  'שלשום',
+  'קודם',
+  'לפני',
+  'מחר',
+  'מחרתיים',
+  'בשבוע הבא',
+  'בעוד',
+] as const;
+
+const WEAK_CONTEXT_CUES = ['בבוקר', 'בערב', 'היום', 'השבוע'] as const;
+
+function contextCues(text: string) {
+  return {
+    strong: STRONG_CONTEXT_CUES.filter((cue) => text.includes(cue)),
+    weak: WEAK_CONTEXT_CUES.filter((cue) => text.includes(cue)),
+  };
+}
+
+function lessonVerbTokens(lesson: Lesson): Array<{ lemma: string; token: string }> {
+  const out: Array<{ lemma: string; token: string }> = [];
+  for (const part of [lesson.core, lesson.supporting]) {
+    for (const [lemma, tokens] of Object.entries(part?.verbs || {})) {
+      for (const token of tokens) out.push({ lemma, token });
+    }
+  }
+  return out;
+}
+
+function analyzeAmbiguity(
+  surfaces: Map<string, VerbSurfaceForm[]>,
+  formsByLemmaVariant: Map<string, VerbSurfaceForm>,
+  lessons: Lesson[],
+): Report['ambiguity'] {
+  const verbSurfaces: AmbiguousVerbSurface[] = [];
+  const ambiguousBySurface = new Map<string, AmbiguousVerbSurface>();
+
+  for (const [key, forms] of surfaces.entries()) {
+    const buckets = Array.from(new Set(forms.map((f) => f.bucket))).sort() as TenseBucket[];
+    if (buckets.length <= 1) continue;
+    const [lemma, he] = key.split('::');
+    const item: AmbiguousVerbSurface = {
+      lemma,
+      he,
+      buckets,
+      forms: [...forms].sort((a, b) => a.variant.localeCompare(b.variant)),
+    };
+    verbSurfaces.push(item);
+    ambiguousBySurface.set(key, item);
+  }
+  verbSurfaces.sort((a, b) => a.lemma.localeCompare(b.lemma) || a.he.localeCompare(b.he));
+
+  const lessonBareCells: LessonAmbiguousCell[] = [];
+  const lessonPhrasesNeedingContext: LessonAmbiguousPhrase[] = [];
+
+  for (const lesson of lessons) {
+    for (const { lemma, token } of lessonVerbTokens(lesson)) {
+      const form = formsByLemmaVariant.get(formKey(lemma, token));
+      if (!form) continue;
+      const ambiguous = ambiguousBySurface.get(surfaceKey(lemma, form.he));
+      if (!ambiguous) continue;
+      lessonBareCells.push({
+        lessonId: lesson.id,
+        title: lesson.title,
+        lemma,
+        token,
+        he: form.he,
+        en: form.en,
+        buckets: ambiguous.buckets,
+      });
+    }
+
+    for (const phrase of lesson.build_phrases || []) {
+      const matched = verbSurfaces
+        .filter((surface) => phrase.he.includes(surface.he))
+        .map((surface) => ({
+          lemma: surface.lemma,
+          he: surface.he,
+          buckets: surface.buckets,
+        }));
+      if (!matched.length) continue;
+      const cues = contextCues(phrase.he);
+      if (cues.strong.length > 0) continue;
+      lessonPhrasesNeedingContext.push({
+        lessonId: lesson.id,
+        title: lesson.title,
+        he: phrase.he,
+        en: phrase.en,
+        matchedSurfaces: matched,
+        contextCues: cues.strong,
+        weakContextCues: cues.weak,
+        reason: cues.weak.length
+          ? 'Contains only weak time/place context; add a cue that clearly forces the intended reading.'
+          : 'Contains an ambiguous verb surface without a strong disambiguating cue.',
+      });
+    }
+  }
+
+  return { verbSurfaces, lessonBareCells, lessonPhrasesNeedingContext };
+}
+
 type ShapeSummary = Record<string, { count: number; lemmas: string[]; keys: string[] }>;
 
 type Report = {
@@ -97,6 +336,7 @@ type Report = {
     filesPerPos: Partial<Record<POS, number>>;
     entriesPerPos: Partial<Record<POS, number>>;
     totalExtractorRows: number;
+    totalVocabRows: number;
   };
   perPosCompleteness: {
     verbs: {
@@ -117,6 +357,11 @@ type Report = {
   };
   parallelism: {
     verbIssues: Array<{ lemma: string; issues: string[]; file: string }>;
+  };
+  ambiguity: {
+    verbSurfaces: AmbiguousVerbSurface[];
+    lessonBareCells: LessonAmbiguousCell[];
+    lessonPhrasesNeedingContext: LessonAmbiguousPhrase[];
   };
   perVerbDetail: Array<{
     lemma: string;
@@ -142,6 +387,7 @@ function main() {
   const totalsFilesPerPos: Partial<Record<POS, number>> = {};
   const totalsEntriesPerPos: Partial<Record<POS, number>> = {};
   let totalRows = 0;
+  let allRows: VocabRow[] = [];
 
   const verbShapes: Record<VerbBlock, ShapeSummary> = {
     present_he: {},
@@ -187,6 +433,8 @@ function main() {
 
   const parallelismIssues: Array<{ lemma: string; issues: string[]; file: string }> = [];
   const perVerbDetail: Report['perVerbDetail'] = [];
+  const verbSurfaces = new Map<string, VerbSurfaceForm[]>();
+  const verbFormsByLemmaVariant = new Map<string, VerbSurfaceForm>();
 
   const anomalies: Report['anomalies'] = {
     files: [],
@@ -200,6 +448,7 @@ function main() {
   for (const file of files) {
     const rows = extractVocabFromFile(file);
     totalRows += rows.length;
+    allRows = allRows.concat(rows);
 
     const raw = readYamlFile(file);
     const fileParse = FileSchema.safeParse(raw);
@@ -258,6 +507,8 @@ function main() {
 
       // Per-POS specific analyses using raw entry data
       if (pos === 'verb') {
+        collectVerbSurfaces(entry, lemma, file, verbSurfaces, verbFormsByLemmaVariant);
+
         // Count block presence for verbs and shapes
         const hebBlocks: Array<VerbBlock> = ['present_he', 'past_he', 'future_he', 'imperative_he'];
         let hebPopulatedCount = 0;
@@ -390,12 +641,17 @@ function main() {
     });
   }
 
+  const lessons = loadLessons(DATA_DIR);
+  const ambiguity = analyzeAmbiguity(verbSurfaces, verbFormsByLemmaVariant, lessons);
+  const totalVocabRows = dedupeAndSort(allRows).length;
+
   const report: Report = {
     generatedAt: new Date().toISOString(),
     totals: {
       filesPerPos: totalsFilesPerPos,
       entriesPerPos: totalsEntriesPerPos,
       totalExtractorRows: totalRows,
+      totalVocabRows,
     },
     perPosCompleteness: {
       verbs: {
@@ -417,6 +673,7 @@ function main() {
     parallelism: {
       verbIssues: parallelismIssues,
     },
+    ambiguity,
     perVerbDetail: perVerbDetail.sort((a, b) => a.lemma.localeCompare(b.lemma)),
     anomalies,
   };
@@ -445,7 +702,8 @@ function printSummary(r: Report) {
     const entries = r.totals.entriesPerPos[pos] || 0;
     out.push(`- ${pos}: files ${files}, entries ${entries}`);
   }
-  out.push(`- Extractor rows (vocab): ${r.totals.totalExtractorRows}`);
+  out.push(`- Extractor rows before dedupe: ${r.totals.totalExtractorRows}`);
+  out.push(`- Runtime vocab rows after dedupe: ${r.totals.totalVocabRows}`);
   sep();
 
   // Verbs completeness
@@ -520,6 +778,53 @@ function printSummary(r: Report) {
   }
   sep();
 
+  // Ambiguity audit
+  out.push('Ambiguity — Verb Surfaces');
+  if (r.ambiguity.verbSurfaces.length === 0) {
+    out.push('- None');
+  } else {
+    out.push(`- Ambiguous lemma+surface groups: ${r.ambiguity.verbSurfaces.length}`);
+    r.ambiguity.verbSurfaces.slice(0, 30).forEach((surface) => {
+      const forms = surface.forms
+        .map((f) => `${f.variant}=${f.en}`)
+        .join(' | ');
+      out.push(`- ${surface.lemma} / ${surface.he} [${surface.buckets.join(', ')}]: ${forms}`);
+    });
+    if (r.ambiguity.verbSurfaces.length > 30) {
+      out.push(`- ...and ${r.ambiguity.verbSurfaces.length - 30} more`);
+    }
+  }
+  sep();
+
+  out.push('Ambiguity — Beginner Lesson Risk');
+  if (r.ambiguity.lessonBareCells.length === 0 && r.ambiguity.lessonPhrasesNeedingContext.length === 0) {
+    out.push('- None');
+  } else {
+    if (r.ambiguity.lessonBareCells.length) {
+      out.push(`- Bare ambiguous lesson cells: ${r.ambiguity.lessonBareCells.length}`);
+      r.ambiguity.lessonBareCells.slice(0, 30).forEach((cell) => {
+        out.push(`  ${cell.lessonId}: ${cell.lemma} ${cell.token} "${cell.en}" -> "${cell.he}" [${cell.buckets.join(', ')}]`);
+      });
+      if (r.ambiguity.lessonBareCells.length > 30) {
+        out.push(`  ...and ${r.ambiguity.lessonBareCells.length - 30} more`);
+      }
+    }
+    if (r.ambiguity.lessonPhrasesNeedingContext.length) {
+      out.push(`- Authored phrases needing stronger context: ${r.ambiguity.lessonPhrasesNeedingContext.length}`);
+      r.ambiguity.lessonPhrasesNeedingContext.slice(0, 30).forEach((phrase) => {
+        const matched = phrase.matchedSurfaces
+          .map((s) => `${s.lemma}/${s.he} [${s.buckets.join(', ')}]`)
+          .join('; ');
+        const weak = phrase.weakContextCues.length ? ` weak cues: ${phrase.weakContextCues.join(', ')}` : '';
+        out.push(`  ${phrase.lessonId}: "${phrase.en}" -> "${phrase.he}" (${matched})${weak}`);
+      });
+      if (r.ambiguity.lessonPhrasesNeedingContext.length > 30) {
+        out.push(`  ...and ${r.ambiguity.lessonPhrasesNeedingContext.length - 30} more`);
+      }
+    }
+  }
+  sep();
+
   // Per-verb completeness detail
   out.push('Per-Verb Completeness');
   const sym = (s: 'ok' | 'partial' | 'missing') => (s === 'ok' ? '✓' : '·');
@@ -545,4 +850,3 @@ function printSummary(r: Report) {
 }
 
 main();
-

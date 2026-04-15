@@ -11,6 +11,11 @@ const ScopeSchema = z.object({
 }).partial();
 
 const PhaseSchema = z.object({ id: z.string().min(1), title: z.string().optional(), goal: z.string().optional() });
+const BuildPhraseSchema = z.object({
+  he: z.string().min(1),
+  en: z.string().min(1),
+  pieces: z.array(z.string().min(1)).min(2),
+});
 
 const LessonSchema = z.object({
   id: z.string().min(1),
@@ -20,6 +25,7 @@ const LessonSchema = z.object({
   endpoint: z.object({ description: z.string().optional() }).partial().optional(),
   core: ScopeSchema.optional(),
   supporting: ScopeSchema.optional(),
+  build_phrases: z.array(BuildPhraseSchema).optional(),
   phases: z.array(PhaseSchema).optional(),
   wishlist: z.array(z.string()).optional(),
 });
@@ -73,4 +79,3 @@ export function writeLessonsDist(contentRoot: string) {
   // eslint-disable-next-line no-console
   console.log(`Wrote lessons → ${path.relative(contentRoot, outPath)} (${lessons.length})`);
 }
-

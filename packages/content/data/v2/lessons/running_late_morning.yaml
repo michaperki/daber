@@ -16,6 +16,25 @@ core:
 supporting:
   verbs:
     ללכת: [present_m_sg, present_f_sg]
+build_phrases:
+  - he: הוא מתעורר בבוקר
+    en: he wakes up in the morning
+    pieces: [הוא מתעורר, בבוקר]
+  - he: היא מתעוררת בבוקר
+    en: she wakes up in the morning
+    pieces: [היא מתעוררת, בבוקר]
+  - he: הוא רץ לאוטובוס
+    en: he runs to the bus
+    pieces: [הוא רץ, לאוטובוס]
+  - he: היא רצה לאוטובוס
+    en: she runs to the bus
+    pieces: [היא רצה, לאוטובוס]
+  - he: הוא מאחר לעבודה
+    en: he is late to work
+    pieces: [הוא מאחר, לעבודה]
+  - he: היא הולכת לעבודה
+    en: she goes to work
+    pieces: [היא הולכת, לעבודה]
 phases:
   - id: warmup
     title: Warm-up

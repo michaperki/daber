@@ -24,6 +24,25 @@ supporting:
   adjectives:
     חם: [m_sg, f_sg]
     קר: [m_sg, f_sg]
+build_phrases:
+  - he: הוא מזמין קפה
+    en: he orders coffee
+    pieces: [הוא מזמין, קפה]
+  - he: היא מזמינה תה
+    en: she orders tea
+    pieces: [היא מזמינה, תה]
+  - he: הוא שותה מים
+    en: he drinks water
+    pieces: [הוא שותה, מים]
+  - he: היא אוכלת עוגה
+    en: she eats cake
+    pieces: [היא אוכלת, עוגה]
+  - he: הוא משלם חשבון
+    en: he pays the bill
+    pieces: [הוא משלם, חשבון]
+  - he: היא מזמינה כריך
+    en: she orders a sandwich
+    pieces: [היא מזמינה, כריך]
 phases:
   - id: warmup
     title: Warm-up

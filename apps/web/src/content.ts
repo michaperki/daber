@@ -38,6 +38,7 @@ export type LessonJSON = {
   endpoint?: { description?: string };
   core?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> };
   supporting?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> };
+  build_phrases?: { he: string; en: string; pieces: string[] }[];
   phases?: { id: string; title?: string; goal?: string }[];
   wishlist?: string[];
 };

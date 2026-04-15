@@ -19,6 +19,25 @@ supporting:
   nouns:
     שבוע: [sg]
     יום: [sg]
+build_phrases:
+  - he: אנחנו נפגש בפארק
+    en: we will meet in the park
+    pieces: [אנחנו נפגש, בפארק]
+  - he: הוא בא בבוקר
+    en: he comes in the morning
+    pieces: [הוא בא, בבוקר]
+  - he: היא באה בערב
+    en: she comes in the evening
+    pieces: [היא באה, בערב]
+  - he: הוא מחכה בתחנה
+    en: he waits at the station
+    pieces: [הוא מחכה, בתחנה]
+  - he: היא מחכה בפארק
+    en: she waits in the park
+    pieces: [היא מחכה, בפארק]
+  - he: אנחנו נפגש השבוע
+    en: we will meet this week
+    pieces: [אנחנו נפגש, השבוע]
 phases:
   - id: warmup
     title: Warm-up

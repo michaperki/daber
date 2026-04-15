@@ -4,6 +4,8 @@ import {
   lessons,
   scopedCellItems,
   type CellItem,
+  type LessonJSON,
+  type VocabEntry,
 } from './content';
 import type { CellProgress, ProgressV1 } from './storage/progress';
 
@@ -11,12 +13,25 @@ export type SessionMode = 'free' | 'lesson';
 export type SessionPurpose = 'new' | 'review' | 'build' | 'mixed';
 export type SessionStageId = 'core_exposure' | 'core_reinforcement' | 'supporting_build';
 
-export type PlannedItem = CellItem & {
+type PlannedItemBase = {
   purpose: SessionPurpose;
   stageId?: SessionStageId;
   stageLabel?: string;
   wasNewAtPlan: boolean;
 };
+
+export type PlannedCellItem = CellItem & PlannedItemBase & {
+  taskType?: 'cell';
+};
+
+export type PlannedPhraseItem = PlannedItemBase & {
+  taskType: 'phrase_handwriting';
+  key: string;
+  row: VocabEntry;
+  sourceKeys: string[];
+};
+
+export type PlannedItem = PlannedCellItem | PlannedPhraseItem;
 
 export type SessionStage = {
   id: SessionStageId;
@@ -98,6 +113,10 @@ function shuffleLight<T>(items: T[]) {
   return out;
 }
 
+function plannedCell(item: PlannedItem | undefined): PlannedCellItem | undefined {
+  return item && item.taskType !== 'phrase_handwriting' ? item : undefined;
+}
+
 function appendPlanned(
   out: PlannedItem[],
   candidates: CellItem[],
@@ -111,7 +130,7 @@ function appendPlanned(
   const usedInThisBlock = new Set<string>();
   const cells = progress.cells || {};
   for (let i = 0; i < count; i++) {
-    const last = out[out.length - 1];
+    const last = plannedCell(out[out.length - 1]);
     let pool = candidates.filter((item) => {
       if (!options.allowDuplicateKeys && used.has(item.key)) return false;
       if (options.allowDuplicateKeys && usedInThisBlock.has(item.key)) return false;
@@ -135,6 +154,20 @@ function appendPlanned(
     used.add(picked.key);
     usedInThisBlock.add(picked.key);
   }
+}
+
+function buildAuthoredPhraseItems(lesson: LessonJSON, all: CellItem[], count: number): PlannedPhraseItem[] {
+  const authored = lesson.build_phrases || [];
+  return authored.slice(0, count).map((phrase, phraseIndex) => ({
+    taskType: 'phrase_handwriting',
+    key: `phrase:${lesson.id}:authored:${phraseIndex}`,
+    purpose: 'build',
+    stageId: 'supporting_build',
+    stageLabel: 'Build/use',
+    wasNewAtPlan: false,
+    row: { he: phrase.he, en: phrase.en, pos: 'phrase' },
+    sourceKeys: all.filter((item) => phrase.he.includes(item.row.he)).map((item) => item.key),
+  }));
 }
 
 function makeSummary(session: Omit<DrillSession, 'summary'>): DrillSession['summary'] {
@@ -212,7 +245,15 @@ export function createLessonSession(lessonId: string, progress: ProgressV1): Dri
 
   addStage('core_exposure', 'Core exposure', core, 'new');
   addStage('core_reinforcement', 'Core reinforcement', core, 'review', true);
-  addStage('supporting_build', 'Supporting/build usage', supporting.length ? supporting : all, 'build');
+
+  const buildStart = items.length;
+  const phraseItems = buildAuthoredPhraseItems(lesson, supporting.length ? [...supporting, ...core] : all, LESSON_STAGE_TARGET);
+  items.push(...phraseItems);
+  if (phraseItems.length > 0) {
+    stages.push({ id: 'supporting_build', label: 'Build/use', start: buildStart, count: phraseItems.length });
+  } else {
+    addStage('supporting_build', 'Build/use', supporting.length ? supporting : all, 'build');
+  }
 
   const base: Omit<DrillSession, 'summary'> = {
     id: sessionId('lesson', lessonId),

@@ -163,7 +163,14 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
       return;
     }
     const entry = planned.row;
-    setState({ current: entry, pos: 0, output: '', revealed: false, wrongCounts: {}, hints: {} });
+    setState({
+      current: entry,
+      pos: 0,
+      output: '',
+      revealed: false,
+      wrongCounts: {},
+      hints: {},
+    });
     canvasRef.current?.clear();
     attemptRef.current = { mistake: false, reveal: false, force: false };
     setTierLabelVisible(false);

@@ -23,25 +23,27 @@ supporting:
   nouns:
     קפה: [sg]
     טלפון: [sg]
+    זמן: [sg]
+    בית: [sg]
 build_phrases:
-  - he: הבוקר אני עייף אבל יוצא
-    en: this morning I am tired but I leave
-    pieces: [הבוקר, אני עייף, אבל יוצא]
-  - he: האוטובוס כבר בתחנה
-    en: the bus is already at the station
-    pieces: [האוטובוס, כבר בתחנה]
-  - he: עכשיו הוא רץ לאוטובוס
-    en: now he is running to the bus
-    pieces: [עכשיו, הוא רץ, לאוטובוס]
-  - he: אני לוקח את הטלפון ורץ
-    en: I take the phone and run
-    pieces: [אני לוקח, את הטלפון, ורץ]
-  - he: בלי קפה הבוקר קשה
-    en: without coffee the morning is hard
-    pieces: [בלי קפה, הבוקר קשה]
-  - he: היום אני הולך לעבודה בלי אוטובוס
-    en: today I am going to work without a bus
-    pieces: [היום, אני הולך לעבודה, בלי אוטובוס]
+  - he: הבוקר אני עייף אבל אני יוצא לעבודה
+    en: this morning I am tired but I am going out to work
+    pieces: [הבוקר, אני עייף, אבל אני יוצא לעבודה]
+  - he: האוטובוס כבר בתחנה ואני עדיין בבית
+    en: the bus is already at the station and I am still at home
+    pieces: [האוטובוס כבר בתחנה, ואני עדיין בבית]
+  - he: אין לי זמן לקפה
+    en: I do not have time for coffee
+    pieces: [אין לי זמן, לקפה]
+  - he: אני לוקח את הטלפון לפני שאני יוצא
+    en: I am taking the phone before I leave
+    pieces: [אני לוקח, את הטלפון, לפני שאני יוצא]
+  - he: עכשיו הוא רץ לאוטובוס כי הוא מאחר
+    en: now he is running to the bus because he is late
+    pieces: [עכשיו, הוא רץ לאוטובוס, כי הוא מאחר]
+  - he: היום אני הולך לעבודה ברגל לא באוטובוס
+    en: today I am going to work on foot not by bus
+    pieces: [היום, אני הולך לעבודה ברגל, לא באוטובוס]
 phases:
   - id: warmup
     title: Warm-up

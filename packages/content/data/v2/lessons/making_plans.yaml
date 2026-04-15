@@ -20,28 +20,29 @@ supporting:
   nouns:
     שבוע: [sg]
     יום: [sg]
+    זמן: [sg]
     עבודה: [sg]
     בית קפה: [sg]
     טלפון: [sg]
 build_phrases:
-  - he: מחר ניפגש ליד התחנה
-    en: tomorrow we will meet near the station
-    pieces: [מחר, ניפגש, ליד התחנה]
-  - he: כל בוקר הוא בא לפארק
-    en: every morning he comes to the park
-    pieces: [כל בוקר, הוא בא, לפארק]
-  - he: כל ערב היא באה לתחנה
-    en: every evening she comes to the station
-    pieces: [כל ערב, היא באה, לתחנה]
-  - he: אני כבר מחכה ליד התחנה
-    en: I am already waiting near the station
-    pieces: [אני כבר מחכה, ליד התחנה]
-  - he: אחרי העבודה ניפגש בבית קפה
-    en: after work we will meet at a cafe
-    pieces: [אחרי העבודה, ניפגש, בבית קפה]
-  - he: בלי טלפון קשה להיפגש
-    en: without a phone it is hard to meet
-    pieces: [בלי טלפון, קשה, להיפגש]
+  - he: מחר בבוקר ניפגש ליד התחנה
+    en: tomorrow morning we will meet near the station
+    pieces: [מחר בבוקר, ניפגש, ליד התחנה]
+  - he: יש לך זמן בערב
+    en: do you have time in the evening
+    pieces: [יש לך זמן, בערב]
+  - he: קשה להיפגש בלי טלפון
+    en: it is hard to meet without a phone
+    pieces: [קשה, להיפגש, בלי טלפון]
+  - he: אני לא מחכה בתחנה אני מחכה בבית קפה
+    en: I am not waiting at the station I am waiting at a cafe
+    pieces: [אני לא מחכה בתחנה, אני מחכה בבית קפה]
+  - he: אחרי העבודה ניפגש בפארק לא בתחנה
+    en: after work we will meet in the park not at the station
+    pieces: [אחרי העבודה, ניפגש בפארק, לא בתחנה]
+  - he: כל ערב היא באה לתחנה אבל היום היא בפארק
+    en: every evening she comes to the station but today she is in the park
+    pieces: [כל ערב, היא באה לתחנה, אבל היום היא בפארק]
 phases:
   - id: warmup
     title: Warm-up

@@ -18,7 +18,7 @@ core:
     כריך: [sg]
   adjectives:
     חם: [m_sg, f_sg]
-    קר: [m_sg, f_sg]
+    קר: [m_sg, f_sg, m_pl]
 supporting:
   verbs:
     לשתות: [present_m_sg, present_f_sg]
@@ -32,24 +32,24 @@ supporting:
     כוס: [sg, pl]
     שולחן: [sg]
 build_phrases:
-  - he: אפשר לקבל תפריט
-    en: can I get a menu
-    pieces: [אפשר לקבל, תפריט]
-  - he: אני רוצה קפה בלי סוכר
-    en: I want coffee without sugar
-    pieces: [אני רוצה, קפה, בלי סוכר]
-  - he: התה עם חלב בלי סוכר
-    en: tea with milk, no sugar
-    pieces: [התה, עם חלב, בלי סוכר]
-  - he: הכריך קר והעוגה חמה
-    en: the sandwich is cold and the cake is hot
-    pieces: [הכריך קר, והעוגה חמה]
-  - he: אפשר לשלם עכשיו
-    en: can I pay now
-    pieces: [אפשר לשלם, עכשיו]
-  - he: החשבון על השולחן
-    en: the bill is on the table
-    pieces: [החשבון, על השולחן]
+  - he: אפשר לקבל את התפריט
+    en: can I get the menu
+    pieces: [אפשר לקבל, את התפריט]
+  - he: יש קפה בלי סוכר
+    en: is there coffee without sugar
+    pieces: [יש, קפה, בלי סוכר]
+  - he: התה שלי עם חלב אבל בלי סוכר
+    en: my tea has milk but no sugar
+    pieces: [התה שלי, עם חלב, אבל בלי סוכר]
+  - he: העוגה חמה והמים קרים
+    en: the cake is hot and the water is cold
+    pieces: [העוגה חמה, והמים קרים]
+  - he: אני רוצה לשלם עכשיו אבל החשבון לא על השולחן
+    en: I want to pay now but the bill is not on the table
+    pieces: [אני רוצה לשלם עכשיו, אבל, החשבון לא על השולחן]
+  - he: אפשר לקבל כוס מים עם הקפה
+    en: can I get a glass of water with the coffee
+    pieces: [אפשר לקבל, כוס מים, עם הקפה]
 phases:
   - id: warmup
     title: Warm-up

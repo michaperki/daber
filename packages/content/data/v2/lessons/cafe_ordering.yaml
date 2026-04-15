@@ -7,12 +7,8 @@ endpoint:
 core:
   verbs:
     להזמין: [present_m_sg, present_f_sg]
-    לשתות: [present_m_sg, present_f_sg]
-    לאכול: [present_m_sg, present_f_sg]
-    לשלם: [present_m_sg, present_f_sg]
   nouns:
     בית קפה: [sg]
-    מלצר: [sg]
     תפריט: [sg]
     חשבון: [sg]
     קפה: [sg]
@@ -20,39 +16,50 @@ core:
     מים: [pl]
     עוגה: [sg]
     כריך: [sg]
-supporting:
   adjectives:
     חם: [m_sg, f_sg]
     קר: [m_sg, f_sg]
+supporting:
+  verbs:
+    לשתות: [present_m_sg, present_f_sg]
+    לאכול: [present_m_sg, present_f_sg]
+    לשלם: [present_m_sg, present_f_sg]
+    לרצות: [present_m_sg, present_f_sg]
+  nouns:
+    מלצר: [sg]
+    חלב: [sg]
+    סוכר: [sg]
+    כוס: [sg, pl]
+    שולחן: [sg]
 build_phrases:
-  - he: הוא מזמין קפה
-    en: he orders coffee
-    pieces: [הוא מזמין, קפה]
-  - he: היא מזמינה תה
-    en: she orders tea
-    pieces: [היא מזמינה, תה]
-  - he: הוא שותה מים
-    en: he drinks water
-    pieces: [הוא שותה, מים]
-  - he: היא אוכלת עוגה
-    en: she eats cake
-    pieces: [היא אוכלת, עוגה]
-  - he: הוא משלם חשבון
-    en: he pays the bill
-    pieces: [הוא משלם, חשבון]
-  - he: היא מזמינה כריך
-    en: she orders a sandwich
-    pieces: [היא מזמינה, כריך]
+  - he: אפשר לקבל תפריט
+    en: can I get a menu
+    pieces: [אפשר לקבל, תפריט]
+  - he: אני רוצה קפה בלי סוכר
+    en: I want coffee without sugar
+    pieces: [אני רוצה, קפה, בלי סוכר]
+  - he: התה עם חלב בלי סוכר
+    en: tea with milk, no sugar
+    pieces: [התה, עם חלב, בלי סוכר]
+  - he: הכריך קר והעוגה חמה
+    en: the sandwich is cold and the cake is hot
+    pieces: [הכריך קר, והעוגה חמה]
+  - he: אפשר לשלם עכשיו
+    en: can I pay now
+    pieces: [אפשר לשלם, עכשיו]
+  - he: החשבון על השולחן
+    en: the bill is on the table
+    pieces: [החשבון, על השולחן]
 phases:
   - id: warmup
     title: Warm-up
-    goal: Drinks and foods + present forms for להזמין/לשתות.
+    goal: Drinks, food, temperature, and useful cafe nouns.
   - id: order
     title: Order
-    goal: Combine item + temperature + להזמין.
+    goal: Use request formulas, with/without phrases, and item descriptions.
   - id: pay
     title: Pay
-    goal: Ask for תפריט/חשבון and finish the interaction.
+    goal: Ask for תפריט/חשבון and finish the interaction naturally.
   - id: perform
     title: Performance
     goal: From ordering to paying smoothly.

@@ -7,40 +7,48 @@ endpoint:
 core:
   verbs:
     להתעורר: [present_m_sg, present_f_sg]
-    לאחר: [present_m_sg, present_f_sg]
+  adjectives:
+    עייף: [m_sg, f_sg]
+    עמוס: [m_sg, f_sg]
   nouns:
     בוקר: [sg]
     אוטובוס: [sg]
     עבודה: [sg]
 supporting:
   verbs:
+    לאחר: [present_m_sg, present_f_sg]
     ללכת: [present_m_sg, present_f_sg]
+    לצאת: [present_m_sg, present_f_sg]
+    לקח: [present_m_sg, present_f_sg]
+  nouns:
+    קפה: [sg]
+    טלפון: [sg]
 build_phrases:
-  - he: הוא מתעורר בבוקר
-    en: he wakes up in the morning
-    pieces: [הוא מתעורר, בבוקר]
-  - he: היא מתעוררת בבוקר
-    en: she wakes up in the morning
-    pieces: [היא מתעוררת, בבוקר]
+  - he: הבוקר אני עייף אבל יוצא
+    en: this morning I am tired but I leave
+    pieces: [הבוקר, אני עייף, אבל יוצא]
+  - he: האוטובוס כבר בתחנה
+    en: the bus is already at the station
+    pieces: [האוטובוס, כבר בתחנה]
   - he: עכשיו הוא רץ לאוטובוס
     en: now he is running to the bus
     pieces: [עכשיו, הוא רץ, לאוטובוס]
-  - he: עכשיו היא רצה לאוטובוס
-    en: now she is running to the bus
-    pieces: [עכשיו, היא רצה, לאוטובוס]
-  - he: הוא מאחר לעבודה
-    en: he is late to work
-    pieces: [הוא מאחר, לעבודה]
-  - he: היא הולכת לעבודה
-    en: she goes to work
-    pieces: [היא הולכת, לעבודה]
+  - he: אני לוקח את הטלפון ורץ
+    en: I take the phone and run
+    pieces: [אני לוקח, את הטלפון, ורץ]
+  - he: בלי קפה הבוקר קשה
+    en: without coffee the morning is hard
+    pieces: [בלי קפה, הבוקר קשה]
+  - he: היום אני הולך לעבודה בלי אוטובוס
+    en: today I am going to work without a bus
+    pieces: [היום, אני הולך לעבודה, בלי אוטובוס]
 phases:
   - id: warmup
     title: Warm-up
-    goal: Present forms for להתעורר with בוקר and contextualized לרוץ phrases.
+    goal: Morning nouns, tired/busy adjectives, and useful time cues.
   - id: scramble
     title: Scramble
-    goal: Use לאחר + אוטובוס/עבודה in the present.
+    goal: Combine כבר, עכשיו, בלי, את, and short connected clauses.
   - id: perform
     title: Performance
     goal: Tell the short “late morning” micro-story.

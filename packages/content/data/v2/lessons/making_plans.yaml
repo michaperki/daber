@@ -7,6 +7,8 @@ endpoint:
 core:
   verbs:
     להיפגש: [future_1pl]
+  adjectives:
+    קשה: [m_sg, f_sg]
   nouns:
     בוקר: [sg]
     ערב: [sg]
@@ -18,32 +20,35 @@ supporting:
   nouns:
     שבוע: [sg]
     יום: [sg]
+    עבודה: [sg]
+    בית קפה: [sg]
+    טלפון: [sg]
 build_phrases:
-  - he: אנחנו נפגש בפארק
-    en: we will meet in the park
-    pieces: [אנחנו נפגש, בפארק]
+  - he: מחר ניפגש ליד התחנה
+    en: tomorrow we will meet near the station
+    pieces: [מחר, ניפגש, ליד התחנה]
   - he: כל בוקר הוא בא לפארק
     en: every morning he comes to the park
     pieces: [כל בוקר, הוא בא, לפארק]
   - he: כל ערב היא באה לתחנה
     en: every evening she comes to the station
     pieces: [כל ערב, היא באה, לתחנה]
-  - he: הוא מחכה בתחנה
-    en: he waits at the station
-    pieces: [הוא מחכה, בתחנה]
-  - he: היא מחכה בפארק
-    en: she waits in the park
-    pieces: [היא מחכה, בפארק]
-  - he: אנחנו נפגש השבוע
-    en: we will meet this week
-    pieces: [אנחנו נפגש, השבוע]
+  - he: אני כבר מחכה ליד התחנה
+    en: I am already waiting near the station
+    pieces: [אני כבר מחכה, ליד התחנה]
+  - he: אחרי העבודה ניפגש בבית קפה
+    en: after work we will meet at a cafe
+    pieces: [אחרי העבודה, ניפגש, בבית קפה]
+  - he: בלי טלפון קשה להיפגש
+    en: without a phone it is hard to meet
+    pieces: [בלי טלפון, קשה, להיפגש]
 phases:
   - id: warmup
     title: Warm-up
-    goal: Review clear time/place phrases for לבוא and time words.
+    goal: Review time/place words, קשה, and planning nouns.
   - id: propose
     title: Propose & confirm
-    goal: Use ניפגש + time/place to make a plan.
+    goal: Use ניפגש with time, place, and after/without phrases.
   - id: perform
     title: Performance
     goal: Deliver a short plan agreement (when and where).

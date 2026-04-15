@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useLocation } from 'preact-iso';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
 // Stroke-only recognizer; margin gating removed.
 import { predictByStroke } from '../recognizer/stroke';
@@ -12,7 +13,7 @@ import {
   bumpVocabWord,
   bumpCell,
 } from '../storage/mutations';
-import { randomVocabEntry, vocab, type VocabEntry } from '../content';
+import { vocab, type VocabEntry } from '../content';
 import { playCorrect, playWrong, playWordComplete, playReveal, playPerfect, primeAudio } from '../audio';
 import { progress } from '../state/signals';
 import panels from './panels.module.css';
@@ -23,6 +24,14 @@ import { calibration } from '../state/signals';
 import { predictByPrototypesFromStrokes } from '../recognizer/proto';
 import { tierSuggestion, tierToast, acceptTierUnlock, snoozeTierSuggestion } from '../tier_suggest';
 import { getUnlockedTier } from '../curriculum_active';
+import {
+  createDrillSession,
+  currentPlannedItem,
+  currentStage,
+  finalSummary,
+  recordSessionResult,
+} from '../session_planner';
+import { activeSession, lastSessionSummary } from '../state/session';
 
 // Heuristic: consider the current position to be at the end of a word if the
 // next character is missing or a separator (space/punctuation/maqaf).
@@ -77,7 +86,8 @@ function normalizedExpected(expected: string, atEnd: boolean): string {
   return baseToFinal(expected);
 }
 
-export function VocabTab() {
+export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string | null }) {
+  const { route } = useLocation();
   const canvasRef = useRef<DrawCanvasHandle | null>(null);
   // Force-remount key for the canvas to guarantee a fresh drawing surface
   // after accepts/force-accepts (defensive against any lingering state).
@@ -115,10 +125,44 @@ export function VocabTab() {
 
   // no prefs used here after simplification
 
-  function pickNext() {
+  function ensureSession() {
+    const lessonId = drillLessonId;
+    const mode = lessonId ? 'lesson' : 'free';
+    const existing = activeSession.value;
+    if (
+      !existing ||
+      existing.completed ||
+      existing.mode !== mode ||
+      (existing.lessonId || null) !== (lessonId || null)
+    ) {
+      activeSession.value = createDrillSession(mode, lessonId, progress.value);
+      lastSessionSummary.value = null;
+    }
+    return activeSession.value!;
+  }
+
+  function completeSession(session = activeSession.value) {
+    if (!session) return;
+    const completed = { ...session, completed: true };
+    activeSession.value = completed;
+    lastSessionSummary.value = finalSummary(completed);
+    if (completed.mode === 'lesson' && completed.lessonId) {
+      route(`/lesson/${completed.lessonId}/complete`);
+    } else {
+      route('/practice/complete');
+    }
+  }
+
+  function loadCurrentItem() {
     setFeedback({ kind: 'idle', text: '' });
     setLastReject(null);
-    const entry = randomVocabEntry();
+    const session = ensureSession();
+    const planned = currentPlannedItem(session);
+    if (!planned) {
+      completeSession(session);
+      return;
+    }
+    const entry = planned.row;
     setState({ current: entry, pos: 0, output: '', revealed: false, wrongCounts: {}, hints: {} });
     canvasRef.current?.clear();
     attemptRef.current = { mistake: false, reveal: false, force: false };
@@ -131,11 +175,30 @@ export function VocabTab() {
     }
   }
 
-  // First-mount: pick a word.
+  function advanceSession(result: 'clean' | 'unclean' | 'skipped', delayMs: number) {
+    const session = activeSession.value || ensureSession();
+    const next = recordSessionResult(session, result);
+    activeSession.value = next;
+    busyRef.current = true;
+    window.setTimeout(() => {
+      if (next.completed) {
+        completeSession(next);
+        return;
+      }
+      busyRef.current = false;
+      loadCurrentItem();
+    }, delayMs);
+  }
+
   useEffect(() => {
-    if (vocab.length > 0 && !state.current) pickNext();
+    activeSession.value = null;
+    lastSessionSummary.value = null;
+    if (vocab.length > 0) {
+      setState(EMPTY_STATE);
+      window.setTimeout(() => loadCurrentItem(), 0);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [drillLessonId]);
 
   // Always auto-advance past spaces at the current position so the user never
   // needs to input a space. This runs on state changes too (e.g., reveal or
@@ -258,11 +321,7 @@ export function VocabTab() {
         bumpVocabWord(cur.he, attemptClean);
         const token = cur.variant || (cur.pos === 'verb' ? 'lemma' : cur.pos === 'noun' ? 'sg' : 'm_sg');
         if (cur.lemma) bumpCell(cur.pos, cur.lemma, token, attemptClean);
-        busyRef.current = true;
-        window.setTimeout(() => {
-          busyRef.current = false;
-          pickNext();
-        }, 1000);
+        advanceSession(attemptClean ? 'clean' : 'unclean', 1000);
       } else {
         setFeedback({ kind: 'idle', text: '' });
       }
@@ -301,7 +360,7 @@ export function VocabTab() {
     setTierLabelVisible(true);
   }
   function onSkip() {
-    pickNext();
+    advanceSession('skipped', 0);
   }
 
   function forceAccept() {
@@ -344,11 +403,9 @@ export function VocabTab() {
       setFeedback({ kind: 'ok', text: '✓ Correct' });
       const attemptClean = !(attemptRef.current.mistake || attemptRef.current.reveal || attemptRef.current.force);
       bumpVocabWord(cur.he, attemptClean);
-      busyRef.current = true;
-      window.setTimeout(() => {
-        busyRef.current = false;
-        pickNext();
-      }, 480);
+      const token = cur.variant || (cur.pos === 'verb' ? 'lemma' : cur.pos === 'noun' ? 'sg' : 'm_sg');
+      if (cur.lemma) bumpCell(cur.pos, cur.lemma, token, attemptClean);
+      advanceSession(attemptClean ? 'clean' : 'unclean', 480);
     } else {
       setFeedback({ kind: 'idle', text: '' });
     }
@@ -380,6 +437,10 @@ export function VocabTab() {
       : feedback.kind === 'bad'
         ? `${panels.feedback} ${panels.feedbackBad}`
         : panels.feedback;
+  const session = activeSession.value;
+  const stage = currentStage(session);
+  const sessionPos = session ? Math.min(session.currentIndex + 1, session.targetCount) : 0;
+  const stagePos = stage ? Math.min(stage.doneInStage + 1, stage.count) : 0;
 
   if (vocab.length === 0) {
     return (
@@ -413,6 +474,24 @@ export function VocabTab() {
             const label = t === 4 ? 'Imperative' : t === 3 ? 'Future' : t === 2 ? 'Past' : 'Present';
             return label;
           })()}
+        </div>
+      )}
+      {session && (
+        <div class={panels.panel}>
+          <div class={panels.row}>
+            <div>
+              <div class={panels.promptLabel}>
+                {session.mode === 'lesson' ? (session.lessonTitle || 'Lesson drill') : 'Free practice'}
+              </div>
+              <div class={panels.progress}>
+                Session {sessionPos}/{session.targetCount}
+                {stage ? ` · Stage ${stage.ordinal}/${session.stages.length + 1}: ${stage.label} ${stagePos}/${stage.count}` : ''}
+              </div>
+            </div>
+            <div class={panels.progress} style={{ marginLeft: 'auto' }}>
+              Clean {session.summary.clean} · Unclean {session.summary.unclean}
+            </div>
+          </div>
         </div>
       )}
       <div class={study.topWord}>

@@ -109,6 +109,7 @@ function AppShell({ inspect, setInspect }: { inspect: boolean; setInspect: (v: b
             <Route path="/lesson/:id/drill" component={DrillScreen} />
             <Route path="/practice" component={DrillScreen} />
             <Route path="/lesson/:id/complete" component={LessonComplete} />
+            <Route path="/practice/complete" component={LessonComplete} />
           </Router>
         )}
       </main>

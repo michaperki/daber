@@ -5,6 +5,18 @@
 // Vite doesn't fail to start — the Vocab tab will just show an empty state.
 
 export type VocabEntry = { he: string; en: string; pos: string; variant?: string; lemma?: string };
+export type CellItem = {
+  key: string;
+  row: VocabEntry;
+  pos: string;
+  lemma: string;
+  token: string;
+};
+type LessonScope = {
+  verbs: Record<string, string[]>;
+  adjectives: Record<string, string[]>;
+  nouns: Record<string, string[]>;
+};
 
 // Vite's import.meta.glob with `eager: true` statically bundles matching
 // files, but tolerates zero matches (it yields an empty record). This gives
@@ -37,6 +49,97 @@ export const lessons: LessonJSON[] = Array.isArray(Object.values(lessonMods)[0])
 
 import { progress, selectedLessonId } from './state/signals';
 
+function emptyLessonScope(): LessonScope {
+  return { verbs: {}, adjectives: {}, nouns: {} };
+}
+
+function mergeScope(dst: LessonScope, src?: LessonScope | LessonJSON['core']) {
+  if (!src) return;
+  const merge = (kind: keyof LessonScope) => {
+    for (const [lemma, toks] of Object.entries(src[kind] || {})) {
+      if (!dst[kind][lemma]) dst[kind][lemma] = [];
+      const set = new Set(dst[kind][lemma]);
+      for (const t of toks) set.add(t);
+      dst[kind][lemma] = Array.from(set);
+    }
+  };
+  merge('verbs');
+  merge('adjectives');
+  merge('nouns');
+}
+
+function buildMaps() {
+  const vmap = new Map<string, VocabEntry>();
+  const amap = new Map<string, VocabEntry>();
+  const nmap = new Map<string, VocabEntry>();
+  for (const e of vocab) {
+    const meta = cellMetaForEntry(e);
+    if (!meta) continue;
+    if (e.pos === 'verb') vmap.set(meta.key, e);
+    else if (e.pos === 'adjective') amap.set(meta.key, e);
+    else if (e.pos === 'noun') nmap.set(meta.key, e);
+  }
+  return { vmap, amap, nmap };
+}
+
+export function cellMetaForEntry(row: VocabEntry): Omit<CellItem, 'row'> | null {
+  if (row.pos !== 'verb' && row.pos !== 'adjective' && row.pos !== 'noun') return null;
+  const lemma = row.lemma || (row.variant ? undefined : row.he);
+  const token = row.variant || (row.pos === 'verb' ? 'lemma' : row.pos === 'noun' ? 'sg' : 'm_sg');
+  if (!lemma || !token) return null;
+  return { key: `${row.pos}:${lemma}:${token}`, pos: row.pos, lemma, token };
+}
+
+export function lessonScopeFor(lesson: LessonJSON, parts: Array<'core' | 'supporting'> = ['core', 'supporting']): LessonScope {
+  const scoped = emptyLessonScope();
+  for (const part of parts) mergeScope(scoped, lesson[part]);
+  return scoped;
+}
+
+export function datasetScope(): LessonScope {
+  const scoped = emptyLessonScope();
+  for (const e of vocab) {
+    const meta = cellMetaForEntry(e);
+    if (!meta) continue;
+    const kind = e.pos === 'verb' ? 'verbs' : e.pos === 'adjective' ? 'adjectives' : 'nouns';
+    if (!scoped[kind][meta.lemma]) scoped[kind][meta.lemma] = [];
+    if (!scoped[kind][meta.lemma].includes(meta.token)) scoped[kind][meta.lemma].push(meta.token);
+  }
+  return scoped;
+}
+
+export function cellItemsForScope(scope: LessonScope): CellItem[] {
+  const { vmap, amap, nmap } = buildMaps();
+  const items: CellItem[] = [];
+  for (const [lemma, tokens] of Object.entries(scope.verbs || {})) {
+    for (const token of tokens) {
+      const key = `verb:${lemma}:${token}`;
+      const row = vmap.get(key);
+      if (row) items.push({ key, row, pos: 'verb', lemma, token });
+    }
+  }
+  for (const [lemma, tokens] of Object.entries(scope.adjectives || {})) {
+    for (const token of tokens) {
+      const key = `adjective:${lemma}:${token}`;
+      const row = amap.get(key);
+      if (row) items.push({ key, row, pos: 'adjective', lemma, token });
+    }
+  }
+  for (const [lemma, tokens] of Object.entries(scope.nouns || {})) {
+    for (const token of tokens) {
+      const key = `noun:${lemma}:${token}`;
+      const row = nmap.get(key);
+      if (row) items.push({ key, row, pos: 'noun', lemma, token });
+    }
+  }
+  return items;
+}
+
+export function scopedCellItems(lessonId?: string | null): CellItem[] {
+  const activeLesson = lessonId ? lessons.find((l) => l.id === lessonId) : null;
+  return cellItemsForScope(activeLesson ? lessonScopeFor(activeLesson) : datasetScope());
+}
+
 function pickWeighted<T>(items: { item: T; weight: number }[]): T | null {
   const total = items.reduce((s, x) => s + x.weight, 0);
   if (total <= 0) return items.length ? items[Math.floor(Math.random() * items.length)].item : null;
@@ -56,6 +159,7 @@ export function randomVocabEntry(): VocabEntry | null {
 function randomVocabEntryByCell(): VocabEntry | null {
   // Session guardrails
   const recentLemmas: string[] = (randomVocabEntryByCell as any)._recentLemmas || [];
+  const recentKeys: string[] = (randomVocabEntryByCell as any)._recentKeys || [];
   const seenCells: Set<string> = (randomVocabEntryByCell as any)._seenCells || new Set();
   let pickCount: number = (randomVocabEntryByCell as any)._pickCount || 0;
   let newCells: number = (randomVocabEntryByCell as any)._newCells || 0;
@@ -166,6 +270,7 @@ function randomVocabEntryByCell(): VocabEntry | null {
   // Guardrails
   const last1 = recentLemmas[recentLemmas.length - 1];
   const last2 = recentLemmas[recentLemmas.length - 2];
+  const lastKey = recentKeys[recentKeys.length - 1];
   const wouldViolateDepthCap = (lemma: string) => last1 === lemma && last2 === lemma;
   const breadthCheck = (lemma: string) => {
     if (pickCount < 9) return true;
@@ -206,7 +311,13 @@ function randomVocabEntryByCell(): VocabEntry | null {
   const relaxed = items.filter(relaxedGuards);
 
   const MIN_POOL = Math.min(15, items.length);
-  const source = filtered.length >= MIN_POOL ? filtered : (relaxed.length >= MIN_POOL ? relaxed : items);
+  const baseSource = filtered.length >= MIN_POOL ? filtered : (relaxed.length >= MIN_POOL ? relaxed : items);
+  const avoidSameLemmaAndCell = baseSource.filter(({ key, row }) => {
+    const lemma = key.split(':')[1] || row.lemma || row.he;
+    return key !== lastKey && lemma !== last1;
+  });
+  const avoidSameCell = baseSource.filter(({ key }) => key !== lastKey);
+  const source = avoidSameLemmaAndCell.length ? avoidSameLemmaAndCell : (avoidSameCell.length ? avoidSameCell : baseSource);
 
   const weightedEntries = source.map(({ key, row }) => {
     const c = cells[key];
@@ -215,7 +326,6 @@ function randomVocabEntryByCell(): VocabEntry | null {
   });
   const newBucket = weightedEntries.filter((e) => isNewCell(e.key)).map(({ item, weight }) => ({ item, weight }));
   const oldBucket = weightedEntries.filter((e) => !isNewCell(e.key)).map(({ item, weight }) => ({ item, weight }));
-  const uniqRecent = new Set(recentLemmas).size;
   const pNew = pickCount < 20 ? 0.5 : (distinctSeen < 100 ? 0.3 : 0.1);
   const chooseNew = Math.random() < pNew;
   const picked = chooseNew ? (newBucket.length ? pickWeighted(newBucket) : (oldBucket.length ? pickWeighted(oldBucket) : null))
@@ -231,9 +341,12 @@ function randomVocabEntryByCell(): VocabEntry | null {
     seenCells.add(key);
     recentLemmas.push(lemma);
     if (recentLemmas.length > 10) recentLemmas.shift();
+    recentKeys.push(key);
+    if (recentKeys.length > 10) recentKeys.shift();
   }
   pickCount++;
   (randomVocabEntryByCell as any)._recentLemmas = recentLemmas;
+  (randomVocabEntryByCell as any)._recentKeys = recentKeys;
   (randomVocabEntryByCell as any)._seenCells = seenCells;
   (randomVocabEntryByCell as any)._pickCount = pickCount;
   (randomVocabEntryByCell as any)._newCells = newCells;

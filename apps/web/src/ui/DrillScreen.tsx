@@ -45,7 +45,7 @@ export function DrillScreen() {
           ← Back
         </button>
       </div>
-      <VocabTab />
+      <VocabTab lessonId={lessonId} />
     </div>
   );
 }

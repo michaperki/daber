@@ -16,6 +16,9 @@ pnpm-debug.log*
 # OS
 .DS_Store
 
+# Local agent state
+.codex
+
 # Generated content
 packages/content/dist/
 

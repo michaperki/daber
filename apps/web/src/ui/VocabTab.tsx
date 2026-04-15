@@ -109,9 +109,6 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     force: false,
   });
 
-  // Session-level seen verbs to show a tiny intro chip once
-  const seenVerbsRef = useRef<Set<string>>(new Set());
-  const [newVerbChip, setNewVerbChip] = useState<string | null>(null);
   // Show tier label only after an attempt (avoid answer leakage)
   const [tierLabelVisible, setTierLabelVisible] = useState(false);
   // Slight delay before rendering a suggestion to avoid interruptiveness
@@ -179,12 +176,6 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     canvasRef.current?.clear();
     attemptRef.current = { mistake: false, reveal: false, force: false };
     setTierLabelVisible(false);
-    // New verb intro chip (one-time per lemma per session)
-    if (entry && entry.pos === 'verb' && entry.lemma && !seenVerbsRef.current.has(entry.lemma)) {
-      seenVerbsRef.current.add(entry.lemma);
-      setNewVerbChip(`New verb: ${entry.lemma}`);
-      window.setTimeout(() => setNewVerbChip((v) => (v === `New verb: ${entry.lemma}` ? null : v)), 1400);
-    }
   }
 
   function advanceSession(result: 'clean' | 'unclean' | 'skipped', delayMs: number) {
@@ -473,10 +464,6 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
       {/* Minimal toast for unlock */}
       {tierToast.value && (
         <div class={panels.feedback + ' ' + panels.feedbackOk}>{tierToast.value}</div>
-      )}
-      {/* New verb intro chip */}
-      {newVerbChip && (
-        <div class={panels.feedback}>{newVerbChip}</div>
       )}
       {/* Small inline verb/tier awareness (only after attempt to avoid leakage) */}
       {tierLabelVisible && state.current && state.current.pos === 'verb' && state.current.lemma && (

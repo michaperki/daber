@@ -1,20 +1,14 @@
 import { useLocation, useRoute } from 'preact-iso';
-import { songLessons } from '../content';
+import { songLessons, type UnitRole } from '../content';
 import panels from './panels.module.css';
 import study from './study.module.css';
 
-function countByType(songId: string) {
-  const song = songLessons.find((s) => s.id === songId);
-  const counts: Record<string, number> = {};
-  for (const unit of song?.teachable_units || []) {
-    counts[unit.unit_type] = (counts[unit.unit_type] || 0) + 1;
-  }
-  return counts;
-}
-
-function typeLabel(type: string) {
-  return type.replace(/_/g, ' ');
-}
+const ROLE_LABEL: Record<UnitRole, string> = {
+  teaching_target: 'teaching targets',
+  vocabulary: 'vocabulary',
+  annotation: 'annotations',
+};
+const ROLE_ORDER: UnitRole[] = ['teaching_target', 'vocabulary', 'annotation'];
 
 export function SongLessonEntry() {
   const { route } = useLocation();
@@ -30,14 +24,17 @@ export function SongLessonEntry() {
     );
   }
 
-  const counts = countByType(song.id);
+  const roleCounts = song.teachable_units.reduce<Record<UnitRole, number>>((acc, unit) => {
+    acc[unit.role] = (acc[unit.role] || 0) + 1;
+    return acc;
+  }, { teaching_target: 0, vocabulary: 0, annotation: 0 });
 
   return (
     <div class={panels.panel}>
       <div class={panels.row}>
         <div>
           <div style={{ fontWeight: 600, marginBottom: 4 }}>{song.title}</div>
-          <div class={panels.muted}>Teachable units before lyric payoff.</div>
+          <div class={panels.muted}>Teaching targets drive the study walk; vocabulary and annotations are reference panels.</div>
         </div>
         <div style={{ marginLeft: 'auto' }}>
           <button class={study.secondaryBtn} onClick={() => route('/')}>Back</button>
@@ -49,9 +46,8 @@ export function SongLessonEntry() {
       )}
 
       <div class={study.badgeRow}>
-        <span class={study.badge}>{song.teachable_units.length} units</span>
-        {Object.entries(counts).map(([type, count]) => (
-          <span key={type} class={study.badge}>{count} {typeLabel(type)}</span>
+        {ROLE_ORDER.map((role) => (
+          <span key={role} class={study.badge}>{roleCounts[role] || 0} {ROLE_LABEL[role]}</span>
         ))}
       </div>
 

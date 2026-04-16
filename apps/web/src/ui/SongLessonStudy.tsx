@@ -5,6 +5,8 @@ import { songLessons, type Example, type LyricUnlock, type TeachableUnit } from 
 import panels from './panels.module.css';
 import study from './study.module.css';
 
+type Mode = 'teach' | 'vocab' | 'notes';
+
 function typeLabel(type: string) {
   return type.replace(/_/g, ' ');
 }
@@ -20,10 +22,10 @@ function renderList(items: string[] | undefined) {
   return <div class={study.inlineList}>{items.map((item) => <span key={item}>{item}</span>)}</div>;
 }
 
-function ExampleList({ examples }: { examples: Example[] }) {
+function ExampleList({ examples, label = 'Normal usage' }: { examples: Example[]; label?: string }) {
   return (
     <div class={study.unitSection}>
-      <div class={panels.promptLabel}>Normal usage</div>
+      <div class={panels.promptLabel}>{label}</div>
       {examples.map((example) => (
         <div key={`${example.he}:${example.en}`} class={study.examplePair}>
           <div class={study.hebrewLine}>{example.he}</div>
@@ -148,7 +150,7 @@ function UnitDetails({ unit }: { unit: TeachableUnit }) {
       return (
         <>
           <Field label="Ordinary Hebrew">{unit.ordinary_equivalent}</Field>
-          <ExampleList examples={unit.ordinary_usage} />
+          <ExampleList examples={unit.ordinary_usage} label="Ordinary usage" />
           <Field label="Literary function">{unit.literary_function}</Field>
           <Field label="Recognition family">{renderList(unit.recognition_family)}</Field>
         </>
@@ -166,16 +168,99 @@ function priorUnlocks(units: TeachableUnit[], index: number) {
   return seen;
 }
 
+function vocabGloss(unit: TeachableUnit): string {
+  const first = unit.lyric_unlocks[0];
+  if (first?.en) return first.en;
+  if ('normal_usage' in unit && unit.normal_usage[0]?.en) return unit.normal_usage[0].en;
+  if (unit.unit_type === 'literary_form' && unit.ordinary_usage[0]?.en) return unit.ordinary_usage[0].en;
+  return '';
+}
+
+function vocabHebrew(unit: TeachableUnit): string {
+  if (unit.unit_type === 'grammar_pattern') return unit.pattern_name;
+  if (unit.unit_type === 'bound_form' || unit.unit_type === 'literary_form') return unit.surface_form;
+  return unit.base_form;
+}
+
+function VocabCard({ unit }: { unit: TeachableUnit }) {
+  const gloss = vocabGloss(unit);
+  const heb = vocabHebrew(unit);
+  return (
+    <div class={study.vocabCard}>
+      <div class={study.vocabCardHeader}>
+        <span class={study.hebrewLine} style={{ fontSize: 20 }}>{heb}</span>
+        <span class={study.badge}>{typeLabel(unit.unit_type)}</span>
+      </div>
+      {gloss && <div class={study.englishLine}>{gloss}</div>}
+      {'flexibility_forms' in unit && unit.flexibility_forms.length > 0 && (
+        <div class={study.inlineList}>
+          {unit.flexibility_forms.slice(0, 6).map((item) => <span key={item}>{item}</span>)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AnnotationCard({ unit }: { unit: TeachableUnit }) {
+  const unlock = unit.lyric_unlocks[0];
+  let headline = '';
+  let subline = '';
+  if (unit.unit_type === 'bound_form') {
+    headline = `${unit.surface_form} → ${unit.base_form}`;
+    subline = unit.formation;
+  } else if (unit.unit_type === 'literary_form') {
+    headline = `${unit.surface_form} → ${unit.ordinary_equivalent}`;
+    subline = unit.literary_function;
+  } else if (unit.unit_type === 'grammar_pattern') {
+    headline = unit.pattern_name;
+    subline = unit.pattern;
+  } else if ('base_form' in unit) {
+    headline = unit.base_form;
+  }
+  return (
+    <div class={study.vocabCard}>
+      <div class={study.vocabCardHeader}>
+        <span class={study.hebrewLine} style={{ fontSize: 20 }}>{headline}</span>
+        <span class={study.badge}>{typeLabel(unit.unit_type)}</span>
+      </div>
+      {subline && <div class={study.englishLine}>{subline}</div>}
+      {unlock && (
+        <div class={study.examplePair} style={{ marginTop: 6 }}>
+          <div class={study.hebrewLine}>{unlock.he}</div>
+          <div class={study.englishLine}>{unlock.en}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function SongLessonStudy() {
   const { route } = useLocation();
   const { params } = useRoute();
   const song = songLessons.find((s) => s.id === params.id);
+  const [mode, setMode] = useState<Mode>('teach');
   const [index, setIndex] = useState(0);
 
-  const unit = song?.teachable_units[index];
-  const seenUnlocks = useMemo(() => song ? priorUnlocks(song.teachable_units, index) : new Set<string>(), [song, index]);
+  const teachingTargets = useMemo(
+    () => song?.teachable_units.filter((u) => u.role === 'teaching_target') ?? [],
+    [song],
+  );
+  const vocabulary = useMemo(
+    () => song?.teachable_units.filter((u) => u.role === 'vocabulary') ?? [],
+    [song],
+  );
+  const annotations = useMemo(
+    () => song?.teachable_units.filter((u) => u.role === 'annotation') ?? [],
+    [song],
+  );
 
-  if (!song || !unit) {
+  const unit = teachingTargets[index];
+  const seenUnlocks = useMemo(
+    () => priorUnlocks(teachingTargets, index),
+    [teachingTargets, index],
+  );
+
+  if (!song) {
     return (
       <div class={panels.panel}>
         <div>Song lesson not found.</div>
@@ -184,24 +269,98 @@ export function SongLessonStudy() {
     );
   }
 
+  const header = (
+    <div class={panels.panel}>
+      <div class={panels.row}>
+        <div>
+          <div class={panels.promptLabel}>{song.title}</div>
+          {mode === 'teach' && unit && (
+            <div class={panels.progress}>Target {index + 1}/{teachingTargets.length}</div>
+          )}
+          {mode === 'vocab' && (
+            <div class={panels.progress}>{vocabulary.length} vocabulary items</div>
+          )}
+          {mode === 'notes' && (
+            <div class={panels.progress}>{annotations.length} lyric annotations</div>
+          )}
+        </div>
+        <button class={study.secondaryBtn} style={{ marginLeft: 'auto' }} onClick={() => route(`/song/${song.id}`)}>
+          Back
+        </button>
+      </div>
+      <div class={study.badgeRow} style={{ marginTop: 8 }}>
+        <button
+          class={`${study.secondaryBtn} ${mode === 'teach' ? study.modeActive : ''}`}
+          onClick={() => setMode('teach')}
+        >
+          Teach ({teachingTargets.length})
+        </button>
+        <button
+          class={`${study.secondaryBtn} ${mode === 'vocab' ? study.modeActive : ''}`}
+          onClick={() => setMode('vocab')}
+        >
+          Vocab ({vocabulary.length})
+        </button>
+        <button
+          class={`${study.secondaryBtn} ${mode === 'notes' ? study.modeActive : ''}`}
+          onClick={() => setMode('notes')}
+        >
+          Notes ({annotations.length})
+        </button>
+      </div>
+    </div>
+  );
+
+  if (mode === 'vocab') {
+    return (
+      <>
+        {header}
+        <div class={panels.panel}>
+          <div class={study.vocabGrid}>
+            {vocabulary.map((u) => <VocabCard key={u.id} unit={u} />)}
+          </div>
+          {vocabulary.length === 0 && <div class={panels.progress}>No vocabulary items authored.</div>}
+        </div>
+      </>
+    );
+  }
+
+  if (mode === 'notes') {
+    return (
+      <>
+        {header}
+        <div class={panels.panel}>
+          <div class={panels.progress} style={{ marginBottom: 8 }}>
+            Literary, bound, and advanced-pattern forms to recognize when you see the lyric.
+          </div>
+          <div class={study.vocabGrid}>
+            {annotations.map((u) => <AnnotationCard key={u.id} unit={u} />)}
+          </div>
+          {annotations.length === 0 && <div class={panels.progress}>No annotations authored.</div>}
+        </div>
+      </>
+    );
+  }
+
+  // teach mode
+  if (!unit) {
+    return (
+      <>
+        {header}
+        <div class={panels.panel}>
+          <div class={panels.progress}>No teaching targets authored for this song.</div>
+        </div>
+      </>
+    );
+  }
+
   const newUnlocks = unit.lyric_unlocks.filter((unlock) => !seenUnlocks.has(unlock.he));
   const repeatedUnlocks = unit.lyric_unlocks.filter((unlock) => seenUnlocks.has(unlock.he));
-  const isLast = index >= song.teachable_units.length - 1;
+  const isLast = index >= teachingTargets.length - 1;
 
   return (
     <>
-      <div class={panels.panel}>
-        <div class={panels.row}>
-          <div>
-            <div class={panels.promptLabel}>{song.title}</div>
-            <div class={panels.progress}>Unit {index + 1}/{song.teachable_units.length}</div>
-          </div>
-          <button class={study.secondaryBtn} style={{ marginLeft: 'auto' }} onClick={() => route(`/song/${song.id}`)}>
-            Back
-          </button>
-        </div>
-      </div>
-
+      {header}
       <div class={panels.panel}>
         <div class={study.unitTopline}>
           <span class={study.badge}>{typeLabel(unit.unit_type)}</span>
@@ -232,7 +391,7 @@ export function SongLessonStudy() {
             style={{ marginLeft: 'auto' }}
             onClick={() => {
               if (isLast) route(`/song/${song.id}`);
-              else setIndex((i) => Math.min(song.teachable_units.length - 1, i + 1));
+              else setIndex((i) => Math.min(teachingTargets.length - 1, i + 1));
             }}
           >
             {isLast ? 'Done' : 'Next'}

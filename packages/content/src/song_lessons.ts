@@ -4,6 +4,7 @@ import { parse } from 'yaml';
 import { z } from 'zod';
 
 const PrioritySchema = z.enum(['core', 'supporting', 'advanced']);
+const RoleSchema = z.enum(['teaching_target', 'vocabulary', 'annotation']);
 
 const ExampleSchema = z.object({
   he: z.string().min(1),
@@ -16,9 +17,14 @@ const LyricUnlockSchema = z.object({
   note: z.string().min(1).optional(),
 }).strict();
 
+// `priority` measures linguistic complexity; `role` controls learner-facing
+// treatment: teaching_target earns a study screen with drills, vocabulary is
+// recognition-only, annotation is a lyric-side callout (bound/literary forms,
+// advanced patterns). These axes are orthogonal and must both be authored.
 const commonFields = {
   id: z.string().min(1),
   priority: PrioritySchema,
+  role: RoleSchema.default('teaching_target'),
   prerequisites: z.array(z.string().min(1)).default([]),
   lyric_unlocks: z.array(LyricUnlockSchema).min(1),
 };

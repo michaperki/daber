@@ -13,6 +13,7 @@ teachable_units:
   - id: noun_hof
     unit_type: noun
     priority: core
+    role: vocabulary
     base_form: חוף
     gender: m
     family:
@@ -31,6 +32,7 @@ teachable_units:
   - id: verb_hitgaagea_l
     unit_type: verb
     priority: core
+    role: teaching_target
     base_form: להתגעגע ל
     family:
       infinitive: להתגעגע
@@ -54,6 +56,7 @@ teachable_units:
   - id: function_lifamim
     unit_type: function_word
     priority: core
+    role: teaching_target
     base_form: לפעמים
     function: "frequency adverb"
     usage_pattern: "לפעמים before or after the subject/predicate"
@@ -61,7 +64,6 @@ teachable_units:
       - he: לפעמים אני מתגעגע
         en: "Sometimes I miss things."
     flexibility_forms: [לפעמים, מדי פעם]
-    prerequisites: [verb_hitgaagea_l]
     lyric_unlocks:
       - he: הם לפעמים געגועים
         en: "they are sometimes longings"
@@ -69,6 +71,7 @@ teachable_units:
   - id: noun_nachal
     unit_type: noun
     priority: core
+    role: vocabulary
     base_form: נחל
     gender: m
     family:
@@ -81,7 +84,6 @@ teachable_units:
         en: "This is a stream."
     flexibility_forms: [נחל, הנחל, נחלים, לנחל]
     grammar_pattern: "ל + definite/common noun as complement"
-    prerequisites: [verb_hitgaagea_l]
     lyric_unlocks:
       - he: געגועים לנחל
         en: "longing for a stream"
@@ -89,6 +91,7 @@ teachable_units:
   - id: pattern_nominal_sentence
     unit_type: grammar_pattern
     priority: core
+    role: annotation
     pattern_name: "nominal sentence with pronoun support"
     pattern: "plural noun + הם + predicate noun/adverbial"
     building_blocks: [חופים, הם, לפעמים, געגועים]
@@ -104,6 +107,7 @@ teachable_units:
   - id: verb_lirot_et
     unit_type: verb
     priority: core
+    role: teaching_target
     base_form: לראות את
     family:
       infinitive: לראות
@@ -119,7 +123,6 @@ teachable_units:
     governance:
       marker: את
       frame_he: לראות את ___
-    prerequisites: [noun_hof]
     lyric_unlocks:
       - he: ראיתי פעם חוף
         en: "I once saw a beach"
@@ -127,6 +130,7 @@ teachable_units:
   - id: noun_paam
     unit_type: noun
     priority: supporting
+    role: vocabulary
     base_form: פעם
     gender: f
     family:
@@ -137,7 +141,6 @@ teachable_units:
         en: "One time I saw a beach."
     flexibility_forms: [פעם, פעם אחת, פעמים]
     grammar_pattern: "פעם as time/once adverbial"
-    prerequisites: [verb_lirot_et]
     lyric_unlocks:
       - he: ראיתי פעם חוף
         en: "I once saw a beach"
@@ -145,6 +148,7 @@ teachable_units:
   - id: verb_laazov_et
     unit_type: verb
     priority: core
+    role: vocabulary
     base_form: לעזוב את
     family:
       infinitive: לעזוב
@@ -158,7 +162,6 @@ teachable_units:
     governance:
       marker: את
       frame_he: לעזוב את ___
-    prerequisites: [noun_hof, noun_nachal]
     lyric_unlocks:
       - he: חוף שנחל עזבו
         en: "a shore that a stream left"
@@ -167,6 +170,7 @@ teachable_units:
   - id: literary_azavo_suffix
     unit_type: literary_form
     priority: advanced
+    role: annotation
     surface_form: עזבו
     ordinary_equivalent: עזב אותו
     literary_function: "third person masculine object suffix on a past verb"
@@ -182,6 +186,7 @@ teachable_units:
   - id: noun_lev
     unit_type: noun
     priority: core
+    role: vocabulary
     base_form: לב
     gender: m
     family:
@@ -200,6 +205,7 @@ teachable_units:
   - id: adjective_shavur
     unit_type: adjective_participle
     priority: core
+    role: vocabulary
     base_form: שבור
     linked_verb: לשבור
     agreement_family:
@@ -214,7 +220,6 @@ teachable_units:
         en: "The child broke the window."
     flexibility_forms: [שבור, שבורה, שבורים, שבורות, שבר]
     grammar_pattern: "adjective/participle agreement after a noun"
-    prerequisites: [noun_lev]
     lyric_unlocks:
       - he: לב שבור
         en: "a broken heart"
@@ -222,6 +227,7 @@ teachable_units:
   - id: noun_hol
     unit_type: noun
     priority: supporting
+    role: vocabulary
     base_form: חול
     gender: m
     family:
@@ -232,7 +238,6 @@ teachable_units:
         en: "There is sand on the beach."
     flexibility_forms: [חול, החול]
     grammar_pattern: "material noun after של"
-    prerequisites: [noun_hof]
     lyric_unlocks:
       - he: של חול
         en: "of sand"
@@ -240,6 +245,7 @@ teachable_units:
   - id: noun_even
     unit_type: noun
     priority: supporting
+    role: vocabulary
     base_form: אבן
     gender: f
     family:
@@ -251,7 +257,6 @@ teachable_units:
         en: "This is a small stone."
     flexibility_forms: [אבן, האבן, אבנים]
     grammar_pattern: "coordinated material noun with ו"
-    prerequisites: [noun_hol]
     lyric_unlocks:
       - he: חול ואבן
         en: "sand and stone"
@@ -259,6 +264,7 @@ teachable_units:
   - id: noun_adam
     unit_type: noun
     priority: core
+    role: vocabulary
     base_form: אדם
     gender: m
     family:
@@ -278,6 +284,7 @@ teachable_units:
   - id: pattern_modal_yachol_infinitive
     unit_type: grammar_pattern
     priority: core
+    role: teaching_target
     pattern_name: "יכול + infinitive"
     pattern: "subject + יכול/יכולה/יכולים + infinitive"
     building_blocks: [יכול, יכולה, יכולים, להישאר]
@@ -285,7 +292,6 @@ teachable_units:
       - he: הוא יכול להישאר
         en: "He can stay."
     flexible_slots: [הוא יכול, היא יכולה, הם יכולים, infinitive after יכול]
-    prerequisites: [noun_adam]
     lyric_unlocks:
       - he: יכול להישאר
         en: "can remain"
@@ -293,6 +299,7 @@ teachable_units:
   - id: verb_lehishaer
     unit_type: verb
     priority: core
+    role: vocabulary
     base_form: להישאר
     family:
       infinitive: להישאר
@@ -303,7 +310,6 @@ teachable_units:
         en: "He stays."
     flexibility_forms: [להישאר, נשאר, נשארת, נשארים]
     grammar_pattern: "להישאר plus adjective or prepositional complement"
-    prerequisites: [pattern_modal_yachol_infinitive]
     lyric_unlocks:
       - he: להישאר
         en: "to remain"
@@ -311,6 +317,7 @@ teachable_units:
   - id: adjective_natush
     unit_type: adjective_participle
     priority: core
+    role: vocabulary
     base_form: נטוש
     agreement_family:
       m_sg: נטוש
@@ -322,7 +329,6 @@ teachable_units:
         en: "The house is abandoned."
     flexibility_forms: [נטוש, נטושה, נטושים, נטושות]
     grammar_pattern: "predicate adjective after נשאר"
-    prerequisites: [verb_lehishaer]
     lyric_unlocks:
       - he: להישאר נטוש
         en: "to remain abandoned"
@@ -330,6 +336,7 @@ teachable_units:
   - id: function_bli
     unit_type: function_word
     priority: core
+    role: vocabulary
     base_form: בלי
     function: "preposition meaning without"
     usage_pattern: "בלי + noun"
@@ -337,7 +344,6 @@ teachable_units:
       - he: אני בלי טלפון
         en: "I am without a phone."
     flexibility_forms: [בלי, בלי כוח, בלי כוחות]
-    prerequisites: [verb_lehishaer]
     lyric_unlocks:
       - he: בלי
         en: "without"
@@ -345,6 +351,7 @@ teachable_units:
   - id: noun_koach
     unit_type: noun
     priority: core
+    role: vocabulary
     base_form: כוח
     gender: m
     family:
@@ -356,7 +363,6 @@ teachable_units:
         en: "I have strength."
     flexibility_forms: [כוח, הכוח, כוחות]
     grammar_pattern: "abstract noun in singular/plural, often with יש ל or בלי"
-    prerequisites: [function_bli]
     lyric_unlocks:
       - he: בלי כוחות
         en: "without strength"
@@ -364,6 +370,7 @@ teachable_units:
   - id: pattern_lehishaer_complements
     unit_type: grammar_pattern
     priority: core
+    role: annotation
     pattern_name: "להישאר + state complement"
     pattern: "להישאר + adjective/prepositional complement"
     building_blocks: [להישאר, נטוש, בלי כוחות]
@@ -371,7 +378,7 @@ teachable_units:
       - he: הוא נשאר עייף ובלי כוח
         en: "He remains tired and without strength."
     flexible_slots: [להישאר + adjective, להישאר + בלי + noun]
-    prerequisites: [verb_lehishaer, adjective_natush, function_bli, noun_koach]
+    prerequisites: [verb_lehishaer]
     lyric_unlocks:
       - he: להישאר נטוש ובלי כוחות
         en: "to remain abandoned and without strength"
@@ -379,6 +386,7 @@ teachable_units:
   - id: function_kmo
     unit_type: function_word
     priority: core
+    role: teaching_target
     base_form: כמו
     function: "comparison marker"
     usage_pattern: "כמו + noun phrase"
@@ -388,7 +396,6 @@ teachable_units:
       - he: זה כמו בית
         en: "It is like a home."
     flexibility_forms: [כמו חוף, כמו חופים, כמו הרוח]
-    prerequisites: [noun_hof]
     lyric_unlocks:
       - he: ממש כמו חוף
         en: "just like a shore"
@@ -398,6 +405,7 @@ teachable_units:
   - id: noun_tzedaf
     unit_type: noun
     priority: core
+    role: vocabulary
     base_form: צדף
     gender: m
     family:
@@ -410,7 +418,6 @@ teachable_units:
         en: "There is a seashell on the beach."
     flexibility_forms: [צדף, הצדף, צדפים, הצדפים, צדפי]
     grammar_pattern: "plural noun and construct plural"
-    prerequisites: [noun_hof]
     lyric_unlocks:
       - he: הצדפים
         en: "the seashells"
@@ -418,6 +425,7 @@ teachable_units:
   - id: noun_ruach
     unit_type: noun
     priority: supporting
+    role: vocabulary
     base_form: רוח
     gender: f
     family:
@@ -428,7 +436,6 @@ teachable_units:
         en: "The wind is strong."
     flexibility_forms: [רוח, הרוח, כמו הרוח]
     grammar_pattern: "definite noun after כמו"
-    prerequisites: [function_kmo]
     lyric_unlocks:
       - he: כמו הרוח
         en: "like the wind"
@@ -436,6 +443,7 @@ teachable_units:
   - id: function_gam
     unit_type: function_word
     priority: supporting
+    role: vocabulary
     base_form: גם
     function: "additive focus particle"
     usage_pattern: "גם before the focused noun or clause"
@@ -443,7 +451,6 @@ teachable_units:
       - he: גם אני בבית
         en: "I am also at home."
     flexibility_forms: [גם, גם כן, גם הצדפים]
-    prerequisites: [noun_tzedaf, function_kmo]
     lyric_unlocks:
       - he: גם הצדפים כמו חופים
         en: "the seashells too are like shores"
@@ -453,6 +460,7 @@ teachable_units:
   - id: noun_bayit
     unit_type: noun
     priority: core
+    role: vocabulary
     base_form: בית
     gender: m
     family:
@@ -465,7 +473,6 @@ teachable_units:
         en: "This is a house."
     flexibility_forms: [בית, הבית, בתים, לבית]
     grammar_pattern: "ל + noun as direction or object of longing"
-    prerequisites: [verb_hitgaagea_l]
     lyric_unlocks:
       - he: געגועים לבית
         en: "longing for a home"
@@ -473,6 +480,7 @@ teachable_units:
   - id: verb_leehov_et
     unit_type: verb
     priority: core
+    role: teaching_target
     base_form: לאהוב את
     family:
       infinitive: לאהוב
@@ -493,6 +501,7 @@ teachable_units:
   - id: function_tamid
     unit_type: function_word
     priority: core
+    role: teaching_target
     base_form: תמיד
     function: "frequency adverb"
     usage_pattern: "תמיד before the verb or predicate"
@@ -500,7 +509,6 @@ teachable_units:
       - he: אני תמיד אוהב את הבית
         en: "I always love the house."
     flexibility_forms: [תמיד, שתמיד]
-    prerequisites: [verb_leehov_et]
     lyric_unlocks:
       - he: שתמיד אהבנו
         en: "that we always loved"
@@ -508,6 +516,7 @@ teachable_units:
   - id: pattern_relative_she
     unit_type: grammar_pattern
     priority: core
+    role: teaching_target
     pattern_name: "relative clause with ש"
     pattern: "noun + ש + clause"
     building_blocks: [בית, ש, תמיד, אהבנו]
@@ -515,7 +524,6 @@ teachable_units:
       - he: זה הבית שאנחנו אוהבים
         en: "This is the house that we love."
     flexible_slots: [שאני, שאתה, שאנחנו, שתמיד]
-    prerequisites: [noun_bayit, function_tamid, verb_leehov_et]
     lyric_unlocks:
       - he: לבית שתמיד אהבנו
         en: "for a home that we always loved"
@@ -523,6 +531,7 @@ teachable_units:
   - id: literary_asher
     unit_type: literary_form
     priority: advanced
+    role: annotation
     surface_form: אשר
     ordinary_equivalent: ש
     literary_function: "elevated relative marker"
@@ -538,6 +547,7 @@ teachable_units:
   - id: noun_yam
     unit_type: noun
     priority: core
+    role: vocabulary
     base_form: ים
     gender: m
     family:
@@ -556,6 +566,7 @@ teachable_units:
   - id: function_rak
     unit_type: function_word
     priority: supporting
+    role: vocabulary
     base_form: רק
     function: "exclusive focus particle"
     usage_pattern: "רק before the focused noun phrase"
@@ -563,7 +574,6 @@ teachable_units:
       - he: רק הים כאן
         en: "Only the sea is here."
     flexibility_forms: [רק, ורק, רק הים]
-    prerequisites: [noun_yam]
     lyric_unlocks:
       - he: ורק הים
         en: "and only the sea"
@@ -571,6 +581,7 @@ teachable_units:
   - id: verb_lashir
     unit_type: verb
     priority: core
+    role: vocabulary
     base_form: לשיר
     family:
       infinitive: לשיר
@@ -583,7 +594,6 @@ teachable_units:
         en: "They sing together."
     flexibility_forms: [לשיר, שר, שרה, שרים, שרנו]
     grammar_pattern: "intransitive verb; can take שיר as a cognate object"
-    prerequisites: [noun_yam]
     lyric_unlocks:
       - he: הים שר
         en: "the sea sings"
@@ -591,6 +601,7 @@ teachable_units:
   - id: bound_levado
     unit_type: bound_form
     priority: advanced
+    role: annotation
     surface_form: לבדו
     base_form: לבד
     formation: "לבד + third masculine singular suffix"
@@ -600,7 +611,6 @@ teachable_units:
         en: "He is alone."
     flexibility_forms: [לבד, לבדו]
     grammar_pattern: "adverb with pronominal suffix"
-    prerequisites: [verb_lashir]
     lyric_unlocks:
       - he: שר לבדו
         en: "sings by himself"
@@ -608,6 +618,7 @@ teachable_units:
   - id: function_sham
     unit_type: function_word
     priority: supporting
+    role: vocabulary
     base_form: שם
     function: "place adverb"
     usage_pattern: "שם after the predicate or at clause edge"
@@ -615,7 +626,6 @@ teachable_units:
       - he: הוא שם
         en: "He is there."
     flexibility_forms: [שם]
-    prerequisites: [bound_levado]
     lyric_unlocks:
       - he: שר לבדו שם
         en: "sings there alone"
@@ -623,6 +633,7 @@ teachable_units:
   - id: bound_shirav
     unit_type: bound_form
     priority: advanced
+    role: annotation
     surface_form: שיריו
     base_form: שיר
     formation: "plural noun שירים + third masculine singular possessive suffix"
@@ -632,7 +643,6 @@ teachable_units:
         en: "His songs are beautiful."
     flexibility_forms: [שיר, שירים, שיריו]
     grammar_pattern: "possessive suffix on a plural noun"
-    prerequisites: [verb_lashir]
     lyric_unlocks:
       - he: את שיריו
         en: "his songs"
@@ -640,6 +650,7 @@ teachable_units:
   - id: function_bein
     unit_type: function_word
     priority: core
+    role: vocabulary
     base_form: בין
     function: "locative preposition"
     usage_pattern: "בין + plural/compound noun phrase"
@@ -647,7 +658,6 @@ teachable_units:
       - he: הכדור בין הכיסאות
         en: "The ball is between the chairs."
     flexibility_forms: [בין, ביני, בינך]
-    prerequisites: [noun_tzedaf]
     lyric_unlocks:
       - he: בין
         en: "between / among"
@@ -655,6 +665,7 @@ teachable_units:
   - id: bound_tzidfei
     unit_type: bound_form
     priority: advanced
+    role: annotation
     surface_form: צדפי
     base_form: צדף
     formation: "construct plural of צדף"
@@ -664,7 +675,7 @@ teachable_units:
         en: "Sea shells are beautiful."
     flexibility_forms: [צדף, צדפים, צדפי]
     grammar_pattern: "construct plural before another noun"
-    prerequisites: [function_bein, noun_tzedaf]
+    prerequisites: [noun_tzedaf]
     lyric_unlocks:
       - he: בין צדפי
         en: "among the shells of"
@@ -672,6 +683,7 @@ teachable_units:
   - id: bound_libo
     unit_type: bound_form
     priority: advanced
+    role: annotation
     surface_form: ליבו
     base_form: לב
     formation: "לב + third masculine singular possessive suffix"
@@ -681,7 +693,7 @@ teachable_units:
         en: "His heart is good."
     flexibility_forms: [לב, הלב שלו, ליבו]
     grammar_pattern: "possessive suffix plus optional של phrase"
-    prerequisites: [noun_lev, bound_tzidfei, noun_adam]
+    prerequisites: [noun_lev]
     lyric_unlocks:
       - he: בין צדפי ליבו
         en: "among the shells of his heart"
@@ -691,6 +703,7 @@ teachable_units:
   - id: function_l_dative
     unit_type: function_word
     priority: supporting
+    role: vocabulary
     base_form: ל
     function: "dative preposition with suffix"
     usage_pattern: "verb + ל + person"
@@ -698,7 +711,6 @@ teachable_units:
       - he: אני נותן לו ספר
         en: "I give him a book."
     flexibility_forms: [לי, לך, לו, לה, לנו, להם]
-    prerequisites: [verb_lashir]
     lyric_unlocks:
       - he: שרים לו
         en: "sing to him"
@@ -706,6 +718,7 @@ teachable_units:
   - id: bound_neurav
     unit_type: bound_form
     priority: advanced
+    role: annotation
     surface_form: נעוריו
     base_form: נעורים
     formation: "abstract plural noun + third masculine singular possessive suffix"
@@ -715,7 +728,6 @@ teachable_units:
         en: "His youth is far away."
     flexibility_forms: [נעורים, נעוריו]
     grammar_pattern: "possessive suffix on an abstract plural"
-    prerequisites: [function_l_dative]
     lyric_unlocks:
       - he: שרים לו נעוריו
         en: "his youth sings to him"
@@ -723,6 +735,7 @@ teachable_units:
   - id: pattern_construct_possession_chain
     unit_type: grammar_pattern
     priority: advanced
+    role: annotation
     pattern_name: "construct plus possessive chain"
     pattern: "construct plural + possessive noun + של phrase"
     building_blocks: [צדפי, ליבו, של האדם]

@@ -49,11 +49,13 @@ const lessonMods = import.meta.glob('../../../packages/content/dist/lessons.json
 export const lessons: LessonJSON[] = Array.isArray(Object.values(lessonMods)[0]) ? (Object.values(lessonMods)[0] as LessonJSON[]) : [];
 
 export type Priority = 'core' | 'supporting' | 'advanced';
+export type UnitRole = 'teaching_target' | 'vocabulary' | 'annotation';
 export type LyricUnlock = { he: string; en: string; note?: string };
 export type Example = { he: string; en: string };
 type UnitBase = {
   id: string;
   priority: Priority;
+  role: UnitRole;
   prerequisites?: string[];
   lyric_unlocks: LyricUnlock[];
 };

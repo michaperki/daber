@@ -160,14 +160,21 @@ function appendPlanned(
 
 function buildAuthoredPhraseItems(lesson: LessonJSON, all: CellItem[], count: number): PlannedPhraseItem[] {
   const authored = lesson.build_phrases || [];
-  return authored.slice(0, count).map((phrase, phraseIndex) => ({
+  return authored.filter((phrase) => phrase.drillable !== false).slice(0, count).map((phrase, phraseIndex) => ({
     taskType: 'phrase_handwriting',
     key: `phrase:${lesson.id}:authored:${phraseIndex}`,
     purpose: 'build',
     stageId: 'supporting_build',
     stageLabel: 'Build/use',
     wasNewAtPlan: false,
-    row: { he: phrase.he, en: phrase.en, pos: 'phrase' },
+    row: {
+      he: phrase.he,
+      en: phrase.en,
+      prompt: phrase.prompt || phrase.en,
+      span: phrase.span || 'phrase',
+      pos: 'phrase',
+      alternates: phrase.alternates,
+    },
     sourceKeys: all.filter((item) => phrase.he.includes(item.row.he)).map((item) => item.key),
   }));
 }

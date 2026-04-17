@@ -14,6 +14,10 @@ const PhaseSchema = z.object({ id: z.string().min(1), title: z.string().optional
 const BuildPhraseSchema = z.object({
   he: z.string().min(1),
   en: z.string().min(1),
+  prompt: z.string().min(1).optional(),
+  span: z.enum(['phrase', 'sentence']).optional(),
+  alternates: z.array(z.string().min(1)).optional(),
+  drillable: z.boolean().optional(),
   pieces: z.array(z.string().min(1)).min(2),
 });
 
@@ -60,7 +64,14 @@ export function loadLessons(dataDirV2: string): Lesson[] {
     try {
       const raw = readYaml(f);
       const parsed = LessonSchema.parse(raw);
-      out.push(parsed);
+      out.push({
+        ...parsed,
+        build_phrases: parsed.build_phrases?.map((phrase) => ({
+          ...phrase,
+          prompt: phrase.prompt || phrase.en,
+          span: phrase.span || 'sentence',
+        })),
+      });
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('Lesson parse error in', f, e);

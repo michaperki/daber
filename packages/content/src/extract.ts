@@ -11,6 +11,62 @@ import {
   type VocabRow,
 } from './schema.js';
 
+function normalizeGloss(gloss: string): string {
+  return gloss
+    .replace(/\s*;\s*/g, ' / ')
+    .replace(/\s*,\s*/g, ' / ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function pluralizeWord(word: string): string {
+  const clean = word.trim();
+  if (!clean) return clean;
+  if (/\b(water|sand|milk|coffee|tea|sugar|salt|pepper|butter|oil|meat|work)\b/i.test(clean)) {
+    return clean;
+  }
+  if (/[^aeiou]y$/i.test(clean)) return clean.replace(/y$/i, 'ies');
+  if (/(s|x|z|ch|sh)$/i.test(clean)) return `${clean}es`;
+  if (/fe$/i.test(clean)) return clean.replace(/fe$/i, 'ves');
+  if (/f$/i.test(clean)) return clean.replace(/f$/i, 'ves');
+  return `${clean}s`;
+}
+
+function pluralizeGloss(gloss: string): string {
+  return normalizeGloss(gloss)
+    .split(' / ')
+    .map((part) => pluralizeWord(part))
+    .join(' / ');
+}
+
+function nounPrompt(gloss: string, variant: 'sg' | 'pl'): string {
+  if (normalizeGloss(gloss).toLowerCase() === 'time / once') {
+    return variant === 'pl' ? 'times (plural form)' : 'one time / once (singular form)';
+  }
+  if (variant === 'pl') return `${pluralizeGloss(gloss)} (plural form)`;
+  return `${normalizeGloss(gloss)} (singular form)`;
+}
+
+function adjectivePrompt(gloss: string, variant: 'm_sg' | 'f_sg' | 'm_pl' | 'f_pl'): string {
+  const labels: Record<typeof variant, string> = {
+    m_sg: 'masculine singular form',
+    f_sg: 'feminine singular form',
+    m_pl: 'masculine plural form',
+    f_pl: 'feminine plural form',
+  };
+  return `${normalizeGloss(gloss)} (${labels[variant]})`;
+}
+
+function verbPrompt(en: string, variant?: string): string {
+  const prompt = normalizeGloss(en);
+  if (!variant) return `${prompt} (infinitive)`;
+  return prompt;
+}
+
+function row(args: Omit<VocabRow, 'prompt' | 'span'> & { prompt: string }): VocabRow {
+  return { ...args, prompt: args.prompt, span: 'cell' };
+}
+
 export function readYamlFile(filePath: string): unknown {
   const text = fs.readFileSync(filePath, 'utf8');
   return parse(text);
@@ -33,12 +89,12 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
         case 'verb': {
           const v = VerbEntrySchema.parse(entry);
           // Base infinitive row
-          rows.push({ he: v.lemma, en: v.gloss, pos, lemma: v.lemma });
+          rows.push(row({ he: v.lemma, en: v.gloss, prompt: verbPrompt(v.gloss), pos, lemma: v.lemma }));
 
           // Helper to add a conjugated form only if both he+en exist
           const add = (he: unknown, en: unknown, variant: string) => {
             if (typeof he === 'string' && he.trim() && typeof en === 'string' && en.trim()) {
-              rows.push({ he, en, pos, variant, lemma: v.lemma });
+              rows.push(row({ he, en, prompt: verbPrompt(en, variant), pos, variant, lemma: v.lemma }));
             }
           };
 
@@ -84,9 +140,13 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
           const sg = n.forms?.sg || n.forms?.base || n.lemma;
           const pl = (n as any).forms?.pl;
           // Emit singular (sg) as its own cell
-          if (typeof sg === 'string' && sg.trim()) rows.push({ he: sg, en: n.gloss, pos, variant: 'sg', lemma: n.lemma });
+          if (typeof sg === 'string' && sg.trim()) {
+            rows.push(row({ he: sg, en: n.gloss, prompt: n.prompts?.sg || nounPrompt(n.gloss, 'sg'), pos, variant: 'sg', lemma: n.lemma }));
+          }
           // Emit plural if present
-          if (typeof pl === 'string' && pl.trim()) rows.push({ he: pl, en: n.gloss, pos, variant: 'pl', lemma: n.lemma });
+          if (typeof pl === 'string' && pl.trim()) {
+            rows.push(row({ he: pl, en: n.gloss, prompt: n.prompts?.pl || nounPrompt(n.gloss, 'pl'), pos, variant: 'pl', lemma: n.lemma }));
+          }
           break;
         }
         case 'adjective': {
@@ -99,7 +159,7 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
             variant: 'm_sg' | 'f_sg' | 'm_pl' | 'f_pl',
           ) => {
             if (typeof he === 'string' && he.trim() && typeof en === 'string' && en.trim()) {
-              rows.push({ he, en, pos, variant, lemma: a.lemma });
+              rows.push(row({ he, en, prompt: a.prompts?.[variant] || adjectivePrompt(a.gloss, variant), pos, variant, lemma: a.lemma }));
             }
           };
           addAdj(forms.m_sg, formsEn.m_sg, 'm_sg');
@@ -112,7 +172,7 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
         case 'pronoun':
         case 'preposition': {
           const s = SimpleEntrySchema.parse(entry);
-          rows.push({ he: s.lemma, en: s.gloss, pos });
+          rows.push(row({ he: s.lemma, en: s.gloss, prompt: normalizeGloss(s.gloss), pos }));
           break;
         }
         default:

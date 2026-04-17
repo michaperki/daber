@@ -173,15 +173,23 @@ export function songToLesson(
     const note = noteForUnit(unit);
     if (note) notes.push(note);
 
-    // Every unit (including annotations) contributes its lyric_unlocks as
-    // candidate build_phrases. The planner caps to 6 at session time; we
-    // emit up to MAX_BUILD_PHRASES to give it a pool.
+    // Song phrase handwriting is opt-in: a lyric unlock needs an authored
+    // production prompt and must not be marked reveal-only. This keeps bare
+    // translations/glosses from becoming unfair production prompts.
     for (const unlock of unit.lyric_unlocks) {
+      if (unlock.drillable === false || unlock.span === 'note' || !unlock.prompt) continue;
       if (seenPhrases.has(unlock.he)) continue;
       const pieces = splitIntoPieces(unlock.he);
       if (pieces.length < 2) continue; // schema requires ≥2 pieces
       seenPhrases.add(unlock.he);
-      buildPhrases.push({ he: unlock.he, en: unlock.en, pieces });
+      buildPhrases.push({
+        he: unlock.he,
+        en: unlock.en,
+        prompt: unlock.prompt,
+        span: unlock.span === 'sentence' ? 'sentence' : 'phrase',
+        alternates: unlock.alternates,
+        pieces,
+      });
     }
   }
 

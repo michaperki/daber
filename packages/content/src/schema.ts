@@ -48,6 +48,13 @@ export const VerbEntrySchema = z.object({
 export const NounEntrySchema = z.object({
   lemma: z.string().min(1),
   gloss: z.string().min(1),
+  prompts: z
+    .object({
+      sg: z.string().optional(),
+      pl: z.string().optional(),
+    })
+    .partial()
+    .optional(),
   forms: z
     .object({
       sg: z.string().optional(),
@@ -61,6 +68,15 @@ export const NounEntrySchema = z.object({
 export const AdjectiveEntrySchema = z.object({
   lemma: z.string().min(1),
   gloss: z.string().min(1),
+  prompts: z
+    .object({
+      m_sg: z.string().optional(),
+      f_sg: z.string().optional(),
+      m_pl: z.string().optional(),
+      f_pl: z.string().optional(),
+    })
+    .partial()
+    .optional(),
   forms: z
     .object({
       m_sg: z.string().optional(),
@@ -93,4 +109,16 @@ export const FileSchema = z.object({
   entries: z.array(z.unknown()),
 });
 
-export type VocabRow = { he: string; en: string; pos: string; variant?: string; lemma?: string };
+export const PromptSpanSchema = z.enum(['cell', 'phrase', 'sentence', 'note']);
+
+export type PromptSpan = z.infer<typeof PromptSpanSchema>;
+export type VocabRow = {
+  he: string;
+  en: string;
+  prompt: string;
+  span: Extract<PromptSpan, 'cell'>;
+  pos: string;
+  variant?: string;
+  lemma?: string;
+  alternates?: string[];
+};

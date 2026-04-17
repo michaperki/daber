@@ -526,7 +526,7 @@ function runOne({ vocab, lessons }, { n, behavior, lesson, seed, verbose }) {
       pos,
       lemma: lemma || row.he,
       token,
-      prompt: row.en || '-',
+      prompt: row.prompt || row.en || '-',
       answer: row.he || '-',
       clean,
       outcome: outcomeLabel(clean, behavior),
@@ -550,7 +550,7 @@ function printPromptTranscript(report) {
   console.log('Cell prompt transcript:');
   for (let i = 0; i < report.prompts.length; i++) {
     const p = report.prompts[i];
-    console.log(`${i + 1}. [${p.outcome}] English: ${p.prompt} | Hebrew: ${p.answer} | Cell: ${p.key}`);
+    console.log(`${i + 1}. [${p.outcome}] Prompt: ${p.prompt} | Hebrew: ${p.answer} | Cell: ${p.key}`);
   }
 }
 

@@ -2,6 +2,11 @@ pos: adjective
 entries:
   - lemma: נטוש
     gloss: abandoned
+    prompts:
+      m_sg: abandoned, describing a masculine singular noun
+      f_sg: abandoned, describing a feminine singular noun
+      m_pl: abandoned, describing masculine plural nouns
+      f_pl: abandoned, describing feminine plural nouns
     forms:
       m_sg: נטוש
       f_sg: נטושה

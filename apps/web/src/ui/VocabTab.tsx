@@ -506,7 +506,7 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
         </div>
       )}
       <div class={study.topWord}>
-        {state.current ? <span>{state.current.en}</span> : '—'}
+        {state.current ? <span>{state.current.prompt}</span> : '—'}
       </div>
       {/* Inline minimal prompt when a tier is ready (slight delay) */}
       {tierSuggestion.value && showSuggestion && (

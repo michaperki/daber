@@ -14,6 +14,10 @@ const ExampleSchema = z.object({
 const LyricUnlockSchema = z.object({
   he: z.string().min(1),
   en: z.string().min(1),
+  prompt: z.string().min(1).optional(),
+  span: z.enum(['phrase', 'sentence', 'note']).optional(),
+  drillable: z.boolean().optional(),
+  alternates: z.array(z.string().min(1)).optional(),
   note: z.string().min(1).optional(),
 }).strict();
 

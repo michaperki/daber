@@ -50,8 +50,12 @@ teachable_units:
     lyric_unlocks:
       - he: געגועים לנחל
         en: "longing for a stream"
+        prompt: "longings for a stream"
+        span: phrase
       - he: געגועים לבית
         en: "longing for a home"
+        prompt: "longings for a home"
+        span: phrase
 
   - id: function_lifamim
     unit_type: function_word
@@ -67,6 +71,8 @@ teachable_units:
     lyric_unlocks:
       - he: הם לפעמים געגועים
         en: "they are sometimes longings"
+        prompt: "they are sometimes longings"
+        span: phrase
 
   - id: noun_nachal
     unit_type: noun
@@ -103,6 +109,8 @@ teachable_units:
     lyric_unlocks:
       - he: חופים הם לפעמים געגועים לנחל
         en: "beaches are sometimes longing for a stream"
+        prompt: "Beaches are sometimes longings for a stream."
+        span: sentence
 
   - id: verb_lirot_et
     unit_type: verb
@@ -126,6 +134,8 @@ teachable_units:
     lyric_unlocks:
       - he: ראיתי פעם חוף
         en: "I once saw a beach"
+        prompt: "I once saw a beach."
+        span: sentence
 
   - id: noun_paam
     unit_type: noun
@@ -295,6 +305,8 @@ teachable_units:
     lyric_unlocks:
       - he: יכול להישאר
         en: "can remain"
+        prompt: "can remain, masculine singular lyric fragment"
+        span: phrase
 
   - id: verb_lehishaer
     unit_type: verb
@@ -399,8 +411,12 @@ teachable_units:
     lyric_unlocks:
       - he: ממש כמו חוף
         en: "just like a shore"
+        prompt: "really just like a shore"
+        span: phrase
       - he: כמו חופים
         en: "like shores"
+        prompt: "like shores"
+        span: phrase
 
   - id: noun_tzedaf
     unit_type: noun

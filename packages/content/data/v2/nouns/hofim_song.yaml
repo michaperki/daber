@@ -60,6 +60,9 @@ entries:
 
   - lemma: כוח
     gloss: strength; force
+    prompts:
+      sg: strength / energy (singular form)
+      pl: strength / energy, plural form used in "without strength"
     forms:
       sg: כוח
       pl: כוחות
@@ -84,6 +87,9 @@ entries:
 
   - lemma: רוח
     gloss: wind; spirit
+    prompts:
+      sg: wind (singular form)
+      pl: winds / spirits (plural form)
     forms:
       sg: רוח
       pl: רוחות
@@ -96,6 +102,9 @@ entries:
 
   - lemma: ים
     gloss: sea
+    prompts:
+      sg: sea (singular form)
+      pl: seas (plural form)
     forms:
       sg: ים
       pl: ימים

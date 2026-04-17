@@ -4,7 +4,17 @@
 // run build`. If that build hasn't run yet we fall back to an empty array so
 // Vite doesn't fail to start — the Vocab tab will just show an empty state.
 
-export type VocabEntry = { he: string; en: string; pos: string; variant?: string; lemma?: string };
+export type PromptSpan = 'cell' | 'phrase' | 'sentence' | 'note';
+export type VocabEntry = {
+  he: string;
+  en: string;
+  prompt: string;
+  span: PromptSpan;
+  pos: string;
+  variant?: string;
+  lemma?: string;
+  alternates?: string[];
+};
 export type CellItem = {
   key: string;
   row: VocabEntry;
@@ -48,7 +58,15 @@ export type LessonJSON = {
   endpoint?: { description?: string };
   core?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> };
   supporting?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> };
-  build_phrases?: { he: string; en: string; pieces: string[] }[];
+  build_phrases?: {
+    he: string;
+    en: string;
+    prompt?: string;
+    span?: 'phrase' | 'sentence';
+    pieces: string[];
+    alternates?: string[];
+    drillable?: boolean;
+  }[];
   phases?: { id: string; title?: string; goal?: string }[];
   wishlist?: string[];
   source_song_id?: string;
@@ -62,7 +80,15 @@ export const lessons: LessonJSON[] = Array.isArray(Object.values(lessonMods)[0])
 
 export type Priority = 'core' | 'supporting' | 'advanced';
 export type UnitRole = 'teaching_target' | 'vocabulary' | 'annotation';
-export type LyricUnlock = { he: string; en: string; note?: string };
+export type LyricUnlock = {
+  he: string;
+  en: string;
+  prompt?: string;
+  span?: 'phrase' | 'sentence' | 'note';
+  drillable?: boolean;
+  alternates?: string[];
+  note?: string;
+};
 export type Example = { he: string; en: string };
 type UnitBase = {
   id: string;

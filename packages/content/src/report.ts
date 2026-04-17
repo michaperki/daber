@@ -65,6 +65,7 @@ type LessonAmbiguousPhrase = {
   title: string;
   he: string;
   en: string;
+  prompt: string;
   matchedSurfaces: Array<{
     lemma: string;
     he: string;
@@ -315,6 +316,7 @@ function analyzeAmbiguity(
         title: lesson.title,
         he: phrase.he,
         en: phrase.en,
+        prompt: phrase.prompt || phrase.en,
         matchedSurfaces: matched,
         contextCues: cues.strong,
         weakContextCues: cues.weak,
@@ -816,7 +818,7 @@ function printSummary(r: Report) {
           .map((s) => `${s.lemma}/${s.he} [${s.buckets.join(', ')}]`)
           .join('; ');
         const weak = phrase.weakContextCues.length ? ` weak cues: ${phrase.weakContextCues.join(', ')}` : '';
-        out.push(`  ${phrase.lessonId}: "${phrase.en}" -> "${phrase.he}" (${matched})${weak}`);
+        out.push(`  ${phrase.lessonId}: "${phrase.prompt}" -> "${phrase.he}" (${matched})${weak}`);
       });
       if (r.ambiguity.lessonPhrasesNeedingContext.length > 30) {
         out.push(`  ...and ${r.ambiguity.lessonPhrasesNeedingContext.length - 30} more`);

@@ -157,9 +157,9 @@ entries:
     gloss: broken
     prompts:
       m_sg: broken, as in "a broken heart"
-      f_sg: broken, describing a feminine singular noun
-      m_pl: broken, describing masculine plural nouns
-      f_pl: broken, describing feminine plural nouns
+      f_sg: broken, as in "a broken door"
+      m_pl: broken, as in "broken hearts"
+      f_pl: broken, as in "broken stones"
     forms:
       m_sg: שבור
       f_sg: שבורה

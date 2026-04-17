@@ -41,20 +41,14 @@ function pluralizeGloss(gloss: string): string {
 
 function nounPrompt(gloss: string, variant: 'sg' | 'pl'): string {
   if (normalizeGloss(gloss).toLowerCase() === 'time / once') {
-    return variant === 'pl' ? 'times (plural form)' : 'one time / once (singular form)';
+    return variant === 'pl' ? 'times' : 'one time / once';
   }
-  if (variant === 'pl') return `${pluralizeGloss(gloss)} (plural form)`;
-  return `${normalizeGloss(gloss)} (singular form)`;
+  if (variant === 'pl') return pluralizeGloss(gloss);
+  return normalizeGloss(gloss);
 }
 
-function adjectivePrompt(gloss: string, variant: 'm_sg' | 'f_sg' | 'm_pl' | 'f_pl'): string {
-  const labels: Record<typeof variant, string> = {
-    m_sg: 'masculine singular form',
-    f_sg: 'feminine singular form',
-    m_pl: 'masculine plural form',
-    f_pl: 'feminine plural form',
-  };
-  return `${normalizeGloss(gloss)} (${labels[variant]})`;
+function adjectivePrompt(gloss: string): string {
+  return normalizeGloss(gloss);
 }
 
 function verbPrompt(en: string, variant?: string): string {
@@ -159,7 +153,7 @@ export function extractVocabFromFile(filePath: string): VocabRow[] {
             variant: 'm_sg' | 'f_sg' | 'm_pl' | 'f_pl',
           ) => {
             if (typeof he === 'string' && he.trim() && typeof en === 'string' && en.trim()) {
-              rows.push(row({ he, en, prompt: a.prompts?.[variant] || adjectivePrompt(a.gloss, variant), pos, variant, lemma: a.lemma }));
+              rows.push(row({ he, en, prompt: a.prompts?.[variant] || adjectivePrompt(a.gloss), pos, variant, lemma: a.lemma }));
             }
           };
           addAdj(forms.m_sg, formsEn.m_sg, 'm_sg');

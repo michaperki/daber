@@ -112,6 +112,14 @@ build_phrases:
       - לשמוע
       - רדיו
     notes: The prompt makes feminine singular explicit.
+  - he: רדיו שחור
+    en: black radio
+    prompt: black radio
+    span: phrase
+    drillable: true
+    pieces:
+      - רדיו
+      - שחור
   - he: חבל לך על הזמן
     en: it is unbelievably intense; the literal meaning is not the real meaning
     prompt: "Recognition only: fixed expression"

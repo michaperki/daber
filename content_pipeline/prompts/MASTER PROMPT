@@ -96,6 +96,8 @@ Use natural, learner-friendly prompts where possible.
 Use compact disambiguating prompts where necessary.
 Do not use vague English glosses that license multiple Hebrew answers.
 Keep only information that affects the target answer, such as gender, number, person, tense/aspect, definiteness, or a fixed-expression/recognition-only warning.
+Do not use morphology-label prompts like `bubble (singular form)`, `black (masculine singular form)`, `black (feminine form)`, or `black (plural form)`.
+Prefer contextual cues such as `bubble`, `black radio`, `the bubbles are big`, or `the balls are black` over explicit grammar labels.
 
 ## Content rules
 

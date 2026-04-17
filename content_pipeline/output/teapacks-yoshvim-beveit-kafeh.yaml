@@ -41,21 +41,21 @@ supporting:
 build_phrases:
   - he: בבית קפה
     en: in a cafe
-    prompt: "Write the phrase: in a cafe"
+    prompt: in a cafe
     span: phrase
     pieces: [בית קפה]
     drillable: true
 
   - he: בתוך בועה
     en: inside a bubble
-    prompt: "Write the phrase: inside a bubble"
+    prompt: inside a bubble
     span: phrase
     pieces: [בועה]
     drillable: true
 
   - he: עוגת גבינה
     en: cheesecake
-    prompt: "Write the phrase: cheesecake"
+    prompt: cheesecake
     span: phrase
     pieces: [עוגת גבינה]
     drillable: true
@@ -63,7 +63,7 @@ build_phrases:
 
   - he: על המצב
     en: about the situation
-    prompt: "Write the phrase: about the situation"
+    prompt: about the situation (definite)
     span: phrase
     pieces: [מצב]
     drillable: true
@@ -71,21 +71,21 @@ build_phrases:
 
   - he: יושבים בבית קפה
     en: sitting in a cafe
-    prompt: "Write the phrase: sitting in a cafe"
+    prompt: sitting in a cafe
     span: phrase
     pieces: [לשבת, בית קפה]
     drillable: true
 
   - he: מרגישים בתוך בועה
     en: feeling inside a bubble
-    prompt: "Write the phrase: feeling inside a bubble"
+    prompt: feeling inside a bubble
     span: phrase
     pieces: [להרגיש, בועה]
     drillable: true
 
   - he: אני מזמין עוגת גבינה
     en: I am ordering a cheesecake
-    prompt: "Write the sentence: I am ordering a cheesecake (male speaker)"
+    prompt: I am ordering a cheesecake (male speaker)
     span: sentence
     pieces: [להזמין, עוגת גבינה]
     drillable: true
@@ -93,14 +93,14 @@ build_phrases:
 
   - he: יושבים בבית קפה ומדברים על המצב
     en: we are sitting in a cafe and talking about the situation
-    prompt: "Write the sentence: we are sitting in a cafe and talking about the situation"
+    prompt: we are sitting in a cafe and talking about the situation
     span: sentence
     pieces: [לשבת, לדבר, בית קפה, מצב]
     drillable: true
 
   - he: את שומעת רדיו
     en: you are listening to the radio
-    prompt: "Write the sentence: you are listening to the radio (addressing a woman)"
+    prompt: you are listening to the radio (addressing a woman)
     span: sentence
     pieces: [לשמוע, רדיו]
     drillable: true
@@ -108,7 +108,7 @@ build_phrases:
 
   - he: חבל לך על הזמן
     en: it is unbelievably intense; the literal meaning is not the real meaning
-    prompt: Recognize the fixed expression only.
+    prompt: "Recognition only: fixed expression"
     span: phrase
     pieces: [זמן]
     drillable: false

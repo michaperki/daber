@@ -77,9 +77,11 @@ Each note-like observation belongs in `notes`, not in `build_phrases`.
 
 Prompts must match the expected output span.
 
-* If the expected answer is a phrase, the prompt must cue a phrase.
-* If the expected answer is a sentence, the prompt must cue a sentence.
+* If the expected answer is a phrase, the prompt must naturally cue that phrase.
+* If the expected answer is a sentence, the prompt must naturally cue that sentence.
 * Do not use a full-sentence prompt for a short phrase unless it is truly extractive and unambiguous.
+* Do not prefix prompts with scaffolding such as `Write the phrase:` or `Write the sentence:`.
+* The app already asks the learner to write; the prompt should be the actual production cue.
 
 ## Prompt rules
 
@@ -93,6 +95,7 @@ These are not the same thing.
 Use natural, learner-friendly prompts where possible.
 Use compact disambiguating prompts where necessary.
 Do not use vague English glosses that license multiple Hebrew answers.
+Keep only information that affects the target answer, such as gender, number, person, tense/aspect, definiteness, or a fixed-expression/recognition-only warning.
 
 ## Content rules
 

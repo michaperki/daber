@@ -40,21 +40,21 @@ supporting:
 build_phrases:
   - he: בבית קפה
     en: in a cafe
-    prompt: "Write the phrase: in a cafe"
+    prompt: in a cafe
     span: phrase
     drillable: true
     pieces:
       - בית קפה
   - he: בתוך בועה
     en: inside a bubble
-    prompt: "Write the phrase: inside a bubble"
+    prompt: inside a bubble
     span: phrase
     drillable: true
     pieces:
       - בועה
   - he: עוגת גבינה
     en: cheesecake
-    prompt: "Write the phrase: cheesecake"
+    prompt: cheesecake
     span: phrase
     drillable: true
     pieces:
@@ -62,7 +62,7 @@ build_phrases:
     notes: Teach as a fixed lexical chunk.
   - he: על המצב
     en: about the situation
-    prompt: "Write the phrase: about the situation"
+    prompt: about the situation (definite)
     span: phrase
     drillable: true
     pieces:
@@ -70,7 +70,7 @@ build_phrases:
     notes: The prompt forces definiteness.
   - he: יושבים בבית קפה
     en: sitting in a cafe
-    prompt: "Write the phrase: sitting in a cafe"
+    prompt: sitting in a cafe
     span: phrase
     drillable: true
     pieces:
@@ -78,7 +78,7 @@ build_phrases:
       - בית קפה
   - he: מרגישים בתוך בועה
     en: feeling inside a bubble
-    prompt: "Write the phrase: feeling inside a bubble"
+    prompt: feeling inside a bubble
     span: phrase
     drillable: true
     pieces:
@@ -86,7 +86,7 @@ build_phrases:
       - בועה
   - he: אני מזמין עוגת גבינה
     en: I am ordering a cheesecake
-    prompt: "Write the sentence: I am ordering a cheesecake (male speaker)"
+    prompt: I am ordering a cheesecake (male speaker)
     span: sentence
     drillable: true
     pieces:
@@ -95,7 +95,7 @@ build_phrases:
     notes: Gender is made explicit for fairness.
   - he: יושבים בבית קפה ומדברים על המצב
     en: we are sitting in a cafe and talking about the situation
-    prompt: "Write the sentence: we are sitting in a cafe and talking about the situation"
+    prompt: we are sitting in a cafe and talking about the situation
     span: sentence
     drillable: true
     pieces:
@@ -105,7 +105,7 @@ build_phrases:
       - מצב
   - he: את שומעת רדיו
     en: you are listening to the radio
-    prompt: "Write the sentence: you are listening to the radio (addressing a woman)"
+    prompt: you are listening to the radio (addressing a woman)
     span: sentence
     drillable: true
     pieces:
@@ -114,7 +114,7 @@ build_phrases:
     notes: The prompt makes feminine singular explicit.
   - he: חבל לך על הזמן
     en: it is unbelievably intense; the literal meaning is not the real meaning
-    prompt: Recognize the fixed expression only.
+    prompt: "Recognition only: fixed expression"
     span: phrase
     drillable: false
     pieces:

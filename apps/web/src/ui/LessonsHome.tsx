@@ -28,8 +28,10 @@ export function LessonsHome() {
         <div style={{ fontWeight: 600, marginBottom: 6 }}>Missions</div>
         <div class={panels.muted}>Short, curated lessons with a clear payoff.</div>
       </div>
-      {lessons.length ? (
-        lessons.map((l) => {
+      {(() => {
+        const authoredLessons = lessons.filter((l) => !l.id.startsWith('song_'));
+        return authoredLessons.length ? (
+        authoredLessons.map((l) => {
           const lessonProgress = lessonProgressFor(progress.value, l.id);
           return (
             <button
@@ -56,7 +58,8 @@ export function LessonsHome() {
         })
       ) : (
         <div class={panels.panel}>No lessons found. Build content or add data under packages/content/data/v2/lessons.</div>
-      )}
+      );
+      })()}
       <div class={panels.panel}>
         <div class={panels.row}>
           <div>

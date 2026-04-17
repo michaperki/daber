@@ -1,0 +1,107 @@
+pos: noun
+entries:
+  - lemma: נחל
+    gloss: stream; brook
+    forms:
+      sg: נחל
+      pl: נחלים
+    gender: m
+    examples:
+      - he: יש נחל ליד הבית
+        en: There is a stream near the house.
+      - he: הוא הלך לנחל
+        en: He went to the stream.
+
+  - lemma: לב
+    gloss: heart
+    forms:
+      sg: לב
+      pl: לבבות
+    gender: m
+    examples:
+      - he: יש לו לב טוב
+        en: He has a good heart.
+      - he: הלב שלי שבור
+        en: My heart is broken.
+
+  - lemma: חול
+    gloss: sand
+    forms:
+      sg: חול
+    gender: m
+    examples:
+      - he: יש חול על החוף
+        en: There is sand on the beach.
+      - he: החול חם
+        en: The sand is hot.
+
+  - lemma: אבן
+    gloss: stone
+    forms:
+      sg: אבן
+      pl: אבנים
+    gender: f
+    examples:
+      - he: זו אבן גדולה
+        en: This is a big stone.
+      - he: יש אבנים על הדרך
+        en: There are stones on the road.
+
+  - lemma: אדם
+    gloss: person; human
+    forms:
+      sg: אדם
+    gender: m
+    examples:
+      - he: זה אדם טוב
+        en: This is a good person.
+      - he: האדם שר
+        en: The person sings.
+
+  - lemma: כוח
+    gloss: strength; force
+    forms:
+      sg: כוח
+      pl: כוחות
+    gender: m
+    examples:
+      - he: יש לי כוח
+        en: I have strength.
+      - he: הוא בלי כוחות
+        en: He is without strength.
+
+  - lemma: צדף
+    gloss: seashell
+    forms:
+      sg: צדף
+      pl: צדפים
+    gender: m
+    examples:
+      - he: יש צדף על החוף
+        en: There is a seashell on the beach.
+      - he: אספתי צדפים
+        en: I gathered seashells.
+
+  - lemma: רוח
+    gloss: wind; spirit
+    forms:
+      sg: רוח
+      pl: רוחות
+    gender: f
+    examples:
+      - he: הרוח חזקה
+        en: The wind is strong.
+      - he: יש רוח היום
+        en: There is wind today.
+
+  - lemma: ים
+    gloss: sea
+    forms:
+      sg: ים
+      pl: ימים
+    gender: m
+    examples:
+      - he: הים יפה
+        en: The sea is beautiful.
+      - he: אני אוהב את הים
+        en: I love the sea.

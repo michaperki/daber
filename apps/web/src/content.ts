@@ -30,6 +30,16 @@ const first = Object.values(modules)[0];
 export const vocab: VocabEntry[] = Array.isArray(first) ? first : [];
 
 // Optional lessons import; tolerates absence during dev
+export type LessonNote = {
+  id: string;
+  kind: 'bound_form' | 'literary_form' | 'grammar_pattern' | 'function_word' | 'teaching_pattern';
+  title: string;
+  body: string;
+  surface?: string;
+  ordinary?: string;
+  lyric_he?: string;
+  lyric_en?: string;
+};
 export type LessonJSON = {
   id: string;
   title: string;
@@ -41,6 +51,8 @@ export type LessonJSON = {
   build_phrases?: { he: string; en: string; pieces: string[] }[];
   phases?: { id: string; title?: string; goal?: string }[];
   wishlist?: string[];
+  source_song_id?: string;
+  notes?: LessonNote[];
 };
 const lessonMods = import.meta.glob('../../../packages/content/dist/lessons.json', {
   eager: true,

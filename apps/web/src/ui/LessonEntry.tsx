@@ -3,6 +3,7 @@ import { useLocation, useRoute } from 'preact-iso';
 import { lessons, type LessonJSON } from '../content';
 import { progress } from '../state/signals';
 import { lessonProgressFor, type LessonProgress } from '../storage/progress';
+import { LessonNotes } from './LessonNotes';
 import panels from './panels.module.css';
 import study from './study.module.css';
 
@@ -59,41 +60,46 @@ export function LessonEntry() {
   }, [lesson]);
 
   return (
-    <div class={panels.panel}>
-      <div class={panels.row}>
-        <div>
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>{lesson.title}</div>
-          {lesson.tagline && <div class={panels.muted}>{lesson.tagline}</div>}
-        </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <button class={study.secondaryBtn} onClick={() => route('/')}>Back</button>
-        </div>
-      </div>
-      {lesson.endpoint?.description && (
-        <div>
-          <div class={panels.muted}>Payoff</div>
-          <div>{lesson.endpoint.description}</div>
-        </div>
-      )}
-      <div class={panels.row}>
-        <div>
-          <div class={panels.muted}>Vocab scope</div>
-          <div>{coreCount} core, {supCount} supporting</div>
-        </div>
-        <div>
-          <div class={panels.muted}>Lesson status</div>
-          <div>{statusLabel(lessonProgress.status)}</div>
-          <div class={panels.progress}>
-            {statusDetail(lessonProgress)}
-            {lessonProgress.target_count > 0 ? ` · ${Math.min(lessonProgress.items_completed, lessonProgress.target_count)}/${lessonProgress.target_count} items` : ''}
+    <>
+      <div class={panels.panel}>
+        <div class={panels.row}>
+          <div>
+            <div style={{ fontWeight: 600, marginBottom: 4 }}>{lesson.title}</div>
+            {lesson.tagline && <div class={panels.muted}>{lesson.tagline}</div>}
+          </div>
+          <div style={{ marginLeft: 'auto' }}>
+            <button class={study.secondaryBtn} onClick={() => route('/')}>Back</button>
           </div>
         </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <button class={study.secondaryBtn} onClick={() => route(`/lesson/${lesson.id}/drill`)}>
-            {actionLabel(lessonProgress.status)}
-          </button>
+        {lesson.endpoint?.description && (
+          <div>
+            <div class={panels.muted}>Payoff</div>
+            <div>{lesson.endpoint.description}</div>
+          </div>
+        )}
+        <div class={panels.row}>
+          <div>
+            <div class={panels.muted}>Vocab scope</div>
+            <div>{coreCount} core, {supCount} supporting</div>
+          </div>
+          <div>
+            <div class={panels.muted}>Lesson status</div>
+            <div>{statusLabel(lessonProgress.status)}</div>
+            <div class={panels.progress}>
+              {statusDetail(lessonProgress)}
+              {lessonProgress.target_count > 0 ? ` · ${Math.min(lessonProgress.items_completed, lessonProgress.target_count)}/${lessonProgress.target_count} items` : ''}
+            </div>
+          </div>
+          <div style={{ marginLeft: 'auto' }}>
+            <button class={study.secondaryBtn} onClick={() => route(`/lesson/${lesson.id}/drill`)}>
+              {actionLabel(lessonProgress.status)}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+      {lesson.notes && lesson.notes.length > 0 && (
+        <LessonNotes notes={lesson.notes} />
+      )}
+    </>
   );
 }

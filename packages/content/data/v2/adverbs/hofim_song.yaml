@@ -1,0 +1,25 @@
+pos: adverb
+entries:
+  - lemma: גם
+    gloss: also; too
+    examples:
+      - he: גם אני בבית
+        en: I am also at home.
+      - he: הוא גם שר
+        en: He also sings.
+
+  - lemma: רק
+    gloss: only; just
+    examples:
+      - he: רק הים כאן
+        en: Only the sea is here.
+      - he: אני רק רוצה לנוח
+        en: I just want to rest.
+
+  - lemma: שם
+    gloss: there
+    examples:
+      - he: הוא שם
+        en: He is there.
+      - he: הים שם
+        en: The sea is there.

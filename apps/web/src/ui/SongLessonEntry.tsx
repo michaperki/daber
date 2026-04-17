@@ -54,8 +54,8 @@ export function SongLessonEntry() {
       <div class={study.hebrewLine}>{song.lyrics.he}</div>
 
       <div class={panels.row}>
-        <button class={study.secondaryBtn} onClick={() => route(`/song/${song.id}/study`)}>
-          Study units
+        <button class={study.secondaryBtn} onClick={() => route(`/lesson/song_${song.id}`)}>
+          Start lesson
         </button>
       </div>
     </div>

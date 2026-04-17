@@ -1,0 +1,19 @@
+pos: adjective
+entries:
+  - lemma: נטוש
+    gloss: abandoned
+    forms:
+      m_sg: נטוש
+      f_sg: נטושה
+      m_pl: נטושים
+      f_pl: נטושות
+    forms_en:
+      m_sg: "abandoned"
+      f_sg: "abandoned (f)"
+      m_pl: "abandoned (pl)"
+      f_pl: "abandoned (f pl)"
+    examples:
+      - he: הבית נטוש
+        en: The house is abandoned.
+      - he: החוף נטוש
+        en: The beach is abandoned.

@@ -1,6 +1,7 @@
 import { useLocation, useRoute } from 'preact-iso';
 import { lessons } from '../content';
 import { lastSessionSummary } from '../state/session';
+import { LessonNotes } from './LessonNotes';
 import panels from './panels.module.css';
 import study from './study.module.css';
 
@@ -12,23 +13,28 @@ export function LessonComplete() {
   const title = summary?.lessonTitle || lesson?.title;
 
   return (
-    <div class={panels.panel} style={{ textAlign: 'center' }}>
-      <div style={{ fontWeight: 600, fontSize: 20, marginBottom: 8 }}>
-        {title ? `${title} — Complete` : 'Session Complete'}
+    <>
+      <div class={panels.panel} style={{ textAlign: 'center' }}>
+        <div style={{ fontWeight: 600, fontSize: 20, marginBottom: 8 }}>
+          {title ? `${title} — Complete` : 'Session Complete'}
+        </div>
+        {summary ? (
+          <>
+            <div class={panels.stats}>Items completed: {summary.itemsCompleted}/{summary.targetCount}</div>
+            <div class={panels.stats}>Clean: {summary.clean} · Unclean: {summary.unclean}</div>
+            <div class={panels.stats}>New items seen: {summary.newItemsSeen}</div>
+            {summary.mode === 'lesson' && (
+              <div class={panels.stats}>Lesson finished: {summary.lessonFinished ? 'yes' : 'no'}</div>
+            )}
+          </>
+        ) : (
+          <div class={panels.muted} style={{ marginBottom: 16 }}>No session summary is available.</div>
+        )}
+        <button class={study.secondaryBtn} onClick={() => route('/')}>Done</button>
       </div>
-      {summary ? (
-        <>
-          <div class={panels.stats}>Items completed: {summary.itemsCompleted}/{summary.targetCount}</div>
-          <div class={panels.stats}>Clean: {summary.clean} · Unclean: {summary.unclean}</div>
-          <div class={panels.stats}>New items seen: {summary.newItemsSeen}</div>
-          {summary.mode === 'lesson' && (
-            <div class={panels.stats}>Lesson finished: {summary.lessonFinished ? 'yes' : 'no'}</div>
-          )}
-        </>
-      ) : (
-        <div class={panels.muted} style={{ marginBottom: 16 }}>No session summary is available.</div>
+      {lesson?.notes && lesson.notes.length > 0 && (
+        <LessonNotes notes={lesson.notes} heading="Before you go — song notes" />
       )}
-      <button class={study.secondaryBtn} onClick={() => route('/')}>Done</button>
-    </div>
+    </>
   );
 }

@@ -1,0 +1,261 @@
+pos: verb
+entries:
+  - lemma: להתגעגע
+    gloss: to long for; to miss
+    primary_prep: l
+    present:
+      m_sg: מתגעגע
+      f_sg: מתגעגעת
+      m_pl: מתגעגעים
+      f_pl: מתגעגעות
+    present_he:
+      m_sg: "הוא מתגעגע"
+      f_sg: "היא מתגעגעת"
+      m_pl: "הם מתגעגעים"
+      f_pl: "הן מתגעגעות"
+    present_en:
+      m_sg: "he misses"
+      f_sg: "she misses"
+      m_pl: "they miss (m)"
+      f_pl: "they miss (f)"
+    past_he:
+      1sg: "אני התגעגעתי"
+      2sg_m: "אתה התגעגעת"
+      2sg_f: "את התגעגעת"
+      3sg_m: "הוא התגעגע"
+      3sg_f: "היא התגעגעה"
+      1pl: "אנחנו התגעגענו"
+      3pl: "הם התגעגעו"
+    past_en:
+      1sg: "I longed for"
+      2sg_m: "you longed for (m)"
+      2sg_f: "you longed for (f)"
+      3sg_m: "he longed for"
+      3sg_f: "she longed for"
+      1pl: "we longed for"
+      3pl: "they longed for"
+    future_he:
+      1sg: "אני אתגעגע"
+      2sg_m: "אתה תתגעגע"
+      2sg_f: "את תתגעגעי"
+      3sg_m: "הוא יתגעגע"
+      3sg_f: "היא תתגעגע"
+      1pl: "אנחנו נתגעגע"
+      3pl: "הם יתגעגעו"
+    future_en:
+      1sg: "I will miss"
+      2sg_m: "you will miss (m)"
+      2sg_f: "you will miss (f)"
+      3sg_m: "he will miss"
+      3sg_f: "she will miss"
+      1pl: "we will miss"
+      3pl: "they will miss"
+    governance:
+      frames:
+        - prep: l
+          role: comp
+          frame_he: להתגעגע ל___
+          sense_en: long for
+      transitivity: intransitive
+    examples:
+      - he: אני מתגעגע לבית
+        en: I miss home.
+      - he: היא מתגעגעת אליו
+        en: She misses him.
+
+  - lemma: לעזוב
+    gloss: to leave; to abandon
+    primary_prep: et
+    present:
+      m_sg: עוזב
+      f_sg: עוזבת
+      m_pl: עוזבים
+      f_pl: עוזבות
+    present_he:
+      m_sg: "הוא עוזב"
+      f_sg: "היא עוזבת"
+      m_pl: "הם עוזבים"
+      f_pl: "הן עוזבות"
+    present_en:
+      m_sg: "he leaves"
+      f_sg: "she leaves"
+      m_pl: "they leave (m)"
+      f_pl: "they leave (f)"
+    past_he:
+      1sg: "אני עזבתי"
+      2sg_m: "אתה עזבת"
+      2sg_f: "את עזבת"
+      3sg_m: "הוא עזב"
+      3sg_f: "היא עזבה"
+      1pl: "אנחנו עזבנו"
+      3pl: "הם עזבו"
+    past_en:
+      1sg: "I left"
+      2sg_m: "you left (m)"
+      2sg_f: "you left (f)"
+      3sg_m: "he left"
+      3sg_f: "she left"
+      1pl: "we left"
+      3pl: "they left"
+    future_he:
+      1sg: "אני אעזוב"
+      2sg_m: "אתה תעזוב"
+      2sg_f: "את תעזבי"
+      3sg_m: "הוא יעזוב"
+      3sg_f: "היא תעזוב"
+      1pl: "אנחנו נעזוב"
+      3pl: "הם יעזבו"
+    future_en:
+      1sg: "I will leave"
+      2sg_m: "you will leave (m)"
+      2sg_f: "you will leave (f)"
+      3sg_m: "he will leave"
+      3sg_f: "she will leave"
+      1pl: "we will leave"
+      3pl: "they will leave"
+    imperative_he:
+      sg_m: "עזוב"
+      sg_f: "עזבי"
+      pl_m: "עזבו"
+      pl_f: "עזבו"
+    imperative_en:
+      sg_m: "leave! (m)"
+      sg_f: "leave! (f)"
+      pl_m: "leave! (m pl)"
+      pl_f: "leave! (f pl)"
+    governance:
+      frames:
+        - prep: et
+          role: do
+          frame_he: לעזוב את ___
+          sense_en: leave (something)
+      transitivity: transitive
+    examples:
+      - he: הוא עזב את הבית
+        en: He left the house.
+      - he: אל תעזוב אותי
+        en: Don't leave me.
+
+  - lemma: להישאר
+    gloss: to remain; to stay
+    present:
+      m_sg: נשאר
+      f_sg: נשארת
+      m_pl: נשארים
+      f_pl: נשארות
+    present_he:
+      m_sg: "הוא נשאר"
+      f_sg: "היא נשארת"
+      m_pl: "הם נשארים"
+      f_pl: "הן נשארות"
+    present_en:
+      m_sg: "he stays"
+      f_sg: "she stays"
+      m_pl: "they stay (m)"
+      f_pl: "they stay (f)"
+    past_he:
+      1sg: "אני נשארתי"
+      2sg_m: "אתה נשארת"
+      2sg_f: "את נשארת"
+      3sg_m: "הוא נשאר"
+      3sg_f: "היא נשארה"
+      1pl: "אנחנו נשארנו"
+      3pl: "הם נשארו"
+    past_en:
+      1sg: "I stayed"
+      2sg_m: "you stayed (m)"
+      2sg_f: "you stayed (f)"
+      3sg_m: "he stayed"
+      3sg_f: "she stayed"
+      1pl: "we stayed"
+      3pl: "they stayed"
+    future_he:
+      1sg: "אני אישאר"
+      2sg_m: "אתה תישאר"
+      2sg_f: "את תישארי"
+      3sg_m: "הוא יישאר"
+      3sg_f: "היא תישאר"
+      1pl: "אנחנו נישאר"
+      3pl: "הם יישארו"
+    future_en:
+      1sg: "I will stay"
+      2sg_m: "you will stay (m)"
+      2sg_f: "you will stay (f)"
+      3sg_m: "he will stay"
+      3sg_f: "she will stay"
+      1pl: "we will stay"
+      3pl: "they will stay"
+    governance:
+      transitivity: intransitive
+    examples:
+      - he: הוא נשאר בבית
+        en: He stays at home.
+      - he: אני אישאר פה
+        en: I will stay here.
+
+  - lemma: לשיר
+    gloss: to sing
+    present:
+      m_sg: שר
+      f_sg: שרה
+      m_pl: שרים
+      f_pl: שרות
+    present_he:
+      m_sg: "הוא שר"
+      f_sg: "היא שרה"
+      m_pl: "הם שרים"
+      f_pl: "הן שרות"
+    present_en:
+      m_sg: "he sings"
+      f_sg: "she sings"
+      m_pl: "they sing (m)"
+      f_pl: "they sing (f)"
+    past_he:
+      1sg: "אני שרתי"
+      2sg_m: "אתה שרת"
+      2sg_f: "את שרת"
+      3sg_m: "הוא שר"
+      3sg_f: "היא שרה"
+      1pl: "אנחנו שרנו"
+      3pl: "הם שרו"
+    past_en:
+      1sg: "I sang"
+      2sg_m: "you sang (m)"
+      2sg_f: "you sang (f)"
+      3sg_m: "he sang"
+      3sg_f: "she sang"
+      1pl: "we sang"
+      3pl: "they sang"
+    future_he:
+      1sg: "אני אשיר"
+      2sg_m: "אתה תשיר"
+      2sg_f: "את תשירי"
+      3sg_m: "הוא ישיר"
+      3sg_f: "היא תשיר"
+      1pl: "אנחנו נשיר"
+      3pl: "הם ישירו"
+    future_en:
+      1sg: "I will sing"
+      2sg_m: "you will sing (m)"
+      2sg_f: "you will sing (f)"
+      3sg_m: "he will sing"
+      3sg_f: "she will sing"
+      1pl: "we will sing"
+      3pl: "they will sing"
+    imperative_he:
+      sg_m: "שיר"
+      sg_f: "שירי"
+      pl_m: "שירו"
+      pl_f: "שירו"
+    imperative_en:
+      sg_m: "sing! (m)"
+      sg_f: "sing! (f)"
+      pl_m: "sing! (m pl)"
+      pl_f: "sing! (f pl)"
+    governance:
+      transitivity: intransitive
+    examples:
+      - he: הוא שר יפה
+        en: He sings beautifully.
+      - he: היא שרה שיר
+        en: She sings a song.

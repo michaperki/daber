@@ -1,0 +1,181 @@
+id: song_keshehalev_boche
+title: כשהלב בוכה
+tagline: Heart, pain, prayer, and a few strong lines from the song
+endpoint:
+kind: song
+description: Handwrite a small set of emotional Hebrew words and key lines such as "my heart cries quietly" and "make it stop because I have no strength left"
+
+phases:
+
+* id: core_exposure
+  title: Core emotion words
+  goal: Learn a few reusable words for heart, pain, soul, tear, and strength
+* id: supporting_build
+  title: Prayer and feeling language
+  goal: Add a few verbs and phrases needed to build meaningful lines from the song
+* id: core_reinforcement
+  title: Song payoff
+  goal: Reinforce the core words inside fair phrase and sentence targets drawn from the song
+
+core:
+verbs:
+לבכות: [lemma, present_m_sg]
+nouns:
+לב: [sg]
+כאב: [sg]
+נשמה: [sg]
+דמעה: [sg]
+כוח: [sg]
+
+supporting:
+verbs:
+לשתוק: [lemma, present_m_sg]
+לזעוק: [lemma, present_f_sg]
+לחזק: [lemma, imperative_sg_m]
+לפחד: [lemma, future_1sg]
+להיגמר: [lemma, future_3sg_m]
+adjectives:
+גדול: [m_sg]
+
+build_phrases:
+
+* he: לב
+  en: heart
+  prompt: heart
+  span: phrase
+  pieces: [לב]
+  drillable: true
+
+* he: כאב
+  en: pain
+  prompt: pain
+  span: phrase
+  pieces: [כאב]
+  drillable: true
+
+* he: הנשמה
+  en: the soul
+  prompt: the soul
+  span: phrase
+  pieces: [נשמה]
+  drillable: true
+
+* he: דמעה
+  en: a tear
+  prompt: a tear
+  span: phrase
+  pieces: [דמעה]
+  drillable: true
+
+* he: כוח
+  en: strength
+  prompt: strength
+  span: phrase
+  pieces: [כוח]
+  drillable: true
+
+* he: הלב בוכה
+  en: the heart cries
+  prompt: the heart cries
+  span: sentence
+  pieces: [לב, לבכות]
+  drillable: true
+
+* he: הכאב גדול
+  en: the pain is big
+  prompt: the pain is big
+  span: sentence
+  pieces: [כאב, גדול]
+  drillable: true
+
+* he: בעיני דמעה
+  en: there is a tear in my eye
+  prompt: a tear in my eye (fixed song phrase)
+  span: phrase
+  pieces: [דמעה]
+  drillable: true
+  notes: fixed song phrase with a possessive ending
+
+* he: הלב בוכה בשקט
+  en: the heart cries quietly
+  prompt: the heart cries quietly
+  span: sentence
+  pieces: [לב, לבכות]
+  drillable: true
+
+* he: כשהלב שותק הנשמה זועקת
+  en: when the heart is silent, the soul cries out
+  prompt: when the heart is silent, the soul cries out
+  span: sentence
+  pieces: [לב, לשתוק, נשמה, לזעוק]
+  drillable: true
+
+* he: עכשיו אני לבד
+  en: now I am alone
+  prompt: now I am alone
+  span: sentence
+  pieces: [לבד]
+  drillable: true
+
+* he: חזק אותי
+  en: strengthen me
+  prompt: strengthen me (addressing a man)
+  span: sentence
+  pieces: [לחזק]
+  drillable: true
+
+* he: שלא אפחד
+  en: so that I will not be afraid
+  prompt: so that I will not be afraid
+  span: sentence
+  pieces: [לפחד]
+  drillable: true
+
+* he: עשה שיגמר
+  en: make it end
+  prompt: make it end (fixed song wording)
+  span: sentence
+  pieces: [להיגמר]
+  drillable: true
+  notes: fixed prayer-like request from the song
+
+* he: לא נותר בי כוח
+  en: there is no strength left in me
+  prompt: no strength left in me
+  span: sentence
+  pieces: [כוח]
+  drillable: true
+
+notes:
+
+* id: note_shema_yisrael
+  title: שמע ישראל
+  body: This is a well-known religious call. In the song it carries prayerful weight, not just the literal meaning "hear, Israel."
+  kind: lyric_note
+  related_he: שמע ישראל
+
+* id: note_baenai_dimaa
+  title: בעיני דמעה
+  body: This phrase means "a tear in my eye." The ending on בעיני marks "my eye" inside a compact poetic phrase.
+  kind: grammar_pattern
+  related_he: בעיני דמעה
+
+* id: note_asa_sheyigamer
+  title: Prayer-style request
+  body: עשה שיגמר is a compressed plea meaning "make it end." It works best as a fixed expression here.
+  kind: usage_note
+  related_he: עשה שיגמר
+
+* id: note_zman_omed_milekhet
+  title: Time stands still
+  body: הזמן עומד מלכת is a literary way to say that time seems to stop.
+  kind: literary_form
+  related_he: הזמן עומד מלכת
+
+authoring_principles:
+
+* Start with a small set of reusable emotion words.
+* Use phrases and sentences to show agreement and meaning instead of morphology labels.
+* Keep prayer-like and literary material only when the cue makes the target fair.
+* Prefer memorable song payoff lines over broad inflection coverage.
+* Move culturally loaded or compressed expressions into notes when they are better recognized than produced.

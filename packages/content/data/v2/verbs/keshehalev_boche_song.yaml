@@ -1,0 +1,61 @@
+pos: verb
+entries:
+  - lemma: לבכות
+    gloss: to cry
+    present_he:
+      m_sg: "הוא בוכה"
+    present_en:
+      m_sg: "he cries"
+    examples:
+      - he: הלב בוכה
+        en: The heart cries.
+
+  - lemma: לשתוק
+    gloss: to be silent
+    present_he:
+      m_sg: "הוא שותק"
+    present_en:
+      m_sg: "he is silent"
+    examples:
+      - he: הלב שותק
+        en: The heart is silent.
+
+  - lemma: לזעוק
+    gloss: to cry out
+    present_he:
+      f_sg: "היא זועקת"
+    present_en:
+      f_sg: "she cries out"
+    examples:
+      - he: הנשמה זועקת
+        en: The soul cries out.
+
+  - lemma: לחזק
+    gloss: to strengthen
+    imperative_he:
+      sg_m: "חזק"
+    imperative_en:
+      sg_m: "strengthen! (m)"
+    examples:
+      - he: חזק אותי
+        en: Strengthen me.
+
+  - lemma: לפחד
+    gloss: to be afraid
+    future_he:
+      1sg: "אני אפחד"
+    future_en:
+      1sg: "I will be afraid"
+    examples:
+      - he: שלא אפחד
+        en: So that I will not be afraid.
+
+  - lemma: להיגמר
+    gloss: to end
+    future_he:
+      3sg_m: "זה ייגמר"
+    future_en:
+      3sg_m: "it will end"
+    examples:
+      - he: זה ייגמר
+        en: It will end.

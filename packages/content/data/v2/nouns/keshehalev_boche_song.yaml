@@ -1,0 +1,34 @@
+pos: noun
+entries:
+  - lemma: כאב
+    gloss: pain
+    prompts:
+      sg: pain
+    forms:
+      sg: כאב
+    gender: m
+    examples:
+      - he: הכאב גדול
+        en: The pain is great.
+
+  - lemma: נשמה
+    gloss: soul
+    prompts:
+      sg: soul
+    forms:
+      sg: נשמה
+    gender: f
+    examples:
+      - he: הנשמה זועקת
+        en: The soul cries out.
+
+  - lemma: דמעה
+    gloss: tear
+    prompts:
+      sg: tear
+    forms:
+      sg: דמעה
+    gender: f
+    examples:
+      - he: בעיני דמעה
+        en: There is a tear in my eye.

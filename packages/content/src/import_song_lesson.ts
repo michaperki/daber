@@ -18,6 +18,117 @@ type Args = {
   out: string | null;
 };
 
+const TOP_LEVEL_KEYS = new Set([
+  'id',
+  'title',
+  'tagline',
+  'estimated_minutes',
+  'endpoint',
+  'phases',
+  'core',
+  'supporting',
+  'build_phrases',
+  'notes',
+  'wishlist',
+  'authoring_principles',
+]);
+
+const SCOPE_SECTIONS = new Set(['core', 'supporting']);
+const SCOPE_POS_KEYS = new Set(['verbs', 'nouns', 'adjectives']);
+const ENDPOINT_KEYS = new Set(['kind', 'description']);
+const LIST_SECTIONS = new Set(['phases', 'build_phrases', 'notes']);
+const BLOCK_LIST_KEYS = new Set(['pieces', 'alternates']);
+const ITEM_START = /^- [A-Za-z_][A-Za-z0-9_]*:/;
+
+function asciiKey(line: string): string | null {
+  const match = /^([A-Za-z_][A-Za-z0-9_]*):(?:\s|$)/.exec(line);
+  return match?.[1] || null;
+}
+
+function isEmptyKey(line: string, key: string): boolean {
+  return new RegExp(`^${key}:\\s*$`).test(line);
+}
+
+function normalizeGeneratedSongYaml(text: string): string {
+  const lines = text
+    .replace(/^\uFEFF/, '')
+    .replace(/\r\n?/g, '\n')
+    .split('\n')
+    .filter((line) => !/^```(?:ya?ml)?\s*$/.test(line.trim()));
+
+  let section: string | null = null;
+  let scopePos: string | null = null;
+  let listBlockKey: string | null = null;
+
+  return lines.map((rawLine) => {
+    const withoutTabs = rawLine.replace(/\t/g, '  ');
+    const trimmedRight = withoutTabs.replace(/\s+$/g, '');
+    if (!trimmedRight.trim()) return '';
+
+    const starred = trimmedRight.replace(/^(\s*)\*\s+/, '$1- ');
+    const content = starred.trimStart();
+    const indent = starred.length - content.length;
+    const key = asciiKey(content);
+
+    if (indent === 0 && key && TOP_LEVEL_KEYS.has(key)) {
+      section = key;
+      scopePos = null;
+      listBlockKey = null;
+      return content;
+    }
+
+    if (section === 'endpoint' && key && ENDPOINT_KEYS.has(key)) {
+      return `  ${content}`;
+    }
+
+    if (section && SCOPE_SECTIONS.has(section)) {
+      if (key && SCOPE_POS_KEYS.has(key)) {
+        scopePos = key;
+        return `  ${content}`;
+      }
+      if (content.startsWith('- ')) {
+        if (indent > 0) return scopePos && indent < 6 ? `      ${content}` : starred;
+        return scopePos ? `      ${content}` : `  ${content}`;
+      }
+      if (indent > 0) {
+        if (key && SCOPE_POS_KEYS.has(key)) {
+          scopePos = key;
+          return indent < 2 ? `  ${content}` : starred;
+        }
+        return scopePos && indent < 4 ? `    ${content}` : starred;
+      }
+      return scopePos ? `    ${content}` : `  ${content}`;
+    }
+
+    if (section && LIST_SECTIONS.has(section)) {
+      if (listBlockKey && content.startsWith('- ') && !ITEM_START.test(content)) {
+        return indent < 6 ? `      ${content}` : starred;
+      }
+      if (content.startsWith('- ')) {
+        listBlockKey = null;
+        return indent === 0 ? `  ${content}` : starred;
+      }
+      if (key && BLOCK_LIST_KEYS.has(key) && isEmptyKey(content, key)) {
+        listBlockKey = key;
+        return indent < 4 ? `    ${content}` : starred;
+      }
+      listBlockKey = null;
+      return indent < 4 ? `    ${content}` : starred;
+    }
+
+    if (section === 'authoring_principles') {
+      if (indent > 0) return starred;
+      return content.startsWith('- ') ? `  ${content}` : `  ${content}`;
+    }
+
+    if (indent > 0) {
+      return starred;
+    }
+
+    return content;
+  }).join('\n');
+}
+
 function usage(): never {
   // eslint-disable-next-line no-console
   console.error(`Usage: npm run song:import -- <generated-yaml> [--out packages/content/data/v2/lessons/songs/<name>.yaml]`);
@@ -42,8 +153,9 @@ function parseArgs(argv: string[]): Args {
   return args;
 }
 
-function readYaml(filePath: string): unknown {
-  return parse(fs.readFileSync(filePath, 'utf8'));
+function readYaml(filePath: string, options: { normalizeGenerated?: boolean } = {}): unknown {
+  const text = fs.readFileSync(filePath, 'utf8');
+  return parse(options.normalizeGenerated ? normalizeGeneratedSongYaml(text) : text);
 }
 
 function defaultOutPath(lessonId: string): string {
@@ -104,7 +216,7 @@ function main() {
   const args = parseArgs(process.argv);
   const invocationCwd = process.env.INIT_CWD || process.cwd();
   const sourcePath = path.resolve(invocationCwd, args.source!);
-  const authored = parseAuthoredLesson(readYaml(sourcePath), sourcePath);
+  const authored = parseAuthoredLesson(readYaml(sourcePath, { normalizeGenerated: true }), sourcePath);
   const outPath = args.out ? path.resolve(invocationCwd, args.out) : defaultOutPath(authored.id);
   const runtime = runtimeLessonFromAuthored(authored);
 

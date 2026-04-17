@@ -1,0 +1,169 @@
+id: song_yoshvim_beveit_kafe
+title: יושבים בבית קפה
+tagline: From everyday cafe Hebrew to a few fair song-derived payoffs.
+endpoint:
+  kind: song
+  description: Handwrite a compact set of reusable Hebrew words, phrases, and sentences that lead into selected lines from the song.
+core:
+  verbs:
+    לשבת:
+      - present_m_pl
+    להרגיש:
+      - present_m_pl
+    לדבר:
+      - present_m_pl
+    לשמוע:
+      - present_f_sg
+    להזמין:
+      - present_m_sg
+  nouns:
+    בית קפה:
+      - sg
+    מצב:
+      - sg
+supporting:
+  verbs:
+    לראות:
+      - present_f_sg
+  adjectives:
+    שחור:
+      - m_sg
+  nouns:
+    זמן:
+      - sg
+build_phrases:
+  - he: בבית קפה
+    en: in a cafe
+    prompt: "Write the phrase: in a cafe"
+    span: phrase
+    drillable: true
+    pieces:
+      - בית קפה
+  - he: בתוך בועה
+    en: inside a bubble
+    prompt: "Write the phrase: inside a bubble"
+    span: phrase
+    drillable: true
+    pieces:
+      - בועה
+    notes: בועה is kept as a phrase-level song word until it has a lexicon cell.
+  - he: עוגת גבינה
+    en: cheesecake
+    prompt: "Write the phrase: cheesecake"
+    span: phrase
+    drillable: true
+    pieces:
+      - עוגת גבינה
+    notes: Teach as a fixed lexical chunk until it has a lexicon cell.
+  - he: על המצב
+    en: about the situation
+    prompt: "Write the phrase: about the situation"
+    span: phrase
+    drillable: true
+    pieces:
+      - מצב
+    notes: The prompt forces definiteness.
+  - he: יושבים בבית קפה
+    en: sitting in a cafe
+    prompt: "Write the phrase: sitting in a cafe"
+    span: phrase
+    drillable: true
+    pieces:
+      - לשבת
+      - בית קפה
+  - he: מרגישים בתוך בועה
+    en: feeling inside a bubble
+    prompt: "Write the phrase: feeling inside a bubble"
+    span: phrase
+    drillable: true
+    pieces:
+      - להרגיש
+      - בועה
+  - he: אני מזמין עוגת גבינה
+    en: I am ordering a cheesecake
+    prompt: "Write the sentence: I am ordering a cheesecake (male speaker)"
+    span: sentence
+    drillable: true
+    pieces:
+      - להזמין
+      - עוגת גבינה
+    notes: Gender is made explicit for fairness.
+  - he: יושבים בבית קפה ומדברים על המצב
+    en: we are sitting in a cafe and talking about the situation
+    prompt: "Write the sentence: we are sitting in a cafe and talking about the situation"
+    span: sentence
+    drillable: true
+    pieces:
+      - לשבת
+      - לדבר
+      - בית קפה
+      - מצב
+  - he: את שומעת רדיו
+    en: you are listening to the radio
+    prompt: "Write the sentence: you are listening to the radio (addressing a woman)"
+    span: sentence
+    drillable: true
+    pieces:
+      - לשמוע
+      - רדיו
+    notes: The prompt makes feminine singular explicit; רדיו still needs a lexicon cell.
+  - he: חבל לך על הזמן
+    en: it is unbelievably intense; the literal meaning is not the real meaning
+    prompt: Recognize the fixed expression only.
+    span: phrase
+    drillable: false
+    pieces:
+      - זמן
+    notes: Too idiomatic for fair production from English alone.
+phases:
+  - id: core_exposure
+    title: Cafe scene basics
+    goal: Learn a small set of high-value verbs, nouns, and location chunks from ordinary Hebrew.
+  - id: supporting_build
+    title: Build short phrases
+    goal: Combine the core items into fair phrase-level targets and simple present-tense statements.
+  - id: core_reinforcement
+    title: Song payoff
+    goal: Handwrite selected song-derived phrases and sentences with minimal guessing.
+notes:
+  - id: note_haval_lkha_al_hazman
+    kind: usage_note
+    title: Fixed idiom
+    body: חבל לך על הזמן is a colloquial fixed expression whose real meaning depends on context, so it is better treated as recognition-only here.
+    related_he: חבל לך על הזמן
+  - id: note_ma_lo_asinu
+    kind: grammar_pattern
+    title: Rhetorical past question
+    body: מה לא עשינו is understandable, but the English cue would not reliably force the exact Hebrew tense and rhetorical flavor.
+    related_he: מה לא עשינו
+  - id: note_eifo_tainu
+    kind: lyric_note
+    title: Reflective question
+    body: איפה טעינו is a strong lyric line, but it is better as note-only because the English meaning does not uniquely force this exact wording.
+    related_he: איפה טעינו
+  - id: note_ma_nishtana
+    kind: usage_note
+    title: Loaded phrase
+    body: מה נשתנה carries strong cultural associations beyond the song, so it is omitted from production drilling.
+    related_he: מה נשתנה
+  - id: note_halkha_hamedina
+    kind: lyric_note
+    title: Idiomatic line
+    body: הלכה המדינה is compact and expressive, but too idiomatic and politically colored for fair handwriting production in this lesson.
+    related_he: הלכה המדינה
+  - id: note_tikhef_mabul
+    kind: lyric_note
+    title: Compressed weather line
+    body: תיכף מבול is vivid but compressed and underconstrained, so it is kept out of production drills.
+    related_he: תיכף מבול
+  - id: note_ugat_gvina_construct
+    kind: grammar_pattern
+    title: Construct phrase
+    body: עוגת גבינה is a normal lexical phrase built with a construct relationship, but it is taught here as a chunk rather than as a grammar lesson.
+    related_he: עוגת גבינה
+authoring_principles:
+  - Teach ordinary reusable Hebrew before lyric-specific payoff.
+  - Keep only forms that can be prompted fairly.
+  - Prefer a small set of strong chunks over broad coverage.
+  - Move idioms, compressed lyric fragments, and underconstrained lines into notes.
+  - Use prompts that explicitly constrain gender, definiteness, and output span when needed.

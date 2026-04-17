@@ -165,7 +165,7 @@ export function songToLesson(
       if (lemma && bucket && tokens.length > 0) {
         const target = unit.role === 'teaching_target' ? core : supporting;
         if (!target[bucket]) target[bucket] = {};
-        target[bucket]![lemma] = tokens;
+        (target[bucket] as Record<string, string[]>)[lemma] = tokens;
       }
     }
 

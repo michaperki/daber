@@ -8,6 +8,8 @@ const KIND_LABEL: Record<LessonNote['kind'], string> = {
   grammar_pattern: 'Grammar pattern',
   function_word: 'Function word',
   teaching_pattern: 'Teaching pattern',
+  usage_note: 'Usage note',
+  lyric_note: 'Lyric note',
 };
 
 // Annotations from song units that don't fit the drill-cell model:
@@ -30,6 +32,11 @@ export function LessonNotes({ notes, heading }: { notes: LessonNote[]; heading?:
             <div class={study.inlineList}>
               {note.surface && <span>{note.surface}</span>}
               {note.ordinary && <span class={panels.muted}>≈ {note.ordinary}</span>}
+            </div>
+          )}
+          {note.related_he && (
+            <div class={study.inlineList}>
+              <span>{note.related_he}</span>
             </div>
           )}
           {note.lyric_he && (

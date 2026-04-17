@@ -1,0 +1,305 @@
+# MASTER PROMPT — SONG TO DIRECT HANDWRITING LESSON YAML
+
+You are creating **one final YAML file** for a Hebrew handwriting lesson derived from a song’s Hebrew lyrics and English translation.
+
+Your output must be **a single valid YAML document only**.
+
+Do not include:
+
+* markdown fences
+* commentary
+* explanation
+* analysis
+* notes outside the YAML
+* repeated copies of the input lyrics or translation
+
+Do **not** echo the input lyrics or translation back into the output.
+
+## Your task
+
+Produce the final authored lesson file in the **exact schema below**.
+
+This is not a research task, not a planning task, and not a curriculum memo.
+
+Do not describe options.
+Do not explain your reasoning.
+Do not invent your own schema.
+Do not add any extra top-level keys.
+
+## Core philosophy
+
+The song is the **destination**, not the lesson.
+
+The lesson should help a learner eventually handwrite meaningful words, phrases, and sentences from the song, but should first teach reusable and fair Hebrew.
+
+Do **not** merely extract tokens.
+Do **not** follow lyric order mechanically.
+Do **not** generate a flat vocabulary dump.
+Do **not** keep low-value words just because they appear in the song.
+
+You may:
+
+* omit low-value items
+* add ordinary Hebrew examples internally when deciding what to teach
+* demote unfair items to notes or reveal-only
+* rewrite prompts for fairness
+* reorganize lesson order
+* choose the smallest useful set of forms
+
+Be selective and decisive.
+
+## Fairness rules
+
+Any drillable item must be fair.
+
+The learner-facing prompt must constrain the expected Hebrew enough that the learner is not guessing:
+
+* number
+* gender
+* person
+* tense/aspect
+* definiteness
+* part of speech
+* required attached particle or prefix
+* whether the expected output is a `cell`, `phrase`, or `sentence`
+
+If an item cannot be prompted fairly, do not force it into production.
+Move it to `notes`, or omit it.
+
+## Output-span rules
+
+Each `build_phrases` item must declare its expected output span:
+
+* `phrase`
+* `sentence`
+
+Each note-like observation belongs in `notes`, not in `build_phrases`.
+
+Prompts must match the expected output span.
+
+* If the expected answer is a phrase, the prompt must cue a phrase.
+* If the expected answer is a sentence, the prompt must cue a sentence.
+* Do not use a full-sentence prompt for a short phrase unless it is truly extractive and unambiguous.
+
+## Prompt rules
+
+Every `build_phrases` item must distinguish between:
+
+* `en`: the meaning
+* `prompt`: the learner-facing production cue
+
+These are not the same thing.
+
+Use natural, learner-friendly prompts where possible.
+Use compact disambiguating prompts where necessary.
+Do not use vague English glosses that license multiple Hebrew answers.
+
+## Content rules
+
+For each included item:
+
+1. identify the real base form
+2. expand only to the smallest useful family
+3. teach ordinary Hebrew before lyric-specific payoff
+4. include only forms that are genuinely useful
+5. connect the lesson to later song payoff where appropriate
+
+Not every song token should become a drill target.
+
+Default to `notes` or omission for items like:
+
+* bound forms
+* literary forms
+* opaque lyric fragments
+* advanced grammar observations
+* items whose English cue would not uniquely determine the Hebrew
+
+## Desired lesson style
+
+The final YAML should represent a **direct handwriting lesson**, not a song-analysis document.
+
+Prefer a smaller, stronger lesson over a broad one.
+
+The output should feel like:
+
+* a curated sequence of fair handwriting targets
+* building from ordinary Hebrew into song-derived payoff
+* ready to paste into a repo
+
+## Exact required YAML shape
+
+Your output must contain **exactly these top-level keys and no others**:
+
+* `id`
+* `title`
+* `tagline`
+* `endpoint`
+* `phases`
+* `core`
+* `supporting`
+* `build_phrases`
+* `notes`
+* `authoring_principles`
+
+The YAML shape must be valid YAML with this exact structure:
+
+id: song_<lesson_id>
+title: <lesson_title>
+tagline: <short one-line description>
+endpoint:
+  kind: song
+  description: <what the learner will be able to handwrite by the end>
+
+phases:
+  - id: core_exposure
+    title: <short title>
+    goal: <short goal>
+  - id: supporting_build
+    title: <short title>
+    goal: <short goal>
+  - id: core_reinforcement
+    title: <short title>
+    goal: <short goal>
+
+core:
+  verbs:
+    <lemma>: [<allowed verb variants>]
+  nouns:
+    <lemma>: [<allowed noun variants>]
+  adjectives:
+    <lemma>: [<allowed adjective variants>]
+
+supporting:
+  verbs:
+    <lemma>: [<allowed verb variants>]
+  nouns:
+    <lemma>: [<allowed noun variants>]
+  adjectives:
+    <lemma>: [<allowed adjective variants>]
+
+build_phrases:
+  - he: <hebrew target>
+    en: <meaning>
+    prompt: <learner-facing production cue>
+    span: phrase|sentence
+    pieces: [<supporting Hebrew pieces already taught or intentionally reinforced>]
+    drillable: true|false
+    notes: <optional short author note>
+
+notes:
+  - id: <note_id>
+    title: <short title>
+    body: <short learner-facing explanation>
+    kind: bound_form|literary_form|grammar_pattern|usage_note|lyric_note
+    related_he: <optional Hebrew form or phrase>
+
+authoring_principles:
+  - <short principle>
+  - <short principle>
+
+## Hard schema constraints
+
+These are mandatory:
+
+* Do not output any top-level key other than the 10 required keys above.
+* Do not include `source`, `lyrics`, `translation`, `hebrew_lyrics`, `english_translation`, `curriculum_overview`, `units`, `delivery`, `critical_review`, or any similar section.
+* Do not include per-unit analysis structures such as `unit_type`, `base_form`, `family`, `ordinary_usage`, `flexibility_forms`, `grammar_pattern`, or `lyric_unlock`.
+* Do not invent nested sections beyond what the required schema allows.
+* `build_phrases` must contain only phrase or sentence targets.
+* Notes and recognition-only observations must go in `notes`, not in `build_phrases`.
+* `core` and `supporting` must be concise and curated.
+* Include only lemmas and variants you truly want the handwriting system to drill.
+* Do not include empty maps or empty lists unless necessary for valid schema completion.
+
+## Allowed form tokens
+
+Use only these exact variant tokens in `core` and `supporting`.
+
+Verb variants:
+
+* `lemma`
+* `present_m_sg`
+* `present_f_sg`
+* `present_m_pl`
+* `present_f_pl`
+* `past_1sg`
+* `past_2sg_m`
+* `past_2sg_f`
+* `past_3sg_m`
+* `past_3sg_f`
+* `past_1pl`
+* `past_2pl_m`
+* `past_2pl_f`
+* `past_3pl`
+* `future_1sg`
+* `future_2sg_m`
+* `future_2sg_f`
+* `future_3sg_m`
+* `future_3sg_f`
+* `future_1pl`
+* `future_2pl_m`
+* `future_2pl_f`
+* `future_3pl`
+* `imperative_sg_m`
+* `imperative_sg_f`
+* `imperative_pl_m`
+* `imperative_pl_f`
+
+Noun variants:
+
+* `sg`
+* `pl`
+
+Adjective variants:
+
+* `m_sg`
+* `f_sg`
+* `m_pl`
+* `f_pl`
+
+Do not invent aggregate or negative-form tokens such as `present_pl`, `present_sg_2_f`, `present_sg_1_m`, `present_sg_2_f_neg`, or `sg_m`.
+
+## Variant selection rules
+
+When listing allowed variants under `core` or `supporting`, choose only the forms you actually want the handwriting system to drill.
+
+Do **not** automatically include every inflection.
+
+Examples of good restraint:
+
+* a noun may include only `sg`
+* a noun may include `sg` and `pl` only if both are truly useful
+* a verb may include only the few forms needed for flexibility and lyric payoff
+* an adjective may include only the agreement forms you intentionally want taught
+
+Avoid low-value plural clutter unless it is genuinely part of the curriculum.
+
+## Build phrase rules
+
+`build_phrases` should be the main bridge from ordinary Hebrew to the song.
+
+Only include a phrase or sentence if:
+
+* it is a fair production target
+* the prompt clearly matches the expected output span
+* it feels worth handwriting
+
+For phrase items, prefer natural prompts that clearly cue the intended output.
+For sentence items, prompt the full sentence.
+
+If a lyric fragment is too ambiguous, too poetic, too idiomatic, or too underconstrained, move it to `notes` or omit it.
+
+## Final self-check before returning
+
+Before returning the YAML, silently verify all of the following:
+
+1. The output is a single valid YAML document.
+2. The output has exactly the 10 required top-level keys.
+3. No forbidden keys appear anywhere.
+4. No lyrics or translation are echoed back as source material sections.
+5. The output is a direct lesson file, not an analysis document.
+6. The file is ready to paste into a repo as authored curriculum content.
+
+## Final instruction
+
+Return only the final YAML file.

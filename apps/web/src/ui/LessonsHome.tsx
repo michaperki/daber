@@ -21,6 +21,11 @@ function statusDetail(p: LessonProgress) {
 
 export function LessonsHome() {
   const { route } = useLocation();
+  const directSongLessons = lessons.filter((l) => l.endpoint?.kind === 'song' || l.id.startsWith('song_'));
+  const authoredLessons = lessons.filter((l) => !directSongLessons.includes(l));
+  const richSongOnly = songLessons.filter(
+    (song) => !directSongLessons.some((lesson) => lesson.id === `song_${song.id}` || lesson.source_song_id === song.id),
+  );
 
   return (
     <>
@@ -29,7 +34,6 @@ export function LessonsHome() {
         <div class={panels.muted}>Short, curated lessons with a clear payoff.</div>
       </div>
       {(() => {
-        const authoredLessons = lessons.filter((l) => !l.id.startsWith('song_'));
         return authoredLessons.length ? (
         authoredLessons.map((l) => {
           const lessonProgress = lessonProgressFor(progress.value, l.id);
@@ -71,13 +75,38 @@ export function LessonsHome() {
           </div>
         </div>
       </div>
-      {songLessons.length > 0 && (
+      {(directSongLessons.length > 0 || richSongOnly.length > 0) && (
         <>
           <div class={panels.panel}>
             <div style={{ fontWeight: 600, marginBottom: 6 }}>Songs</div>
-            <div class={panels.muted}>Teachable units before lyric payoff.</div>
+            <div class={panels.muted}>Song-based handwriting lessons.</div>
           </div>
-          {songLessons.map((song) => (
+          {directSongLessons.map((l) => {
+            const lessonProgress = lessonProgressFor(progress.value, l.id);
+            return (
+              <button
+                key={l.id}
+                class={panels.panel}
+                onClick={() => route(`/lesson/${l.id}`)}
+                style={{ textAlign: 'left' }}
+              >
+                <div class={panels.row}>
+                  <div style={{ fontWeight: 600 }}>{l.title}</div>
+                  <div style={{ marginLeft: 'auto', fontSize: '12px', color: 'var(--muted)' }}>
+                    {l.estimated_minutes ? `${l.estimated_minutes} min` : ''}
+                  </div>
+                </div>
+                {l.tagline && <div class={panels.muted}>{l.tagline}</div>}
+                <div class={panels.row}>
+                  <div style={{ fontSize: 12, fontWeight: 600 }}>
+                    {statusLabel(lessonProgress.status)}
+                  </div>
+                  <div class={panels.progress}>{statusDetail(lessonProgress)}</div>
+                </div>
+              </button>
+            );
+          })}
+          {richSongOnly.map((song) => (
             <button
               key={song.id}
               class={panels.panel}

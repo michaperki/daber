@@ -22,6 +22,7 @@
     "export:calibration": "node scripts/export_calibration_png.cjs",
     "prepare:hhd": "python3 scripts/cnn_hhd/prepare_hhd_numeric.py --root data/hhd_dataset --out data/hhd_by_letter --mapping scripts/cnn_hhd/hhd_mapping.json",
     "sim": "node scripts/sim_drill.js",
+    "song:import": "npm -w packages/content run import:song --",
     "song:review": "node scripts/review_song_flow.js"
   }
 }

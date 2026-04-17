@@ -42,9 +42,17 @@ export const vocab: VocabEntry[] = Array.isArray(first) ? first : [];
 // Optional lessons import; tolerates absence during dev
 export type LessonNote = {
   id: string;
-  kind: 'bound_form' | 'literary_form' | 'grammar_pattern' | 'function_word' | 'teaching_pattern';
+  kind:
+    | 'bound_form'
+    | 'literary_form'
+    | 'grammar_pattern'
+    | 'function_word'
+    | 'teaching_pattern'
+    | 'usage_note'
+    | 'lyric_note';
   title: string;
   body: string;
+  related_he?: string;
   surface?: string;
   ordinary?: string;
   lyric_he?: string;
@@ -55,7 +63,7 @@ export type LessonJSON = {
   title: string;
   tagline?: string;
   estimated_minutes?: number;
-  endpoint?: { description?: string };
+  endpoint?: { kind?: 'mission' | 'song'; description?: string };
   core?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> };
   supporting?: { verbs?: Record<string, string[]>; adjectives?: Record<string, string[]>; nouns?: Record<string, string[]> };
   build_phrases?: {

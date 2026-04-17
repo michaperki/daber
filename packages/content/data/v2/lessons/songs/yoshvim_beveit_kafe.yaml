@@ -31,6 +31,12 @@ supporting:
   nouns:
     זמן:
       - sg
+    בועה:
+      - sg
+    עוגת גבינה:
+      - sg
+    רדיו:
+      - sg
 build_phrases:
   - he: בבית קפה
     en: in a cafe
@@ -46,7 +52,6 @@ build_phrases:
     drillable: true
     pieces:
       - בועה
-    notes: בועה is kept as a phrase-level song word until it has a lexicon cell.
   - he: עוגת גבינה
     en: cheesecake
     prompt: "Write the phrase: cheesecake"
@@ -54,7 +59,7 @@ build_phrases:
     drillable: true
     pieces:
       - עוגת גבינה
-    notes: Teach as a fixed lexical chunk until it has a lexicon cell.
+    notes: Teach as a fixed lexical chunk.
   - he: על המצב
     en: about the situation
     prompt: "Write the phrase: about the situation"
@@ -106,7 +111,7 @@ build_phrases:
     pieces:
       - לשמוע
       - רדיו
-    notes: The prompt makes feminine singular explicit; רדיו still needs a lexicon cell.
+    notes: The prompt makes feminine singular explicit.
   - he: חבל לך על הזמן
     en: it is unbelievably intense; the literal meaning is not the real meaning
     prompt: Recognize the fixed expression only.

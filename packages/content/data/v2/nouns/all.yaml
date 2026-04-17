@@ -253,6 +253,14 @@ entries:
       - he: זה מצב זמני
         en: It is a temporary situation.
     gender: m
+  - lemma: בועה
+    gloss: bubble
+    forms:
+      sg: בועה
+    examples:
+      - he: אנחנו בתוך בועה
+        en: We are inside a bubble.
+    gender: f
   - lemma: עבודה
     gloss: work, job
     forms:

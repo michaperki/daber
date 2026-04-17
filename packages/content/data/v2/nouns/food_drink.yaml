@@ -95,6 +95,14 @@ entries:
       - he: קניתי שתי עוגות
         en: I bought two cakes.
     gender: f
+  - lemma: עוגת גבינה
+    gloss: cheesecake
+    forms:
+      sg: עוגת גבינה
+    examples:
+      - he: הזמנתי עוגת גבינה
+        en: I ordered a cheesecake.
+    gender: f
   - lemma: קינוח
     gloss: dessert
     forms:

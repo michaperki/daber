@@ -77,6 +77,14 @@ entries:
       - he: הטלפון על השולחן
         en: The phone is on the table.
     gender: m
+  - lemma: רדיו
+    gloss: radio
+    forms:
+      sg: רדיו
+    examples:
+      - he: אני שומע רדיו
+        en: I am listening to the radio.
+    gender: m
   - lemma: הודעה
     gloss: message
     forms:

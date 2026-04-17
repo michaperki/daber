@@ -32,6 +32,9 @@ supporting:
     לראות: [present_f_sg]
   nouns:
     זמן: [sg]
+    בועה: [sg]
+    עוגת גבינה: [sg]
+    רדיו: [sg]
   adjectives:
     שחור: [m_sg]
 
@@ -49,7 +52,6 @@ build_phrases:
     span: phrase
     pieces: [בועה]
     drillable: true
-    notes: בועה is kept as a phrase-level song word until it has a lexicon cell.
 
   - he: עוגת גבינה
     en: cheesecake
@@ -57,7 +59,7 @@ build_phrases:
     span: phrase
     pieces: [עוגת גבינה]
     drillable: true
-    notes: Teach as a fixed lexical chunk until it has a lexicon cell.
+    notes: Teach as a fixed lexical chunk.
 
   - he: על המצב
     en: about the situation
@@ -102,7 +104,7 @@ build_phrases:
     span: sentence
     pieces: [לשמוע, רדיו]
     drillable: true
-    notes: The prompt makes feminine singular explicit; רדיו still needs a lexicon cell.
+    notes: The prompt makes feminine singular explicit.
 
   - he: חבל לך על הזמן
     en: it is unbelievably intense; the literal meaning is not the real meaning

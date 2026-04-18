@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { useLocation } from 'preact-iso';
 import { DrawCanvas, type DrawCanvasHandle } from '../canvas/DrawCanvas';
 // Stroke-only recognizer; margin gating removed.
@@ -21,7 +21,6 @@ import {
 import { vocab, type VocabEntry } from '../content';
 import { playCorrect, playWrong, playWordComplete, playReveal, playPerfect, primeAudio } from '../audio';
 import { progress } from '../state/signals';
-import panels from './panels.module.css';
 import study from './study.module.css';
 import { appendLocalSample } from '../storage/strokes_store';
 import { toPrototypes } from '../storage/calibration';
@@ -95,7 +94,13 @@ function expectedRecognitionLetter(expected: string, atEnd: boolean): LetterGlyp
   return (atEnd ? normalizedExpected(expected, atEnd) : toBaseForm(expected as LetterGlyph)) as LetterGlyph;
 }
 
-export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string | null }) {
+export function VocabTab({
+  lessonId: drillLessonId = null,
+  onExit,
+}: {
+  lessonId?: string | null;
+  onExit?: () => void;
+}) {
   const { route } = useLocation();
   const canvasRef = useRef<DrawCanvasHandle | null>(null);
   // Force-remount key for the canvas to guarantee a fresh drawing surface
@@ -459,12 +464,6 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     return () => window.removeEventListener('keydown', onKey);
   });
 
-  const feedbackClass =
-    feedback.kind === 'ok'
-      ? `${panels.feedback} ${panels.feedbackOk}`
-      : feedback.kind === 'bad'
-        ? `${panels.feedback} ${panels.feedbackBad}`
-        : panels.feedback;
   const session = activeSession.value;
   const stage = currentStage(session);
   const sessionPos = session ? Math.min(session.currentIndex + 1, session.targetCount) : 0;
@@ -472,127 +471,191 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
 
   if (vocab.length === 0) {
     return (
-      <>
-        <DrawCanvas ref={canvasRef} />
-        <div class={panels.panel}>
-          <div class={panels.feedback}>
-            No vocab loaded. Run <code>npm -w packages/content run build</code> to generate <code>packages/content/dist/vocab.json</code>, then restart Vite.
-          </div>
+      <div class={study.drillStage}>
+        <div class={study.emptyState}>
+          No vocab loaded. Run <code>npm -w packages/content run build</code> to generate{' '}
+          <code>packages/content/dist/vocab.json</code>, then restart Vite.
         </div>
-      </>
+      </div>
     );
   }
 
+  const sessionLabel = session
+    ? session.mode === 'lesson'
+      ? session.lessonTitle || 'Lesson drill'
+      : 'Free practice'
+    : '—';
+  const he = state.current?.he || '';
+  const chars = he.split('');
+  const accepted = state.output.replace(/\s/g, '').length;
+  const revealAll = !!state.revealed;
+  const totalCount = session?.targetCount || 0;
+  const tileGroups = (() => {
+    type Info =
+      | { kind: 'space'; i: number }
+      | { kind: 'letter'; i: number; ch: string; filled: boolean; show: boolean };
+    let idx = 0;
+    const info: Info[] = chars.map((ch, i) => {
+      if (ch === ' ') return { kind: 'space', i } as const;
+      const filled = accepted > idx;
+      const show = revealAll || filled || !!state.hints[i];
+      idx++;
+      return { kind: 'letter', i, ch, filled, show } as const;
+    });
+    type LetterInfo = Extract<Info, { kind: 'letter' }>;
+    const groups: LetterInfo[][] = [];
+    let cur: LetterInfo[] = [];
+    for (const item of info) {
+      if (item.kind === 'space') {
+        if (cur.length) groups.push(cur);
+        cur = [];
+      } else {
+        cur.push(item);
+      }
+    }
+    if (cur.length) groups.push(cur);
+    return groups;
+  })();
+
+  const tierLabel = (() => {
+    if (!tierLabelVisible || !state.current || state.current.pos !== 'verb' || !state.current.lemma) return null;
+    const t = getUnlockedTier(state.current.lemma);
+    return t === 4 ? 'Imperative' : t === 3 ? 'Future' : t === 2 ? 'Past' : 'Present';
+  })();
+
+  const showPulse = feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0);
+
   return (
-    <>
-      {/* Minimal toast for unlock */}
-      {tierToast.value && (
-        <div class={panels.feedback + ' ' + panels.feedbackOk}>{tierToast.value}</div>
-      )}
-      {/* Small inline verb/tier awareness (only after attempt to avoid leakage) */}
-      {tierLabelVisible && state.current && state.current.pos === 'verb' && state.current.lemma && (
-        <div class={panels.progress}>
-          {(() => {
-            const lemma = state.current!.lemma!;
-            const t = getUnlockedTier(lemma);
-            const label = t === 4 ? 'Imperative' : t === 3 ? 'Future' : t === 2 ? 'Past' : 'Present';
-            return label;
-          })()}
+    <div class={study.drillStage}>
+      <div class={study.topPills}>
+        <button
+          class={study.exitPill}
+          onClick={() => onExit?.()}
+          disabled={!onExit}
+          aria-label="Exit drill"
+          title="Exit drill"
+        >
+          <span aria-hidden="true">‹</span>
+          <span class={study.exitLabel}>Exit</span>
+        </button>
+
+        <div class={study.promptPill}>
+          <div class={study.promptLabelRow}>
+            <span>{sessionLabel}</span>
+            {stage && (
+              <span class={study.stageTag}>
+                {stage.label} {stagePos}/{stage.count}
+              </span>
+            )}
+            {tierLabel && <span class={study.tierChip}>{tierLabel}</span>}
+          </div>
+          <div class={study.promptText}>{state.current ? state.current.prompt : '—'}</div>
         </div>
-      )}
-      {session && (
-        <div class={panels.panel}>
-          <div class={panels.row}>
-            <div>
-              <div class={panels.promptLabel}>
-                {session.mode === 'lesson' ? (session.lessonTitle || 'Lesson drill') : 'Free practice'}
-              </div>
-              <div class={panels.progress}>
-                Session {sessionPos}/{session.targetCount}
-                {stage ? ` · Stage ${stage.ordinal}/${session.stages.length}: ${stage.label} ${stagePos}/${stage.count}` : ''}
-              </div>
-            </div>
-            <div class={panels.progress} style={{ marginLeft: 'auto' }}>
-              Clean {session.summary.clean} · Unclean {session.summary.unclean}
-            </div>
+
+        <div class={study.counterPill}>
+          <div class={study.counterMain}>
+            {sessionPos}/{totalCount || '—'}
+          </div>
+          <div class={study.counterSub}>
+            {session ? `✓ ${session.summary.clean}` : 'Ready'}
           </div>
         </div>
-      )}
-      <div class={study.topWord}>
-        {state.current ? <span>{state.current.prompt}</span> : '—'}
       </div>
-      {/* Inline minimal prompt when a tier is ready (slight delay) */}
+
+      <div class={`${study.tileStrip} ${showPulse ? study.pulse : ''}`}>
+        {tileGroups.map((group, gi) => (
+          <div key={`g-${gi}`} class={study.tileStripGroup}>
+            {group.map((it) => (
+              <div
+                key={`t-${it.i}`}
+                class={`${study.stripTile} ${it.filled ? study.stripTileOk : ''}`}
+              >
+                {it.show ? it.ch : ''}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
       {tierSuggestion.value && showSuggestion && (
-        <div class={panels.panel}>
-          <div class={panels.row}>
-            <div class={panels.promptLabel}>
-              {(() => {
-                const s = tierSuggestion.value!;
-                const tier = s.tier === 2 ? 'Past' : s.tier === 3 ? 'Future' : 'Imperative';
-                return `${tier} forms for ‘${s.lemma}’ are ready. Unlock now?`;
-              })()}
-            </div>
-            <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
-              <button class={study.secondaryBtn} onClick={() => acceptTierUnlock()}>Unlock</button>
-              <button class={study.secondaryBtn} onClick={() => snoozeTierSuggestion()}>Later</button>
-            </div>
-          </div>
+        <div class={study.tierSuggestion}>
+          <span class={study.tierSuggestionLabel}>
+            {(() => {
+              const s = tierSuggestion.value!;
+              const tier = s.tier === 2 ? 'Past' : s.tier === 3 ? 'Future' : 'Imperative';
+              return `${tier} forms for ‘${s.lemma}’ are ready.`;
+            })()}
+          </span>
+          <button class={study.toolbarBtn} onClick={() => acceptTierUnlock()} title="Unlock">✓</button>
+          <button class={study.toolbarBtn} onClick={() => snoozeTierSuggestion()} title="Later">⋯</button>
         </div>
       )}
-      {/* Tiles grouped by word: preserve i and idx numbering across full phrase */}
-      <div class={study.tilesRow + (feedback.kind === 'ok' && state.pos >= (state.current?.he.length || 0) ? ' ' + study.pulse : '')}>
-        {(() => {
-          const he = state.current?.he || '';
-          const chars = he.split('');
-          const accepted = state.output.replace(/\s/g, '').length;
-          const revealAll = !!state.revealed;
-          let idx = 0; // index over non-space letters across the full phrase
 
-          // First pass: compute render info per character, preserving i and idx semantics
-          type Info =
-            | { kind: 'space'; i: number }
-            | { kind: 'letter'; i: number; ch: string; filled: boolean; show: boolean };
-          const info: Info[] = chars.map((ch, i) => {
-            if (ch === ' ') return { kind: 'space', i } as const;
-            const filled = accepted > idx;
-            const show = revealAll || filled || !!state.hints[i];
-            idx++;
-            return { kind: 'letter', i, ch, filled, show } as const;
-          });
+      <div class={study.canvasStage}>
+        <div class={study.canvasFrame}>
+          <DrawCanvas
+            key={canvasKey}
+            ref={canvasRef}
+            onStrokeComplete={onStroke}
+            onPenDown={onPenDown}
+            fullBleed
+          />
+        </div>
 
-          // Split into word groups on spaces
-          type LetterInfo = Extract<Info, { kind: 'letter' }>;
-          const groups: LetterInfo[][] = [];
-          let cur: LetterInfo[] = [];
-          for (const item of info) {
-            if (item.kind === 'space') {
-              if (cur.length) groups.push(cur);
-              cur = [];
-            } else {
-              cur.push(item);
-            }
-          }
-          if (cur.length) groups.push(cur);
-
-          // Render each word group as its own container, without spacers
-          return groups.map((group, gi) => (
-            <div key={`g-${gi}`} class={study.wordGroup}>
-              {group.map((it) => (
-                <div key={`t-${it.i}`} class={`${study.tile} ${it.filled ? study.tileOk : ''}`}>{it.show ? it.ch : ''}</div>
-              ))}
-            </div>
-          ));
-        })()}
+        <div class={study.bottomToolbar}>
+          <button
+            class={study.toolbarBtn}
+            onClick={() => canvasRef.current?.undo()}
+            title="Undo last stroke"
+            aria-label="Undo last stroke"
+          >
+            ↶
+          </button>
+          <button
+            class={study.toolbarBtn}
+            onClick={() => canvasRef.current?.clear()}
+            title="Clear canvas"
+            aria-label="Clear canvas"
+          >
+            ⌫
+          </button>
+          <button
+            class={study.toolbarBtn}
+            onClick={onIdk}
+            title="Reveal the word"
+            aria-label="Reveal the word"
+          >
+            ?
+          </button>
+          <button
+            class={study.toolbarBtn}
+            onClick={onSkip}
+            title="Skip this item"
+            aria-label="Skip this item"
+          >
+            »
+          </button>
+          {lastReject && (
+            <button
+              class={study.toolbarBtn}
+              onClick={forceAccept}
+              title="Accept last attempt"
+              aria-label="Accept last attempt"
+            >
+              ✓
+            </button>
+          )}
+        </div>
       </div>
-      <div class={study.canvasWrap}>
-        <DrawCanvas key={canvasKey} ref={canvasRef} onStrokeComplete={onStroke} onPenDown={onPenDown} />
-      </div>
-      <div class={study.controlsRow}>
-        <button class={study.secondaryBtn} onClick={onIdk} title="Reveal the word and advance">I don’t know</button>
-        <button class={study.secondaryBtn} onClick={onSkip} title="Skip to a new word">Skip</button>
-      </div>
 
-      <div class={feedbackClass}>{feedback.text}</div>
-    </>
+      {tierToast.value && <div class={`${study.toast} ${study.toastOk}`}>{tierToast.value}</div>}
+      {feedback.kind !== 'idle' && feedback.text && (
+        <div
+          class={`${study.toast} ${feedback.kind === 'ok' ? study.toastOk : study.toastBad}`}
+        >
+          {feedback.text}
+        </div>
+      )}
+    </div>
   );
 }

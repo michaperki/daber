@@ -2,7 +2,6 @@ import { useEffect } from 'preact/hooks';
 import { useLocation, useRoute } from 'preact-iso';
 import { selectedLessonId } from '../state/signals';
 import { VocabTab } from './VocabTab';
-import study from './study.module.css';
 
 function useWakeLock() {
   useEffect(() => {
@@ -35,18 +34,5 @@ export function DrillScreen() {
 
   useWakeLock();
 
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '12px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-        <button
-          class={study.secondaryBtn}
-          onClick={() => route(backHref)}
-          aria-label="Exit drill"
-        >
-          Back
-        </button>
-      </div>
-      <VocabTab lessonId={lessonId} />
-    </div>
-  );
+  return <VocabTab lessonId={lessonId} onExit={() => route(backHref)} />;
 }

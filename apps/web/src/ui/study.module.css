@@ -174,3 +174,309 @@
   50% { transform: scale(1.02); }
   100% { transform: scale(1); }
 }
+
+/* ---- Drill stage (full-bleed handwriting surface) ---- */
+
+.drillStage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  gap: 10px;
+  background: var(--paper);
+}
+
+.topPills {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.pillBase {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 1.25px solid var(--ink-2);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.exitPill {
+  composes: pillBase;
+}
+
+.exitPill:hover {
+  border-color: var(--ink);
+}
+
+.exitLabel {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.promptPill {
+  composes: pillBase;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 14px;
+  gap: 1px;
+  text-align: center;
+  min-width: 0;
+}
+
+.promptLabelRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.stageTag {
+  color: var(--ink-2);
+  font-weight: 700;
+}
+
+.promptText {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.counterPill {
+  composes: pillBase;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  padding: 4px 12px;
+}
+
+.counterMain {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.counterSub {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tileStrip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  direction: rtl;
+  padding: 0 4px;
+}
+
+.tileStripGroup {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+  direction: rtl;
+}
+
+.stripTile {
+  width: 22px;
+  height: 28px;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background: var(--paper);
+  color: var(--text);
+}
+
+.stripTileOk {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.canvasStage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Reserve vertical room for the floating bottom toolbar */
+  padding-bottom: 64px;
+}
+
+.canvasFrame {
+  position: relative;
+  width: min(100%, 70vh);
+  max-width: 640px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvasFrame > div {
+  width: 100%;
+  height: 100%;
+}
+
+.bottomToolbar {
+  position: absolute;
+  left: 50%;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  background: var(--paper);
+  border: 1.25px solid var(--ink-2);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.toolbarBtn {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.toolbarBtn:hover {
+  border-color: var(--ink);
+}
+
+.toolbarBtnLabel {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 8px;
+}
+
+.tierSuggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1.25px solid var(--ink-2);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  font-size: 12px;
+  color: var(--ink);
+}
+
+.tierSuggestionLabel {
+  flex: 1;
+  min-width: 0;
+  font-weight: 650;
+}
+
+.tierChip {
+  display: inline-flex;
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  top: 64px;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  border: 1.25px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 2px 2px 0 var(--shadow);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.toastOk {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.toastBad {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 24px;
+  color: var(--muted);
+}
+
+@media (min-width: 760px) {
+  .drillStage {
+    padding: 18px 20px calc(18px + env(safe-area-inset-bottom));
+    gap: 14px;
+  }
+
+  .promptText {
+    font-size: 14px;
+  }
+
+  .bottomToolbar {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .toolbarBtn {
+    width: 44px;
+    height: 44px;
+  }
+}

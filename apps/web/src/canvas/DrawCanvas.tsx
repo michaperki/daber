@@ -31,6 +31,8 @@ export type DrawCanvasProps = {
   onLiveVector?: (vec: Float32Array) => void;
   // Optional letter glyph to show as a faint watermark reference
   watermarkLetter?: LetterGlyph;
+  // When true, the wrap drops its fixed 420px cap and fills its parent.
+  fullBleed?: boolean;
 };
 
 // Square drawing surface that mirrors the reference HebrewHandwritingWeb
@@ -53,7 +55,7 @@ function getWatermarkImage(glyph: string, onLoad: () => void): HTMLImageElement 
 }
 
 export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
-  function DrawCanvas({ onStrokeComplete, onPenUp, onPenDown, onLiveVector, watermarkLetter }, ref) {
+  function DrawCanvas({ onStrokeComplete, onPenUp, onPenDown, onLiveVector, watermarkLetter, fullBleed }, ref) {
     const wrapRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const strokesRef = useRef<Stroke[]>([]);
@@ -240,8 +242,9 @@ export const DrawCanvas = forwardRef<DrawCanvasHandle, DrawCanvasProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [watermarkLetter]);
 
+    const wrapClass = fullBleed ? `${styles.wrap} ${styles.wrapFull}` : styles.wrap;
     return (
-      <div class={styles.wrap} ref={wrapRef}>
+      <div class={wrapClass} ref={wrapRef}>
         <canvas class={styles.canvas} ref={canvasRef} />
       </div>
     );

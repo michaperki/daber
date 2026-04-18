@@ -138,3 +138,80 @@
 
   That gives you the speed of a rebuild where it matters visually, without re-solving storage,
   recognition, content, and deployment.
+
+  Next Phase — UX Polish + Earned Progress (supersedes §9 as the immediate next step)
+
+  Step 9 (freeform spike) was originally framed as the next numbered step, but REDESIGN.md also
+  says it must not block the redesign and that letter-by-letter is the fallback. So the spike
+  runs on its own track (D below) while three non-blocking tracks move the visible product
+  closer to the wireframes.
+
+  A. Handwriting UX polish — same engine
+     Goal: the drill looks and feels like wireframes Variant C (full-bleed canvas, floating
+     controls) without touching the recognizer.
+     - apps/web/src/ui/DrillScreen.tsx — replace the top "Back" row with a floating exit pill.
+     - apps/web/src/ui/VocabTab.tsx — hoist DrawCanvas to full-bleed; float the current prompt
+       (Hebrew word + English cue) as a top pill; float the action row (reveal, skip, undo,
+       check) as a center-bottom toolbar. Demote the tile row to a small progress strip.
+     - apps/web/src/ui/study.module.css — add tokens/classes for the floating pill, toolbar,
+       and a ghost-word layer rendered behind the canvas at ~8% opacity.
+     - Calibration, reveal, skip, final-form forgiveness, tier suggestions all unchanged.
+     Acceptance: on a 390px viewport, the drill matches HandC in layout; behavior is
+     byte-identical to the current engine (same predictions, same audio, same progress writes).
+
+  B. Station semantics — tighten the Journey map
+     Goal: Words / Write / Phrase / Review / Arrive reflect what the learner did, not a
+     heuristic over session indices.
+     - apps/web/src/session_planner.ts — give each stage an explicit `station` field
+       (`words`, `write`, `phrase`, `review`). Either split `core_exposure` into a meet-then-
+       write pair or add a `write` station that advances on the first successful handwriting
+       attempt for each core item. Persist station-level counts, not just stage-level.
+     - apps/web/src/storage/progress.ts — extend `LessonStageProgress` (or add a sibling
+       `stations` map) so `station === 'write'` is countable independent of `core_exposure`.
+     - apps/web/src/storage/mutations.ts — `markLessonSessionProgress` should advance the
+       station the current item belongs to, not the overall index.
+     - apps/web/src/ui/LessonEntry.tsx — replace `activeStation` heuristic with a direct
+       stage→station lookup; show the first incomplete station as active.
+     - apps/web/src/ui/JourneysScreen.tsx — same lookup for the trail dots.
+     Acceptance: step through a lesson in dev; each station lights exactly once, at the moment
+     the learner crosses its threshold. No station ever lights without a corresponding user
+     action being recorded in progress.
+
+  C. Review scheduling — earn the "Review" tab
+     Goal: the Review queue shows items that are actually due, in a defensible order, mixing
+     phrases and weak cells.
+     - apps/web/src/session_planner.ts — replace the current phrase-review predicate
+       (`attempted > clean || clean < 2 || last_seen > 24h`) with tiered due logic:
+       (i) failed on last attempt, (ii) no clean streak yet (`clean < 2`), (iii) stale > 48h
+       and clean streak < 3, (iv) stale > 7d regardless. Score = phrase weakness + mean
+       weakness of source cells.
+     - Free-review session composition: budget 40% phrases, 40% weak cells, 20% stale cells
+       (replacing "stuff phrases first, backfill with cells").
+     - apps/web/src/ui/ReviewScreen.tsx — per item, show a "why due" chip (`Needs work`,
+       `Stale`, `New`) drawn from the same due-tier it matched.
+     Acceptance: with seeded progress (one failed, one stale, two clean), the Review screen
+     lists the failed and stale items first with the correct chips; starting daily review
+     yields a session whose first items match.
+
+  D. Freeform spike — parallel, non-blocking (inherits §9)
+     Goal: answer whether whole-word/phrase scoring is viable before we bet the redesign on it.
+     - Route: `/spike/write`, dev-only flag. Input is a 2–3 word prompt.
+     - Scoring: deterministic (no ML). Shape via DTW against template strokes, proportion via
+       bbox ratio against target, order via per-stroke direction and count.
+     - Success criteria (all must hold): (i) accepts a correctly written target in ≥90% of 20
+       samples/word, (ii) rejects a wrong target in ≥90% of 20 samples/word, (iii) holds for
+       three different target words of 2–4 letters.
+     - If met: wire the spike canvas into (A). If not: document the failure modes and keep
+       the polished letter-by-letter drill from (A).
+
+  Deferred backlog (not in this phase — visible in wireframes, not yet built):
+     - Onboarding 3-step (welcome → goal → calibration tiles).
+     - Phrase practice "translate-this + word bank + say it" surface.
+     - Progress calendar heatmap, metrics tiles, mastery list.
+     - Songs library grid (Ready / Up next / Locked).
+     - Hebrew typography pass (Frank Ruhl Libre for titles; `.heb` class for RTL prompts).
+     - Persistent resume bar on Journeys home.
+
+  Execution order: (A) and (B) first, (C) immediately after (both depend on station semantics
+  being coherent), (D) in parallel throughout. Ship as one phase when A+B+C land; fold in D
+  only if its success criteria are met.

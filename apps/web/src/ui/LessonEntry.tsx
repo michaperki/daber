@@ -2,9 +2,11 @@ import { useMemo } from 'preact/hooks';
 import { useLocation, useRoute } from 'preact-iso';
 import { lessons, type LessonJSON } from '../content';
 import { progress } from '../state/signals';
-import { lessonProgressFor, type LessonProgress } from '../storage/progress';
+import { lessonProgressFor, type LessonProgress, type SessionStation } from '../storage/progress';
 import { LessonNotes } from './LessonNotes';
 import styles from './redesign.module.css';
+
+const STATION_ORDER: readonly SessionStation[] = ['words', 'write', 'phrase', 'review'] as const;
 
 function countScope(scope?: LessonJSON['core']) {
   if (!scope) return 0;
@@ -13,19 +15,20 @@ function countScope(scope?: LessonJSON['core']) {
     + Object.values(scope.nouns || {}).reduce((n, tokens) => n + tokens.length, 0);
 }
 
-function stageDone(progress: LessonProgress, stageId: string) {
+function stationDone(progress: LessonProgress, station: SessionStation) {
   if (progress.status === 'completed') return true;
-  const stage = progress.stages.find((item) => item.id === stageId);
+  const stage = progress.stages.find((item) => item.station === station);
   return !!stage && stage.completed >= stage.count;
 }
 
-function activeStation(progress: LessonProgress) {
+function activeStationId(progress: LessonProgress): SessionStation | 'arrive' {
   if (progress.status === 'completed') return 'arrive';
-  const stage = progress.stages.find((item) => item.completed < item.count);
-  if (!stage) return progress.status === 'in_progress' ? 'phrase' : 'words';
-  if (stage.id === 'core_exposure') return 'words';
-  if (stage.id === 'supporting_build') return 'phrase';
-  return 'review';
+  for (const station of STATION_ORDER) {
+    const stage = progress.stages.find((item) => item.station === station);
+    if (!stage) continue;
+    if (stage.completed < stage.count) return station;
+  }
+  return 'arrive';
 }
 
 function progressPercent(progress: LessonProgress) {
@@ -61,37 +64,37 @@ export function LessonEntry() {
   const coreCount = useMemo(() => countScope(lesson.core), [lesson]);
   const supportingCount = useMemo(() => countScope(lesson.supporting), [lesson]);
   const phraseCount = lesson.build_phrases?.filter((phrase) => phrase.drillable !== false).length || 0;
-  const active = activeStation(lessonProgress);
+  const active = activeStationId(lessonProgress);
   const percent = progressPercent(lessonProgress);
   const destinationHref = lesson.source_song_id ? `/song/${lesson.source_song_id}` : `/session/${lesson.id}`;
 
   const stations = [
     {
-      id: 'words',
+      id: 'words' as const,
       title: 'Meet the words',
       detail: coreCount ? `${coreCount} core forms` : 'core exposure',
-      done: stageDone(lessonProgress, 'core_exposure'),
+      done: stationDone(lessonProgress, 'words'),
     },
     {
-      id: 'write',
+      id: 'write' as const,
       title: 'Write by hand',
       detail: `${coreCount + supportingCount || 'Several'} forms available`,
-      done: stageDone(lessonProgress, 'core_exposure') && lessonProgress.status !== 'not_started',
+      done: stationDone(lessonProgress, 'write'),
     },
     {
-      id: 'phrase',
+      id: 'phrase' as const,
       title: 'Build phrases',
       detail: phraseCount ? `${phraseCount} authored phrases` : 'phrase practice',
-      done: stageDone(lessonProgress, 'supporting_build'),
+      done: stationDone(lessonProgress, 'phrase'),
     },
     {
-      id: 'review',
+      id: 'review' as const,
       title: 'Mixed review',
       detail: 'keep the forms reachable',
-      done: stageDone(lessonProgress, 'core_reinforcement'),
+      done: stationDone(lessonProgress, 'review'),
     },
     {
-      id: 'arrive',
+      id: 'arrive' as const,
       title: 'Arrive',
       detail: lesson.endpoint?.description || lesson.title,
       done: lessonProgress.status === 'completed',

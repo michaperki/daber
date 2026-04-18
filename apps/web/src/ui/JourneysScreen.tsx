@@ -1,8 +1,11 @@
 import { useLocation } from 'preact-iso';
 import { lessons, songLessons, type LessonJSON } from '../content';
 import { progress } from '../state/signals';
-import { lessonProgressFor, type LessonProgress } from '../storage/progress';
+import { lessonProgressFor, type LessonProgress, type SessionStation } from '../storage/progress';
 import styles from './redesign.module.css';
+
+const STATION_ORDER: readonly SessionStation[] = ['words', 'write', 'phrase', 'review'] as const;
+const STATION_LABELS = ['Words', 'Write', 'Phrase', 'Review', 'Arrive'] as const;
 
 function countScope(scope?: LessonJSON['core']) {
   if (!scope) return 0;
@@ -17,13 +20,20 @@ function progressPercent(p: LessonProgress) {
   return Math.min(99, Math.round((Math.min(p.items_completed, p.target_count) / p.target_count) * 100));
 }
 
-function activeStation(p: LessonProgress) {
+function stationDone(p: LessonProgress, station: SessionStation) {
+  if (p.status === 'completed') return true;
+  const stage = p.stages.find((item) => item.station === station);
+  return !!stage && stage.completed >= stage.count;
+}
+
+function activeStationIndex(p: LessonProgress) {
   if (p.status === 'completed') return 4;
-  const stage = p.stages.find((item) => item.completed < item.count);
-  if (!stage) return p.status === 'in_progress' ? 2 : 0;
-  if (stage.id === 'core_exposure') return 0;
-  if (stage.id === 'supporting_build') return 2;
-  return 3;
+  for (let i = 0; i < STATION_ORDER.length; i++) {
+    const stage = p.stages.find((item) => item.station === STATION_ORDER[i]);
+    if (!stage) continue;
+    if (stage.completed < stage.count) return i;
+  }
+  return 4;
 }
 
 export function JourneysScreen() {
@@ -50,8 +60,7 @@ export function JourneysScreen() {
         {ordered.map((lesson) => {
           const p = lessonProgressFor(progress.value, lesson.id);
           const percent = progressPercent(p);
-          const current = activeStation(p);
-          const stationLabels = ['Words', 'Write', 'Phrase', 'Review', 'Arrive'];
+          const current = activeStationIndex(p);
           return (
             <button key={lesson.id} class={styles.journeyCard} onClick={() => route(`/journey/${lesson.id}`)}>
               <div class={styles.journeyRow}>
@@ -63,17 +72,24 @@ export function JourneysScreen() {
                 <div class={styles.meta}>{percent}%</div>
               </div>
               <div class={styles.trail} aria-label={`${lesson.title} station progress`}>
-                {stationLabels.map((label, index) => (
-                  <span
-                    key={label}
-                    title={label}
-                    class={[
-                      styles.trailDot,
-                      index < current || p.status === 'completed' ? styles.trailDotDone : '',
-                      index === current && p.status !== 'completed' ? styles.trailDotActive : '',
-                    ].filter(Boolean).join(' ')}
-                  />
-                ))}
+                {STATION_LABELS.map((label, index) => {
+                  const isArrive = index === 4;
+                  const done = isArrive
+                    ? p.status === 'completed'
+                    : stationDone(p, STATION_ORDER[index]);
+                  const isActive = index === current && p.status !== 'completed';
+                  return (
+                    <span
+                      key={label}
+                      title={label}
+                      class={[
+                        styles.trailDot,
+                        done ? styles.trailDotDone : '',
+                        isActive ? styles.trailDotActive : '',
+                      ].filter(Boolean).join(' ')}
+                    />
+                  );
+                })}
               </div>
               <div class={styles.meta}>{countScope(lesson.core) + countScope(lesson.supporting)} forms · {lesson.build_phrases?.length || 0} phrases</div>
             </button>

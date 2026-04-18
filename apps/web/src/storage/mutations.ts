@@ -227,6 +227,7 @@ function stageProgressFor(session: DrillSession): LessonStageProgress[] {
   return session.stages.map((stage) => ({
     id: stage.id,
     label: stage.label,
+    station: stage.station,
     count: stage.count,
     completed: Math.min(stage.count, Math.max(0, session.currentIndex - stage.start)),
   }));
@@ -294,7 +295,13 @@ export function markLessonSessionCompleted(session: DrillSession) {
     sessions_completed: (prev?.sessions_completed || 0) + 1,
     items_completed: session.targetCount,
     target_count: session.targetCount,
-    stages: session.stages.map((stage) => ({ id: stage.id, label: stage.label, count: stage.count, completed: stage.count })),
+    stages: session.stages.map((stage) => ({
+      id: stage.id,
+      label: stage.label,
+      station: stage.station,
+      count: stage.count,
+      completed: stage.count,
+    })),
   });
   commitProgress({ ...p, lessons });
 }

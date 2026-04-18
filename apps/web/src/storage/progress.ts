@@ -10,12 +10,31 @@ export type CellProgress = {
 
 export type LessonStatus = 'not_started' | 'in_progress' | 'completed';
 
+export type SessionStation = 'words' | 'write' | 'phrase' | 'review';
+
 export type LessonStageProgress = {
   id: string;
   label: string;
+  station: SessionStation;
   count: number;
   completed: number;
 };
+
+export function inferStation(id: string): SessionStation | undefined {
+  switch (id) {
+    case 'core_meet':
+    case 'core_exposure':
+      return 'words';
+    case 'core_write':
+      return 'write';
+    case 'supporting_build':
+      return 'phrase';
+    case 'core_reinforcement':
+      return 'review';
+    default:
+      return undefined;
+  }
+}
 
 export type LessonProgress = {
   status: LessonStatus;
@@ -79,12 +98,23 @@ function normalizeLessonProgress(raw: any): LessonProgress | null {
   const status: LessonStatus =
     raw.status === 'completed' ? 'completed' : raw.status === 'in_progress' ? 'in_progress' : 'not_started';
   const stages = Array.isArray(raw.stages)
-    ? raw.stages.map((stage: any) => ({
-      id: String(stage?.id || ''),
-      label: String(stage?.label || stage?.id || ''),
-      count: Math.max(0, Number(stage?.count) || 0),
-      completed: Math.max(0, Number(stage?.completed) || 0),
-    })).filter((stage: LessonStageProgress) => stage.id && stage.count > 0)
+    ? raw.stages
+        .map((stage: any) => {
+          const id = String(stage?.id || '');
+          const station: SessionStation | undefined =
+            stage?.station === 'words' || stage?.station === 'write' || stage?.station === 'phrase' || stage?.station === 'review'
+              ? stage.station
+              : inferStation(id);
+          if (!station) return null;
+          return {
+            id,
+            label: String(stage?.label || stage?.id || ''),
+            station,
+            count: Math.max(0, Number(stage?.count) || 0),
+            completed: Math.max(0, Number(stage?.completed) || 0),
+          } as LessonStageProgress;
+        })
+        .filter((stage: LessonStageProgress | null): stage is LessonStageProgress => !!stage && !!stage.id && stage.count > 0)
     : [];
   return {
     status,

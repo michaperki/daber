@@ -7,11 +7,17 @@ import {
   type LessonJSON,
   type VocabEntry,
 } from './content';
-import type { CellProgress, PhraseProgress, ProgressV1 } from './storage/progress';
+import type { CellProgress, PhraseProgress, ProgressV1, SessionStation } from './storage/progress';
+
+export type { SessionStation } from './storage/progress';
 
 export type SessionMode = 'free' | 'lesson';
 export type SessionPurpose = 'new' | 'review' | 'build' | 'mixed';
-export type SessionStageId = 'core_exposure' | 'core_reinforcement' | 'supporting_build';
+export type SessionStageId =
+  | 'core_meet'
+  | 'core_write'
+  | 'supporting_build'
+  | 'core_reinforcement';
 
 type PlannedItemBase = {
   purpose: SessionPurpose;
@@ -36,6 +42,7 @@ export type PlannedItem = PlannedCellItem | PlannedPhraseItem;
 export type SessionStage = {
   id: SessionStageId;
   label: string;
+  station: SessionStation;
   start: number;
   count: number;
 };
@@ -166,7 +173,7 @@ function buildAuthoredPhraseItems(lesson: LessonJSON, all: CellItem[], count: nu
     key: `phrase:${lesson.id}:authored:${phraseIndex}`,
     purpose: 'build',
     stageId: 'supporting_build',
-    stageLabel: 'Build/use',
+    stageLabel: 'Build phrases',
     wasNewAtPlan: false,
     row: {
       he: phrase.he,
@@ -233,7 +240,13 @@ function appendPhraseStage(
   const phraseItems = buildAuthoredPhraseItems(lesson, sourceItems, count);
   out.push(...phraseItems);
   if (phraseItems.length > 0) {
-    stages.push({ id: 'supporting_build', label: 'Build/use', start, count: phraseItems.length });
+    stages.push({
+      id: 'supporting_build',
+      label: 'Build phrases',
+      station: 'phrase',
+      start,
+      count: phraseItems.length,
+    });
   }
 }
 
@@ -308,6 +321,7 @@ export function createLessonSession(lessonId: string, progress: ProgressV1): Dri
   const addStage = (
     id: SessionStageId,
     label: string,
+    station: SessionStation,
     candidates: CellItem[],
     purpose: SessionPurpose,
     count: number,
@@ -315,22 +329,21 @@ export function createLessonSession(lessonId: string, progress: ProgressV1): Dri
   ) => {
     const start = items.length;
     const source = candidates.length ? candidates : all;
-    const targetCount = Math.min(count, source.length);
+    const targetCount = Math.min(count, source.length || count);
     appendPlanned(items, source, targetCount, progress, purpose, { stageId: id, stageLabel: label }, { allowDuplicateKeys });
     const actual = items.length - start;
-    if (actual > 0) stages.push({ id, label, start, count: actual });
+    if (actual > 0) stages.push({ id, label, station, start, count: actual });
   };
 
-  addStage('core_exposure', 'Quick primer', core, 'new', LESSON_PRIMER_TARGET);
+  const meetCount = Math.max(1, Math.ceil(LESSON_PRIMER_TARGET / 2));
+  const writeCount = Math.max(1, LESSON_PRIMER_TARGET - meetCount);
+  addStage('core_meet', 'Meet the forms', 'words', core, 'new', meetCount);
+  addStage('core_write', 'Write by hand', 'write', core, 'build', writeCount, true);
 
   const reviewPool = supporting.length ? [...supporting, ...core] : all;
   appendPhraseStage(items, stages, lesson, reviewPool, LESSON_PHRASE_TARGET);
 
-  if (stages.some((stage) => stage.id === 'supporting_build')) {
-    addStage('core_reinforcement', 'Mixed review', reviewPool, 'review', LESSON_REVIEW_TARGET);
-  } else {
-    addStage('supporting_build', 'Build/use', reviewPool, 'build', LESSON_PHRASE_TARGET);
-  }
+  addStage('core_reinforcement', 'Mixed review', 'review', reviewPool, 'review', LESSON_REVIEW_TARGET, true);
 
   const base: Omit<DrillSession, 'summary'> = {
     id: sessionId('lesson', lessonId),

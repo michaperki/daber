@@ -108,6 +108,7 @@ export function commitProgress(next: ProgressV1) {
     vocab_stats: { ...next.vocab_stats },
     seen_words: { ...next.seen_words },
     cells: { ...(next.cells || {}) },
+    phrases: { ...(next.phrases || {}) },
     lessons: { ...(next.lessons || {}) },
   };
   schedulePutProgress(deviceId.value, next);
@@ -150,6 +151,21 @@ export function bumpVocabWord(he: string, cleanAttempt: boolean) {
       words_completed: p.vocab_stats.words_completed + 1,
     },
   });
+}
+
+export function bumpPhrase(key: string, cleanAttempt: boolean, sourceKeys?: string[]) {
+  if (!key) return;
+  const p = progress.value;
+  const phrases = { ...(p.phrases || {}) };
+  const prev = phrases[key] || { seen: 0, clean: 0, attempted: 0 };
+  phrases[key] = {
+    seen: prev.seen + 1,
+    attempted: prev.attempted + 1,
+    clean: prev.clean + (cleanAttempt ? 1 : 0),
+    last_seen_at: nowIso(),
+    source_keys: sourceKeys?.length ? Array.from(new Set(sourceKeys)) : prev.source_keys,
+  };
+  commitProgress({ ...p, phrases });
 }
 
 // ---- Cells (verb:<lemma>:<token>) ----

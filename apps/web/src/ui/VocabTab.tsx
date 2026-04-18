@@ -13,6 +13,7 @@ import {
   bumpVocabLetter,
   bumpVocabWord,
   bumpCell,
+  bumpPhrase,
   markLessonSessionCompleted,
   markLessonSessionProgress,
   markLessonSessionStarted,
@@ -336,6 +337,10 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
         bumpVocabWord(cur.he, attemptClean);
         const token = cur.variant || (cur.pos === 'verb' ? 'lemma' : cur.pos === 'noun' ? 'sg' : 'm_sg');
         if (cur.lemma) bumpCell(cur.pos, cur.lemma, token, attemptClean);
+        const planned = currentPlannedItem(activeSession.value);
+        if (planned?.taskType === 'phrase_handwriting') {
+          bumpPhrase(planned.key, attemptClean, planned.sourceKeys);
+        }
         advanceSession(attemptClean ? 'clean' : 'unclean', 1000);
       } else {
         setFeedback({ kind: 'idle', text: '' });
@@ -375,6 +380,10 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
     setTierLabelVisible(true);
   }
   function onSkip() {
+    const planned = currentPlannedItem(activeSession.value);
+    if (planned?.taskType === 'phrase_handwriting') {
+      bumpPhrase(planned.key, false, planned.sourceKeys);
+    }
     advanceSession('skipped', 0);
   }
 
@@ -420,6 +429,10 @@ export function VocabTab({ lessonId: drillLessonId = null }: { lessonId?: string
       bumpVocabWord(cur.he, attemptClean);
       const token = cur.variant || (cur.pos === 'verb' ? 'lemma' : cur.pos === 'noun' ? 'sg' : 'm_sg');
       if (cur.lemma) bumpCell(cur.pos, cur.lemma, token, attemptClean);
+      const planned = currentPlannedItem(activeSession.value);
+      if (planned?.taskType === 'phrase_handwriting') {
+        bumpPhrase(planned.key, attemptClean, planned.sourceKeys);
+      }
       advanceSession(attemptClean ? 'clean' : 'unclean', 480);
     } else {
       setFeedback({ kind: 'idle', text: '' });

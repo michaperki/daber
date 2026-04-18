@@ -29,6 +29,14 @@ export type LessonProgress = {
   stages: LessonStageProgress[];
 };
 
+export type PhraseProgress = {
+  seen: number;
+  clean: number;
+  attempted: number;
+  last_seen_at?: string;
+  source_keys?: string[];
+};
+
 export type ProgressV1 = {
   version: 1;
   prefs: {
@@ -41,6 +49,7 @@ export type ProgressV1 = {
   seen_words: Record<string, { seen: number; clean: number; attempted: number }>;
   // Per-cell progress (verb:<lemma>:<token>)
   cells?: Record<string, CellProgress>;
+  phrases?: Record<string, PhraseProgress>;
   lessons?: Record<string, LessonProgress>;
   updated_at: string;
 };
@@ -59,6 +68,7 @@ export function emptyProgress(): ProgressV1 {
     vocab_stats: { correct_letters: 0, total_letters: 0, words_completed: 0 },
     seen_words: {},
     cells: {},
+    phrases: {},
     lessons: {},
     updated_at: nowIso(),
   };
@@ -89,6 +99,20 @@ function normalizeLessonProgress(raw: any): LessonProgress | null {
   };
 }
 
+function normalizePhraseProgress(raw: any): PhraseProgress | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const sourceKeys = Array.isArray(raw.source_keys)
+    ? raw.source_keys.filter((key: any) => typeof key === 'string')
+    : undefined;
+  return {
+    seen: Math.max(0, Number(raw.seen) || 0),
+    clean: Math.max(0, Number(raw.clean) || 0),
+    attempted: Math.max(0, Number(raw.attempted) || 0),
+    last_seen_at: typeof raw.last_seen_at === 'string' ? raw.last_seen_at : undefined,
+    source_keys: sourceKeys && sourceKeys.length ? sourceKeys : undefined,
+  };
+}
+
 export function normalizeProgress(parsed: any): ProgressV1 {
   const base = emptyProgress();
   if (!parsed || parsed.version !== 1) return base;
@@ -113,6 +137,11 @@ export function normalizeProgress(parsed: any): ProgressV1 {
     const normalized = normalizeLessonProgress(value);
     if (normalized) lessons[lessonId] = normalized;
   }
+  const phrases: Record<string, PhraseProgress> = {};
+  for (const [phraseId, value] of Object.entries(parsed.phrases || {})) {
+    const normalized = normalizePhraseProgress(value);
+    if (normalized) phrases[phraseId] = normalized;
+  }
 
   return {
     ...base,
@@ -125,6 +154,7 @@ export function normalizeProgress(parsed: any): ProgressV1 {
     vocab_stats: parsed.vocab_stats || base.vocab_stats,
     seen_words: migrated,
     cells: parsed.cells || {},
+    phrases,
     lessons,
     updated_at: typeof parsed.updated_at === 'string' ? parsed.updated_at : base.updated_at,
   };

@@ -7,7 +7,7 @@ import {
   type LessonJSON,
   type VocabEntry,
 } from './content';
-import type { CellProgress, ProgressV1 } from './storage/progress';
+import type { CellProgress, PhraseProgress, ProgressV1 } from './storage/progress';
 
 export type SessionMode = 'free' | 'lesson';
 export type SessionPurpose = 'new' | 'review' | 'build' | 'mixed';
@@ -51,6 +51,7 @@ export type SessionSummary = {
   clean: number;
   unclean: number;
   skipped: number;
+  phrasesPracticed: number;
   newItemsSeen: number;
   lessonFinished: boolean;
 };
@@ -179,6 +180,48 @@ function buildAuthoredPhraseItems(lesson: LessonJSON, all: CellItem[], count: nu
   }));
 }
 
+export function authoredPhraseItemsForLesson(lesson: LessonJSON): PlannedPhraseItem[] {
+  const sourceItems = cellItemsForScope(lessonScopeFor(lesson));
+  return buildAuthoredPhraseItems(lesson, sourceItems, Number.MAX_SAFE_INTEGER);
+}
+
+export function allAuthoredPhraseItems(): PlannedPhraseItem[] {
+  return lessons.flatMap((lesson) => authoredPhraseItemsForLesson(lesson));
+}
+
+function phraseWeakness(stat?: PhraseProgress) {
+  if (!stat) return 0;
+  const misses = Math.max(0, stat.attempted - stat.clean);
+  const incomplete = stat.clean > 0 ? 0 : 1;
+  return misses * 3 + incomplete;
+}
+
+function sortPhrasesForReview(items: PlannedPhraseItem[], progress: ProgressV1) {
+  const phrases = progress.phrases || {};
+  return [...items]
+    .filter((item) => {
+      const stat = phrases[item.key];
+      return !!stat && (stat.attempted > stat.clean || stat.clean < 2 || lastSeenRank({ last_seen_at: stat.last_seen_at } as CellProgress) > 24 * 60 * 60 * 1000);
+    })
+    .sort((a, b) => {
+      const ap = phrases[a.key];
+      const bp = phrases[b.key];
+      const weaknessDelta = phraseWeakness(bp) - phraseWeakness(ap);
+      if (weaknessDelta) return weaknessDelta;
+      return lastSeenRank(bp ? ({ last_seen_at: bp.last_seen_at } as CellProgress) : undefined)
+        - lastSeenRank(ap ? ({ last_seen_at: ap.last_seen_at } as CellProgress) : undefined);
+    });
+}
+
+export function phraseItemsForReview(progress: ProgressV1, limit = 6): PlannedPhraseItem[] {
+  return sortPhrasesForReview(allAuthoredPhraseItems(), progress).slice(0, limit).map((item) => ({
+    ...item,
+    purpose: 'review',
+    stageId: undefined,
+    stageLabel: undefined,
+  }));
+}
+
 function appendPhraseStage(
   out: PlannedItem[],
   stages: SessionStage[],
@@ -206,6 +249,7 @@ function makeSummary(session: Omit<DrillSession, 'summary'>): DrillSession['summ
     clean: 0,
     unclean: 0,
     skipped: 0,
+    phrasesPracticed: 0,
     newItemKeys: [],
   };
 }
@@ -213,6 +257,7 @@ function makeSummary(session: Omit<DrillSession, 'summary'>): DrillSession['summ
 export function createFreeSession(progress: ProgressV1): DrillSession {
   const all = scopedCellItems(null);
   const cells = progress.cells || {};
+  const phraseReview = phraseItemsForReview(progress, 4);
   const weak = sortForReview(
     all.filter((item) => {
       const c = cells[item.key];
@@ -230,6 +275,7 @@ export function createFreeSession(progress: ProgressV1): DrillSession {
   const fresh = shuffleLight(all.filter((item) => !cells[item.key]));
   const fallback = shuffleLight(all);
   const items: PlannedItem[] = [];
+  items.push(...phraseReview);
   appendPlanned(items, weak, 5, progress, 'review');
   appendPlanned(items, review, 5, progress, 'review');
   appendPlanned(items, fresh, 3, progress, 'new');
@@ -328,6 +374,7 @@ export function recordSessionResult(session: DrillSession, result: 'clean' | 'un
     clean: session.summary.clean + (result === 'clean' ? 1 : 0),
     unclean: session.summary.unclean + (result === 'unclean' || result === 'skipped' ? 1 : 0),
     skipped: session.summary.skipped + (result === 'skipped' ? 1 : 0),
+    phrasesPracticed: session.summary.phrasesPracticed + (item?.taskType === 'phrase_handwriting' ? 1 : 0),
     newItemKeys: [...session.summary.newItemKeys],
   };
   if (item?.wasNewAtPlan && !summary.newItemKeys.includes(item.key)) {

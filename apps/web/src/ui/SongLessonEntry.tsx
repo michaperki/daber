@@ -1,7 +1,8 @@
 import { useLocation, useRoute } from 'preact-iso';
-import { songLessons, type UnitRole } from '../content';
-import panels from './panels.module.css';
-import study from './study.module.css';
+import { lessons, songLessons, type UnitRole } from '../content';
+import { progress } from '../state/signals';
+import { lessonProgressFor } from '../storage/progress';
+import styles from './redesign.module.css';
 
 const ROLE_LABEL: Record<UnitRole, string> = {
   teaching_target: 'teaching targets',
@@ -17,47 +18,77 @@ export function SongLessonEntry() {
 
   if (!song) {
     return (
-      <div class={panels.panel}>
-        <div>Song lesson not found.</div>
-        <button class={study.secondaryBtn} onClick={() => route('/')}>Back</button>
-      </div>
+      <section class={styles.screen}>
+        <div class={styles.hero}>
+          <div class={styles.topline}>Destination</div>
+          <h2 class={styles.title}>Song not found.</h2>
+          <button class={styles.secondaryButton} onClick={() => route('/journeys')}>Back to journeys</button>
+        </div>
+      </section>
     );
   }
 
+  const prepLesson = lessons.find((lesson) => lesson.source_song_id === song.id || lesson.id === `song_${song.id}`);
+  const prepProgress = prepLesson ? lessonProgressFor(progress.value, prepLesson.id) : null;
+  const unlocked = !prepLesson || prepProgress?.status === 'completed';
   const roleCounts = song.teachable_units.reduce<Record<UnitRole, number>>((acc, unit) => {
     acc[unit.role] = (acc[unit.role] || 0) + 1;
     return acc;
   }, { teaching_target: 0, vocabulary: 0, annotation: 0 });
 
   return (
-    <div class={panels.panel}>
-      <div class={panels.row}>
-        <div>
-          <div style={{ fontWeight: 600, marginBottom: 4 }}>{song.title}</div>
-          <div class={panels.muted}>Teaching targets drive the study walk; vocabulary and annotations are reference panels.</div>
+    <section class={styles.screen}>
+      <div class={`${styles.hero} ${unlocked ? styles.heroAccent : ''}`}>
+        <div class={styles.topline}>
+          <button class={styles.secondaryButton} onClick={() => route(prepLesson ? `/journey/${prepLesson.id}` : '/journeys')}>Back</button>
+          <span>{unlocked ? 'Open' : 'Prep in progress'}</span>
         </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <button class={study.secondaryBtn} onClick={() => route('/')}>Back</button>
+        <h2 class={styles.title}>{song.title}</h2>
+        <div class={styles.subtitle}>
+          {unlocked
+            ? 'Read the line in context. The study walk can continue when you are ready.'
+            : 'Complete the prep stations first, then come back to the line with more of it in reach.'}
         </div>
+        {prepLesson && (
+          <button
+            class={`${styles.primaryButton} ${styles.full}`}
+            onClick={() => route(unlocked ? `/journey/${prepLesson.id}` : `/session/${prepLesson.id}`)}
+          >
+            {unlocked ? 'Review the journey' : 'Continue prep'}
+          </button>
+        )}
       </div>
 
       {song.source?.normalized_hebrew_note && (
-        <div class={panels.progress}>{song.source.normalized_hebrew_note}</div>
+        <div class={styles.station}>
+          <div class={styles.marker}>N</div>
+          <div>
+            <div class={styles.kicker}>Note</div>
+            <div class={styles.meta}>{song.source.normalized_hebrew_note}</div>
+          </div>
+        </div>
       )}
 
-      <div class={study.badgeRow}>
+      <div class={styles.statsRow}>
         {ROLE_ORDER.map((role) => (
-          <span key={role} class={study.badge}>{roleCounts[role] || 0} {ROLE_LABEL[role]}</span>
+          <div key={role} class={styles.stat}>
+            <div class={styles.statValue}>{roleCounts[role] || 0}</div>
+            <div class={styles.meta}>{ROLE_LABEL[role]}</div>
+          </div>
         ))}
       </div>
 
-      <div class={study.hebrewLine}>{song.lyrics.he}</div>
-
-      <div class={panels.row}>
-        <button class={study.secondaryBtn} onClick={() => route(`/lesson/song_${song.id}`)}>
-          Start lesson
-        </button>
+      <div class={styles.hero}>
+        <div class={styles.kicker}>Lyrics</div>
+        <div class={styles.hebrewBlock} dir="rtl">{song.lyrics.he}</div>
+        {song.lyrics.en && <div class={styles.subtitle}>{song.lyrics.en}</div>}
       </div>
-    </div>
+
+      {prepLesson && (
+        <button class={`${styles.secondaryButton} ${styles.full}`} onClick={() => route(`/session/${prepLesson.id}`)}>
+          Practice this again
+        </button>
+      )}
+    </section>
   );
 }

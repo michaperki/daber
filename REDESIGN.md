@@ -30,9 +30,11 @@
   The current app is more capable than the old docs imply. README.md:7 still says “No code yet,”
   but the app now has real routes, sessions, storage, content, and sync.
 
-  The current shell is small and route-based: onboarding/calibration, lessons home, lesson
-  entry, drill, completion, and song entry live in apps/web/src/app.tsx:43 and apps/web/src/
-  app.tsx:107.
+  The learner-facing redesign has started. Commit cb3f893 implements the first V2 experience
+  layer: a Path landing screen, Journey list, Journey detail map, Review and Me tabs, bottom
+  navigation, and paper/ink design tokens. The route shell now keeps onboarding/calibration and
+  drill behavior intact while adding /path, /journeys, /journey/:id, /session/:id, /review, and
+  /me in apps/web/src/app.tsx.
 
   Important existing assets worth keeping:
 
@@ -44,12 +46,13 @@
     packages/content/src/song_to_lesson.ts:149.
   - The current drill UI already supports multi-word phrase targets at a basic letter-by-letter
     level in apps/web/src/ui/VocabTab.tsx:529.
-  - Progress already tracks cells, seen words, and lessons in apps/web/src/storage/
-    progress.ts:32.
+  - Progress now tracks cells, seen words, lessons, and phrase-level attempts in
+    apps/web/src/storage/progress.ts.
 
-  The biggest mismatch is not infrastructure. It is product shape: the current app still feels
-  like Missions / Free practice / Songs, shown in apps/web/src/ui/LessonsHome.tsx:32, rather
-  than a daily path or song journey.
+  The biggest remaining mismatch is not infrastructure. It is depth: the new shell now looks and
+  routes like Path + Journey, and phrases now accrue progress and feed Review. The remaining
+  product gap is mainly handwriting depth: the app still uses guided letter-by-letter recognition
+  rather than true freeform whole-word or phrase scoring.
 
   Main Risk
   The wireframes assume a more natural handwriting experience: whole word or phrase writing,
@@ -77,30 +80,47 @@
      destination/reward.
      Completed: README, docs/VISION.md, and docs/ROADMAP.md now describe the phrase/song/
      handwriting direction and the migration path toward the wireframe ideal.
-  3. Choose the blended IA
+  3. Choose the blended IA — COMPLETE
      Build Path as the landing screen and Journey as the lesson/song detail view. Keep Atelier
      ideas for later, mostly as secondary entry points like Write, Songs, Review, Me.
-  4. Create a V2 app shell
+     Completed: the first implementation uses Path as the home surface and Journey as the
+     lesson/detail model. Atelier remains deferred as secondary workspace ideas.
+  4. Create a V2 app shell — COMPLETE
      Add a new learner shell with bottom navigation and route structure around:
      /path, /journeys, /journey/:id, /session/:id, /review, /me.
      Keep old routes temporarily as fallbacks while migrating.
-  5. Build a real design system from the wireframes
+     Completed: apps/web/src/app.tsx now defines the new routes, preserves the legacy lesson,
+     practice, completion, and song routes, and adds bottom navigation for Path, Journeys,
+     Review, and Me.
+  5. Build a real design system from the wireframes — COMPLETE
      Convert the wireframe tokens into app CSS: paper/ink palette, typography, buttons, chips,
      section headers, bottom nav, progress trails, Hebrew text handling. Do not copy the inline
      JSX style approach.
-  6. Refactor current screens into wireframe-aligned surfaces
+     Completed: apps/web/src/styles.css defines the first paper/ink token pass, apps/web/src/
+     app.module.css defines the learner shell and bottom nav, and apps/web/src/ui/
+     redesign.module.css holds the shared Path/Journey primitives.
+  6. Refactor current screens into wireframe-aligned surfaces — COMPLETE FOR V2 SLICE
      Replace LessonsHome with a daily Path screen.
      Replace LessonEntry with a Journey map/lesson overview.
      Replace the completion screen with a calmer recap.
      Keep DrawCanvas, recognizer, storage, content, and session planner under the hood.
-  7. Promote phrases to first-class progress
+     Completed: LessonsHome is now a data-backed Path screen, LessonEntry is now a Journey
+     station map, Journeys/Review/Me screens exist, completion is now a calmer recap, and the
+     song destination screen now presents prep state plus lyrics.
+  7. Promote phrases to first-class progress — COMPLETE
      Right now phrase items exist, but progress is mostly word/cell/lesson oriented. Add phrase-
      level progress and review eligibility so the Review screen can become real instead of
      cosmetic.
-  8. Add destination screens incrementally
+     Completed: ProgressV1 now has a phrases bucket; phrase handwriting attempts and skips call
+     bumpPhrase; free review sessions pull due authored phrases before weak cells; Review shows
+     phrase due items ahead of words.
+  8. Add destination screens incrementally — COMPLETE FOR FIRST SONG/LYRICS PASS
      Start with a song/lyrics destination screen using existing songLessons data. Real audio
      playback can come later. The important product move is that completing prep visibly unlocks
      or advances the destination.
+     Completed: SongLessonEntry is now a destination surface with prep/open state, teaching target
+     counts, lyrics, and routes back into the prep journey. Completion routes finished lessons
+     toward the destination.
   9. Spike handwriting ideal separately
      Prototype full-word/freeform scoring behind a route or flag. If it works, wire it into the
      new handwriting screens. If it does not, keep the polished letter-by-letter interaction and

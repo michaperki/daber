@@ -28,6 +28,15 @@ function flatten(strokes: Array<Array<{ x: number; y: number; t?: number }>>): n
   return pts;
 }
 
+type StrokeSampleRow = {
+  id: string;
+  device_id: string;
+  letter: string;
+  split: string | null;
+  strokes: unknown;
+  created_at: Date;
+};
+
 async function main() {
   const args = parseArgs(process.argv);
   const outDir = args.out || path.resolve(process.cwd(), '../../data/strokes');
@@ -35,10 +44,21 @@ async function main() {
   const prisma = new PrismaClient();
   await prisma.$connect();
 
-  const where: any = {};
-  if (args.device) where.device_id = args.device;
-  if (args.split) where.split = args.split;
-  const rows = await prisma.strokeSample.findMany({ where, orderBy: { created_at: 'asc' } });
+  const clauses: string[] = [];
+  const params: string[] = [];
+  if (args.device) {
+    params.push(args.device);
+    clauses.push(`device_id = $${params.length}`);
+  }
+  if (args.split) {
+    params.push(args.split);
+    clauses.push(`split = $${params.length}`);
+  }
+  const where = clauses.length ? ` WHERE ${clauses.join(' AND ')}` : '';
+  const rows = await prisma.$queryRawUnsafe<StrokeSampleRow[]>(
+    `SELECT id, device_id, letter, split, strokes, created_at FROM stroke_sample${where} ORDER BY created_at ASC`,
+    ...params,
+  );
   console.log(`Exporting ${rows.length} stroke samples to ${outDir}`);
 
   for (const r of rows) {
@@ -65,4 +85,3 @@ async function main() {
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
-

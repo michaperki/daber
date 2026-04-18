@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { getPrisma } from '../db.js';
 
@@ -13,19 +14,21 @@ const PayloadSchema = z.object({
   strokes: z.array(StrokeSchema).min(1),
 });
 
-function flattenStrokes(strokes: Array<Array<{ x: number; y: number; t?: number }>>): number[][] {
-  const pts: number[][] = [];
-  strokes.forEach((s, sid) => {
-    s.forEach((p) => pts.push([p.x, p.y, p.t ?? 0, sid]));
-  });
-  return pts;
-}
+type StrokeSampleRow = {
+  letter: string;
+  strokes: unknown;
+};
 
 export async function registerStrokesRoutes(app: FastifyInstance) {
   app.get('/api/strokes/:deviceId', async (req, reply) => {
     const { deviceId } = req.params as { deviceId: string };
     const prisma = getPrisma();
-    const rows = await prisma.strokeSample.findMany({ where: { device_id: deviceId }, orderBy: { created_at: 'asc' } });
+    const rows = await prisma.$queryRaw<StrokeSampleRow[]>`
+      SELECT letter, strokes
+      FROM stroke_sample
+      WHERE device_id = ${deviceId}
+      ORDER BY created_at ASC
+    `;
     const grouped: Record<string, Array<Array<{ x: number; y: number; t?: number }>>> = {} as any;
     for (const r of rows) {
       const letter = r.letter;
@@ -39,14 +42,10 @@ export async function registerStrokesRoutes(app: FastifyInstance) {
     if (!parse.success) return reply.code(400).send({ error: 'invalid_payload' });
     const p = parse.data;
     const prisma = getPrisma();
-    await prisma.strokeSample.create({
-      data: {
-        device_id: p.deviceId,
-        letter: p.letter,
-        split: p.split,
-        strokes: p.strokes,
-      },
-    });
+    await prisma.$executeRaw`
+      INSERT INTO stroke_sample (id, device_id, letter, split, strokes)
+      VALUES (${randomUUID()}, ${p.deviceId}, ${p.letter}, ${p.split}, ${JSON.stringify(p.strokes)}::jsonb)
+    `;
     return reply.send({ ok: true });
   });
 }

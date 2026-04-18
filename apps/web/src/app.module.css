@@ -4,6 +4,9 @@
   flex-direction: column;
   height: 100%;
   position: relative;
+  background:
+    linear-gradient(180deg, rgba(251, 250, 245, 0.8), rgba(238, 243, 237, 0.95)),
+    var(--bg);
 }
 
 /* ---- Top bar ---- */
@@ -14,6 +17,7 @@
   padding: 8px 12px;
   padding-top: calc(8px + env(safe-area-inset-top));
   border-bottom: 1px solid var(--border);
+  background: var(--paper);
   gap: 8px;
   min-height: 44px;
   flex-shrink: 0;
@@ -27,7 +31,9 @@
 .brand h1 {
   font-size: 16px;
   margin: 0;
-  font-weight: 600;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 .syncDot {
   width: 8px;
@@ -66,13 +72,12 @@
   font-size: 16px;
 }
 
-/* Removed legacy nav styles (.desktopNav, .tab, .tabActive, .railToggle) */
-
 /* ---- Main ---- */
 .main {
   flex: 1;
   overflow-y: auto;
-  padding: 12px;
+  padding: 14px;
+  padding-bottom: calc(var(--bottom-bar-height) + 18px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -80,11 +85,70 @@
 }
 .left { display: flex; flex-direction: column; gap: 12px; }
 
-/* Removed RightRail column */
+.drillMain {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
 
-/* Removed bottom nav styles */
+.bottomNav {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  min-height: var(--bottom-bar-height);
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  box-shadow: 0 -8px 24px rgba(30, 27, 22, 0.08);
+}
 
-/* Removed mobile drawer styles */
+.navItem {
+  display: flex;
+  min-width: 0;
+  min-height: 52px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.navItem:hover {
+  border-color: transparent;
+}
+
+.navItemActive {
+  color: var(--ink);
+}
+
+.navIcon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border: 1.25px solid currentColor;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.navItemActive .navIcon {
+  background: var(--accent-soft);
+}
 
 /* ---- Desktop: 861px+ ---- */
 @media (min-width: 861px) {
@@ -94,7 +158,18 @@
   }
   .brand h1 { font-size: 18px; }
 
-  /* Desktop layout adjustments no longer needed; keep default flex main */
-  .topBar { padding: 12px 16px; padding-top: 12px; }
-  .brand h1 { font-size: 18px; }
+  .main {
+    padding: 24px;
+    padding-bottom: calc(var(--bottom-bar-height) + 24px);
+  }
+
+  .bottomNav {
+    right: 50%;
+    left: 50%;
+    width: min(640px, calc(100vw - 32px));
+    transform: translateX(-50%);
+    border: 1px solid var(--rule);
+    border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+  }
 }

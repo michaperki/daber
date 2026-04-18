@@ -16,7 +16,7 @@ export function LessonComplete() {
     <>
       <div class={panels.panel} style={{ textAlign: 'center' }}>
         <div style={{ fontWeight: 600, fontSize: 20, marginBottom: 8 }}>
-          {title ? `${title} — Complete` : 'Session Complete'}
+          {title ? `${title} complete` : 'Session complete'}
         </div>
         {summary ? (
           <>
@@ -30,10 +30,10 @@ export function LessonComplete() {
         ) : (
           <div class={panels.muted} style={{ marginBottom: 16 }}>No session summary is available.</div>
         )}
-        <button class={study.secondaryBtn} onClick={() => route('/')}>Done</button>
+        <button class={study.secondaryBtn} onClick={() => route('/path')}>Done</button>
       </div>
       {lesson?.notes && lesson.notes.length > 0 && (
-        <LessonNotes notes={lesson.notes} heading="Before you go — song notes" />
+        <LessonNotes notes={lesson.notes} heading="Before you go: song notes" />
       )}
     </>
   );

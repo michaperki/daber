@@ -1,14 +1,23 @@
 :root {
-  --bg: #0f1115;
-  --panel: #161a22;
-  --panel-2: #1c2333;
-  --border: #2a3140;
-  --text: #e6eaf2;
-  --muted: #a8b3cf;
-  --accent: #4f8cff;
-  --accent-2: #00b894;
-  --danger: #ff5c5c;
-  --bottom-bar-height: 56px;
+  --bg: #eef3ed;
+  --paper: #fbfaf5;
+  --paper-2: #edf1e8;
+  --panel: #fbfaf5;
+  --panel-2: #edf1e8;
+  --ink: #1e1b16;
+  --ink-2: #4a4436;
+  --rule: #b9b3a4;
+  --border: #b9b3a4;
+  --text: #1e1b16;
+  --text-soft: #4a4436;
+  --muted: #756f62;
+  --paper-muted: #c7c0ae;
+  --accent: #3f8f75;
+  --accent-soft: #dceee6;
+  --accent-2: #c85d4d;
+  --danger: #b93f35;
+  --shadow: rgba(30, 27, 22, 0.14);
+  --bottom-bar-height: 72px;
 }
 
 * { box-sizing: border-box; }
@@ -28,7 +37,7 @@ body {
 }
 
 button {
-  background: var(--panel);
+  background: var(--paper);
   color: var(--text);
   border: 1px solid var(--border);
   min-height: 44px;
@@ -39,14 +48,14 @@ button {
   font-size: 14px;
   font-family: inherit;
 }
-button:hover { border-color: var(--accent); }
+button:hover { border-color: var(--ink); }
 button:active { background: var(--panel-2); }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* iOS Safari zooms on focus when font-size < 16px. */
 input, select {
   font-size: 16px;
-  background: var(--bg);
+  background: var(--paper);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 6px;

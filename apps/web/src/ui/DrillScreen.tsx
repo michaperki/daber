@@ -27,6 +27,7 @@ export function DrillScreen() {
   const { route } = useLocation();
   const { params } = useRoute();
   const lessonId = params.id ?? null;
+  const backHref = lessonId ? `/journey/${lessonId}` : '/review';
 
   useEffect(() => {
     selectedLessonId.value = lessonId;
@@ -39,10 +40,10 @@ export function DrillScreen() {
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
         <button
           class={study.secondaryBtn}
-          onClick={() => route('/')}
+          onClick={() => route(backHref)}
           aria-label="Exit drill"
         >
-          ← Back
+          Back
         </button>
       </div>
       <VocabTab lessonId={lessonId} />

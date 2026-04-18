@@ -1,0 +1,306 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.subtitle {
+  color: var(--text-soft);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--ink);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--shadow);
+}
+
+.heroAccent {
+  background: var(--accent-soft);
+}
+
+.pathList {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0 2px;
+}
+
+.pathList::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--ink-2) 0 5px, transparent 5px 10px);
+}
+
+.pathStep {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.marker {
+  z-index: 1;
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.markerDone {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.markerActive {
+  background: var(--accent-soft);
+}
+
+.markerDestination {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.sketchCard {
+  width: 100%;
+  min-height: 76px;
+  padding: 12px;
+  border: 1.25px solid var(--ink-2);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.sketchCard:hover {
+  border-color: var(--ink);
+}
+
+.sketchCardActive {
+  background: var(--accent-soft);
+}
+
+.sketchCardDark {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.kicker {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cardTitle {
+  margin-top: 4px;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.meta {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.sketchCardDark .meta,
+.sketchCardDark .kicker {
+  color: var(--paper-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.journeyCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1.25px solid var(--ink-2);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--text);
+  text-align: left;
+  box-shadow: 2px 2px 0 var(--shadow);
+}
+
+.journeyRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cover {
+  display: inline-flex;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--muted);
+  border-radius: 8px;
+  background: var(--paper-2);
+  color: var(--muted);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.trail {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  align-items: center;
+}
+
+.trailDot {
+  min-width: 0;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--rule);
+}
+
+.trailDotDone {
+  background: var(--ink);
+}
+
+.trailDotActive {
+  background: var(--accent);
+}
+
+.stationList {
+  display: grid;
+  gap: 10px;
+}
+
+.station {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.stationActive {
+  border-color: var(--ink);
+  background: var(--accent-soft);
+}
+
+.stationDone {
+  color: var(--muted);
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 750;
+}
+
+.primaryButton {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.secondaryButton {
+  background: transparent;
+}
+
+.full {
+  width: 100%;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.stat {
+  padding: 12px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.statValue {
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  line-height: 1;
+}
+
+@media (min-width: 760px) {
+  .title {
+    font-size: 42px;
+  }
+
+  .hero {
+    padding: 22px;
+  }
+}

@@ -38,9 +38,9 @@
 }
 
 .tileOk {
-  background: var(--accent-2);
-  border-color: var(--accent-2);
-  color: #ffffff;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
 }
 
 .canvasWrap {
@@ -116,7 +116,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 4px 8px;
-  background: var(--bg);
+  background: var(--paper-2);
 }
 
 .examplePair {
@@ -150,7 +150,7 @@
 
 .vocabCard {
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px;
   background: var(--panel);
   display: flex;

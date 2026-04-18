@@ -4,102 +4,148 @@ import { lessons, type LessonJSON } from '../content';
 import { progress } from '../state/signals';
 import { lessonProgressFor, type LessonProgress } from '../storage/progress';
 import { LessonNotes } from './LessonNotes';
-import panels from './panels.module.css';
-import study from './study.module.css';
+import styles from './redesign.module.css';
 
-function statusLabel(status: LessonProgress['status']) {
-  if (status === 'completed') return 'Completed';
-  if (status === 'in_progress') return 'In progress';
-  return 'Not started';
+function countScope(scope?: LessonJSON['core']) {
+  if (!scope) return 0;
+  return Object.values(scope.verbs || {}).reduce((n, tokens) => n + tokens.length, 0)
+    + Object.values(scope.adjectives || {}).reduce((n, tokens) => n + tokens.length, 0)
+    + Object.values(scope.nouns || {}).reduce((n, tokens) => n + tokens.length, 0);
 }
 
-function actionLabel(status: LessonProgress['status']) {
-  if (status === 'completed') return 'Practice again';
-  if (status === 'in_progress') return 'Continue';
-  return 'Start';
+function stageDone(progress: LessonProgress, stageId: string) {
+  if (progress.status === 'completed') return true;
+  const stage = progress.stages.find((item) => item.id === stageId);
+  return !!stage && stage.completed >= stage.count;
 }
 
-function statusDetail(p: LessonProgress) {
-  if (p.status === 'completed' && p.last_completed_at) {
-    return `Completed ${new Date(p.last_completed_at).toLocaleDateString()}`;
-  }
-  if (p.last_practiced_at) {
-    return `Last practiced ${new Date(p.last_practiced_at).toLocaleDateString()}`;
-  }
-  return 'No attempts yet';
+function activeStation(progress: LessonProgress) {
+  if (progress.status === 'completed') return 'arrive';
+  const stage = progress.stages.find((item) => item.completed < item.count);
+  if (!stage) return progress.status === 'in_progress' ? 'phrase' : 'words';
+  if (stage.id === 'core_exposure') return 'words';
+  if (stage.id === 'supporting_build') return 'phrase';
+  return 'review';
+}
+
+function progressPercent(progress: LessonProgress) {
+  if (progress.status === 'completed') return 100;
+  if (progress.target_count <= 0) return progress.status === 'in_progress' ? 30 : 0;
+  return Math.min(99, Math.round((Math.min(progress.items_completed, progress.target_count) / progress.target_count) * 100));
+}
+
+function actionLabel(progress: LessonProgress) {
+  if (progress.status === 'completed') return 'Practice again';
+  if (progress.status === 'in_progress') return 'Continue';
+  return 'Begin';
 }
 
 export function LessonEntry() {
   const { route } = useLocation();
   const { params } = useRoute();
-  const lesson = lessons.find((l) => l.id === params.id);
+  const lesson = lessons.find((item) => item.id === params.id);
 
   if (!lesson) {
     return (
-      <div class={panels.panel}>
-        <div>Lesson not found.</div>
-        <button class={study.secondaryBtn} onClick={() => route('/')}>Back</button>
-      </div>
-      );
+      <section class={styles.screen}>
+        <div class={styles.hero}>
+          <div class={styles.topline}>Journey</div>
+          <h2 class={styles.title}>Journey not found.</h2>
+          <button class={styles.secondaryButton} onClick={() => route('/journeys')}>Back to journeys</button>
+        </div>
+      </section>
+    );
   }
 
   const lessonProgress = lessonProgressFor(progress.value, lesson.id);
+  const coreCount = useMemo(() => countScope(lesson.core), [lesson]);
+  const supportingCount = useMemo(() => countScope(lesson.supporting), [lesson]);
+  const phraseCount = lesson.build_phrases?.filter((phrase) => phrase.drillable !== false).length || 0;
+  const active = activeStation(lessonProgress);
+  const percent = progressPercent(lessonProgress);
+  const destinationHref = lesson.source_song_id ? `/song/${lesson.source_song_id}` : `/session/${lesson.id}`;
 
-  const coreCount = useMemo(() => {
-    const v = Object.keys(lesson.core?.verbs || {}).length;
-    const a = Object.keys(lesson.core?.adjectives || {}).length;
-    const n = Object.keys(lesson.core?.nouns || {}).length;
-    return v + a + n;
-  }, [lesson]);
-
-  const supCount = useMemo(() => {
-    const v = Object.keys(lesson.supporting?.verbs || {}).length;
-    const a = Object.keys(lesson.supporting?.adjectives || {}).length;
-    const n = Object.keys(lesson.supporting?.nouns || {}).length;
-    return v + a + n;
-  }, [lesson]);
+  const stations = [
+    {
+      id: 'words',
+      title: 'Meet the words',
+      detail: coreCount ? `${coreCount} core forms` : 'core exposure',
+      done: stageDone(lessonProgress, 'core_exposure'),
+    },
+    {
+      id: 'write',
+      title: 'Write by hand',
+      detail: `${coreCount + supportingCount || 'Several'} forms available`,
+      done: stageDone(lessonProgress, 'core_exposure') && lessonProgress.status !== 'not_started',
+    },
+    {
+      id: 'phrase',
+      title: 'Build phrases',
+      detail: phraseCount ? `${phraseCount} authored phrases` : 'phrase practice',
+      done: stageDone(lessonProgress, 'supporting_build'),
+    },
+    {
+      id: 'review',
+      title: 'Mixed review',
+      detail: 'keep the forms reachable',
+      done: stageDone(lessonProgress, 'core_reinforcement'),
+    },
+    {
+      id: 'arrive',
+      title: 'Arrive',
+      detail: lesson.endpoint?.description || lesson.title,
+      done: lessonProgress.status === 'completed',
+      destination: true,
+    },
+  ];
 
   return (
-    <>
-      <div class={panels.panel}>
-        <div class={panels.row}>
-          <div>
-            <div style={{ fontWeight: 600, marginBottom: 4 }}>{lesson.title}</div>
-            {lesson.tagline && <div class={panels.muted}>{lesson.tagline}</div>}
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <button class={study.secondaryBtn} onClick={() => route('/')}>Back</button>
-          </div>
+    <section class={styles.screen}>
+      <div class={styles.hero}>
+        <div class={styles.topline}>
+          <button class={styles.secondaryButton} onClick={() => route('/journeys')}>Back</button>
+          <span>{percent}% through</span>
         </div>
-        {lesson.endpoint?.description && (
-          <div>
-            <div class={panels.muted}>Payoff</div>
-            <div>{lesson.endpoint.description}</div>
-          </div>
-        )}
-        <div class={panels.row}>
-          <div>
-            <div class={panels.muted}>Vocab scope</div>
-            <div>{coreCount} core, {supCount} supporting</div>
-          </div>
-          <div>
-            <div class={panels.muted}>Lesson status</div>
-            <div>{statusLabel(lessonProgress.status)}</div>
-            <div class={panels.progress}>
-              {statusDetail(lessonProgress)}
-              {lessonProgress.target_count > 0 ? ` · ${Math.min(lessonProgress.items_completed, lessonProgress.target_count)}/${lessonProgress.target_count} items` : ''}
-            </div>
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <button class={study.secondaryBtn} onClick={() => route(`/lesson/${lesson.id}/drill`)}>
-              {actionLabel(lessonProgress.status)}
-            </button>
-          </div>
-        </div>
+        <h2 class={styles.title}>{lesson.title}</h2>
+        {lesson.tagline && <div class={styles.subtitle}>{lesson.tagline}</div>}
+        <button class={`${styles.primaryButton} ${styles.full}`} onClick={() => route(`/session/${lesson.id}`)}>
+          {actionLabel(lessonProgress)}
+        </button>
       </div>
+
+      <div class={styles.stationList}>
+        {stations.map((station, index) => (
+          <button
+            key={station.id}
+            class={[
+              styles.station,
+              station.done ? styles.stationDone : '',
+              active === station.id ? styles.stationActive : '',
+            ].filter(Boolean).join(' ')}
+            onClick={() => route(station.destination && lessonProgress.status === 'completed' ? destinationHref : `/session/${lesson.id}`)}
+          >
+            <div
+              class={[
+                styles.marker,
+                station.done ? styles.markerDone : '',
+                active === station.id ? styles.markerActive : '',
+                station.destination ? styles.markerDestination : '',
+              ].filter(Boolean).join(' ')}
+            >
+              {station.destination ? 'A' : index + 1}
+            </div>
+            <div>
+              <div class={styles.kicker}>{station.id}</div>
+              <div class={styles.cardTitle}>{station.title}</div>
+              <div class={styles.meta}>{station.detail}</div>
+            </div>
+          </button>
+        ))}
+      </div>
+
       {lesson.notes && lesson.notes.length > 0 && (
         <LessonNotes notes={lesson.notes} />
       )}
-    </>
+    </section>
   );
 }
